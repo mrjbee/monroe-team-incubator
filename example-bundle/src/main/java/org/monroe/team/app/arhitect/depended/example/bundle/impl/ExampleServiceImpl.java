@@ -9,8 +9,10 @@ import org.monroe.team.app.arhitect.depended.example.bundle.api.ExampleService;
  * (Do whatever you want with the source code)
  */
 public class ExampleServiceImpl implements ExampleService {
+
     @Override
-    public void printSomethingWith(String withArg) {
-        System.out.println("Something with "+withArg);
+    public String concatStrings(String first, String second) {
+        System.out.println("String to concat: "+first+", "+second);
+        return first+second;
     }
 }

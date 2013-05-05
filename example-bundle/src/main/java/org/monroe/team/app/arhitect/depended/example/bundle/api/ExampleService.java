@@ -7,5 +7,5 @@ package org.monroe.team.app.arhitect.depended.example.bundle.api;
  * (Do whatever you want with the source code)
  */
 public interface ExampleService {
-    void printSomethingWith(String withArg);
+    String concatStrings(String first, String second);
 }

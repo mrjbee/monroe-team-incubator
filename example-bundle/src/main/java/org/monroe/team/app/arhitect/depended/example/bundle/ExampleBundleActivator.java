@@ -1,7 +1,11 @@
 package org.monroe.team.app.arhitect.depended.example.bundle;
 
+import org.monroe.team.app.arhitect.depended.example.bundle.api.ExampleService;
+import org.monroe.team.app.arhitect.depended.example.bundle.impl.ExampleServiceImpl;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+
+import java.util.Hashtable;
 
 /**
  * User: MisterJBee
@@ -13,6 +17,10 @@ public class ExampleBundleActivator implements BundleActivator {
     @Override
     public void start(BundleContext bundleContext) throws Exception {
        System.out.println("Start example bundle");
+       Hashtable<String, String> props = new Hashtable<String, String>();
+       props.put("Language", "English");
+       bundleContext.registerService(
+                ExampleService.class.getName(), new ExampleServiceImpl(), props);
     }
 
     @Override

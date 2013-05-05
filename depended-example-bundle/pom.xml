@@ -13,13 +13,19 @@
     <packaging>bundle</packaging>
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Example Bundle</name>
+    <name>Example Bundle [CLIENT]</name>
 
     <dependencies>
         <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.osgi.core</artifactId>
             <version>1.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.monroe.team.app-arhitect</groupId>
+            <artifactId>example-bundle</artifactId>
+            <version>0.1-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
