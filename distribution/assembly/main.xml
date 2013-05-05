@@ -1,0 +1,65 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd
+http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2
+http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 ">
+    <id>bin</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <moduleSets>
+        <moduleSet>
+
+            <!-- Enable access to all projects in the current multimodule build! -->
+            <useAllReactorProjects>true</useAllReactorProjects>
+
+            <!-- Now, select which projects to include in this module-set. -->
+            <includes>
+                <include>*:app-arhitect-osgi-core*</include>
+            </includes>
+            <binaries>
+                <unpack>false</unpack>
+                <attachmentClassifier>jar-with-dependencies</attachmentClassifier>
+                <dependencySets>
+                    <dependencySet>
+                        <useProjectArtifact>false</useProjectArtifact>
+                        <useTransitiveDependencies>false</useTransitiveDependencies>
+                        <useTransitiveFiltering></useTransitiveFiltering>
+                        <useProjectAttachments>true</useProjectAttachments>
+                        <useStrictFiltering>true</useStrictFiltering>
+                        <excludes>
+                            <exclude>*</exclude>
+                        </excludes>
+                    </dependencySet>
+                </dependencySets>
+            </binaries>
+        </moduleSet>
+        <moduleSet>
+
+            <!-- Enable access to all projects in the current multimodule build! -->
+            <useAllReactorProjects>true</useAllReactorProjects>
+
+            <!-- Now, select which projects to include in this module-set. -->
+            <includes>
+                <include>*:example-bundle*</include>
+            </includes>
+            <binaries>
+                <outputDirectory>/bundles</outputDirectory>
+                <unpack>false</unpack>
+                <dependencySets>
+                    <dependencySet>
+                        <useProjectArtifact>true</useProjectArtifact>
+                        <useTransitiveDependencies>false</useTransitiveDependencies>
+                        <useTransitiveFiltering></useTransitiveFiltering>
+                        <useProjectAttachments>true</useProjectAttachments>
+                        <useStrictFiltering>true</useStrictFiltering>
+                        <excludes>
+                            <exclude>*</exclude>
+                        </excludes>
+                    </dependencySet>
+                </dependencySets>
+            </binaries>
+        </moduleSet>
+    </moduleSets>
+</assembly>
