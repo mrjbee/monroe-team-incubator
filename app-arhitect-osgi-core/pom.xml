@@ -21,7 +21,7 @@
             <artifactId>org.apache.felix.main</artifactId>
             <version>4.0.3</version>
         </dependency>
-    </dependencies>
+     </dependencies>
 
     <build>
         <resources>
