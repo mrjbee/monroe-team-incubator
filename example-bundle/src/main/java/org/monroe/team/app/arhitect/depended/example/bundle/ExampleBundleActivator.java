@@ -1,4 +1,4 @@
-package org.monroe.team.app.arhitect.example.bundle;
+package org.monroe.team.app.arhitect.depended.example.bundle;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;

@@ -1,6 +1,6 @@
-package org.monroe.team.app.arhitect.example.bundle.impl;
+package org.monroe.team.app.arhitect.depended.example.bundle.impl;
 
-import org.monroe.team.app.arhitect.example.bundle.api.ExampleService;
+import org.monroe.team.app.arhitect.depended.example.bundle.api.ExampleService;
 
 /**
  * User: MisterJBee

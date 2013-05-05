@@ -1,4 +1,4 @@
-package org.monroe.team.app.arhitect.example.bundle.api;
+package org.monroe.team.app.arhitect.depended.example.bundle.api;
 
 /**
  * User: MisterJBee

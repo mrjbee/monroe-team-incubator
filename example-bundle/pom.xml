@@ -31,9 +31,9 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>org.monroe.team.app.arhitect.example.bundle.api</Export-Package>
-                        <Private-Package>org.monroe.team.app.arhitect.example.bundle.*</Private-Package>
-                        <Bundle-Activator>org.monroe.team.app.arhitect.example.bundle.ExampleBundleActivator</Bundle-Activator>
+                        <Export-Package>org.monroe.team.app.arhitect.depended.example.bundle.api</Export-Package>
+                        <Private-Package>org.monroe.team.app.arhitect.depended.example.bundle.*</Private-Package>
+                        <Bundle-Activator>org.monroe.team.app.arhitect.depended.example.bundle.ExampleBundleActivator</Bundle-Activator>
                     </instructions>
                 </configuration>
             </plugin>

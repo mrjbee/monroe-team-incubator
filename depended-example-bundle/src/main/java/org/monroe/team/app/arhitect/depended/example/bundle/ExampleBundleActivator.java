@@ -1,4 +1,4 @@
-package org.monroe.team.app.arhitect.example.bundle;
+package org.monroe.team.app.arhitect.depended.example.bundle;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -12,11 +12,11 @@ import org.osgi.framework.BundleContext;
 public class ExampleBundleActivator implements BundleActivator {
     @Override
     public void start(BundleContext bundleContext) throws Exception {
-       System.out.println("Start example bundle");
+       System.out.println("Start example bundle [depended]");
     }
 
     @Override
     public void stop(BundleContext bundleContext) throws Exception {
-        System.out.println("Stop example bundle");
+        System.out.println("Stop example bundle [depended]");
     }
 }
