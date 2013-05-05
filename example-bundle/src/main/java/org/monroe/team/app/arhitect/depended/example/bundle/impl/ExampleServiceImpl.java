@@ -22,10 +22,10 @@ public class ExampleServiceImpl implements ExampleService {
     }
 
     protected void activate(ComponentContext context){
-        System.out.print("Concat service activated");
+        System.out.println("Concat service activated");
     }
 
     protected void deactivate(ComponentContext context){
-        System.out.print("Concat service deactivated");
+        System.out.println("Concat service deactivated");
     }
 }
