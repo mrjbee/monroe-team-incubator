@@ -43,6 +43,7 @@ http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 ">
             <!-- Now, select which projects to include in this module-set. -->
             <includes>
                 <include>*:example-bundle*</include>
+                <include>*:depended-example-bundle*</include>
             </includes>
             <binaries>
                 <outputDirectory>/bundles</outputDirectory>

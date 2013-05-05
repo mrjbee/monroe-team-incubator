@@ -11,6 +11,7 @@
     <modules>
       <module>app-arhitect-osgi-core</module>
       <module>example-bundle</module>
+	<module>depended-example-bundle</module>
       <module>distribution</module>	
      </modules>
 
