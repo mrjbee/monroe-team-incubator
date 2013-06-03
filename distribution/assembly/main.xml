@@ -26,7 +26,7 @@ http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 ">
                         <useProjectArtifact>false</useProjectArtifact>
                         <useTransitiveDependencies>false</useTransitiveDependencies>
                         <useTransitiveFiltering></useTransitiveFiltering>
-                        <useProjectAttachments>true</useProjectAttachments>
+                        <useProjectAttachments>false</useProjectAttachments>
                         <useStrictFiltering>true</useStrictFiltering>
                         <excludes>
                             <exclude>*</exclude>
@@ -40,6 +40,9 @@ http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 ">
             <!-- Enable access to all projects in the current multimodule build! -->
             <useAllReactorProjects>true</useAllReactorProjects>
 
+            <excludes>
+                <exclude>*:core*</exclude>
+            </excludes>
             <!-- Now, select which projects to include in this module-set. -->
             <includes>
                 <!--
