@@ -10,6 +10,7 @@
     
     <modules>
         <module>bonee-core</module>
+        <module>distribution</module>
     </modules>
 
     <dependencies>
