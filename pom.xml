@@ -9,6 +9,7 @@
     <name>Bonee OSGI Container</name>
     
     <modules>
+        <module>bonee-core</module>
     </modules>
 
     <dependencies>
