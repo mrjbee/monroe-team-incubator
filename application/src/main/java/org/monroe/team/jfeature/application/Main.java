@@ -41,8 +41,8 @@ public class Main {
     }
 
     static void continueMain(int exitStatus){
+       log.i("Going to continue with main thread");
        synchronized (applicationMainThreadWaitObject){
-           log.i("Going to continue with main thread");
            applicationMainThreadWaitObject.notify();
        }
        System.exit(exitStatus);
