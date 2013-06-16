@@ -1,0 +1,7 @@
+#Maven
+target/
+#IntelijIdea
+.idea/
+*.iml
+
+felix-cache/
