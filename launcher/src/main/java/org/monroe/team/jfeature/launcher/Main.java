@@ -14,11 +14,11 @@ public class Main {
 
     public static void main(String[] args) {
         log.i("Starting application...");
-        Runtime.getRuntime().addShutdownHook(new Thread(){
-           @Override
-           public void run() {
-               gracefulShutdown();
-           }
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                gracefulShutdown();
+            }
         });
         application.start();
         waitUnlessExit();
@@ -35,7 +35,7 @@ public class Main {
         }
     }
 
-    static void continueMain(int exitStatus){
+    public static void continueMain(int exitStatus){
        synchronized (applicationMainThreadWaitObject){
            log.i("Going to continue with main thread");
            applicationMainThreadWaitObject.notify();

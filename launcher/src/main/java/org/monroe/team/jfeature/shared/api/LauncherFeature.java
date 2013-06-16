@@ -8,4 +8,5 @@ package org.monroe.team.jfeature.shared.api;
  */
 public interface LauncherFeature {
     public void shutdown();
+    public void shutdown(int statusCode);
 }
