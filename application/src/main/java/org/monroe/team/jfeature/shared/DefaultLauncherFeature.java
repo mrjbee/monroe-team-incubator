@@ -2,7 +2,6 @@ package org.monroe.team.jfeature.shared;
 
 import org.monroe.team.jfeature.Feature;
 import org.monroe.team.jfeature.FeatureInject;
-import org.monroe.team.jfeature.launcher.Main;
 import org.monroe.team.jfeature.shared.api.ApplicationContextFeature;
 import org.monroe.team.jfeature.shared.api.LauncherFeature;
 

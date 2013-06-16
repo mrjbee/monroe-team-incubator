@@ -1,4 +1,4 @@
-package org.monroe.team.jfeature.launcher;
+package org.monroe.team.jfeature.application;
 
 /**
  * User: MisterJBee

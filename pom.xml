@@ -10,7 +10,7 @@
     
     <modules>
 	<module>core</module>
-	<module>launcher</module>
+	<module>application</module>
     </modules>
 
     <dependencies>

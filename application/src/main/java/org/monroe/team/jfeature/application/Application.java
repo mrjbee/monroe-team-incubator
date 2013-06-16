@@ -1,4 +1,4 @@
-package org.monroe.team.jfeature.launcher;
+package org.monroe.team.jfeature.application;
 
 import org.monroe.team.jfeature.logging.LogFactory;
 import org.monroe.team.jfeature.shared.api.ApplicationContextFeature;

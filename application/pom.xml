@@ -8,12 +8,12 @@
     </parent>
 
     <groupId>org.monroe.team.jfeature</groupId>
-    <artifactId>launcher</artifactId>
+    <artifactId>application</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
 
-    <name>JFeature Desktop Launcher</name>
+    <name>JFeature Application Container</name>
 
     <dependencies>
         <dependency>

@@ -2,8 +2,7 @@ package org.monroe.team.jfeature.shared;
 
 import org.monroe.team.jfeature.Feature;
 import org.monroe.team.jfeature.FeaturePriority;
-import org.monroe.team.jfeature.launcher.Application;
-import org.monroe.team.jfeature.launcher.Main;
+import org.monroe.team.jfeature.application.Main;
 import org.monroe.team.jfeature.logging.LogFactory;
 import org.monroe.team.jfeature.shared.api.ApplicationContextFeature;
 
