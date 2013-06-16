@@ -10,7 +10,7 @@ public class Main {
 
     private static final Object applicationMainThreadWaitObject = new Object();
     private static ConsoleLog log = new ConsoleLog();
-    private static Application application = new Application();
+    private static Application application;
 
     public static void main(String[] args) {
         log.i("Starting application...");
@@ -20,7 +20,7 @@ public class Main {
                 gracefulShutdown();
             }
         });
-        application.start();
+        getApplication().start();
         waitUnlessExit();
     }
 
@@ -35,7 +35,7 @@ public class Main {
         }
     }
 
-    public static void continueMain(int exitStatus){
+    static void continueMain(int exitStatus){
        synchronized (applicationMainThreadWaitObject){
            log.i("Going to continue with main thread");
            applicationMainThreadWaitObject.notify();
@@ -45,7 +45,13 @@ public class Main {
 
     private static void gracefulShutdown() {
         log.i("Graceful shutdown...");
-        application.stop();
+        getApplication().stop();
     }
 
+    public static Application getApplication() {
+        if (application == null){
+            application = new Application();
+        }
+        return application;
+    }
 }
