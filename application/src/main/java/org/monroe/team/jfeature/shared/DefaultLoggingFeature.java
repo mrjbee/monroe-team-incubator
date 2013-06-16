@@ -1,6 +1,7 @@
 package org.monroe.team.jfeature.shared;
 
 import org.monroe.team.jfeature.Feature;
+import org.monroe.team.jfeature.FeatureInject;
 import org.monroe.team.jfeature.logging.Log;
 import org.monroe.team.jfeature.logging.LogFactory;
 import org.monroe.team.jfeature.shared.api.ApplicationContextFeature;
@@ -12,10 +13,10 @@ import org.monroe.team.jfeature.shared.api.LoggingFeature;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-@Feature
+@Feature(impl = LoggingFeature.class)
 public class DefaultLoggingFeature implements LoggingFeature {
 
-    @Feature
+    @FeatureInject
     private ApplicationContextFeature applicationContextFeature;
 
     @Override

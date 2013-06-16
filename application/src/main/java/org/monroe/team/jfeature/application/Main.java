@@ -1,5 +1,9 @@
 package org.monroe.team.jfeature.application;
 
+import org.monroe.team.jfeature.application.logging.LogFactoryLog4Impl;
+import org.monroe.team.jfeature.logging.Log;
+import org.monroe.team.jfeature.logging.LogFactory;
+
 /**
  * User: MisterJBee
  * Date: 6/16/13 Time: 10:41 PM
@@ -9,10 +13,11 @@ package org.monroe.team.jfeature.application;
 public class Main {
 
     private static final Object applicationMainThreadWaitObject = new Object();
-    private static ConsoleLog log = new ConsoleLog();
     private static Application application;
+    private static Log log;
 
     public static void main(String[] args) {
+        log = getApplication().getLogFactory().forFeature("Application");
         log.i("Starting application...");
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
@@ -50,8 +55,13 @@ public class Main {
 
     public static Application getApplication() {
         if (application == null){
-            application = new Application();
+            application = new Application(initLogFactory());
         }
         return application;
+    }
+
+    private static LogFactory initLogFactory() {
+        //TODO: load logging setup
+        return new LogFactoryLog4Impl();
     }
 }

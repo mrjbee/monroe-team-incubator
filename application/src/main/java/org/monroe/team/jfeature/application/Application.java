@@ -1,5 +1,6 @@
 package org.monroe.team.jfeature.application;
 
+import org.monroe.team.jfeature.FeatureContext;
 import org.monroe.team.jfeature.logging.LogFactory;
 import org.monroe.team.jfeature.shared.api.ApplicationContextFeature;
 
@@ -11,16 +12,25 @@ import org.monroe.team.jfeature.shared.api.ApplicationContextFeature;
  */
 public class Application implements ApplicationContextFeature{
 
-    public void start() {
+    private final FeatureContext featureContext = new FeatureContext();
+    private final LogFactory logFactory;
 
+    public Application(LogFactory logFactory) {
+        this.logFactory = logFactory;
     }
-    public void stop() {
 
+    public void start() {
+        //TODO: explore classes
+        featureContext.init();
+    }
+
+    public void stop() {
+        featureContext.deInit();
     }
 
     @Override
     public LogFactory getLogFactory() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return logFactory;
     }
 
     @Override
