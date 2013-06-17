@@ -2,6 +2,8 @@ package org.monroe.team.jfeature.application;
 
 import org.monroe.team.jfeature.Feature;
 import org.monroe.team.jfeature.FeatureContext;
+import org.monroe.team.jfeature.FeatureException;
+import org.monroe.team.jfeature.logging.Log;
 import org.monroe.team.jfeature.logging.LogFactory;
 import org.monroe.team.jfeature.shared.api.ApplicationContextFeature;
 import org.reflections.Reflections;
@@ -28,13 +30,28 @@ public class Application implements ApplicationContextFeature{
         Reflections reflections = new Reflections("org.monroe.team.jfeature.shared");
         Set<Class<?>> sharedFeatures =  reflections.getTypesAnnotatedWith(Feature.class);
         for (Class<?> sharedFeature : sharedFeatures) {
-           featureContext.registrateFeatureClass(sharedFeature);
+            try {
+                featureContext.registrateFeatureClass(sharedFeature);
+            } catch (FeatureException e) {
+                Main.log.e(e, "Invalid feature description.");
+                throw new RuntimeException(e);
+            }
         }
-        featureContext.init();
+        try {
+            featureContext.init();
+        } catch (FeatureException e) {
+            Main.log.e(e, "Features init fail.");
+            throw new RuntimeException(e);
+        }
     }
 
     public void stop() {
-        featureContext.deInit();
+        try {
+            featureContext.deInit();
+        } catch (FeatureException e) {
+            Main.log.e(e, "Features deInit fail.");
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

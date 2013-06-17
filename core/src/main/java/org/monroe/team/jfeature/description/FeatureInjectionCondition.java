@@ -1,5 +1,9 @@
 package org.monroe.team.jfeature.description;
 
+import org.monroe.team.jfeature.utils.Pair;
+
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -10,14 +14,11 @@ import java.util.regex.Pattern;
  */
 public class FeatureInjectionCondition {
 
-    public static final FeatureInjectionCondition ANY = new FeatureInjectionCondition(null,null);
+    public static final FeatureInjectionCondition ANY = new FeatureInjectionCondition(Collections.EMPTY_LIST);
 
+    public final List<Pair<String, Pattern>> matcherList;
 
-    public String name;
-    public Pattern valuePattern;
-
-    public FeatureInjectionCondition(String name, Pattern valuePattern) {
-        this.name = name;
-        this.valuePattern = valuePattern;
+    public FeatureInjectionCondition(List<Pair<String, Pattern>> matcherList) {
+       this.matcherList = Collections.unmodifiableList(matcherList);
     }
 }

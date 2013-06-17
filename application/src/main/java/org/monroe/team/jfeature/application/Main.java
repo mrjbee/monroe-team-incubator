@@ -14,7 +14,7 @@ public class Main {
 
     private static final Object applicationMainThreadWaitObject = new Object();
     private static Application application;
-    private static Log log;
+    static Log log;
 
     public static void main(String[] args) {
         log = getApplication().getLogFactory().forFeature("Application");
@@ -25,8 +25,12 @@ public class Main {
                 gracefulShutdown();
             }
         });
-        getApplication().start();
-        waitUnlessExit();
+        try{
+            getApplication().start();
+            waitUnlessExit();
+        } catch (Exception e){
+            continueMain(2);
+        }
     }
 
     private static void waitUnlessExit() {
@@ -50,7 +54,11 @@ public class Main {
 
     private static void gracefulShutdown() {
         log.i("Graceful shutdown...");
-        getApplication().stop();
+        try{
+            getApplication().stop();
+        }catch (Exception e){
+            log.e(e, "Error during graceful shutdown");
+        }
     }
 
     public static Application getApplication() {

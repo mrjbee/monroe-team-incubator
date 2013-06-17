@@ -2,6 +2,7 @@ package org.monroe.team.jfeature.description;
 
 import org.monroe.team.jfeature.Feature;
 import org.monroe.team.jfeature.FeatureInject;
+import org.monroe.team.jfeature.utils.Pair;
 import sun.dc.path.PathError;
 
 import java.lang.annotation.Annotation;
@@ -17,13 +18,17 @@ import java.util.regex.Pattern;
  */
 public class FeatureDescriptionFactory {
 
-    public FeatureDescription getBy(Class featureClass){
+    public FeatureDescription getBy(Class featureClass) throws InvalidDescriptionException{
+        try{
         //TODO: check that interface are accepted by class
         Feature featureAnnotation = (Feature) featureClass.getAnnotation(Feature.class);
         return new FeatureDescription(featureClass,
                 featureAnnotation.impl(),
                 parseDetails(featureAnnotation.details()),
                 parseInjections(featureClass));
+        } catch (Exception e){
+           throw new InvalidDescriptionException(featureClass, e);
+        }
     }
 
     private List<FeatureInjection> parseInjections(Class featureClass) {
@@ -53,10 +58,15 @@ public class FeatureDescriptionFactory {
            if ("".equals(pair)){
                featureInjectionConditions.add(FeatureInjectionCondition.ANY);
            } else {
-               String[] parsedCondition = pair.split("=");
-               //TODO add pattern condition
-               Pattern pattern = Pattern.compile(parsedCondition[1]);
-               featureInjectionConditions.add(new FeatureInjectionCondition(parsedCondition[0],pattern));
+               String[] parsedConditions = pair.split(";");
+               List<Pair<String,Pattern>> matcherList = new ArrayList<Pair<String, Pattern>>(parsedConditions.length);
+               for (String parsedCondition : parsedConditions) {
+                   //TODO add pattern condition
+                   String[] conditionPair = pair.split("=");
+                   Pattern pattern = Pattern.compile(conditionPair[1]);
+                   matcherList.add(new Pair<String, Pattern>(conditionPair[0],pattern));
+               }
+               featureInjectionConditions.add(new FeatureInjectionCondition(matcherList));
            }
         }
         return featureInjectionConditions;

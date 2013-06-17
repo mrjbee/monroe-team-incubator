@@ -14,7 +14,7 @@ public class FeatureDescriptionFactoryTest extends TSupport{
 
     FeatureDescriptionFactory descriptionFactory = new FeatureDescriptionFactory();
 
-    @Test public void shouldCreateProperFeatureDescription(){
+    @Test public void shouldCreateProperFeatureDescription() throws InvalidDescriptionException {
         FeatureDescription answer = descriptionFactory.getBy(SimpleFeature.class);
         should(answer.featureClass == SimpleFeature.class);
         should(answer.implClass == SimpleFeature.class);
@@ -30,7 +30,8 @@ public class FeatureDescriptionFactoryTest extends TSupport{
         should(answer.featureInjectionList.get(0).description.dependencyClass == SimpleFeature.class);
         should(answer.featureInjectionList.get(1).description.dependencyClass == SimpleFeature.class);
         should(answer.featureInjectionList.get(0).description.conditionListFeature.size() == 2);
-        should(answer.featureInjectionList.get(0).description.conditionListFeature.get(0).name, "name");
+        should(answer.featureInjectionList.get(0).description.conditionListFeature.get(0).matcherList.size() == 1);
+        should(answer.featureInjectionList.get(0).description.conditionListFeature.get(0).matcherList.get(0).first,"name");
         should(answer.featureInjectionList.get(0).description.conditionListFeature.get(1), FeatureInjectionCondition.ANY);
         should(answer.featureInjectionList.get(1).description.conditionListFeature.size() == 0);
     }
