@@ -1,8 +1,12 @@
 package org.monroe.team.jfeature.application;
 
+import org.monroe.team.jfeature.Feature;
 import org.monroe.team.jfeature.FeatureContext;
 import org.monroe.team.jfeature.logging.LogFactory;
 import org.monroe.team.jfeature.shared.api.ApplicationContextFeature;
+import org.reflections.Reflections;
+
+import java.util.Set;
 
 /**
  * User: MisterJBee
@@ -12,15 +16,20 @@ import org.monroe.team.jfeature.shared.api.ApplicationContextFeature;
  */
 public class Application implements ApplicationContextFeature{
 
-    private final FeatureContext featureContext = new FeatureContext();
+    private final FeatureContext featureContext;
     private final LogFactory logFactory;
 
     public Application(LogFactory logFactory) {
         this.logFactory = logFactory;
+        featureContext = new FeatureContext(logFactory.forFeature("FeaturesContext"));
     }
 
     public void start() {
-        //TODO: explore classes
+        Reflections reflections = new Reflections("org.monroe.team.jfeature.shared");
+        Set<Class<?>> sharedFeatures =  reflections.getTypesAnnotatedWith(Feature.class);
+        for (Class<?> sharedFeature : sharedFeatures) {
+           featureContext.registrateFeatureClass(sharedFeature);
+        }
         featureContext.init();
     }
 

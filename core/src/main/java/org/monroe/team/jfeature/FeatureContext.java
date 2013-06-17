@@ -1,5 +1,7 @@
 package org.monroe.team.jfeature;
 
+import org.monroe.team.jfeature.logging.Log;
+
 /**
  * User: MisterJBee
  * Date: 6/17/13 Time: 12:34 AM
@@ -8,8 +10,16 @@ package org.monroe.team.jfeature;
  */
 public class FeatureContext {
 
-    public void registrateFeatureClass(Class... featureClasses){
+    private final Log log;
 
+    public FeatureContext(Log contextLogger) {
+         log = contextLogger;
+    }
+
+    public void registrateFeatureClass(Class... featureClasses){
+        for(Class aClass: featureClasses){
+            log.v("Start processing feature class {0}", featureClasses);
+        }
     }
 
     public void init() {
