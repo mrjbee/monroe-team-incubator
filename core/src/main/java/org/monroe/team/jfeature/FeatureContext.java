@@ -1,5 +1,7 @@
 package org.monroe.team.jfeature;
 
+import org.monroe.team.jfeature.dependency.DefaultDependencyGraph;
+import org.monroe.team.jfeature.dependency.DependencyGraph;
 import org.monroe.team.jfeature.description.FeatureDescription;
 import org.monroe.team.jfeature.description.FeatureDescriptionFactory;
 import org.monroe.team.jfeature.description.FeatureInjection;
@@ -8,6 +10,8 @@ import org.monroe.team.jfeature.logging.Log;
 import org.monroe.team.jfeature.utils.Command;
 import org.monroe.team.jfeature.utils.Null;
 import org.monroe.team.jfeature.utils.Pair;
+
+import java.util.List;
 
 /**
  * User: MisterJBee
@@ -37,6 +41,7 @@ public class FeatureContext {
 
     private void registrate(FeatureDescription featureDescription) throws FeatureException {
         try {
+            log.d("Registrate feature description {0}", featureDescription.detailsString());
             featuresRegistry.put(featureDescription, featureDescription.featureClass.newInstance());
         } catch (Exception e) {
            throw new FeatureException(featureDescription.featureClass,featureDescription.implClass,e);
@@ -45,10 +50,11 @@ public class FeatureContext {
 
     public void init() throws FeatureException {
         try {
+            final DependencyGraph<Object> featureDependencyGraph = new DefaultDependencyGraph<Object>();
             featuresRegistry.forEachFeature(new Command<Null, Pair<FeatureDescription, Object>>() {
                 @Override
                 public Null call(Pair<FeatureDescription, Object> arg) throws FeatureException{
-                    doInject(arg.second,arg.first);
+                    doInject(arg.second,arg.first, featureDependencyGraph);
                     return Null.DEF;
                 }
             });
@@ -59,8 +65,36 @@ public class FeatureContext {
         }
     }
 
-    private void doInject(Object featureInstance, FeatureDescription featureDescription) throws FeatureException{
+    private void doInject(Object featureInstance, FeatureDescription featureDescription, DependencyGraph<Object> featureDependencyGraph) throws FeatureException{
         for (FeatureInjection featureInjection : featureDescription.featureInjectionList) {
+             if (!featureInjection.description.conditionListFeature.isEmpty()){
+                 throw featureDescription.issue(new UnsupportedOperationException("Injections by regexp not supported yet"));
+             }
+            List<Object> instances = featuresRegistry.lookup(featureInjection.description.dependencyClass);
+
+            if (instances.isEmpty()) throw featureDescription.issue(new IllegalStateException("Unsatisfied dependency." + featureInjection.description));
+
+            if (featureInjection.description.isMultiple){
+                try {
+                    featureInjection.set(featureInstance, instances);
+                    for (Object instance : instances) {
+                        featureDependencyGraph.addDependency(featureInstance, instance);
+                    }
+                } catch (IllegalAccessException e) {
+                    featureDescription.issue(e);
+                }
+            } else {
+                if (instances.size() != 0 ){
+                   featureDescription.issue(new IllegalStateException("Too much candidates."+featureInjection.detailsString()));
+                } else {
+                    try {
+                        featureInjection.set(featureInstance, instances.get(0));
+                        featureDependencyGraph.addDependency(featureInstance, instances.get(0));
+                    } catch (IllegalAccessException e) {
+                        featureDescription.issue(e);
+                    }
+                }
+            }
         }
     }
 

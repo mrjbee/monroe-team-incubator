@@ -20,4 +20,11 @@ public class FeatureInjectionDescription {
         isMultiple = multiple;
         this.conditionListFeature = Collections.unmodifiableList(conditionListFeature);
     }
+
+    public String detailsString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("\n interface = "+dependencyClass.getName());
+        builder.append("\n isMultiple = "+isMultiple);
+        return builder.toString();
+    }
 }

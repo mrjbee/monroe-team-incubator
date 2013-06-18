@@ -1,5 +1,6 @@
 package org.monroe.team.jfeature;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.Closure;
 import org.monroe.team.jfeature.description.FeatureDescription;
 import org.monroe.team.jfeature.utils.Command;
 import org.monroe.team.jfeature.utils.Null;
@@ -29,5 +30,28 @@ public class FeaturesRegistry {
            command.call(featureDescriptionObjectPair);
         }
 
+    }
+
+    public List<Object> lookup(final Class dependencyClass) {
+        return collect(new Command<Boolean, FeatureDescription>() {
+            @Override
+            public Boolean call(FeatureDescription arg) throws Exception {
+                return arg.implClass == dependencyClass;
+            }
+        });
+    }
+
+    private List<Object> collect(Command<Boolean,FeatureDescription> filter) {
+        List<Object> answer = new ArrayList<Object>(4);
+        for (Pair<FeatureDescription, Object> featureDescriptionObjectPair : registryList) {
+            try {
+                if (filter.call(featureDescriptionObjectPair.first)){
+                    answer.add(featureDescriptionObjectPair.second);
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return answer;
     }
 }

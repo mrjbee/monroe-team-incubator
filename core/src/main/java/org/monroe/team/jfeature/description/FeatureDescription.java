@@ -1,5 +1,7 @@
 package org.monroe.team.jfeature.description;
 
+import org.monroe.team.jfeature.FeatureException;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -22,5 +24,22 @@ public class FeatureDescription {
         this.implClass = implClass;
         this.registrationDetails = Collections.unmodifiableMap(registrationDetails);
         this.featureInjectionList = Collections.unmodifiableList(featureInjectionList);
+    }
+
+    public String detailsString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("\n Feature class = "+featureClass.getName());
+        builder.append("\n implement = "+implClass.getName());
+        builder.append("\n details = "+registrationDetails);
+        builder.append("\n requires [ ");
+        for (FeatureInjection featureInjection : featureInjectionList) {
+            builder.append(featureInjection.detailsString());
+        }
+
+        return builder.toString();
+    }
+
+    public FeatureException issue(Exception e) {
+        return new FeatureException(featureClass, implClass, e);
     }
 }
