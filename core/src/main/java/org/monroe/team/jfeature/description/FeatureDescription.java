@@ -35,6 +35,7 @@ public class FeatureDescription {
         for (FeatureInjection featureInjection : featureInjectionList) {
             builder.append(featureInjection.detailsString());
         }
+        builder.append("\n]\n ");
 
         return builder.toString();
     }
