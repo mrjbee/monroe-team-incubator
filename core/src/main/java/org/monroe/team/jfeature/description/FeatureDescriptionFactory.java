@@ -47,7 +47,7 @@ public class FeatureDescriptionFactory {
 
     private FeatureInjectionDescription parseInjectionMetaData(FeatureInject featureInjectAnn, Field field) {
         return new FeatureInjectionDescription(
-                field.getType(),
+                (field.getType().isArray())? field.getType().getComponentType():field.getType(),
                 field.getType().isArray(),
                 parseConditions(featureInjectAnn.value()));
     }

@@ -15,7 +15,7 @@ import org.monroe.team.jfeature.shared.api.LauncherFeature;
 public class DefaultLauncherFeature implements LauncherFeature{
 
     @FeatureInject
-    ApplicationContextFeature applicationContextFeature;
+    ApplicationContextFeature[] applicationContextFeature;
 
     @Override
     public void shutdown() {
@@ -24,6 +24,6 @@ public class DefaultLauncherFeature implements LauncherFeature{
 
     @Override
     public void shutdown(int statusCode) {
-        applicationContextFeature.continueMain(statusCode);
+        //applicationContextFeature.continueMain(statusCode);
     }
 }
