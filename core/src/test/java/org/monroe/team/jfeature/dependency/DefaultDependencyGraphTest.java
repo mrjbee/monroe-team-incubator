@@ -25,6 +25,19 @@ public class DefaultDependencyGraphTest extends TSupport{
         should(define.asTopologicalSortedString(),"5,3,2,1");
     }
 
+    @Test public void shouldReturnSortedListWithAFewSimpleSeparatedGraphs(){
+        define.a("1").on("2").on("3").on("5").end();
+        define.a("6").on("7").on("8").on("9").end();
+        should(define.asTopologicalSortedString(),"9,8,5,7,6,3,2,1");
+    }
+
+    @Test public void shouldReturnSortedListWithNormalGraphs(){
+        define.a("1").on("2").on("3").on("5").end();
+        define.a("6").on("7").on("8").on("9").end();
+        define.a("7").on("1");
+        should(define.asTopologicalSortedString(),"9,8,5,3,2,1,7,6");
+    }
+
     private static class GraphBuilder {
 
         private final DefaultDependencyGraph<String> graph;
