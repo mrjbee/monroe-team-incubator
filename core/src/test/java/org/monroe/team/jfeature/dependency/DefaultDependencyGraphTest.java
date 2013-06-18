@@ -1,8 +1,11 @@
 package org.monroe.team.jfeature.dependency;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.Closure;
 import org.junit.Before;
 import org.junit.Test;
 import org.monroe.team.jfeature.description.TSupport;
+import org.monroe.team.jfeature.utils.Null;
+import org.monroe.team.jfeature.utils.Pair;
 
 /**
  * User: MisterJBee
@@ -20,23 +23,57 @@ public class DefaultDependencyGraphTest extends TSupport{
       define = new GraphBuilder(dependencyGraph);
     }
 
-    @Test public void shouldReturnSortedListWithASimpleGraph(){
+    @Test public void shouldReturnSortedListWithASimpleGraph() throws GraphDependencyCycleException {
         define.a("1").on("2").on("3").on("5").end();
         should(define.asTopologicalSortedString(),"5,3,2,1");
     }
 
-    @Test public void shouldReturnSortedListWithAFewSimpleSeparatedGraphs(){
+    @Test public void shouldReturnSortedListWithAFewSimpleSeparatedGraphs() throws GraphDependencyCycleException {
         define.a("1").on("2").on("3").on("5").end();
         define.a("6").on("7").on("8").on("9").end();
         should(define.asTopologicalSortedString(),"9,8,5,7,6,3,2,1");
     }
 
-    @Test public void shouldReturnSortedListWithNormalGraphs(){
+    @Test public void shouldReturnSortedListWithNormalGraphs() throws GraphDependencyCycleException {
         define.a("1").on("2").on("3").on("5").end();
         define.a("6").on("7").on("8").on("9").end();
         define.a("7").on("1");
-        should(define.asTopologicalSortedString(),"9,8,5,3,2,1,7,6");
+        should(define.asTopologicalSortedString(), "9,8,5,3,2,1,7,6");
     }
+
+    @Test public void shouldDetectSimpleCycle() throws GraphDependencyCycleException {
+        define.a("1").on("2").on("3").on("5").end();
+        //here comes cycle over 6
+        define.a("1").on("6").on("7").on("8").on("6").end();
+        try{
+            define.asTopologicalSortedString();
+            shouldFail();
+        } catch (GraphDependencyCycleException e){
+            should("7,6,8,",extractCycle(e));
+        }
+    }
+
+    @Test public void shouldDetectSimpleCycle2() throws GraphDependencyCycleException {
+        define.a("1").on("2").on("3").on("5").on("3").end();
+        //here comes cycle over 6
+        define.a("1").on("6").on("7").on("8").on("6").end();
+        try{
+            define.asTopologicalSortedString();
+            shouldFail();
+        } catch (GraphDependencyCycleException e){
+            should("3,2,1,5,",extractCycle(e));
+        }
+    }
+
+
+    private String extractCycle(GraphDependencyCycleException e) {
+        StringBuilder builder = new StringBuilder();
+        for (String value : e.getCycleObjectsList(String.class)) {
+            builder.append(value+",");
+        }
+        return builder.toString();
+    }
+
 
     private static class GraphBuilder {
 
@@ -64,7 +101,7 @@ public class DefaultDependencyGraphTest extends TSupport{
            lastNode = null;
         }
 
-        public String asTopologicalSortedString(){
+        public String asTopologicalSortedString() throws GraphDependencyCycleException {
             StringBuilder builder = new StringBuilder();
             for (String st:graph.asTopologicalSortedList()){
                 builder.append(st);

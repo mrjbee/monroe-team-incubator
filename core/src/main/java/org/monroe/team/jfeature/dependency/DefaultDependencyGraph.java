@@ -23,22 +23,22 @@ public class DefaultDependencyGraph<ContentType> implements DependencyGraph<Cont
     }
 
     @Override
-    public List<ContentType> asTopologicalSortedList() {
+    public List<ContentType> asTopologicalSortedList() throws GraphDependencyCycleException{
         Map<ContentType,GraphNode<ContentType>>  graphNodeMap = cloneRegistry();
         return doDepthFirstSearch(graphNodeMap);
     }
 
-    private List<ContentType> doDepthFirstSearch(Map<ContentType, GraphNode<ContentType>> graphNodeMap) {
-        List<GraphNode<ContentType>> answer = new ArrayList<GraphNode<ContentType>>(graphNodeMap.size());
+    private List<ContentType> doDepthFirstSearch(Map<ContentType, GraphNode<ContentType>> graphNodeMap) throws GraphDependencyCycleException {
+        List<GraphNode<ContentType>> answer = new LinkedList<GraphNode<ContentType>>();
         Set<GraphNode<ContentType>> markedNodes = new HashSet<GraphNode<ContentType>>(graphNodeMap.size());
         GraphNode<ContentType> node;
         while((node = getUnmarkedNode(graphNodeMap, markedNodes)) != null){
-           visitNode(node, answer, markedNodes, new HashSet<GraphNode<ContentType>>());
+           visitNode(node, answer, markedNodes, new ArrayList<GraphNode<ContentType>>());
         }
         return convert(answer);
     }
 
-    private GraphNode<ContentType> getUnmarkedNode(Map<ContentType, GraphNode<ContentType>> graphNodeMap, Set<GraphNode<ContentType>> markedNodes) {
+    private GraphNode<ContentType> getUnmarkedNode(Map<ContentType, GraphNode<ContentType>> graphNodeMap, Set<GraphNode<ContentType>> markedNodes)  {
         for (GraphNode<ContentType> graphNode : graphNodeMap.values()) {
              if (!markedNodes.contains(graphNode)) return  graphNode;
         }
@@ -56,9 +56,9 @@ public class DefaultDependencyGraph<ContentType> implements DependencyGraph<Cont
     private void visitNode(GraphNode<ContentType> node,
                            List<GraphNode<ContentType>> answer,
                            Set<GraphNode<ContentType>> markedNodes,
-                           Set<GraphNode<ContentType>> temporaryMarkedNodes) {
+                           List<GraphNode<ContentType>> temporaryMarkedNodes) throws GraphDependencyCycleException {
            if (temporaryMarkedNodes.contains(node)) {
-               throw new IllegalStateException("Fuxk");
+               throw new GraphDependencyCycleException(convert(temporaryMarkedNodes));
            }
            if (!markedNodes.contains(node)){
                temporaryMarkedNodes.add(node);

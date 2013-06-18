@@ -10,6 +10,10 @@ import junit.framework.Assert;
  */
 public class TSupport {
 
+    public  void shouldFail() {
+        Assert.fail();
+    }
+
     public void should(boolean b) {
         should("be true", b);
     }

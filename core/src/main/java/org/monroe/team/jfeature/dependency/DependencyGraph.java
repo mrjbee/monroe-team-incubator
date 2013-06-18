@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface DependencyGraph<Content> {
     public void addDependency(Content content, Content required);
-    public List<Content> asTopologicalSortedList();
+    public List<Content> asTopologicalSortedList() throws GraphDependencyCycleException;
 }
