@@ -76,7 +76,7 @@ public class FeatureContext {
 
             if (featureInjection.description.isMultiple){
                 try {
-                    featureInjection.set(featureInstance, instances);
+                    featureInjection.setArray(featureInstance, featureInjection.description.dependencyClass, instances);
                     for (Object instance : instances) {
                         featureDependencyGraph.addDependency(featureInstance, instance);
                     }

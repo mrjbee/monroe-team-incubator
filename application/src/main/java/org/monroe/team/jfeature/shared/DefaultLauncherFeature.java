@@ -24,6 +24,6 @@ public class DefaultLauncherFeature implements LauncherFeature{
 
     @Override
     public void shutdown(int statusCode) {
-        //applicationContextFeature.continueMain(statusCode);
+        applicationContextFeature[0].continueMain(statusCode);
     }
 }

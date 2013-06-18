@@ -1,5 +1,6 @@
 package org.monroe.team.jfeature.description;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -23,9 +24,12 @@ public class FeatureInjection {
         return description.detailsString();
     }
 
-    public void setArray(Object instance, List<Object> injectionInstanceList) throws IllegalAccessException {
-        Object[] injections = injectionInstanceList.toArray();
-        set(instance,injections);
+    public void setArray(Object instance, Class clazz, List<Object> injectionInstanceList) throws IllegalAccessException {
+        Object objects = (Object[]) Array.newInstance(clazz, injectionInstanceList.size());
+        for (int i = 0; i < injectionInstanceList.size(); i++) {
+            Array.set(objects,i,injectionInstanceList.get(0));
+        }
+        set(instance,objects);
     }
 
     public void set(Object featureInstance, Object value) throws IllegalAccessException {

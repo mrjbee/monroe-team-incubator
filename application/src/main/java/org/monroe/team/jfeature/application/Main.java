@@ -29,6 +29,7 @@ public class Main {
             getApplication().start();
             waitUnlessExit();
         } catch (Exception e){
+            log.e(e, "Exception during startup application.");
             continueMain(2);
         }
     }
