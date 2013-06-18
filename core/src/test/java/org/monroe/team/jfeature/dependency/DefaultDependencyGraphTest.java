@@ -23,6 +23,12 @@ public class DefaultDependencyGraphTest extends TSupport{
       define = new GraphBuilder(dependencyGraph);
     }
 
+    @Test public void shouldReturnSortedListIncludingSingleNodeGraph() throws GraphDependencyCycleException {
+        define.a("1").on("2").on("3").on("5").end();
+        define.graph.addNode("9");
+        should(define.asTopologicalSortedString(),"9,5,3,2,1");
+    }
+
     @Test public void shouldReturnSortedListWithASimpleGraph() throws GraphDependencyCycleException {
         define.a("1").on("2").on("3").on("5").end();
         should(define.asTopologicalSortedString(),"5,3,2,1");

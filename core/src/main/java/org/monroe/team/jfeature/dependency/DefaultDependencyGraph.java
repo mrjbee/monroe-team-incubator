@@ -28,6 +28,11 @@ public class DefaultDependencyGraph<ContentType> implements DependencyGraph<Cont
         return doDepthFirstSearch(graphNodeMap);
     }
 
+    @Override
+    public void addNode(ContentType content) {
+        GraphNode<ContentType> graphNode = getNodeByContent(content);
+    }
+
     private List<ContentType> doDepthFirstSearch(Map<ContentType, GraphNode<ContentType>> graphNodeMap) throws GraphDependencyCycleException {
         List<GraphNode<ContentType>> answer = new LinkedList<GraphNode<ContentType>>();
         Set<GraphNode<ContentType>> markedNodes = new HashSet<GraphNode<ContentType>>(graphNodeMap.size());
