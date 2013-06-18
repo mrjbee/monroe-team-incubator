@@ -25,7 +25,7 @@ public class TSupport {
     }
 
     public void should(Object object,  Object object1) {
-        should("be equals", object, object1);
+        should("be equals "+object+" and "+ object1, object, object1);
     }
 
 }
