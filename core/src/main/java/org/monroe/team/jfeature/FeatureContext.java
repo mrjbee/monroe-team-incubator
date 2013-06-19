@@ -94,11 +94,18 @@ public class FeatureContext {
 
     private void doFeatureUp(Object feature) {
         log.i("Starting feature ({0})",feature.getClass().getName());
+        if (feature instanceof ServiceFeature){
+            log.i("Feature going up ({0})",feature.getClass().getName());
+            ((ServiceFeature) feature).onUp();
+        }
     }
 
     private void doFeatureDown(Object feature) {
         log.i("Stopping feature ({0})",feature.getClass().getName());
-
+        if (feature instanceof ServiceFeature){
+            log.i("Feature going down ({0})",feature.getClass().getName());
+            ((ServiceFeature) feature).onDown();
+        }
     }
 
     private void doInject(Object featureInstance, FeatureDescription featureDescription, DependencyGraph<Object> featureDependencyGraph) throws FeatureException{
@@ -140,7 +147,7 @@ public class FeatureContext {
     }
 
     public void deInit() throws FeatureException {
-
+        if(startedFeatures == null) return;
         for (int i = startedFeatures.size()-1; i > -1; i--) {
             try{
                 doFeatureDown(startedFeatures.get(i));

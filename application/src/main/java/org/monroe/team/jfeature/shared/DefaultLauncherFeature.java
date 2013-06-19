@@ -18,6 +18,9 @@ public class DefaultLauncherFeature implements LauncherFeature{
     @FeatureInject
     ApplicationContextFeature applicationContextFeature;
 
+    @FeatureInject
+    LoggingFeature loggingFeature;
+
     @Override
     public void shutdown() {
         shutdown(0);

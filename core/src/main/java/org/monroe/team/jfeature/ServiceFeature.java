@@ -6,5 +6,7 @@ package org.monroe.team.jfeature;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-public class ServiceFeature {
+public interface ServiceFeature {
+    public void onUp();
+    public void onDown();
 }

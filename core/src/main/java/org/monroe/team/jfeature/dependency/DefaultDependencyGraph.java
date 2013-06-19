@@ -18,8 +18,8 @@ public class DefaultDependencyGraph<ContentType> implements DependencyGraph<Cont
       GraphNode<ContentType> graphNode = getNodeByContent(content);
       GraphNode<ContentType> requiredGraphNode = getNodeByContent(requiredContent);
       //TODO: think about should it fail or its ok
-      if(requiredGraphNode.edgeList.contains(graphNode)) return;
-      requiredGraphNode.edgeList.add(graphNode);
+      if(graphNode.edgeList.contains(requiredGraphNode)) return;
+        graphNode.edgeList.add(requiredGraphNode);
     }
 
     @Override
@@ -40,6 +40,7 @@ public class DefaultDependencyGraph<ContentType> implements DependencyGraph<Cont
         while((node = getUnmarkedNode(graphNodeMap, markedNodes)) != null){
            visitNode(node, answer, markedNodes, new ArrayList<GraphNode<ContentType>>());
         }
+        Collections.reverse(answer);
         return convert(answer);
     }
 
@@ -63,6 +64,7 @@ public class DefaultDependencyGraph<ContentType> implements DependencyGraph<Cont
                            Set<GraphNode<ContentType>> markedNodes,
                            List<GraphNode<ContentType>> temporaryMarkedNodes) throws GraphDependencyCycleException {
            if (temporaryMarkedNodes.contains(node)) {
+               temporaryMarkedNodes.add(node);
                throw new GraphDependencyCycleException(convert(temporaryMarkedNodes));
            }
            if (!markedNodes.contains(node)){

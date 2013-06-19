@@ -26,7 +26,7 @@ public class DefaultDependencyGraphTest extends TSupport{
     @Test public void shouldReturnSortedListIncludingSingleNodeGraph() throws GraphDependencyCycleException {
         define.a("1").on("2").on("3").on("5").end();
         define.graph.addNode("9");
-        should(define.asTopologicalSortedString(),"9,5,3,2,1");
+        should(define.asTopologicalSortedString(),"5,3,2,1,9");
     }
 
     @Test public void shouldReturnSortedListWithASimpleGraph() throws GraphDependencyCycleException {
@@ -37,14 +37,14 @@ public class DefaultDependencyGraphTest extends TSupport{
     @Test public void shouldReturnSortedListWithAFewSimpleSeparatedGraphs() throws GraphDependencyCycleException {
         define.a("1").on("2").on("3").on("5").end();
         define.a("6").on("7").on("8").on("9").end();
-        should(define.asTopologicalSortedString(),"9,8,5,7,6,3,2,1");
+        should(define.asTopologicalSortedString(),"5,3,2,1,9,8,7,6");
     }
 
     @Test public void shouldReturnSortedListWithNormalGraphs() throws GraphDependencyCycleException {
         define.a("1").on("2").on("3").on("5").end();
         define.a("6").on("7").on("8").on("9").end();
         define.a("7").on("1");
-        should(define.asTopologicalSortedString(), "9,8,5,3,2,1,7,6");
+        should(define.asTopologicalSortedString(), "5,3,2,1,9,8,7,6");
     }
 
     @Test public void shouldDetectSimpleCycle() throws GraphDependencyCycleException {
@@ -55,7 +55,7 @@ public class DefaultDependencyGraphTest extends TSupport{
             define.asTopologicalSortedString();
             shouldFail();
         } catch (GraphDependencyCycleException e){
-            should("7,6,8,",extractCycle(e));
+            should("1,6,7,8,6,",extractCycle(e));
         }
     }
 
@@ -67,7 +67,7 @@ public class DefaultDependencyGraphTest extends TSupport{
             define.asTopologicalSortedString();
             shouldFail();
         } catch (GraphDependencyCycleException e){
-            should("3,2,1,5,",extractCycle(e));
+            should("3,5,3,",extractCycle(e));
         }
     }
 
