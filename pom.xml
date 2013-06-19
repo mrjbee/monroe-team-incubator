@@ -9,6 +9,7 @@
     <name>JFeature main suite</name>
     
     <modules>
+	<module>test-common</module>
 	<module>core</module>
 	<module>application</module>
     </modules>

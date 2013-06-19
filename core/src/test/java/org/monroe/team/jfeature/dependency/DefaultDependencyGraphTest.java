@@ -1,11 +1,8 @@
 package org.monroe.team.jfeature.dependency;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.Closure;
 import org.junit.Before;
 import org.junit.Test;
-import org.monroe.team.jfeature.description.TSupport;
-import org.monroe.team.jfeature.utils.Null;
-import org.monroe.team.jfeature.utils.Pair;
+import org.monroe.team.jfeature.test.support.TSupport;
 
 /**
  * User: MisterJBee
@@ -26,7 +23,7 @@ public class DefaultDependencyGraphTest extends TSupport{
     @Test public void shouldReturnSortedListIncludingSingleNodeGraph() throws GraphDependencyCycleException {
         define.a("1").on("2").on("3").on("5").end();
         define.graph.addNode("9");
-        should(define.asTopologicalSortedString(),"5,3,2,1,9");
+        should(define.asTopologicalSortedString(), "5,3,2,1,9");
     }
 
     @Test public void shouldReturnSortedListWithASimpleGraph() throws GraphDependencyCycleException {

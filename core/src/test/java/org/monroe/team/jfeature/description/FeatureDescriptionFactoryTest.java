@@ -3,6 +3,7 @@ package org.monroe.team.jfeature.description;
 import org.junit.Test;
 import org.monroe.team.jfeature.Feature;
 import org.monroe.team.jfeature.FeatureInject;
+import org.monroe.team.jfeature.test.support.TSupport;
 
 /**
  * User: MisterJBee

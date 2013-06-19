@@ -1,4 +1,4 @@
-package org.monroe.team.jfeature.description;
+package org.monroe.team.jfeature.test.support;
 
 import junit.framework.Assert;
 
