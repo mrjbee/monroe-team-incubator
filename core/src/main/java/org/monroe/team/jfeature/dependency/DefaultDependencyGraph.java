@@ -73,6 +73,7 @@ public class DefaultDependencyGraph<ContentType> implements DependencyGraph<Cont
                    visitNode(edgeNode, answer, markedNodes, temporaryMarkedNodes);
                }
                markedNodes.add(node);
+               temporaryMarkedNodes.remove(node);
                answer.add(0, node);
            }
 

@@ -68,6 +68,10 @@ public class DefaultDependencyGraphTest extends TSupport{
         }
     }
 
+    @Test public void shouldReturnSortedListWithAWhatAHellHappens() throws GraphDependencyCycleException {
+        define.a("logging").on("app").a("launcher").on("app").a("launcher").on("logging");
+        should(define.asTopologicalSortedString(),"app,logging,launcher");
+    }
 
     private String extractCycle(GraphDependencyCycleException e) {
         StringBuilder builder = new StringBuilder();
