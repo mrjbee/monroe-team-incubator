@@ -1,0 +1,2 @@
+#!/bin/bash
+./build && (cd projects/fserver/ && mvn clean install)
