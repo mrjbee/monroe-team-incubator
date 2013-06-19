@@ -120,7 +120,7 @@ public class FeatureContext {
              }
             List<Object> instances = featuresRegistry.lookup(featureInjection.description.dependencyClass);
 
-            if (instances.isEmpty()) throw featureDescription.issue(new IllegalStateException("Unsatisfied dependency." + featureInjection.description));
+            if (instances.isEmpty()) throw featureDescription.issue(new IllegalStateException("Unsatisfied dependency. " + featureInjection.detailsString()));
 
             if (featureInjection.description.isMultiple){
                 try {
