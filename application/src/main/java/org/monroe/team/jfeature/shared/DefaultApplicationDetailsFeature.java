@@ -4,6 +4,7 @@ import org.monroe.team.jfeature.Feature;
 import org.monroe.team.jfeature.FeatureInject;
 import org.monroe.team.jfeature.ServiceFeature;
 import org.monroe.team.jfeature.shared.api.ApplicationDetailsFeature;
+import org.monroe.team.jfeature.shared.api.ApplicationResourceLoaderFeature;
 import org.monroe.team.jfeature.shared.api.LoggingFeature;
 
 import java.io.IOException;
@@ -19,27 +20,24 @@ import java.util.Properties;
 @Feature(impl = ApplicationDetailsFeature.class)
 public class DefaultApplicationDetailsFeature implements ApplicationDetailsFeature, ServiceFeature {
 
-    @FeatureInject
-    LoggingFeature loggingFeature;
+    @FeatureInject LoggingFeature loggingFeature;
+    @FeatureInject ApplicationResourceLoaderFeature applicationResourceLoaderFeature;
 
-    public Properties properties;
-
+    ApplicationResourceLoaderFeature.Resources applicationResources;
 
     @Override
     public String getAppId() {
-        return properties.getProperty("app.id");
+        return applicationResources.get("app.id", String.class, null);
     }
 
     @Override
     public void onUp() {
-        InputStream stream = getClass().getResourceAsStream("/application.properties");
-        properties = new Properties();
         try {
-            properties.load(stream);
-        } catch (Exception e) {
-            throw new RuntimeException("No application.properties was found", e);
+            applicationResources = applicationResourceLoaderFeature.load("application");
+            loggingFeature.get("ApplicationDetails").i("Application properties files loaded. Application id = {0}",getAppId());
+        } catch (ApplicationResourceLoaderFeature.ResourceNotFoundException e) {
+            throw new RuntimeException(e);
         }
-        loggingFeature.get("ApplicationDetails").i("Application properties files loaded. Application id = {0}",getAppId());
     }
 
     @Override
