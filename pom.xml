@@ -11,8 +11,9 @@
     <modules>
 	<module>test-common</module>
 	<module>core</module>
-    <module>common-feature-api</module>
-    <module>application</module>
+    	<module>common-feature-api</module>
+	<module>test-acceptance</module>
+    	<module>application</module>
 	<module>config-feature</module>
     </modules>
 

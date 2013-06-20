@@ -7,4 +7,5 @@ package org.monroe.team.jfeature.shared.api;
  * (Do whatever you want with the source code)
  */
 public interface ConfigFeature {
+    public Class getProperty(String name);
 }

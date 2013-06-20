@@ -15,4 +15,10 @@ import org.monroe.team.jfeature.shared.api.LoggingFeature;
 public class FileSystemConfigFeature implements ConfigFeature {
     @FeatureInject
     LoggingFeature loggingFeature;
+
+    @Override
+    public Class getProperty(String name) {
+        loggingFeature.get("sda").e(new RuntimeException("Test exception"),"");
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

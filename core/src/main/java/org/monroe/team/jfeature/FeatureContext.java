@@ -42,12 +42,16 @@ public class FeatureContext {
         }
     }
 
-    private void registrate(FeatureDescription featureDescription) throws FeatureException {
-        try {
+    public void registrate(FeatureDescription featureDescription, Object instance) throws FeatureException {
             log.d("Registrate feature description {0}", featureDescription.detailsString());
-            featuresRegistry.put(featureDescription, featureDescription.featureClass.newInstance());
+            featuresRegistry.put(featureDescription, instance);
+    }
+
+    public void registrate(FeatureDescription featureDescription) throws FeatureException {
+        try {
+            registrate(featureDescription, featureDescription.featureClass.newInstance());
         } catch (Exception e) {
-           throw new FeatureException(featureDescription.featureClass,featureDescription.implClass,e);
+            throw new FeatureException(featureDescription.featureClass,featureDescription.implClass,e);
         }
     }
 
