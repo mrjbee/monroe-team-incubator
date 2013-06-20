@@ -2,6 +2,8 @@ package org.monroe.team.jfeature.test.support;
 
 import org.junit.After;
 import org.junit.Before;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.monroe.team.jfeature.Feature;
 import org.monroe.team.jfeature.FeatureContext;
 import org.monroe.team.jfeature.FeatureException;
@@ -38,12 +40,29 @@ public abstract class FeatureTSupport extends TSupport{
             initTestedFeature(context);
             initLoggingFeature(context);
 
+            initMockFeatures(context);
+
             context.init();
             this.context = context;
         } catch (FeatureException e){
             throw new AssertionError(e);
         }
     }
+
+    protected void initMockFeatures(FeatureContext context) throws FeatureException {
+        Field[] fields = this.getClass().getDeclaredFields();
+        for(Field field:fields){
+            if (field.isAnnotationPresent(Mock.class)){
+                try {
+                    field.setAccessible(true);
+                    Object instance = field.get(this);
+                    context.registrate(new FeatureDescription(field.getType(), field.getType(), Collections.EMPTY_MAP, Collections.EMPTY_LIST), instance);
+                } catch (IllegalAccessException e) {
+                    throw new AssertionError(e);
+                }
+            }
+        }
+    };
 
     protected void initLoggingFeature(FeatureContext context) throws FeatureException {
         //init default logging

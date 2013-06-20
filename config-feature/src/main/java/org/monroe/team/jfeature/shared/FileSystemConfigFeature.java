@@ -2,6 +2,7 @@ package org.monroe.team.jfeature.shared;
 
 import org.monroe.team.jfeature.Feature;
 import org.monroe.team.jfeature.FeatureInject;
+import org.monroe.team.jfeature.shared.api.ApplicationDetailsFeature;
 import org.monroe.team.jfeature.shared.api.ConfigFeature;
 import org.monroe.team.jfeature.shared.api.LoggingFeature;
 
@@ -16,9 +17,12 @@ public class FileSystemConfigFeature implements ConfigFeature {
     @FeatureInject
     LoggingFeature loggingFeature;
 
+    @FeatureInject
+    ApplicationDetailsFeature applicationDetailsFeature;
+
     @Override
     public Class getProperty(String name) {
-        loggingFeature.get("sda").e(new RuntimeException("Test exception"),"");
+        loggingFeature.get("sda").e(new RuntimeException("Test exception:"+applicationDetailsFeature.getAppId()),"");
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }
