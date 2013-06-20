@@ -26,7 +26,7 @@ public class FeatureContext {
     private final Log log;
     private FeatureDescriptionFactory featureDescriptionFactory = new FeatureDescriptionFactory();
     private FeaturesRegistry featuresRegistry = new FeaturesRegistry();
-    private ArrayList<Object> startedFeatures;
+    private List<Object> startedFeatures;
 
     public FeatureContext(Log contextLogger) {
          log = contextLogger;
@@ -159,7 +159,7 @@ public class FeatureContext {
                 log.e(e, "Feature shutdown fails = {0}",startedFeatures.get(i));
             }
         }
-
+        startedFeatures = null;
     }
 
 

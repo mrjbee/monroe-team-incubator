@@ -1,7 +1,7 @@
 cd projects/fserver
-pwd
 APP_PATH="target"
-echo "$APP_PATH"
 LIBS=$(echo $APP_PATH/dependency/*.jar | tr ' ' ':')
-echo "$LIBS"
-java -cp $LIBS org.monroe.team.jfeature.application.Main
+MAIN_JAR=$(echo $APP_PATH/main*.jar)
+CLASSPATH=$MAIN_JAR:$LIBS
+echo $CLASSPATH
+java -cp $CLASSPATH org.monroe.team.jfeature.application.Main

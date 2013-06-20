@@ -3,7 +3,7 @@
     <groupId>org.monroe.team.fserver</groupId>
     <artifactId>main</artifactId>
     <version>0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
 
     <name>File manage server</name>
