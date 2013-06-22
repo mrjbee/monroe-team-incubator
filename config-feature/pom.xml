@@ -30,6 +30,12 @@
         </dependency>
         <dependency>
             <groupId>org.monroe.team.jfeature</groupId>
+            <artifactId>guice-integration</artifactId>
+            <version>0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.monroe.team.jfeature</groupId>
             <artifactId>test-common</artifactId>
             <version>0.1-SNAPSHOT</version>
             <scope>test</scope>
