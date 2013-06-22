@@ -4,10 +4,11 @@ import com.google.inject.TypeLiteral;
 import org.monroe.team.jfeature.Feature;
 import org.monroe.team.jfeature.FeatureInject;
 import org.monroe.team.jfeature.guice.AbstractGuiceFeature;
-import org.monroe.team.jfeature.guice.FeatureStartAware;
+import org.monroe.team.jfeature.guice.FeatureLifeCycleObserver;
 import org.monroe.team.jfeature.shared.api.ApplicationDetailsFeature;
 import org.monroe.team.jfeature.shared.api.ConfigFeature;
 import org.monroe.team.jfeature.shared.api.LoggingFeature;
+import org.monroe.team.jfeature.shared.config.fs.FileSystemConfigFeatureLifeCycleObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,14 +42,10 @@ public class FileSystemConfigFeature extends AbstractGuiceFeature<String> implem
     @Override
     protected void configureFeature() {
         bind(String.class).toInstance("FeatureConfig");
-        List<FeatureStartAware> startAwares = new ArrayList<FeatureStartAware>(1);
-        startAwares.add(new FeatureStartAware() {
-            @Override
-            public void start() {
-                loggingFeature.get("sda").i("Impl:"+getImpl());
-            }
-        });
-        bind(new TypeLiteral<List<FeatureStartAware>>() {
-        }).toInstance(startAwares);
+    }
+
+    @Override
+    protected Class<? extends FeatureLifeCycleObserver> featureLifeCycleObserverClass() {
+        return FileSystemConfigFeatureLifeCycleObserver.class;
     }
 }
