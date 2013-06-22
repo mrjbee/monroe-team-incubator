@@ -14,6 +14,7 @@ import org.monroe.team.jfeature.ServiceFeature;
 public abstract class AbstractGuiceFeature<FeatureImplType> extends AbstractModule implements ServiceFeature{
 
     private FeatureImplType featureImpl = null;
+    private FeatureLifeCycleManager featureLifeCycleManager = null;
 
     protected abstract Class<FeatureImplType> featureImplClass();
 
@@ -31,13 +32,24 @@ public abstract class AbstractGuiceFeature<FeatureImplType> extends AbstractModu
         try {
             Injector injector = Guice.createInjector(this);
             setFeatureImpl(injector.getInstance(featureImplClass()));
+            featureLifeCycleManager = injector.getInstance(FeatureLifeCycleManager.class);
         } catch (Exception e) {
             throw new RuntimeException("Issue with creating feature entry for feature = "+ this.getClass());
         }
+        featureLifeCycleManager.onFeatureStart();
     }
 
     @Override
     public void onDown() {
         setFeatureImpl(null);
+        featureLifeCycleManager.onFeatureStop();
     }
+
+    @Override
+    protected void configure() {
+        bind(FeatureLifeCycleManager.class);
+        configureFeature();
+    }
+
+    protected abstract void configureFeature();
 }
