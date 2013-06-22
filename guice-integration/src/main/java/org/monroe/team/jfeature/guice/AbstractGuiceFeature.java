@@ -34,7 +34,7 @@ public abstract class AbstractGuiceFeature<FeatureImplType> extends AbstractModu
             setFeatureImpl(injector.getInstance(featureImplClass()));
             featureLifeCycleObserver = injector.getInstance(FeatureLifeCycleObserver.class);
         } catch (Exception e) {
-            throw new RuntimeException("Issue with creating feature entry for feature = "+ this.getClass());
+            throw new RuntimeException("Issue with creating implementation for = "+ this.getClass(),e);
         }
         featureLifeCycleObserver.onFeatureStart();
     }

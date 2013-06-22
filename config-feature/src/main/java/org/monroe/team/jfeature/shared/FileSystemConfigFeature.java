@@ -5,6 +5,7 @@ import org.monroe.team.jfeature.Feature;
 import org.monroe.team.jfeature.FeatureInject;
 import org.monroe.team.jfeature.guice.AbstractGuiceFeature;
 import org.monroe.team.jfeature.guice.FeatureLifeCycleObserver;
+import org.monroe.team.jfeature.logging.Log;
 import org.monroe.team.jfeature.shared.api.ApplicationDetailsFeature;
 import org.monroe.team.jfeature.shared.api.ConfigFeature;
 import org.monroe.team.jfeature.shared.api.LoggingFeature;
@@ -42,6 +43,7 @@ public class FileSystemConfigFeature extends AbstractGuiceFeature<String> implem
     @Override
     protected void configureFeature() {
         bind(String.class).toInstance("FeatureConfig");
+        bind(Log.class).toInstance(loggingFeature.get("FSCONFIG"));
     }
 
     @Override
