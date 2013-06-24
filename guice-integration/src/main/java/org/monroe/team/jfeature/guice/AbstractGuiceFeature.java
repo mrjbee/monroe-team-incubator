@@ -47,6 +47,7 @@ public abstract class AbstractGuiceFeature<FeatureImplType> extends AbstractModu
 
     @Override
     protected void configure() {
+        bind(featureImplClass());
         bind(FeatureLifeCycleObserver.class).to(featureLifeCycleObserverClass());
         configureFeature();
     }

@@ -1,4 +1,4 @@
-package org.monroe.team.jfeature.shared.config.fs;
+package org.monroe.team.jfeature.config.fs;
 
 import com.google.inject.Inject;
 import org.monroe.team.jfeature.guice.FeatureLifeCycleObserver;

@@ -1,17 +1,16 @@
 package org.monroe.team.jfeature.shared;
 
-import com.google.inject.TypeLiteral;
 import org.monroe.team.jfeature.Feature;
 import org.monroe.team.jfeature.FeatureInject;
+import org.monroe.team.jfeature.config.fs.FileSystemConfigManager;
 import org.monroe.team.jfeature.guice.AbstractGuiceFeature;
 import org.monroe.team.jfeature.guice.FeatureLifeCycleObserver;
 import org.monroe.team.jfeature.logging.Log;
 import org.monroe.team.jfeature.shared.api.ApplicationDetailsFeature;
 import org.monroe.team.jfeature.shared.api.ConfigFeature;
 import org.monroe.team.jfeature.shared.api.LoggingFeature;
-import org.monroe.team.jfeature.shared.config.fs.FileSystemConfigFeatureLifeCycleObserver;
+import org.monroe.team.jfeature.config.fs.FileSystemConfigFeatureLifeCycleObserver;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +20,7 @@ import java.util.List;
  * (Do whatever you want with the source code)
  */
 @Feature(impl = ConfigFeature.class)
-public class FileSystemConfigFeature extends AbstractGuiceFeature<String> implements ConfigFeature {
+public class FileSystemConfigFeature extends AbstractGuiceFeature<FileSystemConfigManager> implements ConfigFeature {
 
     @FeatureInject
     LoggingFeature loggingFeature;
@@ -30,24 +29,33 @@ public class FileSystemConfigFeature extends AbstractGuiceFeature<String> implem
     ApplicationDetailsFeature applicationDetailsFeature;
 
     @Override
-    public Class getProperty(String name) {
-        loggingFeature.get("sda").e(new RuntimeException("Test exception:"+applicationDetailsFeature.getAppId()+":"+getImpl()),"");
-        return null;
-    }
-
-    @Override
     protected Class featureImplClass() {
-        return String.class;
-    }
-
-    @Override
-    protected void configureFeature() {
-        bind(String.class).toInstance("FeatureConfig");
-        bind(Log.class).toInstance(loggingFeature.get("FSCONFIG"));
+        return FileSystemConfigManager.class;
     }
 
     @Override
     protected Class<? extends FeatureLifeCycleObserver> featureLifeCycleObserverClass() {
         return FileSystemConfigFeatureLifeCycleObserver.class;
+    }
+
+    @Override
+    public <Type> Type getValue(String uri, Class<Type> answerType) {
+        return getImpl().getValue(uri, answerType);
+    }
+
+    @Override
+    public void setValue(String uri, Object value) {
+        getImpl().setValue(uri,value);
+    }
+
+    @Override
+    public List<String> discoverUri(String uriBase) {
+        return getImpl().discoverUri(uriBase);
+    }
+
+
+    @Override
+    protected void configureFeature() {
+        bind(Log.class).toInstance(loggingFeature.get("FSCONFIG"));
     }
 }

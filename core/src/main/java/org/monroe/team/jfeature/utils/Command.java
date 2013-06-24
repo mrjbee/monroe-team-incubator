@@ -6,6 +6,13 @@ package org.monroe.team.jfeature.utils;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-public interface Command <ResultType,ArgType> {
-    public ResultType call(ArgType arg) throws Exception;
+public abstract class Command <ResultType,ArgType> {
+    public abstract ResultType call(ArgType arg) throws Exception;
+    public ResultType relaxCall(ArgType arg){
+        try {
+            return call(arg);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    };
 }
