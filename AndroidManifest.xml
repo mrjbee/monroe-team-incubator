@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="org.monroe.team.aas" android:versionCode="1" android:versionName="1.0-SNAPSHOT">
+          package="org.monroe.team.aas" android:versionCode="1"
+          android:versionName="1.0-SNAPSHOT">
 
   <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17"/>
-  <application android:theme="@android:style/Theme.NoTitleBar">
+    <application android:theme="@android:style/Theme.NoTitleBar">
 
-    <activity android:name=".ui.DashboardActivity">
+    <activity android:theme="@android:style/Theme.Holo.Light"
+            android:name=".ui.DashboardActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
