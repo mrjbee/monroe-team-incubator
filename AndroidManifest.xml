@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="org.monroe.team.aas" android:versionCode="1" android:versionName="1.0-SNAPSHOT">
+
+  <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17"/>
+  <application android:theme="@android:style/Theme.NoTitleBar">
+
+    <activity android:name=".ui.DashboardActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+  </application>
+
+  <supports-screens android:anyDensity="true"
+                    android:smallScreens="true"
+                    android:largeScreens="true"
+                    android:normalScreens="true"
+          />
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+</manifest>
+

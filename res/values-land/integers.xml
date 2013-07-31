@@ -1,0 +1,3 @@
+<resources>
+    <integer name="column_at_once">5</integer>
+</resources>
