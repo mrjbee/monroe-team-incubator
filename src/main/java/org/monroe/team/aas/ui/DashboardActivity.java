@@ -1,6 +1,7 @@
 package org.monroe.team.aas.ui;
 
 import android.app.Activity;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import org.monroe.team.aas.R;
@@ -12,7 +13,8 @@ import roboguice.activity.RoboFragmentActivity;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-public class DashboardActivity extends Activity {
+public class DashboardActivity extends ActionBarActivity {
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -21,4 +23,5 @@ public class DashboardActivity extends Activity {
         inflater.inflate(R.menu.dashboard_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
 }

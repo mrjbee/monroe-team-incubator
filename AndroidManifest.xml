@@ -7,7 +7,7 @@
   <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17"/>
     <application android:theme="@android:style/Theme.NoTitleBar">
 
-    <activity android:theme="@android:style/Theme.Holo.Light"
+    <activity android:theme="@style/Theme.AppCompat.Light"
             android:name=".ui.DashboardActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
