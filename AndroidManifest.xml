@@ -4,7 +4,7 @@
           package="org.monroe.team.aas" android:versionCode="1"
           android:versionName="1.0-SNAPSHOT">
 
-  <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17"/>
+  <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="8"/>
     <application android:theme="@android:style/Theme.NoTitleBar">
 
     <activity android:theme="@style/Theme.AppCompat.Light"

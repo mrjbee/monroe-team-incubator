@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:yourapp="http://schemas.android.com/apk/res-auto">
         <item android:id="@+id/test"
-              android:title="Hello3"
+              android:title="Hello7"
               android:checkable="true"
-              android:showAsAction="ifRoom"
-              android:actionViewClass="android.widget.ToggleButton"/>
+              yourapp:actionViewClass="android.widget.ToggleButton"
+              yourapp:showAsAction="ifRoom"/>
 </menu>
