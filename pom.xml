@@ -53,13 +53,6 @@
             <groupId>android.support</groupId>
             <artifactId>compatibility-v7</artifactId>
             <version>18</version>
-            <type>apklib</type>
-        </dependency>
-
-        <dependency>
-            <groupId>android.support</groupId>
-            <artifactId>compatibility-v7</artifactId>
-            <version>18</version>
             <type>jar</type>
         </dependency>
 
