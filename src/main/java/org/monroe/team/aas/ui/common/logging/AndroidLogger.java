@@ -63,7 +63,7 @@ public class AndroidLogger implements Logger {
 
 
     private String messageProcessing(String message, Object[] args) {
-        String outMsg = MessageFormat.format(message, args);
+        String outMsg = String.format(message, args);
         outMsg = "["+Thread.currentThread().getId()+"] " + outMsg;
         return outMsg;
     }

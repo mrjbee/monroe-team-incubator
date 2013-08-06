@@ -5,7 +5,9 @@
           android:versionName="1.0-SNAPSHOT">
 
   <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="8"/>
-    <application android:theme="@android:style/Theme.NoTitleBar">
+    <application android:theme="@android:style/Theme.NoTitleBar"
+            android:hardwareAccelerated="true"
+            android:name=".ui.AasApplication">
 
     <activity android:theme="@style/Theme.AppCompat.Light"
             android:name=".ui.DashboardActivity">
@@ -14,9 +16,12 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+    <service android:name=".model.ModelService" android:exported="false">
+
+    </service>
   </application>
 
-  <supports-screens android:anyDensity="true"
+   <supports-screens android:anyDensity="true"
                     android:smallScreens="true"
                     android:largeScreens="true"
                     android:normalScreens="true"
