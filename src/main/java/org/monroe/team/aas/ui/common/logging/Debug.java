@@ -11,7 +11,7 @@ import org.monroe.team.aas.ui.common.logging.Logger;
  */
 final public class Debug {
 
-    public static final Logger DEF = new AndroidLogger("DEBUG");
+    public static final Logger DEF = new AndroidLogger("aas.DEBUG");
 
     public static void v(String message, Object ... args){
         DEF.v(message, args);

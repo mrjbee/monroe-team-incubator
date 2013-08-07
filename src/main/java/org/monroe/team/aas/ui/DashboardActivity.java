@@ -1,6 +1,7 @@
 package org.monroe.team.aas.ui;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
@@ -34,8 +35,11 @@ public class DashboardActivity extends ActionBarActivity {
     protected void onStart() {
         Logs.UI.v("onStart() Activity = %s", this);
         super.onStart();
+        Logs.UI.v("Start service() Activity = %s", this);
+        startService(new Intent(this, ModelService.class));
         Logs.UI.v("Bind to service. Activity = %s", this);
-        bindService(new Intent(this, ModelService.class), mPublicModelConnection, BIND_ABOVE_CLIENT);
+        //TODO: Choose appropriate for model service
+        bindService(new Intent(this, ModelService.class), mPublicModelConnection, BIND_ADJUST_WITH_ACTIVITY);
     }
 
     @Override

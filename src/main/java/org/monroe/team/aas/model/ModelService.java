@@ -6,6 +6,7 @@ import android.os.*;
 import android.os.Process;
 
 import org.monroe.team.aas.ui.common.Logs;
+import org.monroe.team.aas.ui.common.logging.*;
 
 /**
  * User: MisterJBee
@@ -36,7 +37,7 @@ public class ModelService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Logs.MODEL.i("Start model with service onStartCommand(). Intent = %s, " +
-                "flags = %d, startId = %d", intent, flags, startId);
+                "flags = %d, startId = %d. Service = %s", intent, flags, startId, this);
         mServiceHandler.sendMessage(mServiceHandler.obtainMessage());
         return super.onStartCommand(intent, flags, startId);
     }
@@ -68,7 +69,7 @@ public class ModelService extends Service {
             for (int i=0; i < iterateCount; i++){
                 Logs.MODEL.d("Do nothing with using service. %d iteration.", i);
                 try {
-                    Logs.MODEL.d("Do nothing with using service [sleep]. %d iteration.", i);
+                    org.monroe.team.aas.ui.common.logging.Debug.v("Do nothing with using service [sleep]. %d iteration.", i);
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     Logs.MODEL.w(e, "Do nothing with using service [error]. %d iteration.", i);
