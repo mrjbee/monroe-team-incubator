@@ -1,13 +1,15 @@
 package org.monroe.team.aas.ui;
 
-import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import org.monroe.team.aas.R;
+import org.monroe.team.aas.model.ModelService;
 import org.monroe.team.aas.ui.common.Logs;
-
-import roboguice.activity.RoboFragmentActivity;
 
 /**
  * User: MisterJBee
@@ -17,6 +19,8 @@ import roboguice.activity.RoboFragmentActivity;
  */
 public class DashboardActivity extends ActionBarActivity {
 
+    private final PublicModelConnection mPublicModelConnection = new PublicModelConnection();
+    private ModelService.PublicModel mModel;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -30,5 +34,39 @@ public class DashboardActivity extends ActionBarActivity {
     protected void onStart() {
         Logs.UI.v("onStart() Activity = %s", this);
         super.onStart();
+        Logs.UI.v("Bind to service. Activity = %s", this);
+        bindService(new Intent(this, ModelService.class), mPublicModelConnection, BIND_ABOVE_CLIENT);
     }
+
+    @Override
+    protected void onStop() {
+        Logs.UI.v("onStop() Activity = %s", this);
+        super.onStart();
+        Logs.UI.v("Unbind from service. Activity = %s", this);
+        unbindService(mPublicModelConnection);
+    }
+
+    private class PublicModelConnection implements ServiceConnection{
+
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            DashboardActivity.this.bindModel((ModelService.PublicModel) iBinder);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            DashboardActivity.this.unbindModel();
+        }
+    }
+
+    private void bindModel(ModelService.PublicModel iBinder) {
+        Logs.UI.i("Model attached. Activity = %s. Model = %s", this, iBinder);
+        mModel = iBinder;
+    }
+
+    private void unbindModel() {
+        Logs.UI.i("Model detached. Activity = %s.", this);
+        mModel = null;
+    }
+
 }
