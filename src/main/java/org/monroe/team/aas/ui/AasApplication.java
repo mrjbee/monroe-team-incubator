@@ -13,11 +13,11 @@ import org.monroe.team.aas.ui.common.Logs;
  * (Do whatever you want with the source code)
  */
 public class AasApplication extends Application{
+
     @Override
     public void onCreate() {
         Logs.UI.i("Start application");
         super.onCreate();
-        Logs.UI.d("Start application model service by local intent.");
-        startService(new Intent(this, ModelService.class));
     }
+
 }

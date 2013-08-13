@@ -63,7 +63,6 @@ public class ModelService extends Service {
         }
         @Override
         public void handleMessage(Message msg) {
-
             int iterateCount = 20;
             Logs.MODEL.d("Going to iterate %d times and stop service.", iterateCount);
             for (int i=0; i < iterateCount; i++){
