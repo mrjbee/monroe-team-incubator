@@ -52,7 +52,7 @@ public class ServiceManager <ServiceBinder> {
     };
 
     public synchronized void release(){
-        if (mState != State.OBTAINED || mState != State.OBTAINING){
+        if (mState != State.OBTAINED && mState != State.OBTAINING){
             return;
         }
         mState = State.RELEASING;

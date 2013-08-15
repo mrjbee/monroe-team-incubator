@@ -16,9 +16,9 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <service android:name=".model.ModelService" android:exported="false">
 
-    </service>
+    <service android:name=".model.ModelService" android:exported="false"/>
+    <service android:name=".model.PublicGatewayService" android:exported="false"/>
   </application>
 
    <supports-screens android:anyDensity="true"
