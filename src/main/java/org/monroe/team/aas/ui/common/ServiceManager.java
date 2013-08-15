@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 
+import java.util.ArrayList;
+
 /**
  * User: MisterJBee
  * Date: 8/15/13 Time: 8:50 PM
@@ -82,6 +84,7 @@ public class ServiceManager <ServiceBinder> {
             uninstallServiceBinder();
         }
     }
+
 
     public static interface ServiceBinderOwner <ServiceBinder>{
         Context getContext();

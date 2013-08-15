@@ -14,6 +14,7 @@ import android.widget.ToggleButton;
 import org.monroe.team.aas.R;
 import org.monroe.team.aas.model.ModelService;
 import org.monroe.team.aas.ui.common.Logs;
+import org.monroe.team.aas.ui.common.MilestoneDependedExecutionQueue;
 import org.monroe.team.aas.ui.common.ServiceManager;
 import org.monroe.team.aas.ui.common.logging.Debug;
 
@@ -28,16 +29,23 @@ public class DashboardActivity extends ActionBarActivity implements ServiceManag
     private final ServiceManager<ModelService.PublicModel> mPublicModelManager =
             new ServiceManager<ModelService.PublicModel>(this, ModelService.class);
 
+    private MilestoneDependedExecutionQueue mModelObtainMilestoneQueue = new MilestoneDependedExecutionQueue();
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Logs.UI.v("onCreateOptionsMenu() Activity = %s, menu = %s", this, menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.dashboard_menu, menu);
-        MenuItem item = menu.findItem(R.id.test);
-        Debug.i("Obtain menu item = %s [%s]", item,item.getActionView());
-        ToggleButton button = (ToggleButton) item.getActionView();
-        button.setChecked(false);
-        button.setEnabled(false);
+        final ToggleButton publicGatewaySwitcher = (ToggleButton) menu.findItem(R.id.test).getActionView();
+        publicGatewaySwitcher.setChecked(false);
+        publicGatewaySwitcher.setEnabled(false);
+        mModelObtainMilestoneQueue.post(new Runnable() {
+            @Override
+            public void run() {
+                publicGatewaySwitcher.setChecked(mPublicModelManager.get().isPublicGatewayEnabled());
+                publicGatewaySwitcher.setEnabled(true);
+            }
+        });
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -75,6 +83,7 @@ public class DashboardActivity extends ActionBarActivity implements ServiceManag
     @Override
     public void onObtain(ModelService.PublicModel publicModel) {
         Logs.UI.d("Obtain model = %s. Activity = %s", publicModel, this);
+        mModelObtainMilestoneQueue.onMilestone();
     }
 
     @Override
