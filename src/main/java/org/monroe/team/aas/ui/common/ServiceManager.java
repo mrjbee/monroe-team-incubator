@@ -20,7 +20,7 @@ public class ServiceManager <ServiceBinder> {
     private final Class<? extends Service> mServiceClass;
     private final ServiceConnection mServiceConnection = new ServiceConnection();
     private ServiceBinder mServiceBinder;
-    private State mState = State.PREOBTAIN;
+    private State mState = State.RELEASED;
 
     public ServiceManager(ServiceBinderOwner<ServiceBinder> mOwner, Class<? extends Service> mServiceClass) {
         this.mOwner = mOwner;
@@ -44,7 +44,8 @@ public class ServiceManager <ServiceBinder> {
     }
 
     public synchronized void obtain(){
-        if (mState != State.PREOBTAIN) return;
+        if (mState != State.RELEASED) return;
+        mState = State.OBTAINING;
         mOwner.getContext().startService(new Intent(mOwner.getContext(),mServiceClass));
         mOwner.getContext().bindService(
                 new Intent(mOwner.getContext(), mServiceClass),
@@ -93,6 +94,6 @@ public class ServiceManager <ServiceBinder> {
     }
 
     public static enum State{
-        OBTAINED, OBTAINING, RELEASED, RELEASING, PREOBTAIN;
+        OBTAINED, OBTAINING, RELEASED, RELEASING;
     }
 }

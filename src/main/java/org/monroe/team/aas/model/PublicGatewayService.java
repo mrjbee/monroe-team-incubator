@@ -38,17 +38,26 @@ public class PublicGatewayService extends Service {
         return result;
     }
 
+    private void shutdownService() {
+        stopForeground(true);
+        stopSelf();
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
         return mGatewayModel;
     }
 
-    public static class PublicGatewayModelImpl extends Binder implements PublicGatewayModel{
-
+    public class PublicGatewayModelImpl extends Binder implements PublicGatewayModel{
+        @Override
+        public void shutdown() {
+           PublicGatewayService.this.shutdownService();
+        }
     }
 
-    public static interface PublicGatewayModel{
 
+    public static interface PublicGatewayModel{
+        public void shutdown();
         public static interface PublicGatewayListener {}
     }
 

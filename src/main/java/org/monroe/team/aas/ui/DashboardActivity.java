@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 import org.monroe.team.aas.R;
 import org.monroe.team.aas.model.ModelService;
@@ -46,6 +47,17 @@ public class DashboardActivity extends ActionBarActivity implements ServiceManag
                             mPublicGatewaySwitcherView.setChecked(newVisibility);
                     }
                 });
+                mPublicGatewaySwitcherView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean value) {
+                         compoundButton.setEnabled(false);
+                         if (value == true){
+                             mPublicModelManager.get().openPublicGateway();
+                         } else {
+                             mPublicModelManager.get().closePublicGateway();
+                         }
+                    }
+                });
             }
         });
         return super.onCreateOptionsMenu(menu);
@@ -75,8 +87,10 @@ public class DashboardActivity extends ActionBarActivity implements ServiceManag
                 mPublicModelManager.get().addPublicGatewayVisibilityListener(new ModelService.PublicModel.PublicGatewayVisibilityListener() {
                     @Override
                     public void onVisibilityChange(boolean newVisibility) {
-                        if(mPublicGatewaySwitcherView != null)
+                        if(mPublicGatewaySwitcherView != null){
+                            mPublicGatewaySwitcherView.setEnabled(true);
                             mPublicGatewaySwitcherView.setChecked(newVisibility);
+                        }
                     }
                 });
             }

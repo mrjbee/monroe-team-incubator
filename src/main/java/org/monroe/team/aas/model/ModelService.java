@@ -43,15 +43,15 @@ public class ModelService extends Service
                 "flags = %d, startId = %d. Service = %s", intent, flags, startId, this);
         int answer = super.onStartCommand(intent, flags, startId);
         if (mPublicModelInstance == null){
-            mPublicModelInstance = new PublicModelImpl();
-            mGatewayManager.obtain();
+            mPublicModelInstance = new PublicModelImpl(mGatewayManager);
         }
-        return answer;
+        return START_NOT_STICKY;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mPublicModelInstance.destroy();
         Logs.MODEL.v("Model service onDestroy() Instance = %s", this);
     }
 
@@ -62,12 +62,12 @@ public class ModelService extends Service
 
     @Override
     public void onObtain(PublicGatewayService.PublicGatewayModel publicGatewayModel) {
-        mPublicModelInstance.setPublicGateway(publicGatewayModel);
+        mPublicModelInstance.setPublicGatewayVisibility(true);
     }
 
     @Override
     public void onRelease() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        mPublicModelInstance.setPublicGatewayVisibility(false);
     }
 
 
@@ -76,6 +76,11 @@ public class ModelService extends Service
         private boolean mPublicGatewayVisibility = false;
         private final ListenerSupport<PublicGatewayVisibilityListener> mGatewayVisibilityListenerSupport
                 = new ListenerSupport<PublicGatewayVisibilityListener>();
+        private final ServiceManager<PublicGatewayService.PublicGatewayModel> mGatewayManager;
+
+        private PublicModelImpl(ServiceManager<PublicGatewayService.PublicGatewayModel> mGatewayManager) {
+            this.mGatewayManager = mGatewayManager;
+        }
 
         @Override
         public boolean isPublicGatewayVisible() {
@@ -113,17 +118,31 @@ public class ModelService extends Service
             mGatewayVisibilityListenerSupport.removeAll();
         }
 
-        private void setPublicGateway(PublicGatewayService.PublicGatewayModel publicGatewayModel) {
+        @Override
+        public void openPublicGateway() {
+            mGatewayManager.obtain();
+        }
 
+        @Override
+        public void closePublicGateway() {
+           mGatewayManager.get().shutdown();
+        }
+
+        public void destroy() {
+            if(mGatewayManager.isObtained()){
+                mGatewayManager.get().shutdown();
+            }
         }
     }
 
     public static interface PublicModel {
 
-        public boolean isPublicGatewayVisible();
+        boolean isPublicGatewayVisible();
         void addPublicGatewayVisibilityListener(PublicGatewayVisibilityListener gatewayVisibilityListener);
         void removePublicGatewayVisibilityListener(PublicGatewayVisibilityListener gatewayVisibilityListener);
         void removeAllListeners();
+        void openPublicGateway();
+        void closePublicGateway();
 
         public static interface PublicGatewayVisibilityListener{
             public void onVisibilityChange(boolean newVisibility);
