@@ -4,7 +4,6 @@
       xmlns:yourapp="http://schemas.android.com/apk/res-auto">
         <item android:id="@+id/test"
               android:title="Hello7"
-              android:checkable="true"
               yourapp:actionViewClass="android.widget.ToggleButton"
               yourapp:showAsAction="ifRoom"/>
 </menu>

@@ -9,10 +9,13 @@ import android.os.IBinder;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.ToggleButton;
 import org.monroe.team.aas.R;
 import org.monroe.team.aas.model.ModelService;
 import org.monroe.team.aas.ui.common.Logs;
 import org.monroe.team.aas.ui.common.ServiceManager;
+import org.monroe.team.aas.ui.common.logging.Debug;
 
 /**
  * User: MisterJBee
@@ -30,6 +33,11 @@ public class DashboardActivity extends ActionBarActivity implements ServiceManag
         Logs.UI.v("onCreateOptionsMenu() Activity = %s, menu = %s", this, menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.dashboard_menu, menu);
+        MenuItem item = menu.findItem(R.id.test);
+        Debug.i("Obtain menu item = %s [%s]", item,item.getActionView());
+        ToggleButton button = (ToggleButton) item.getActionView();
+        button.setChecked(false);
+        button.setEnabled(false);
         return super.onCreateOptionsMenu(menu);
     }
 
