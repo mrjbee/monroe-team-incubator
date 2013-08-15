@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.os.*;
 import android.os.Process;
 
+import org.monroe.team.aas.ui.common.ListenerSupport;
 import org.monroe.team.aas.ui.common.Logs;
+import org.monroe.team.aas.ui.common.command.ArgumentLessCommand;
+import org.monroe.team.aas.ui.common.command.ResultLessCommand;
 import org.monroe.team.aas.ui.common.logging.*;
 
 /**
@@ -43,14 +46,59 @@ public class ModelService extends Service {
 
 
     private class PublicModelImpl extends Binder implements PublicModel{
+
+        private boolean mPublicGatewayVisibility = false;
+        private final ListenerSupport<PublicGatewayVisibilityListener> mGatewayVisibilityListenerSupport
+                = new ListenerSupport<PublicGatewayVisibilityListener>();
+
         @Override
-        public boolean isPublicGatewayEnabled() {
-            return false;
+        public boolean isPublicGatewayVisible() {
+            return mPublicGatewayVisibility;
         }
+
+        private void setPublicGatewayVisibility(boolean visibility){
+            final boolean oldValue = mPublicGatewayVisibility;
+            mPublicGatewayVisibility = visibility;
+            mGatewayVisibilityListenerSupport.fireIf(new ArgumentLessCommand<Boolean>() {
+                @Override
+                protected Boolean call() {
+                    return oldValue != mPublicGatewayVisibility;
+                }
+            }, new ResultLessCommand<PublicGatewayVisibilityListener>() {
+                 @Override
+                 protected void call(PublicGatewayVisibilityListener argument) {
+                    argument.onVisibilityChange(mPublicGatewayVisibility);
+                 }
+             });
+        }
+
+        @Override
+        public void addPublicGatewayVisibilityListener(PublicGatewayVisibilityListener gatewayVisibilityListener) {
+            mGatewayVisibilityListenerSupport.add(gatewayVisibilityListener);
+        }
+
+        @Override
+        public void removePublicGatewayVisibilityListener(PublicGatewayVisibilityListener gatewayVisibilityListener) {
+            mGatewayVisibilityListenerSupport.remove(gatewayVisibilityListener);
+        }
+
+        @Override
+        public void removeAllListeners() {
+            mGatewayVisibilityListenerSupport.removeAll();
+        }
+
     }
 
     public static interface PublicModel extends IBinder {
-        public boolean isPublicGatewayEnabled();
+
+        public boolean isPublicGatewayVisible();
+        void addPublicGatewayVisibilityListener(PublicGatewayVisibilityListener gatewayVisibilityListener);
+        void removePublicGatewayVisibilityListener(PublicGatewayVisibilityListener gatewayVisibilityListener);
+        void removeAllListeners();
+
+        public static interface PublicGatewayVisibilityListener{
+            public void onVisibilityChange(boolean newVisibility);
+        }
     }
 
 }
