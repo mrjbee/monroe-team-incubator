@@ -1,6 +1,8 @@
 package org.monroe.team.aas.ui;
 import android.app.Application;
 import android.os.Environment;
+import org.monroe.team.aas.model.PublicGatewayService;
+import org.monroe.team.aas.model.PublicModelModelService;
 import org.monroe.team.aas.ui.common.Logs;
 import org.monroe.team.aas.ui.common.logging.Debug;
 
@@ -20,6 +22,8 @@ public class AasApplication extends Application{
 
     private static final Object[] APPLICATION_CONSTRAINS = {
             new Object[] {DashboardActivity.class, 4},
+            new Object[] {PublicModelModelService.class, 2},
+            new Object[] {PublicGatewayService.class, 2},
     };
 
     @Override
