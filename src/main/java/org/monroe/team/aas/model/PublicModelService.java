@@ -3,8 +3,9 @@ package org.monroe.team.aas.model;
 import android.content.Context;
 import android.os.*;
 
+import org.monroe.team.aas.common.model.ModelService;
 import org.monroe.team.aas.ui.common.ListenerSupport;
-import org.monroe.team.aas.ui.common.ServiceManager;
+import org.monroe.team.aas.common.model.ModelServiceManager;
 import org.monroe.team.aas.ui.common.command.ArgumentLessCommand;
 import org.monroe.team.aas.ui.common.command.ResultLessCommand;
 
@@ -15,10 +16,10 @@ import org.monroe.team.aas.ui.common.command.ResultLessCommand;
  * (Do whatever you want with the source code)
  */
 public class PublicModelService extends ModelService<PublicModelService.PublicModel>
-        implements ServiceManager.ServiceBinderOwner<PublicGatewayService.PublicGatewayModel> {
+        implements ModelServiceManager.ServiceClient<PublicGatewayService.PublicGatewayModel> {
 
-    private final ServiceManager<PublicGatewayService.PublicGatewayModel> mGatewayManager =
-            new ServiceManager<PublicGatewayService.PublicGatewayModel>(this, PublicGatewayService.class);
+    private final ModelServiceManager<PublicGatewayService.PublicGatewayModel> mGatewayManagerModel =
+            new ModelServiceManager<PublicGatewayService.PublicGatewayModel>(this, PublicGatewayService.class);
 
     public PublicModelService() {
         super(new AutoShutdownClientBindingHandlingStrategy());
@@ -26,7 +27,7 @@ public class PublicModelService extends ModelService<PublicModelService.PublicMo
 
     @Override
     protected PublicModel createModelInstance() {
-        return new PublicModelImpl(mGatewayManager);
+        return new PublicModelImpl(mGatewayManagerModel);
     }
 
     @Override
@@ -50,10 +51,10 @@ public class PublicModelService extends ModelService<PublicModelService.PublicMo
         private boolean mPublicGatewayVisibility = false;
         private final ListenerSupport<PublicGatewayVisibilityListener> mGatewayVisibilityListenerSupport
                 = new ListenerSupport<PublicGatewayVisibilityListener>();
-        private final ServiceManager<PublicGatewayService.PublicGatewayModel> mGatewayManager;
+        private final ModelServiceManager<PublicGatewayService.PublicGatewayModel> mGatewayManagerModel;
 
-        private PublicModelImpl(ServiceManager<PublicGatewayService.PublicGatewayModel> mGatewayManager) {
-            this.mGatewayManager = mGatewayManager;
+        private PublicModelImpl(ModelServiceManager<PublicGatewayService.PublicGatewayModel> mGatewayManagerModel) {
+            this.mGatewayManagerModel = mGatewayManagerModel;
         }
 
         @Override
@@ -94,17 +95,17 @@ public class PublicModelService extends ModelService<PublicModelService.PublicMo
 
         @Override
         public void openPublicGateway() {
-            mGatewayManager.obtain();
+            mGatewayManagerModel.obtain();
         }
 
         @Override
         public void closePublicGateway() {
-           mGatewayManager.get().shutdown();
+           mGatewayManagerModel.get().shutdown();
         }
 
         public void destroy() {
-            if(mGatewayManager.isObtained()){
-                mGatewayManager.get().shutdown();
+            if(mGatewayManagerModel.isObtained()){
+                mGatewayManagerModel.get().shutdown();
             }
         }
     }

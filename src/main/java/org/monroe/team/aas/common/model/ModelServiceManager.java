@@ -1,4 +1,4 @@
-package org.monroe.team.aas.ui.common;
+package org.monroe.team.aas.common.model;
 
 import android.app.Service;
 import android.content.ComponentName;
@@ -6,23 +6,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 
-import java.util.ArrayList;
-
 /**
  * User: MisterJBee
  * Date: 8/15/13 Time: 8:50 PM
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-public class ServiceManager <ServiceBinder> {
+public class ModelServiceManager<ClientAwareInterface> {
 
-    private final ServiceBinderOwner<ServiceBinder> mOwner;
+    private final ServiceClient<ClientAwareInterface> mOwner;
     private final Class<? extends Service> mServiceClass;
     private final ServiceConnection mServiceConnection = new ServiceConnection();
-    private ServiceBinder mServiceBinder;
+    private ClientAwareInterface mClientAwareInterface;
     private State mState = State.RELEASED;
 
-    public ServiceManager(ServiceBinderOwner<ServiceBinder> mOwner, Class<? extends Service> mServiceClass) {
+    public ModelServiceManager(ServiceClient<ClientAwareInterface> mOwner, Class<? extends Service> mServiceClass) {
         this.mOwner = mOwner;
         this.mServiceClass = mServiceClass;
     }
@@ -32,15 +30,15 @@ public class ServiceManager <ServiceBinder> {
         mOwner.onRelease();
     }
 
-    private synchronized void installServiceBinder(ServiceBinder serviceBinder) {
+    private synchronized void installServiceBinder(ClientAwareInterface clientAwareInterface) {
 
         if(mState == State.RELEASED || mState == State.RELEASING){
            return;
         }
 
-        mServiceBinder = serviceBinder;
+        mClientAwareInterface = clientAwareInterface;
         mState = State.OBTAINED;
-        mOwner.onObtain(mServiceBinder);
+        mOwner.onObtain(mClientAwareInterface);
     }
 
     public synchronized void obtain(){
@@ -60,9 +58,9 @@ public class ServiceManager <ServiceBinder> {
         mOwner.getContext().unbindService(mServiceConnection);
     }
 
-    public synchronized ServiceBinder get(){
+    public synchronized ClientAwareInterface get(){
       if (mState != State.OBTAINED) throw new IllegalStateException("Invalid state = "+mState);
-      return mServiceBinder;
+      return mClientAwareInterface;
     }
 
     public synchronized State getState() {
@@ -77,7 +75,7 @@ public class ServiceManager <ServiceBinder> {
 
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            installServiceBinder((ServiceBinder) iBinder);
+            installServiceBinder((ClientAwareInterface) iBinder);
         }
 
         @Override
@@ -87,9 +85,9 @@ public class ServiceManager <ServiceBinder> {
     }
 
 
-    public static interface ServiceBinderOwner <ServiceBinder>{
+    public static interface ServiceClient<ClientInterface>{
         Context getContext();
-        public void onObtain(ServiceBinder serviceBinder);
+        public void onObtain(ClientInterface clientInterface);
         public void onRelease();
     }
 

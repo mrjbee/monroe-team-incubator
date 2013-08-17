@@ -1,4 +1,4 @@
-package org.monroe.team.aas.model;
+package org.monroe.team.aas.common.model;
 
 import android.app.Service;
 import android.content.Intent;

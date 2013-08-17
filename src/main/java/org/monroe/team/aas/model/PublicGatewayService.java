@@ -1,20 +1,9 @@
 package org.monroe.team.aas.model;
 
-import android.app.IntentService;
 import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.Service;
-import android.content.Intent;
 import android.os.Binder;
-import android.os.IBinder;
-import android.os.Parcel;
 import org.monroe.team.aas.R;
-import org.monroe.team.aas.ui.common.ListenerSupport;
-import org.monroe.team.aas.ui.common.Logs;
-import org.monroe.team.aas.ui.common.command.ArgumentLessCommand;
-import org.monroe.team.aas.ui.common.command.ResultLessCommand;
-
-import java.util.concurrent.atomic.AtomicBoolean;
+import org.monroe.team.aas.common.model.ModelService;
 
 /**
  * User: MisterJBee
