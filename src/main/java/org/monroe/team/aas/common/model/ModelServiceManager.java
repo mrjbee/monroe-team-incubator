@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class ModelServiceManager<ClientAwareInterface> {
 
-    private final ModelServiceClient<ClientAwareInterface> mOwner;
+    private ModelServiceClient<ClientAwareInterface> mOwner;
     private final Class<? extends Service> mServiceClass;
     private final ServiceConnection mServiceConnection = new ServiceConnection();
     private ClientAwareInterface mClientAwareInterface;
@@ -30,7 +30,9 @@ public class ModelServiceManager<ClientAwareInterface> {
 
     private synchronized void uninstallServiceBinder() {
         mState = State.RELEASED;
-        mOwner.onRelease();
+        if(mOwner != null){
+            mOwner.onRelease();
+        }
     }
 
     private synchronized void installServiceBinder(ClientAwareInterface clientAwareInterface) {
@@ -41,19 +43,25 @@ public class ModelServiceManager<ClientAwareInterface> {
 
         mClientAwareInterface = clientAwareInterface;
         mState = State.OBTAINED;
-        mOwner.onObtain(mClientAwareInterface);
+        if (mOwner != null){
+            mOwner.onObtain(mClientAwareInterface);
+        }
     }
 
     public synchronized void obtain(){
+        if (mOwner == null) throw new IllegalStateException("Manager is dead.");
         if (mState != State.RELEASED) return;
         mState = State.OBTAINING;
-        mOwner.getContext().startService(new Intent(mOwner.getContext(),mServiceClass));
+        if(!isServiceRunning()){
+            mOwner.getContext().startService(new Intent(mOwner.getContext(),mServiceClass));
+        }
         mOwner.getContext().bindService(
                 new Intent(mOwner.getContext(), mServiceClass),
                 mServiceConnection, 0);
     };
 
     public synchronized void release(){
+        if (mOwner == null) throw new IllegalStateException("Manager is dead.");
         if (mState != State.OBTAINED && mState != State.OBTAINING){
             return;
         }
@@ -83,6 +91,11 @@ public class ModelServiceManager<ClientAwareInterface> {
             }
         }
         return false;
+    }
+
+    public void releaseAndDestroy() {
+        release();
+        mOwner = null;
     }
 
     private class ServiceConnection implements android.content.ServiceConnection{

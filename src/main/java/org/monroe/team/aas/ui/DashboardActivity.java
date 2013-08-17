@@ -2,6 +2,7 @@ package org.monroe.team.aas.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.internal.view.SupportMenuItem;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.internal.view.menu.MenuItemImpl;
@@ -40,7 +41,7 @@ public class DashboardActivity extends ActionBarActivity implements ModelService
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.dashboard_menu, menu);
 
-        mPublicGatewaySwitcherView = (ToggleButton) ((MenuItemImpl)menu.findItem(R.id.test)).getActionView();
+        mPublicGatewaySwitcherView = (ToggleButton) ((SupportMenuItem)menu.findItem(R.id.test)).getActionView();
         mPublicGatewaySwitcherView.setChecked(false);
         mPublicGatewaySwitcherView.setEnabled(false);
         mModelObtainMilestoneQueue.post(new Runnable() {
@@ -85,7 +86,12 @@ public class DashboardActivity extends ActionBarActivity implements ModelService
     protected void onDestroy() {
         Logs.UI.v("onDestroy() Activity = %s", this);
         super.onDestroy();
-        mPublicModelManagerModel.release();
+        mPublicModelManagerModel.get().removeAllListeners();
+        mModelObtainMilestoneQueue.clear();
+        mPublicModelManagerModel.releaseAndDestroy();
+        if(mPublicGatewaySwitcherView!=null){
+            mPublicGatewaySwitcherView.setOnCheckedChangeListener(null);
+        }
     }
 
     @Override
@@ -117,7 +123,7 @@ public class DashboardActivity extends ActionBarActivity implements ModelService
 
     @Override
     public Context getContext() {
-        return this;
+        return getApplicationContext();
     }
 
     @Override

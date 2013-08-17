@@ -30,4 +30,7 @@ public class MilestoneDependedExecutionQueue {
     }
 
 
+    public void clear() {
+        mDelayedActionList.clear();
+    }
 }
