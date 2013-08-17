@@ -8,7 +8,7 @@ import android.view.MenuInflater;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 import org.monroe.team.aas.R;
-import org.monroe.team.aas.model.PublicModelService;
+import org.monroe.team.aas.model.PublicModelModelService;
 import org.monroe.team.aas.ui.common.Logs;
 import org.monroe.team.aas.ui.common.MilestoneDependedExecutionQueue;
 import org.monroe.team.aas.common.model.ModelServiceManager;
@@ -19,10 +19,10 @@ import org.monroe.team.aas.common.model.ModelServiceManager;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-public class DashboardActivity extends ActionBarActivity implements ModelServiceManager.ServiceClient<PublicModelService.PublicModel> {
+public class DashboardActivity extends ActionBarActivity implements ModelServiceManager.ModelServiceClient<PublicModelModelService.PublicModel> {
 
-    private final ModelServiceManager<PublicModelService.PublicModel> mPublicModelManagerModel =
-            new ModelServiceManager<PublicModelService.PublicModel>(this, PublicModelService.class);
+    private final ModelServiceManager<PublicModelModelService.PublicModel> mPublicModelManagerModel =
+            new ModelServiceManager<PublicModelModelService.PublicModel>(this, PublicModelModelService.class);
 
     private MilestoneDependedExecutionQueue mModelObtainMilestoneQueue = new MilestoneDependedExecutionQueue();
     private ToggleButton mPublicGatewaySwitcherView;
@@ -40,7 +40,7 @@ public class DashboardActivity extends ActionBarActivity implements ModelService
             public void run() {
                 mPublicGatewaySwitcherView.setChecked(mPublicModelManagerModel.get().isPublicGatewayVisible());
                 mPublicGatewaySwitcherView.setEnabled(true);
-                mPublicModelManagerModel.get().addPublicGatewayVisibilityListener(new PublicModelService.PublicModel.PublicGatewayVisibilityListener() {
+                mPublicModelManagerModel.get().addPublicGatewayVisibilityListener(new PublicModelModelService.PublicModel.PublicGatewayVisibilityListener() {
                     @Override
                     public void onVisibilityChange(boolean newVisibility) {
                         if(mPublicGatewaySwitcherView != null)
@@ -84,7 +84,7 @@ public class DashboardActivity extends ActionBarActivity implements ModelService
         mModelObtainMilestoneQueue.post(new Runnable() {
             @Override
             public void run() {
-                mPublicModelManagerModel.get().addPublicGatewayVisibilityListener(new PublicModelService.PublicModel.PublicGatewayVisibilityListener() {
+                mPublicModelManagerModel.get().addPublicGatewayVisibilityListener(new PublicModelModelService.PublicModel.PublicGatewayVisibilityListener() {
                     @Override
                     public void onVisibilityChange(boolean newVisibility) {
                         if(mPublicGatewaySwitcherView != null){
@@ -110,7 +110,7 @@ public class DashboardActivity extends ActionBarActivity implements ModelService
     }
 
     @Override
-    public void onObtain(PublicModelService.PublicModel publicModel) {
+    public void onObtain(PublicModelModelService.PublicModel publicModel) {
         Logs.UI.d("Obtain model = %s. Activity = %s", publicModel, this);
         mModelObtainMilestoneQueue.onMilestone();
     }

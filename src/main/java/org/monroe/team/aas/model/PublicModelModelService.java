@@ -15,19 +15,21 @@ import org.monroe.team.aas.ui.common.command.ResultLessCommand;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-public class PublicModelService extends ModelService<PublicModelService.PublicModel>
-        implements ModelServiceManager.ServiceClient<PublicGatewayService.PublicGatewayModel> {
+public class PublicModelModelService extends ModelService<PublicModelModelService.PublicModel>
+        implements ModelServiceManager.ModelServiceClient<PublicGatewayService.PublicGatewayModel> {
 
     private final ModelServiceManager<PublicGatewayService.PublicGatewayModel> mGatewayManagerModel =
             new ModelServiceManager<PublicGatewayService.PublicGatewayModel>(this, PublicGatewayService.class);
 
-    public PublicModelService() {
+    public PublicModelModelService() {
         super(new AutoShutdownClientBindingHandlingStrategy());
     }
 
     @Override
     protected PublicModel createModelInstance() {
-        return new PublicModelImpl(mGatewayManagerModel);
+        PublicModelImpl model = new PublicModelImpl(mGatewayManagerModel);
+        model.init();
+        return model;
     }
 
     @Override
@@ -106,6 +108,12 @@ public class PublicModelService extends ModelService<PublicModelService.PublicMo
         public void destroy() {
             if(mGatewayManagerModel.isObtained()){
                 mGatewayManagerModel.get().shutdown();
+            }
+        }
+
+        public void init() {
+            if(mGatewayManagerModel.isServiceRunning()){
+                mGatewayManagerModel.obtain();
             }
         }
     }

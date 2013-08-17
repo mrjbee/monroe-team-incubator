@@ -1,10 +1,13 @@
 package org.monroe.team.aas.common.model;
 
+import android.app.ActivityManager;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+
+import java.util.List;
 
 /**
  * User: MisterJBee
@@ -14,13 +17,13 @@ import android.os.IBinder;
  */
 public class ModelServiceManager<ClientAwareInterface> {
 
-    private final ServiceClient<ClientAwareInterface> mOwner;
+    private final ModelServiceClient<ClientAwareInterface> mOwner;
     private final Class<? extends Service> mServiceClass;
     private final ServiceConnection mServiceConnection = new ServiceConnection();
     private ClientAwareInterface mClientAwareInterface;
     private State mState = State.RELEASED;
 
-    public ModelServiceManager(ServiceClient<ClientAwareInterface> mOwner, Class<? extends Service> mServiceClass) {
+    public ModelServiceManager(ModelServiceClient<ClientAwareInterface> mOwner, Class<? extends Service> mServiceClass) {
         this.mOwner = mOwner;
         this.mServiceClass = mServiceClass;
     }
@@ -71,6 +74,17 @@ public class ModelServiceManager<ClientAwareInterface> {
        return mState == State.OBTAINED;
     }
 
+    public synchronized boolean isServiceRunning(){
+        final ActivityManager activityManager = (ActivityManager) mOwner.getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        final List<ActivityManager.RunningServiceInfo> services = activityManager.getRunningServices(Integer.MAX_VALUE);
+        for (ActivityManager.RunningServiceInfo runningServiceInfo : services) {
+            if (runningServiceInfo.service.getClassName().equals(mServiceClass.getName())){
+                return runningServiceInfo.started;
+            }
+        }
+        return false;
+    }
+
     private class ServiceConnection implements android.content.ServiceConnection{
 
         @Override
@@ -84,8 +98,7 @@ public class ModelServiceManager<ClientAwareInterface> {
         }
     }
 
-
-    public static interface ServiceClient<ClientInterface>{
+    public static interface ModelServiceClient<ClientInterface>{
         Context getContext();
         public void onObtain(ClientInterface clientInterface);
         public void onRelease();
