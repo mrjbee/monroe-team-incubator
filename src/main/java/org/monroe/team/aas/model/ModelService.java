@@ -1,17 +1,12 @@
 package org.monroe.team.aas.model;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.os.*;
-import android.os.Process;
-
-import org.monroe.team.aas.ui.common.ListenerSupport;
+import android.os.IBinder;
 import org.monroe.team.aas.ui.common.Logs;
-import org.monroe.team.aas.ui.common.ServiceManager;
-import org.monroe.team.aas.ui.common.command.ArgumentLessCommand;
-import org.monroe.team.aas.ui.common.command.ResultLessCommand;
-import org.monroe.team.aas.ui.common.logging.*;
+
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * User: MisterJBee
@@ -19,133 +14,140 @@ import org.monroe.team.aas.ui.common.logging.*;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-public class ModelService extends Service
-        implements ServiceManager.ServiceBinderOwner<PublicGatewayService.PublicGatewayModel> {
+public abstract class ModelService <ModelClass> extends Service {
 
-    private PublicModelImpl mPublicModelInstance;
-    private final ServiceManager<PublicGatewayService.PublicGatewayModel> mGatewayManager =
-            new ServiceManager<PublicGatewayService.PublicGatewayModel>(this, PublicGatewayService.class);
+    private IBinder mModelInstance;
+    private final ClientBindingHandlingStrategy mClientBindingHandlingStrategy;
+    private AtomicBoolean mFirstStart = new AtomicBoolean(true);
+
+    protected ModelService(ClientBindingHandlingStrategy mClientBindingHandlingStrategy) {
+        this.mClientBindingHandlingStrategy = mClientBindingHandlingStrategy;
+    }
+
+    public ModelService() {
+        this(new NoOpClientBindingHandlingStrategy());
+    }
 
 
     @Override
     public IBinder onBind(Intent intent) {
-        return mPublicModelInstance;
+        Logs.SERVICE.v("onBind() service = %s", this);
+        mClientBindingHandlingStrategy.onClientBind(this);
+        return mModelInstance;
+    }
+
+    @Override
+    public void onRebind(Intent intent) {
+        Logs.SERVICE.v("onRebind() service = %s", this);
+        super.onRebind(intent);
+        mClientBindingHandlingStrategy.onClientBind(this);
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        Logs.SERVICE.v("onUnbind() service = %s", this);
+        mClientBindingHandlingStrategy.onClientUnbind(this);
+        return true;
     }
 
     @Override
     public void onCreate() {
+        Logs.SERVICE.v("onCreate() service = %s", this);
         super.onCreate();
+        mModelInstance = (IBinder) createModelInstance();
     }
+
+    public ModelClass getModelInstance() {
+        return (ModelClass) mModelInstance;
+    }
+
+    protected abstract ModelClass createModelInstance();
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Logs.MODEL.i("Start model with service onStartCommand(). Intent = %s, " +
+        Logs.SERVICE.v("onStartCommand(). Intent = %s, " +
                 "flags = %d, startId = %d. Service = %s", intent, flags, startId, this);
-        int answer = super.onStartCommand(intent, flags, startId);
-        if (mPublicModelInstance == null){
-            mPublicModelInstance = new PublicModelImpl(mGatewayManager);
+        super.onStartCommand(intent, flags, startId);
+        if (mFirstStart.getAndSet(false)){
+            onFirstStart();
         }
         return START_NOT_STICKY;
     }
 
+    protected void onFirstStart(){};
+
+
     @Override
     public void onDestroy() {
+        Logs.SERVICE.v("onDestroy() Instance = %s", this);
         super.onDestroy();
-        mPublicModelInstance.destroy();
-        Logs.MODEL.v("Model service onDestroy() Instance = %s", this);
+        if (mModelInstance instanceof ServiceDestroyAware){
+            ((ServiceDestroyAware) mModelInstance).destroy();
+        }
     }
 
-    @Override
-    public Context getContext() {
-        return this;
+    public static interface ServiceDestroyAware {
+        public void destroy();
     }
 
-    @Override
-    public void onObtain(PublicGatewayService.PublicGatewayModel publicGatewayModel) {
-        mPublicModelInstance.setPublicGatewayVisibility(true);
+    public static interface ClientBindingHandlingStrategy {
+
+        public void onClientBind(ModelService owner);
+
+        public void onClientUnbind(ModelService owner);
+
     }
 
-    @Override
-    public void onRelease() {
-        mPublicModelInstance.setPublicGatewayVisibility(false);
+    public static class NoOpClientBindingHandlingStrategy implements ClientBindingHandlingStrategy {
+        @Override
+        public void onClientBind(ModelService owner) {}
+        @Override
+        public void onClientUnbind(ModelService owner) {}
     }
 
+    public static class AutoShutdownClientBindingHandlingStrategy implements ClientBindingHandlingStrategy {
 
-    private class PublicModelImpl extends Binder implements PublicModel{
+        private final long mMsToKill;
+        private ExecutorService mShutdownExecutor = Executors.newSingleThreadExecutor();
+        private Future mLastScheduledShutdownTask;
 
-        private boolean mPublicGatewayVisibility = false;
-        private final ListenerSupport<PublicGatewayVisibilityListener> mGatewayVisibilityListenerSupport
-                = new ListenerSupport<PublicGatewayVisibilityListener>();
-        private final ServiceManager<PublicGatewayService.PublicGatewayModel> mGatewayManager;
+        public AutoShutdownClientBindingHandlingStrategy() {
+            this(500);
+        }
 
-        private PublicModelImpl(ServiceManager<PublicGatewayService.PublicGatewayModel> mGatewayManager) {
-            this.mGatewayManager = mGatewayManager;
+        public AutoShutdownClientBindingHandlingStrategy(long msToKill) {
+            this.mMsToKill = msToKill;
         }
 
         @Override
-        public boolean isPublicGatewayVisible() {
-            return mPublicGatewayVisibility;
-        }
-
-        private void setPublicGatewayVisibility(boolean visibility){
-            final boolean oldValue = mPublicGatewayVisibility;
-            mPublicGatewayVisibility = visibility;
-            mGatewayVisibilityListenerSupport.fireIf(new ArgumentLessCommand<Boolean>() {
-                @Override
-                protected Boolean call() {
-                    return oldValue != mPublicGatewayVisibility;
-                }
-            }, new ResultLessCommand<PublicGatewayVisibilityListener>() {
-                 @Override
-                 protected void call(PublicGatewayVisibilityListener argument) {
-                    argument.onVisibilityChange(mPublicGatewayVisibility);
-                 }
-             });
-        }
-
-        @Override
-        public void addPublicGatewayVisibilityListener(PublicGatewayVisibilityListener gatewayVisibilityListener) {
-            mGatewayVisibilityListenerSupport.add(gatewayVisibilityListener);
-        }
-
-        @Override
-        public void removePublicGatewayVisibilityListener(PublicGatewayVisibilityListener gatewayVisibilityListener) {
-            mGatewayVisibilityListenerSupport.remove(gatewayVisibilityListener);
-        }
-
-        @Override
-        public void removeAllListeners() {
-            mGatewayVisibilityListenerSupport.removeAll();
-        }
-
-        @Override
-        public void openPublicGateway() {
-            mGatewayManager.obtain();
-        }
-
-        @Override
-        public void closePublicGateway() {
-           mGatewayManager.get().shutdown();
-        }
-
-        public void destroy() {
-            if(mGatewayManager.isObtained()){
-                mGatewayManager.get().shutdown();
+        public synchronized void onClientBind(ModelService owner) {
+            if (mLastScheduledShutdownTask != null){
+                mLastScheduledShutdownTask.cancel(true);
+                mLastScheduledShutdownTask = null;
             }
         }
-    }
 
-    public static interface PublicModel {
+        @Override
+        public synchronized void onClientUnbind(final ModelService owner) {
+            mLastScheduledShutdownTask = mShutdownExecutor.submit(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(mMsToKill);
+                    } catch (InterruptedException e) {
+                        //thread could be interrupted by its future during new client
+                        return;
+                    }
+                    doShutdown(owner);
+                }
+            });
+        }
 
-        boolean isPublicGatewayVisible();
-        void addPublicGatewayVisibilityListener(PublicGatewayVisibilityListener gatewayVisibilityListener);
-        void removePublicGatewayVisibilityListener(PublicGatewayVisibilityListener gatewayVisibilityListener);
-        void removeAllListeners();
-        void openPublicGateway();
-        void closePublicGateway();
-
-        public static interface PublicGatewayVisibilityListener{
-            public void onVisibilityChange(boolean newVisibility);
+        private synchronized void doShutdown(ModelService owner) {
+            if (mLastScheduledShutdownTask != null){
+                //last check on now clients
+                owner.stopSelf();
+            }
         }
     }
 

@@ -1,9 +1,7 @@
 package org.monroe.team.aas.ui;
 
 import android.app.Application;
-import android.content.Intent;
 
-import org.monroe.team.aas.model.ModelService;
 import org.monroe.team.aas.ui.common.Logs;
 
 /**

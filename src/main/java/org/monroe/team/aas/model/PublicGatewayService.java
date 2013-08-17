@@ -14,28 +14,23 @@ import org.monroe.team.aas.ui.common.Logs;
 import org.monroe.team.aas.ui.common.command.ArgumentLessCommand;
 import org.monroe.team.aas.ui.common.command.ResultLessCommand;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * User: MisterJBee
  * Date: 8/7/13
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-public class PublicGatewayService extends Service {
-
-    private PublicGatewayModelImpl mGatewayModel;
+public class PublicGatewayService extends ModelService<PublicGatewayService.PublicGatewayModel> {
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        int result = super.onStartCommand(intent, flags, startId);
-        if (mGatewayModel == null){
-            mGatewayModel = new PublicGatewayModelImpl();
-            startForeground(startId, new Notification.Builder(this)
-                    .setSmallIcon(R.drawable.icon)
-                    .setContentTitle("AAS service")
-                    .setContentInfo("Run....")
-                    .setContentText("Text...").build());
-        }
-        return result;
+    protected void onFirstStart() {
+        startForeground(1, new Notification.Builder(this)
+                .setSmallIcon(R.drawable.icon)
+                .setContentTitle("AAS service")
+                .setContentInfo("Run....")
+                .setContentText("Text...").build());
     }
 
     private void shutdownService() {
@@ -44,8 +39,8 @@ public class PublicGatewayService extends Service {
     }
 
     @Override
-    public IBinder onBind(Intent intent) {
-        return mGatewayModel;
+    protected PublicGatewayModel createModelInstance() {
+        return new PublicGatewayModelImpl();
     }
 
     public class PublicGatewayModelImpl extends Binder implements PublicGatewayModel{

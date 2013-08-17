@@ -17,7 +17,7 @@
       </intent-filter>
     </activity>
 
-    <service android:name=".model.ModelService" android:exported="false"/>
+    <service android:name=".model.PublicModelService" android:exported="false"/>
     <service android:name=".model.PublicGatewayService" android:exported="false"/>
   </application>
 

@@ -13,6 +13,7 @@ final public class Logs {
 
     public final static Logger UI = new AndroidLogger("aas.UI");
     public static final Logger MODEL = new AndroidLogger("aas.MODEL");
+    public static final Logger SERVICE = new AndroidLogger("aas.SERVICE");
 
     private Logs() {}
 }
