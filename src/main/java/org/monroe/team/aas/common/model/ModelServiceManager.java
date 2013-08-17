@@ -50,7 +50,7 @@ public class ModelServiceManager<ClientAwareInterface> {
         mOwner.getContext().startService(new Intent(mOwner.getContext(),mServiceClass));
         mOwner.getContext().bindService(
                 new Intent(mOwner.getContext(), mServiceClass),
-                mServiceConnection, Context.BIND_ADJUST_WITH_ACTIVITY);
+                mServiceConnection, 0);
     };
 
     public synchronized void release(){

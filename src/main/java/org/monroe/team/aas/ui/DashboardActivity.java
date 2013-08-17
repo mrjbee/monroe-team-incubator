@@ -2,10 +2,13 @@ package org.monroe.team.aas.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.internal.view.menu.MenuItemImpl;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 import org.monroe.team.aas.R;
 import org.monroe.team.aas.model.PublicModelModelService;
@@ -21,18 +24,23 @@ import org.monroe.team.aas.common.model.ModelServiceManager;
  */
 public class DashboardActivity extends ActionBarActivity implements ModelServiceManager.ModelServiceClient<PublicModelModelService.PublicModel> {
 
+    private static int sInstanceCounter=0;
+
     private final ModelServiceManager<PublicModelModelService.PublicModel> mPublicModelManagerModel =
             new ModelServiceManager<PublicModelModelService.PublicModel>(this, PublicModelModelService.class);
 
     private MilestoneDependedExecutionQueue mModelObtainMilestoneQueue = new MilestoneDependedExecutionQueue();
     private ToggleButton mPublicGatewaySwitcherView;
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Logs.UI.v("onCreateOptionsMenu() Activity = %s, menu = %s", this, menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.dashboard_menu, menu);
-        mPublicGatewaySwitcherView = (ToggleButton) menu.findItem(R.id.test).getActionView();
+
+        mPublicGatewaySwitcherView = (ToggleButton) ((MenuItemImpl)menu.findItem(R.id.test)).getActionView();
         mPublicGatewaySwitcherView.setChecked(false);
         mPublicGatewaySwitcherView.setEnabled(false);
         mModelObtainMilestoneQueue.post(new Runnable() {
@@ -67,6 +75,9 @@ public class DashboardActivity extends ActionBarActivity implements ModelService
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logs.UI.v("onCreate() Activity = %s", this);
+        setContentView(R.layout.main_layout);
+        TextView view = (TextView) findViewById(R.id.testText);
+        view.setText("Instance="+sInstanceCounter++);
         mPublicModelManagerModel.obtain();
     }
 

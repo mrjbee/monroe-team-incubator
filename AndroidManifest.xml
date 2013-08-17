@@ -10,7 +10,9 @@
             android:name=".ui.AasApplication">
 
     <activity android:theme="@style/Theme.AppCompat.Light"
-            android:name=".ui.DashboardActivity">
+            android:name=".ui.DashboardActivity"
+            android:launchMode="singleInstance">
+
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
