@@ -9,7 +9,7 @@
             android:hardwareAccelerated="true"
             android:name=".ui.AasApplication">
 
-    <activity android:theme="@style/Theme.AppCompat.Light"
+    <activity android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             android:name=".ui.DashboardActivity"
             android:launchMode="singleInstance">
       <intent-filter>
@@ -18,8 +18,10 @@
       </intent-filter>
     </activity>
 
-    <service android:name=".model.PublicModelModelService" android:exported="false"/>
-    <service android:name=".model.PublicGatewayService" android:exported="false"/>
+    <service android:name=".model.PublicModelModelService"
+             android:exported="false"/>
+    <service android:name=".model.PublicGatewayService"
+             android:exported="false"/>
   </application>
 
    <supports-screens android:anyDensity="true"

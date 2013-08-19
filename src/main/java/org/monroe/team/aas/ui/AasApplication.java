@@ -22,8 +22,8 @@ public class AasApplication extends Application{
 
     private static final Object[] APPLICATION_CONSTRAINS = {
             new Object[] {DashboardActivity.class, 4},
-            new Object[] {PublicModelModelService.class, 2},
-            new Object[] {PublicGatewayService.class, 2},
+            new Object[] {PublicModelModelService.class, 4},
+            new Object[] {PublicGatewayService.class, 4},
     };
 
     @Override

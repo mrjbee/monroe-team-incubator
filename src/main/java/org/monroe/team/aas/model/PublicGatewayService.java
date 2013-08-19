@@ -1,13 +1,15 @@
 package org.monroe.team.aas.model;
 
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Binder;
 import android.support.v4.app.NotificationCompat;
+import android.widget.RemoteViews;
 import org.monroe.team.aas.R;
 import org.monroe.team.aas.common.model.ModelService;
 import org.monroe.team.aas.ui.DashboardActivity;
+import org.monroe.team.aas.ui.common.logging.Debug;
 
 /**
  * User: MisterJBee
@@ -22,12 +24,8 @@ public class PublicGatewayService extends ModelService<PublicGatewayService.Publ
         Intent openApplicationIntent = new Intent(this, DashboardActivity.class)
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, openApplicationIntent, 0);
-
         startForeground(1, new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.icon)
-                .setContentTitle("AAS service")
-                .setContentInfo("Run....")
-                .setContentText("Text...")
                 .setContentIntent(pendingIntent).build());
     }
 

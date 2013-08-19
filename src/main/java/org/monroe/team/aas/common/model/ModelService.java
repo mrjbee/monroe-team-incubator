@@ -28,7 +28,6 @@ public abstract class ModelService <ModelClass> extends Service {
         this(new NoOpClientBindingHandlingStrategy());
     }
 
-
     @Override
     public IBinder onBind(Intent intent) {
         Logs.SERVICE.v("onBind() service = %s", this);
@@ -86,6 +85,8 @@ public abstract class ModelService <ModelClass> extends Service {
         }
     }
 
+
+
     public static interface ServiceDestroyAware {
         public void destroy();
     }
@@ -112,7 +113,7 @@ public abstract class ModelService <ModelClass> extends Service {
         private Future mLastScheduledShutdownTask;
 
         public AutoShutdownClientBindingHandlingStrategy() {
-            this(500);
+            this(3000);
         }
 
         public AutoShutdownClientBindingHandlingStrategy(long msToKill) {

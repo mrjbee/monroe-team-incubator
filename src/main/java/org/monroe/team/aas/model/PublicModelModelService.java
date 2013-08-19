@@ -6,8 +6,10 @@ import android.os.*;
 import org.monroe.team.aas.common.model.ModelService;
 import org.monroe.team.aas.ui.common.ListenerSupport;
 import org.monroe.team.aas.common.model.ModelServiceManager;
+import org.monroe.team.aas.ui.common.Logs;
 import org.monroe.team.aas.ui.common.command.ArgumentLessCommand;
 import org.monroe.team.aas.ui.common.command.ResultLessCommand;
+import org.monroe.team.aas.ui.common.logging.*;
 
 /**
  * User: MisterJBee
@@ -16,9 +18,9 @@ import org.monroe.team.aas.ui.common.command.ResultLessCommand;
  * (Do whatever you want with the source code)
  */
 public class PublicModelModelService extends ModelService<PublicModelModelService.PublicModel>
-        implements ModelServiceManager.ModelServiceClient<PublicGatewayService.PublicGatewayModel> {
+        implements ModelServiceManager.ModelServiceClient<PublicGatewayService.PublicGatewayModel>{
 
-    private final ModelServiceManager<PublicGatewayService.PublicGatewayModel> mGatewayManagerModel =
+   private final ModelServiceManager<PublicGatewayService.PublicGatewayModel> mGatewayManagerModel =
             new ModelServiceManager<PublicGatewayService.PublicGatewayModel>(this, PublicGatewayService.class);
 
     public PublicModelModelService() {
@@ -48,7 +50,7 @@ public class PublicModelModelService extends ModelService<PublicModelModelServic
     }
 
 
-    private class PublicModelImpl extends Binder implements PublicModel{
+    private class PublicModelImpl extends Binder implements PublicModel, ServiceDestroyAware{
 
         private boolean mPublicGatewayVisibility = false;
         private final ListenerSupport<PublicGatewayVisibilityListener> mGatewayVisibilityListenerSupport
@@ -105,16 +107,22 @@ public class PublicModelModelService extends ModelService<PublicModelModelServic
            mGatewayManagerModel.get().shutdown();
         }
 
-        public void destroy() {
-            if(mGatewayManagerModel.isObtained()){
-                mGatewayManagerModel.get().shutdown();
-            }
-        }
-
         public void init() {
             if(mGatewayManagerModel.isServiceRunning()){
                 mGatewayManagerModel.obtain();
             }
+        }
+
+        @Override
+        public void destroy() {
+            mGatewayManagerModel.releaseAndDestroy();
+            try {
+                Logs.MODEL.i("Start test sleeping");
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                Logs.MODEL.w(e, "Sleep test interupted");
+            }
+            Logs.MODEL.i("Stop test sleeping");
         }
     }
 
