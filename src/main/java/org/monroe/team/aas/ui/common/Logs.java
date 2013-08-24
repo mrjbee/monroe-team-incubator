@@ -1,7 +1,7 @@
 package org.monroe.team.aas.ui.common;
 
-import org.monroe.team.aas.ui.common.logging.AndroidLogger;
-import org.monroe.team.aas.ui.common.logging.Logger;
+import org.monroe.team.libdroid.logging.AndroidLogger;
+import org.monroe.team.libdroid.logging.Logger;
 
 /**
  * User: MisterJBee

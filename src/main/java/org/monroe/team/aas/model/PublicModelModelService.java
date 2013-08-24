@@ -9,7 +9,6 @@ import org.monroe.team.aas.common.model.ModelServiceManager;
 import org.monroe.team.aas.ui.common.Logs;
 import org.monroe.team.aas.ui.common.command.ArgumentLessCommand;
 import org.monroe.team.aas.ui.common.command.ResultLessCommand;
-import org.monroe.team.aas.ui.common.logging.*;
 
 /**
  * User: MisterJBee

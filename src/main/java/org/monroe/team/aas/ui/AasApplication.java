@@ -4,7 +4,7 @@ import android.os.Environment;
 import org.monroe.team.aas.model.PublicGatewayService;
 import org.monroe.team.aas.model.PublicModelModelService;
 import org.monroe.team.aas.ui.common.Logs;
-import org.monroe.team.aas.ui.common.logging.Debug;
+import org.monroe.team.libdroid.logging.Debug;
 
 import java.io.File;
 import java.io.OutputStream;
