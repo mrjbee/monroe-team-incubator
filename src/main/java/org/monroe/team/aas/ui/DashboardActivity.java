@@ -13,7 +13,7 @@ import org.monroe.team.aas.R;
 import org.monroe.team.aas.model.PublicModelModelService;
 import org.monroe.team.aas.ui.common.Logs;
 import org.monroe.team.aas.ui.common.MilestoneDependedExecutionQueue;
-import org.monroe.team.libdroid.mservice.ModelServiceManager;
+import org.monroe.team.libdroid.mservice.ModelClient;
 
 /**
  * User: MisterJBee
@@ -21,12 +21,12 @@ import org.monroe.team.libdroid.mservice.ModelServiceManager;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-public class DashboardActivity extends ActionBarActivity implements ModelServiceManager.ModelServiceClient<PublicModelModelService.PublicModel> {
+public class DashboardActivity extends ActionBarActivity implements ModelClient.ModelServiceClient<PublicModelModelService.PublicModel> {
 
     private static int sInstanceCounter=0;
 
-    private final ModelServiceManager<PublicModelModelService.PublicModel> mPublicModelManagerModel =
-            new ModelServiceManager<PublicModelModelService.PublicModel>(this, PublicModelModelService.class);
+    private final ModelClient<PublicModelModelService.PublicModel> mPublicModelManagerModel =
+            new ModelClient<PublicModelModelService.PublicModel>(this, PublicModelModelService.class);
 
     private MilestoneDependedExecutionQueue mModelObtainMilestoneQueue = new MilestoneDependedExecutionQueue();
     private ToggleButton mPublicGatewaySwitcherView;
@@ -131,7 +131,7 @@ public class DashboardActivity extends ActionBarActivity implements ModelService
     }
 
     @Override
-    public void onRelease() {
+    public void onRelease(PublicModelModelService.PublicModel publicModel) {
         Logs.UI.d("Release model. Activity = %s", this);
     }
 

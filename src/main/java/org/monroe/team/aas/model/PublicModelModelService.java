@@ -7,8 +7,8 @@ import org.monroe.team.aas.ui.common.ListenerSupport;
 import org.monroe.team.aas.ui.common.Logs;
 import org.monroe.team.aas.ui.common.command.ArgumentLessCommand;
 import org.monroe.team.aas.ui.common.command.ResultLessCommand;
+import org.monroe.team.libdroid.mservice.ModelClient;
 import org.monroe.team.libdroid.mservice.ModelService;
-import org.monroe.team.libdroid.mservice.ModelServiceManager;
 
 /**
  * User: MisterJBee
@@ -17,10 +17,10 @@ import org.monroe.team.libdroid.mservice.ModelServiceManager;
  * (Do whatever you want with the source code)
  */
 public class PublicModelModelService extends ModelService<PublicModelModelService.PublicModel>
-        implements ModelServiceManager.ModelServiceClient<PublicGatewayService.PublicGatewayModel>{
+        implements ModelClient.ModelServiceClient<PublicGatewayService.PublicGatewayModel>{
 
-   private final ModelServiceManager<PublicGatewayService.PublicGatewayModel> mGatewayManagerModel =
-            new ModelServiceManager<PublicGatewayService.PublicGatewayModel>(this, PublicGatewayService.class);
+   private final ModelClient<PublicGatewayService.PublicGatewayModel> mGatewayManagerModel =
+            new ModelClient<PublicGatewayService.PublicGatewayModel>(this, PublicGatewayService.class);
 
     public PublicModelModelService() {
         super(new AutoShutdownClientBindingHandlingStrategy());
@@ -54,9 +54,9 @@ public class PublicModelModelService extends ModelService<PublicModelModelServic
         private boolean mPublicGatewayVisibility = false;
         private final ListenerSupport<PublicGatewayVisibilityListener> mGatewayVisibilityListenerSupport
                 = new ListenerSupport<PublicGatewayVisibilityListener>();
-        private final ModelServiceManager<PublicGatewayService.PublicGatewayModel> mGatewayManagerModel;
+        private final ModelClient<PublicGatewayService.PublicGatewayModel> mGatewayManagerModel;
 
-        private PublicModelImpl(ModelServiceManager<PublicGatewayService.PublicGatewayModel> mGatewayManagerModel) {
+        private PublicModelImpl(ModelClient<PublicGatewayService.PublicGatewayModel> mGatewayManagerModel) {
             this.mGatewayManagerModel = mGatewayManagerModel;
         }
 
