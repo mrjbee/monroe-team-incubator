@@ -11,7 +11,8 @@
 
     <activity android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             android:name=".ui.DashboardActivity"
-            android:launchMode="singleInstance">
+            android:launchMode="singleInstance"
+            android:label="Android Application Server">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />

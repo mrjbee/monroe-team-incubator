@@ -7,7 +7,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.CompoundButton;
-import android.widget.TextView;
 import android.widget.ToggleButton;
 import org.monroe.team.aas.R;
 import org.monroe.team.aas.model.PublicModelModelService;
@@ -21,17 +20,15 @@ import org.monroe.team.libdroid.mservice.ModelClient;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-public class DashboardActivity extends ActionBarActivity implements ModelClient.ModelServiceClient<PublicModelModelService.PublicModel> {
-
-    private static int sInstanceCounter=0;
+public class DashboardActivity extends ActionBarActivity
+        implements ModelClient.ModelServiceClient<PublicModelModelService.PublicModel>,
+        AvailableApplicationFragment.AvailableApplicationListPresenter{
 
     private final ModelClient<PublicModelModelService.PublicModel> mPublicModelManagerModel =
             new ModelClient<PublicModelModelService.PublicModel>(this, PublicModelModelService.class);
 
     private MilestoneDependedExecutionQueue mModelObtainMilestoneQueue = new MilestoneDependedExecutionQueue();
     private ToggleButton mPublicGatewaySwitcherView;
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -75,9 +72,18 @@ public class DashboardActivity extends ActionBarActivity implements ModelClient.
         super.onCreate(savedInstanceState);
         Logs.UI.v("onCreate() Activity = %s", this);
         setContentView(R.layout.main_layout);
-        TextView view = (TextView) findViewById(R.id.testText);
-        view.setText("Instance="+sInstanceCounter++);
         mPublicModelManagerModel.obtain();
+        if (savedInstanceState == null){
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.m_apps_frag, new AvailableApplicationFragment(),"av_app_frag")
+                    .commit();
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.m_apps_details_frag, new ApplicationDetailsFragment(),"app_det_frag")
+                    .commit();
+        }
     }
 
     @Override
@@ -134,5 +140,17 @@ public class DashboardActivity extends ActionBarActivity implements ModelClient.
     public void onRelease(PublicModelModelService.PublicModel publicModel) {
         Logs.UI.d("Release model. Activity = %s", this);
     }
+
+
+    @Override
+    public void onApplicationSelected(String appId) {
+       getAppDetailsComponent().showApplicationDetails(appId);
+    }
+
+
+    private AppDetailsComponent getAppDetailsComponent(){
+        return (AppDetailsComponent) getSupportFragmentManager().findFragmentByTag("app_det_frag");
+    }
+
 
 }

@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="m_available_apps_panel_width">500dp</dimen>
+    <dimen name="m_available_apps_item_height">30dp</dimen>
+</resources>

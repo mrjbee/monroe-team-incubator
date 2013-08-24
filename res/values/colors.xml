@@ -3,5 +3,7 @@
     <color name="bg_color">#b9bdc4</color>
     <color name="bg_color_light">#ebeced</color>
     <color name="red">#ff0000</color>
+    <color name="m_app_details_bg">#555555</color>
+    <color name="m_app_details_fg">#ffffff</color>
 </resources>
 
