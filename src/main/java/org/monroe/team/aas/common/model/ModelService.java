@@ -56,6 +56,21 @@ public abstract class ModelService <ModelClass> extends Service {
         mModelInstance = (IBinder) createModelInstance();
     }
 
+    public void onTaskRemoved(Intent rootIntent) {
+        Logs.SERVICE.v("onTaskRemoved() service = %s", this);
+    }
+
+    public void onTrimMemory(int level) {
+        Logs.SERVICE.v("onTrimMemory() service = %s level = %d", this, level);
+    }
+
+    @Override
+    public void onLowMemory() {
+        Logs.SERVICE.v("onLowMemory() service = %s", this);
+        super.onLowMemory();
+    }
+
+
     public ModelClass getModelInstance() {
         return (ModelClass) mModelInstance;
     }

@@ -18,24 +18,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.roboguice</groupId>
-            <artifactId>roboguice</artifactId>
-            <version>2.0</version>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.inject</groupId>
-                    <artifactId>guice</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>2.0-no_aop</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>android.support</groupId>
             <artifactId>compatibility-v7-appcompat</artifactId>
             <version>18</version>
