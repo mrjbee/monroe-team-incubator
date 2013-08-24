@@ -2,6 +2,7 @@ package org.monroe.team.aas.ui.common;
 
 import org.monroe.team.libdroid.logging.AndroidLogger;
 import org.monroe.team.libdroid.logging.Logger;
+import org.monroe.team.libdroid.logging.LoggerSetup;
 
 /**
  * User: MisterJBee
@@ -11,9 +12,9 @@ import org.monroe.team.libdroid.logging.Logger;
  */
 final public class Logs {
 
-    public final static Logger UI = new AndroidLogger("aas.UI");
-    public static final Logger MODEL = new AndroidLogger("aas.MODEL");
-    public static final Logger SERVICE = new AndroidLogger("aas.SERVICE");
+    public final static Logger UI = LoggerSetup.createLogger("UI");
+    public static final Logger MODEL = LoggerSetup.createLogger("MODEL");
+    public static final Logger SERVICE = LoggerSetup.createLogger("SERVICE");
 
     private Logs() {}
 }
