@@ -17,7 +17,7 @@ import java.util.List;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-public class ModelServiceManager<ClientAwareInterface> {
+public class ModelClient<ClientAwareInterface> {
 
     private ModelServiceClient<ClientAwareInterface> mOwner;
     private final Class<? extends Service> mServiceClass;
@@ -27,15 +27,17 @@ public class ModelServiceManager<ClientAwareInterface> {
     private final Logger mLog = LoggerSetup.createLogger("ms-manager").extend(getClass().getSimpleName());
 
 
-    public ModelServiceManager(ModelServiceClient<ClientAwareInterface> mOwner, Class<? extends Service> mServiceClass) {
+    public ModelClient(ModelServiceClient<ClientAwareInterface> mOwner, Class<? extends Service> mServiceClass) {
         this.mOwner = mOwner;
         this.mServiceClass = mServiceClass;
     }
 
     private synchronized void uninstallServiceBinder() {
+        ClientAwareInterface model = mClientAwareInterface;
         mState = State.RELEASED;
+        mClientAwareInterface = null;
         if(mOwner != null){
-            mOwner.onRelease();
+            mOwner.onRelease(model);
         }
     }
 
@@ -118,7 +120,7 @@ public class ModelServiceManager<ClientAwareInterface> {
     public static interface ModelServiceClient<ClientInterface>{
         Context getContext();
         public void onObtain(ClientInterface clientInterface);
-        public void onRelease();
+        public void onRelease(ClientInterface clientInterface);
     }
 
     public static enum State{
