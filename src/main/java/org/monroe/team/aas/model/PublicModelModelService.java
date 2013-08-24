@@ -44,10 +44,9 @@ public class PublicModelModelService extends ModelService<PublicModelModelServic
     }
 
     @Override
-    public void onRelease() {
+    public void onRelease(PublicGatewayService.PublicGatewayModel publicGatewayModel) {
         ((PublicModelImpl)getModelInstance()).setPublicGatewayVisibility(false);
     }
-
 
     private class PublicModelImpl extends Binder implements PublicModel, ServiceDestroyAware{
 
