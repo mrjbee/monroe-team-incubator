@@ -1,0 +1,32 @@
+package org.monroe.team.libdroid.logging;
+
+/**
+ * User: MisterJBee
+ * Date: 6/30/13 Time: 1:25 AM
+ * Open source: MIT Licence
+ * (Do whatever you want with the source code)
+ */
+final public class Debug {
+
+    public static final Logger DEF = new AndroidLogger("aas.DEBUG");
+
+    public static void v(String message, Object ... args){
+        DEF.v(message, args);
+    };
+
+    public static void d(String message, Object ... args){
+        DEF.d(message, args);
+    };
+
+    public static void i(String message, Object ... args){
+        DEF.i(message, args);
+    };
+
+    public static void w(Exception e, String message, Object ... args){
+        DEF.w(e, message, args);
+    };
+
+    public static void e(Exception e, String message, Object ... args){
+        DEF.e(e, message, args);
+    };
+}
