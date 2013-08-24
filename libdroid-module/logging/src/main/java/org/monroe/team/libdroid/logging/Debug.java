@@ -8,25 +8,32 @@ package org.monroe.team.libdroid.logging;
  */
 final public class Debug {
 
-    public static final Logger DEF = new AndroidLogger("aas.DEBUG");
+    public static Logger DEF;
 
     public static void v(String message, Object ... args){
-        DEF.v(message, args);
+        getDef().v(message, args);
     };
 
     public static void d(String message, Object ... args){
-        DEF.d(message, args);
+        getDef().d(message, args);
     };
 
     public static void i(String message, Object ... args){
-        DEF.i(message, args);
+        getDef().i(message, args);
     };
 
     public static void w(Exception e, String message, Object ... args){
-        DEF.w(e, message, args);
+        getDef().w(e, message, args);
     };
 
     public static void e(Exception e, String message, Object ... args){
-        DEF.e(e, message, args);
+        getDef().e(e, message, args);
     };
+
+    private synchronized static Logger getDef() {
+        if (DEF == null){
+            DEF = LoggerSetup.createLogger("DEBUG");
+        }
+        return DEF;
+    }
 }

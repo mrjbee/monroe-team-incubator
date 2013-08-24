@@ -3,7 +3,7 @@ package org.monroe.team.libdroid.logging;
 import android.util.Log;
 
 /**
-h * User: MisterJBee
+ * User: MisterJBee
  * Date: 6/26/13 Time: 12:43 AM
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
