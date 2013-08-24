@@ -1,4 +1,4 @@
-package org.monroe.team.aas.ui;
+package org.monroe.team.aas.ui.components;
 
 /**
  * User: MisterJBee
@@ -6,6 +6,11 @@ package org.monroe.team.aas.ui;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-public interface AppDetailsComponent {
+public interface ApplicationDetailsComponent {
+
     public void showApplicationDetails(String applicationId);
+
+    public interface ApplicationDetailsComponentDelegate{
+
+    }
 }

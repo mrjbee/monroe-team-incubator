@@ -12,6 +12,8 @@ import org.monroe.team.aas.R;
 import org.monroe.team.aas.model.PublicModelModelService;
 import org.monroe.team.aas.ui.common.Logs;
 import org.monroe.team.aas.ui.common.MilestoneDependedExecutionQueue;
+import org.monroe.team.aas.ui.components.ApplicationDetailsComponent;
+import org.monroe.team.aas.ui.components.AvailableApplicationListComponent;
 import org.monroe.team.libdroid.mservice.ModelClient;
 
 /**
@@ -22,7 +24,8 @@ import org.monroe.team.libdroid.mservice.ModelClient;
  */
 public class DashboardActivity extends ActionBarActivity
         implements ModelClient.ModelServiceClient<PublicModelModelService.PublicModel>,
-        AvailableApplicationFragment.AvailableApplicationListPresenter{
+        AvailableApplicationListComponent.AvailableApplicationListComponentDelegate,
+        ApplicationDetailsComponent.ApplicationDetailsComponentDelegate{
 
     private final ModelClient<PublicModelModelService.PublicModel> mPublicModelManagerModel =
             new ModelClient<PublicModelModelService.PublicModel>(this, PublicModelModelService.class);
@@ -148,9 +151,12 @@ public class DashboardActivity extends ActionBarActivity
     }
 
 
-    private AppDetailsComponent getAppDetailsComponent(){
-        return (AppDetailsComponent) getSupportFragmentManager().findFragmentByTag("app_det_frag");
+    private ApplicationDetailsComponent getAppDetailsComponent(){
+        return (ApplicationDetailsComponent) getSupportFragmentManager().findFragmentByTag("app_det_frag");
     }
 
+    private AvailableApplicationListComponent getAppListComponent(){
+        return (AvailableApplicationListComponent) getSupportFragmentManager().findFragmentByTag("av_app_frag");
+    }
 
 }

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import org.monroe.team.aas.R;
+import org.monroe.team.aas.ui.components.ApplicationDetailsComponent;
 
 /**
  * User: MisterJBee
@@ -14,7 +15,7 @@ import org.monroe.team.aas.R;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-public class ApplicationDetailsFragment extends Fragment implements AppDetailsComponent {
+public class ApplicationDetailsFragment extends Fragment implements ApplicationDetailsComponent {
 
     private TextView mAppNameTextView;
 

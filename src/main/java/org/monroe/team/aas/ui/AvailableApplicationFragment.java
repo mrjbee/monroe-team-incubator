@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import org.monroe.team.aas.R;
+import org.monroe.team.aas.ui.components.AvailableApplicationListComponent;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-public class AvailableApplicationFragment extends Fragment {
+public class AvailableApplicationFragment extends Fragment implements AvailableApplicationListComponent {
 
     private ListView mAppsListView;
     private List<String> mAvailableAppsList;
@@ -43,16 +44,12 @@ public class AvailableApplicationFragment extends Fragment {
         return view;
     }
 
-    public AvailableApplicationListPresenter getPresenter(){
-        return (AvailableApplicationListPresenter) getActivity();
+    public AvailableApplicationListComponentDelegate getPresenter(){
+        return (AvailableApplicationListComponentDelegate) getActivity();
     }
 
     private void onApplicationSelected(String applicationId) {
         getPresenter().onApplicationSelected(applicationId);
-    }
-
-    public interface AvailableApplicationListPresenter{
-        public void onApplicationSelected(String appId);
     }
 
 }
