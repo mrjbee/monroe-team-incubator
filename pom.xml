@@ -10,7 +10,8 @@
 
 
     <modules>
-	<module>libdroid-module/logging</module>
+    	<module>libdroid-module/logging</module>
+        <module>libdroid-module/model-service</module>
     </modules>
     <properties>
           <maven.build.timestamp.format>yyMMdd_HHmm</maven.build.timestamp.format>
