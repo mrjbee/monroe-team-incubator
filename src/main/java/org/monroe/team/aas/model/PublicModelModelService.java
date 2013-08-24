@@ -3,12 +3,12 @@ package org.monroe.team.aas.model;
 import android.content.Context;
 import android.os.*;
 
-import org.monroe.team.aas.common.model.ModelService;
 import org.monroe.team.aas.ui.common.ListenerSupport;
-import org.monroe.team.aas.common.model.ModelServiceManager;
 import org.monroe.team.aas.ui.common.Logs;
 import org.monroe.team.aas.ui.common.command.ArgumentLessCommand;
 import org.monroe.team.aas.ui.common.command.ResultLessCommand;
+import org.monroe.team.libdroid.mservice.ModelService;
+import org.monroe.team.libdroid.mservice.ModelServiceManager;
 
 /**
  * User: MisterJBee

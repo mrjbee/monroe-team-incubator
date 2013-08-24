@@ -3,9 +3,7 @@ package org.monroe.team.aas.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.internal.view.SupportMenuItem;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.internal.view.menu.MenuItemImpl;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.CompoundButton;
@@ -15,7 +13,7 @@ import org.monroe.team.aas.R;
 import org.monroe.team.aas.model.PublicModelModelService;
 import org.monroe.team.aas.ui.common.Logs;
 import org.monroe.team.aas.ui.common.MilestoneDependedExecutionQueue;
-import org.monroe.team.aas.common.model.ModelServiceManager;
+import org.monroe.team.libdroid.mservice.ModelServiceManager;
 
 /**
  * User: MisterJBee

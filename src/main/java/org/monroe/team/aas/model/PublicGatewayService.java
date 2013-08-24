@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Binder;
 import android.support.v4.app.NotificationCompat;
 import org.monroe.team.aas.R;
-import org.monroe.team.aas.common.model.ModelService;
 import org.monroe.team.aas.ui.DashboardActivity;
+import org.monroe.team.libdroid.mservice.ModelService;
 
 /**
  * User: MisterJBee
