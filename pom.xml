@@ -10,7 +10,8 @@
     <name>Application Suite</name>
 
     <modules>
-        <module>modules/application</module>
+         <module>thirdparty-repos/libdroid</module>
+	 <module>modules/application</module>
     </modules>
 
 
