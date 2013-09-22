@@ -8,7 +8,7 @@
         <groupId>org.monroe.team.template</groupId>
         <artifactId>suite</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>../../</relativePath>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <groupId>org.monroe.team.template</groupId>
@@ -21,13 +21,17 @@
     <dependencies>
 
         <dependency>
-            <groupId>android</groupId>
-            <artifactId>android</artifactId>
+                <groupId>com.google.android</groupId>
+                <artifactId>android</artifactId>
         </dependency>
 
         <dependency>
             <groupId>android.support</groupId>
             <artifactId>compatibility-v4</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.monroe.team</groupId>
+            <artifactId>libdroid-test-commons</artifactId>
         </dependency>
 
     </dependencies>
