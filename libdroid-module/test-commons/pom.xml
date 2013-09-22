@@ -4,11 +4,11 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.monroe.team</groupId>
-    <artifactId>libdroid-model-service</artifactId>
+    <artifactId>libdroid-test-commons</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     
- 	<name>Libdroid Model Service Module</name>
+ 	<name>Libdroid Testing Commons Module</name>
 
     <parent>
         <groupId>org.monroe.team</groupId>
@@ -19,9 +19,22 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.monroe.team</groupId>
-            <artifactId>libdroid-loggin</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <version>1.5</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito</artifactId>
+            <version>1.5</version>
+            <scope>compile</scope>
+        </dependency>
+       <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.9</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

@@ -10,6 +10,7 @@
 
 
     <modules>
+        <module>libdroid-module/test-commons</module>
     	<module>libdroid-module/logging</module>
         <module>libdroid-module/model-service</module>
     </modules>
@@ -20,10 +21,23 @@
 
     <dependencies>
         <dependency>
-            <groupId>android</groupId>
+            <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
-            <version>2.1_r3</version>
+            <version>2.1.2</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
