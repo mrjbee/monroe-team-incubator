@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.monroe.team.libdroid.testing.TSupport;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 
 /**
  * User: MisterJBee
@@ -12,14 +11,13 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-@PrepareForTest(MotionEvent.class)
 public class SimpleTest extends TSupport{
 
     @Mock MotionEvent eventMock;
 
     @Test public void shouldPrintSomething(){
-        Mockito.when(eventMock.getAction()).thenReturn(1);
-        should(1 == eventMock.getAction());
+        when(eventMock.getAction()).thenReturn(1);
+        Log.w("TEST","Action should be 1 = "+eventMock.getAction());
         Mockito.verify(eventMock).getAction();
     }
 }
