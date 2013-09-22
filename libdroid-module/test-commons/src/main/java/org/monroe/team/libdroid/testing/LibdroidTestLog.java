@@ -1,4 +1,7 @@
-package android.util;
+package org.monroe.team.libdroid.testing;
+
+import android.util.Log;
+import org.robolectric.annotation.Implements;
 
 /**
  * User: MisterJBee
@@ -6,8 +9,8 @@ package android.util;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-public class Log {
-
+@Implements(Log.class)
+public class LibdroidTestLog {
 
     private static int println(String level, String tag, String msg, Throwable tr) {
         System.out.println(level+"   "+tag+": "+msg);

@@ -8,7 +8,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.stubbing.OngoingStubbing;
+import org.robolectric.RobolectricTestRunner;
 
 import java.lang.reflect.Field;
 
@@ -18,7 +19,7 @@ import java.lang.reflect.Field;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-@RunWith(PowerMockRunner.class)
+@RunWith(LibdroidTestRunner.class)
 public abstract class TSupport {
 
     public void shouldFail() {
@@ -44,8 +45,7 @@ public abstract class TSupport {
     }
 
     @Before public void setupMocks(){
-        //Not needed as PowerMock excellent integrated with Mockito
-        //MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.initMocks(this);
     }
 
     @After public void verifyAll(){
@@ -84,5 +84,12 @@ public abstract class TSupport {
         Assert.fail(sayWhy);
     }
 
+    public static <T> OngoingStubbing<T> when(T methodCall) {
+        return Mockito.when(methodCall);
+    }
+
+    public static <T> T verify(T mock) {
+        return Mockito.verify(mock);
+    }
 
 }
