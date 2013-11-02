@@ -1,7 +1,10 @@
-package org.monroe.team.app.db.schema;
+package org.monroe.team.utils;
 
 import de.greenrobot.daogenerator.DaoGenerator;
 import de.greenrobot.daogenerator.Schema;
+import org.monroe.team.app.db.SchemaDefinition;
+
+import java.io.File;
 
 /**
  * User: MisterJBee
@@ -11,9 +14,13 @@ import de.greenrobot.daogenerator.Schema;
  */
 public class SchemaGenerator {
 
+
+
     public static void main(String[] args) throws Exception {
+        String generationPath = "db-src";
         Schema schema = new SchemaDefinition().generate();
-        new DaoGenerator().generateAll(schema, "gen");
+        new File(generationPath).mkdirs();
+        new DaoGenerator().generateAll(schema, generationPath);
     }
 
 }

@@ -1,4 +1,4 @@
-package org.monroe.team.app.db.schema;
+package org.monroe.team.app.db;
 
 import de.greenrobot.daogenerator.Entity;
 import de.greenrobot.daogenerator.Schema;
@@ -11,7 +11,7 @@ import de.greenrobot.daogenerator.Schema;
  */
 public class SchemaDefinition {
     public Schema generate() {
-        Schema schema = new Schema(1, "test.code.gen");
+        Schema schema = new Schema(1, this.getClass().getPackage().getName());
         Entity note = schema.addEntity("Note");
         note.addIdProperty();
         note.addStringProperty("text").notNull();
