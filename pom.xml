@@ -12,7 +12,6 @@
     <modules>
         <module>libdroid-module/test-commons</module>
         <module>libdroid-module/greenDao-integration</module>
-        <module>libdroid-module/greenDao-generator</module>
         <module>libdroid-module/logging</module>
         <module>libdroid-module/model-service</module>
     </modules>
