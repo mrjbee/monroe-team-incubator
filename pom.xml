@@ -11,6 +11,7 @@
 
     <modules>
         <module>thirdparty-repos/libdroid</module>
+        <module>modules/application-db</module>
 	    <module>modules/application</module>
     </modules>
 
