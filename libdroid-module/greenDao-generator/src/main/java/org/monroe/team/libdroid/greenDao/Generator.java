@@ -21,9 +21,10 @@ public class Generator {
 
     public static void main(String[] args) throws Exception {
         List<DBSchemaDefinition> schemaDefinitions = collectSchemas();
-        String generationPath = getPojoPath();
+        String generationPath = getPojoPath(args);
         new File(generationPath).mkdirs();
         for (DBSchemaDefinition schemaDefinition : schemaDefinitions) {
+            System.out.println("Processing schema class = " + schemaDefinition.getClass().getName() + "...");
             new DaoGenerator().generateAll(schemaDefinition.generate(),
                     generationPath);
         }
@@ -53,8 +54,8 @@ public class Generator {
         return answer;
     }
 
-    private static String getPojoPath() {
-        return "db-pojo-src";
+    private static String getPojoPath(String[] args) {
+        return args[0];
     }
 
 }
