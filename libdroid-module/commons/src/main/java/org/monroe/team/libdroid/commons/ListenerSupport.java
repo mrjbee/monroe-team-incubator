@@ -26,4 +26,8 @@ public class ListenerSupport <ListenerType> {
             notifyCommand.call(mList.get(i));
         }
     }
+
+    public void removeAll() {
+        mList.clear();
+    }
 }

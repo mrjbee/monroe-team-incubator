@@ -2,6 +2,8 @@ package org.monroe.team.libdroid.mservice;
 
 import android.app.Service;
 import android.content.Context;
+import org.monroe.team.libdroid.commons.Closure;
+import org.monroe.team.libdroid.commons.ListenerSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,8 @@ public abstract class ModelWrapper <ModelApi> implements ModelProvider.ModelProv
     private final ModelProvider<ModelApi> mModelProvider;
     private final ModelAwaitingQueue mAwaitingQueue;
     private ModelApi mModelApi;
+    private final ListenerSupport<ModelListener<ModelWrapper<ModelApi>>> mListenerSupport =
+            new ListenerSupport<ModelListener<ModelWrapper<ModelApi>>>();
 
     public ModelWrapper(Context currentContext, Class<? extends Service> modelServiceClass) {
         mCurrentContext = currentContext;
@@ -47,11 +51,38 @@ public abstract class ModelWrapper <ModelApi> implements ModelProvider.ModelProv
     final public void onObtain(ModelApi modelApi) {
         mModelApi = modelApi;
         mAwaitingQueue.onModelObtained();
+        mListenerSupport.notify(new Closure<Void, ModelListener<ModelWrapper<ModelApi>>>() {
+            @Override
+            public Void call(ModelListener<ModelWrapper<ModelApi>> in) {
+                in.onModelObtain(ModelWrapper.this);
+                return null;
+            }
+        });
     }
 
     @Override
     final public void onRelease(ModelApi modelApi) {
         modelApi = null;
+        mListenerSupport.notify(new Closure<Void, ModelListener<ModelWrapper<ModelApi>>>() {
+            @Override
+            public Void call(ModelListener<ModelWrapper<ModelApi>> in) {
+                in.onModelRelease(ModelWrapper.this);
+                return null;
+            }
+        });
+    }
+
+    final public void addListener(ModelListener<ModelWrapper<ModelApi>> listener){
+        mListenerSupport.add(listener);
+    }
+
+
+    final public boolean deleteListener(ModelListener<ModelWrapper<ModelApi>> listener){
+        return mListenerSupport.remove(listener);
+    }
+
+    final public void deleteAll(){
+        mListenerSupport.removeAll();
     }
 
     protected ModelApi getModel() {
@@ -78,5 +109,10 @@ public abstract class ModelWrapper <ModelApi> implements ModelProvider.ModelProv
             }
             mAwaitingTasksList.clear();
         }
+    }
+
+    public static interface ModelListener<ModelWrapperType extends ModelWrapper> {
+        public void onModelObtain(ModelWrapperType modelWrapper);
+        public void onModelRelease(ModelWrapperType modelWrapper);
     }
 }
