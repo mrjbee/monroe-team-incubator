@@ -115,4 +115,9 @@ public abstract class ModelWrapper <ModelApi> implements ModelProvider.ModelProv
         public void onModelObtain(ModelWrapperType modelWrapper);
         public void onModelRelease(ModelWrapperType modelWrapper);
     }
+
+    public static abstract class ModelListenerAdapter<ModelWrapperType extends ModelWrapper> implements ModelListener<ModelWrapperType> {
+        public void onModelObtain(ModelWrapperType modelWrapper){};
+        public void onModelRelease(ModelWrapperType modelWrapper){};
+    }
 }
