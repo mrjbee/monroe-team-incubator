@@ -17,40 +17,40 @@ import java.util.List;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-public class ModelClient<ClientAwareInterface> {
+public class ModelProvider<ModelApi> {
 
-    private ModelServiceClient<ClientAwareInterface> mOwner;
+    private ModelProviderOwner<ModelApi> mOwner;
     private final Class<? extends Service> mServiceClass;
     private final ServiceConnection mServiceConnection = new ServiceConnection();
-    private ClientAwareInterface mClientAwareInterface;
+    private ModelApi mModelApi;
     private State mState = State.RELEASED;
     private final Logger mLog = LoggerSetup.createLogger("ms-manager").extend(getClass().getSimpleName());
 
 
-    public ModelClient(ModelServiceClient<ClientAwareInterface> mOwner, Class<? extends Service> mServiceClass) {
+    public ModelProvider(ModelProviderOwner<ModelApi> mOwner, Class<? extends Service> mServiceClass) {
         this.mOwner = mOwner;
         this.mServiceClass = mServiceClass;
     }
 
     private synchronized void uninstallServiceBinder() {
-        ClientAwareInterface model = mClientAwareInterface;
+        ModelApi model = mModelApi;
         mState = State.RELEASED;
-        mClientAwareInterface = null;
+        mModelApi = null;
         if(mOwner != null){
             mOwner.onRelease(model);
         }
     }
 
-    private synchronized void installServiceBinder(ClientAwareInterface clientAwareInterface) {
+    private synchronized void installServiceBinder(ModelApi modelApi) {
 
         if(mState == State.RELEASED || mState == State.RELEASING){
            return;
         }
 
-        mClientAwareInterface = clientAwareInterface;
+        mModelApi = modelApi;
         mState = State.OBTAINED;
         if (mOwner != null){
-            mOwner.onObtain(mClientAwareInterface);
+            mOwner.onObtain(mModelApi);
         }
     }
 
@@ -75,9 +75,9 @@ public class ModelClient<ClientAwareInterface> {
         mOwner.getContext().unbindService(mServiceConnection);
     }
 
-    public synchronized ClientAwareInterface get(){
+    public synchronized ModelApi get(){
       if (mState != State.OBTAINED) throw new IllegalStateException("Invalid state = "+mState);
-      return mClientAwareInterface;
+      return mModelApi;
     }
 
     public synchronized State getState() {
@@ -108,7 +108,7 @@ public class ModelClient<ClientAwareInterface> {
 
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            installServiceBinder((ClientAwareInterface) iBinder);
+            installServiceBinder((ModelApi) iBinder);
         }
 
         @Override
@@ -117,7 +117,7 @@ public class ModelClient<ClientAwareInterface> {
         }
     }
 
-    public static interface ModelServiceClient<ClientInterface>{
+    public static interface ModelProviderOwner<ClientInterface>{
         Context getContext();
         public void onObtain(ClientInterface clientInterface);
         public void onRelease(ClientInterface clientInterface);
