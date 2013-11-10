@@ -34,11 +34,11 @@ final public class Should {
         throw new UnsupportedOperationException(msg);
     }
 
-    public static void reThrow(String msg, Exception e){
+    public static Object reThrow(String msg, Exception e){
         throw new RuntimeException(msg, e);
     }
 
-    public static void reThrow(String msg, Logger logger, Exception e){
+    public static Object reThrow(String msg, Logger logger, Exception e){
         logger.e(e, msg);
         throw new RuntimeException(msg, e);
     }
