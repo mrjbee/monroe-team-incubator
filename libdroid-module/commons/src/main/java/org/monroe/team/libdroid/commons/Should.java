@@ -1,5 +1,6 @@
 package org.monroe.team.libdroid.commons;
 
+import android.os.Looper;
 import org.monroe.team.libdroid.logging.Logger;
 
 import java.util.Arrays;
@@ -44,4 +45,9 @@ final public class Should {
     }
 
 
+    public static void runOnUI() {
+        if (Looper.getMainLooper().getThread() != Thread.currentThread()) {
+            throw new RuntimeException("Should run on UI");
+        }
+    }
 }
