@@ -34,6 +34,11 @@ public abstract class ModelWrapper <ModelApi> implements ModelProvider.ModelProv
        initializeImpl();
     }
 
+    final public void reInitialize(){
+       if (mModelProvider.isObtained()) return;
+       mModelProvider.obtain();
+    }
+
     final public void destroy(){
         destroyImpl();
         mModelProvider.releaseAndDestroy();
