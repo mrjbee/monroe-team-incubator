@@ -18,7 +18,7 @@ public abstract class ModelWrapper <ModelApi> implements ModelProvider.ModelProv
 
     private final Context mCurrentContext;
     private final ModelProvider<ModelApi> mModelProvider;
-    private final ModelAwaitingQueue mAwaitingQueue;
+    private ModelAwaitingQueue mAwaitingQueue;
     private ModelApi mModelApi;
     private final ListenerSupport<ModelListener<ModelWrapper<ModelApi>>> mListenerSupport =
             new ListenerSupport<ModelListener<ModelWrapper<ModelApi>>>();
@@ -79,6 +79,7 @@ public abstract class ModelWrapper <ModelApi> implements ModelProvider.ModelProv
                 return null;
             }
         });
+        mAwaitingQueue = new ModelAwaitingQueue();
     }
 
     final public void addListener(ModelListener<ModelWrapper<ModelApi>> listener){
