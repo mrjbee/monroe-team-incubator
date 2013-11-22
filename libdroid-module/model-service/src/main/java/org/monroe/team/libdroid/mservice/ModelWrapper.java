@@ -71,7 +71,7 @@ public abstract class ModelWrapper <ModelApi> implements ModelProvider.ModelProv
 
     @Override
     final public void onRelease(ModelApi modelApi) {
-        modelApi = null;
+        mModelApi = null;
         mListenerSupport.notify(new Closure<Void, ModelListener<ModelWrapper<ModelApi>>>() {
             @Override
             public Void call(ModelListener<ModelWrapper<ModelApi>> in) {
