@@ -29,6 +29,10 @@ public abstract class ModelWrapper <ModelApi> implements ModelProvider.ModelProv
         mAwaitingQueue = new ModelAwaitingQueue();
     }
 
+    final public void postToModel(Runnable runnable){
+         mAwaitingQueue.publish(runnable);
+    }
+
     final public void initialize(){
        mModelProvider.obtain();
        initializeImpl();
@@ -55,7 +59,6 @@ public abstract class ModelWrapper <ModelApi> implements ModelProvider.ModelProv
     @Override
     final public void onObtain(ModelApi modelApi) {
         mModelApi = modelApi;
-        mAwaitingQueue.onModelObtained();
         mListenerSupport.notify(new Closure<Void, ModelListener<ModelWrapper<ModelApi>>>() {
             @Override
             public Void call(ModelListener<ModelWrapper<ModelApi>> in) {
@@ -63,6 +66,7 @@ public abstract class ModelWrapper <ModelApi> implements ModelProvider.ModelProv
                 return null;
             }
         });
+        mAwaitingQueue.onModelObtained();
     }
 
     @Override
@@ -100,7 +104,7 @@ public abstract class ModelWrapper <ModelApi> implements ModelProvider.ModelProv
         private boolean mIsModelObtained = false;
 
         private synchronized void publish(Runnable runnable){
-            if (mIsModelObtained){
+            if (!mIsModelObtained){
                 mAwaitingTasksList.add(runnable);
             } else {
                 runnable.run();
