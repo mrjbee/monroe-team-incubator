@@ -54,4 +54,8 @@ final public class Should {
     public static RuntimeException failsHere(String s) {
         return new RuntimeException(s);
     }
+
+    public static RuntimeException failsHere(String s, Exception e) {
+        return new RuntimeException(s,e);
+    }
 }
