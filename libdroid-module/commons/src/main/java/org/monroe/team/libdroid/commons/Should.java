@@ -50,4 +50,8 @@ final public class Should {
             throw new RuntimeException("Should run on UI");
         }
     }
+
+    public static RuntimeException failsHere(String s) {
+        return new RuntimeException(s);
+    }
 }
