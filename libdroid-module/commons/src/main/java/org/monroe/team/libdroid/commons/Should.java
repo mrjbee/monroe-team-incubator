@@ -20,6 +20,10 @@ final public class Should {
         if (!value) throw new RuntimeException(msg);
     }
 
+    public static void beNotNull(Object ... objects){
+      beNotNull("Not allowed.", objects);
+    }
+
     public static void beNotNull(String msg, Object ... objects){
         List<Object> list = Arrays.asList(objects);
         for (Object obj : list) {
@@ -52,7 +56,7 @@ final public class Should {
     }
 
     public static RuntimeException failsHere(String s) {
-        return new RuntimeException(s);
+        throw new RuntimeException(s);
     }
 
     public static RuntimeException failsHere(String s, Exception e) {
