@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="org.monroe.team.app" android:versionCode="1"
+          package="org.monroe.team.notification.bridge" android:versionCode="1"
           android:versionName="1.0-SNAPSHOT">
 
   <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="8"/>
     <application android:theme="@android:style/Theme.Holo.Light.NoActionBar"
-        android:name=".TemplateApplication">
+        android:name="org.monroe.team.notification.bridge.android.NotificationBridgeApplication">
 
     <activity
-            android:name=".TemplateActivity"
+            android:name="org.monroe.team.notification.bridge.android.SettingsActivity"
             android:launchMode="singleInstance"
-            android:label="Android Application Server">
+            android:label="Notification Bridge">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />

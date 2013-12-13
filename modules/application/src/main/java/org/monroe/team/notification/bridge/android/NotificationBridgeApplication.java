@@ -1,4 +1,4 @@
-package org.monroe.team.app;
+package org.monroe.team.notification.bridge.android;
 
 import android.app.Application;
 
@@ -8,5 +8,5 @@ import android.app.Application;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-public class TemplateApplication extends Application {
+public class NotificationBridgeApplication extends Application {
 }

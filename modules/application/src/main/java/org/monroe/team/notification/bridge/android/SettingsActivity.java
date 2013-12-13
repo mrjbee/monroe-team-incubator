@@ -1,9 +1,10 @@
-package org.monroe.team.app;
+package org.monroe.team.notification.bridge.android;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import org.monroe.team.notification.bridge.R;
 
 /**
  * User: MisterJBee
@@ -11,7 +12,7 @@ import android.preference.PreferenceActivity;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-public class TemplateActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

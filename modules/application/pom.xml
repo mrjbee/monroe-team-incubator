@@ -5,18 +5,18 @@
 
 
     <parent>
-        <groupId>org.monroe.team.template</groupId>
+        <groupId>org.monroe.team.notification.bridge</groupId>
         <artifactId>suite</artifactId>
         <version>1.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <groupId>org.monroe.team.template</groupId>
+    <groupId>org.monroe.team.notification.bridge</groupId>
     <artifactId>application</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>apk</packaging>
     
-    <name>Test Application</name>
+    <name>Notification Bridge Application</name>
 
     <dependencies>
 
