@@ -5,8 +5,7 @@
             android:key="pref_service_active"
             android:title="Service Active"
             android:summary="Specify if service should be active"
-            android:enabled="true"
-            android:defaultValue="true" />
+            android:defaultValue="false" />
 
     <CheckBoxPreference
             android:key="pref_out_notif_enable"
@@ -21,7 +20,7 @@
                 android:key="pref_out_notif_bluetooth"
                 android:title="Use Bluetooth"
                 android:summary="Share incoming notification over bluetooth"
-                android:defaultValue="false"/>
+                android:defaultValue="true"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
