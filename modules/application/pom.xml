@@ -26,6 +26,10 @@
         </dependency>
         <dependency>
             <groupId>org.monroe.team</groupId>
+            <artifactId>libdroid-model-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.monroe.team</groupId>
             <artifactId>libdroid-commons</artifactId>
         </dependency>
         <dependency>
