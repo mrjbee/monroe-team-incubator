@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/test_color"
-    >
-</LinearLayout>
+    android:layout_height="fill_parent">
+
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Interact as a client"
+            android:id="@+id/cleintModeCaptionView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"/>
+
+    <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Client Interaction"
+            android:id="@+id/toggleButton"
+            android:layout_toRightOf="@+id/cleintModeCaptionView"
+            android:layout_alignTop="@+id/cleintModeCaptionView"/>
+
+
+
+</RelativeLayout>
