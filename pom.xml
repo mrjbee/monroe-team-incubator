@@ -24,11 +24,6 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>android.support</groupId>
-                <artifactId>compatibility-v4</artifactId>
-                <version>18</version>
-            </dependency>
-            <dependency>
                 <groupId>org.monroe.team</groupId>
                 <artifactId>libdroid-test-commons</artifactId>
                 <version>1.0-SNAPSHOT</version>

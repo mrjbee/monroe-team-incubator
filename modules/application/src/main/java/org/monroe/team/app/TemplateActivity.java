@@ -1,7 +1,7 @@
 package org.monroe.team.app;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 
 /**
  * User: MisterJBee
@@ -9,11 +9,9 @@ import android.support.v4.app.FragmentActivity;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-public class TemplateActivity extends FragmentActivity{
+public class TemplateActivity extends Activity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_layout);
     }
 }
