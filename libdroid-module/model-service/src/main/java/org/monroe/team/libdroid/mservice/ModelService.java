@@ -1,7 +1,10 @@
 package org.monroe.team.libdroid.mservice;
 
+import android.app.ActivityManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ServiceInfo;
 import android.os.Binder;
 import android.os.IBinder;
 import org.monroe.team.libdroid.commons.Should;
@@ -201,6 +204,11 @@ public abstract class ModelService <ModelClass> extends Service {
 
         @Override
         public synchronized void onClientUnbind(final ModelService owner) {
+
+            if (ServiceUtils.isServiceForeground(owner.getClass(), owner)){
+                return;
+            }
+
             mLastScheduledShutdownTask = mShutdownExecutor.submit(new Runnable() {
                 @Override
                 public void run() {

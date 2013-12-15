@@ -89,14 +89,7 @@ public class ModelProvider<ModelApi> {
     }
 
     public synchronized boolean isServiceRunning(){
-        final ActivityManager activityManager = (ActivityManager) mOwner.getContext().getSystemService(Context.ACTIVITY_SERVICE);
-        final List<ActivityManager.RunningServiceInfo> services = activityManager.getRunningServices(Integer.MAX_VALUE);
-        for (ActivityManager.RunningServiceInfo runningServiceInfo : services) {
-            if (runningServiceInfo.service.getClassName().equals(mServiceClass.getName())){
-                return runningServiceInfo.started;
-            }
-        }
-        return false;
+       return ServiceUtils.isServiceRunning(mServiceClass, mOwner.getContext());
     }
 
     public void releaseAndDestroy() {
