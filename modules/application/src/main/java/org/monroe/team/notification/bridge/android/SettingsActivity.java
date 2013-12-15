@@ -1,9 +1,13 @@
 package org.monroe.team.notification.bridge.android;
 
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.widget.Toast;
 import org.monroe.team.libdroid.commons.Should;
 import org.monroe.team.libdroid.commons.VoidClosure;
 import org.monroe.team.libdroid.mservice.ModelProvider;
@@ -21,10 +25,14 @@ public class SettingsActivity extends PreferenceActivity
                         implements SharedPreferences.OnSharedPreferenceChangeListener,
                         ModelProvider.ModelProviderOwner<NotificationBridgeManager>{
 
+    private final static int REQUEST_ENABLE_BT = Integer.MAX_VALUE;
+
     private Map<SettingAccessor<Boolean>, SettingAccessor<?>[]> mSettingAvailabilityMap = new HashMap<SettingAccessor<Boolean>, SettingAccessor<?>[]>();
     private Map<SettingAccessor<?>, VoidClosure<SharedPreferences>> mSettingAccessorActionMap = new HashMap<SettingAccessor<?>, VoidClosure<SharedPreferences>>();
     private ModelProvider<NotificationBridgeManager> mModelProvider;
     private NotificationBridgeManager mBridgeManager;
+    private Set<SettingAccessor<Boolean>> mUnsupportedSettingSet = new HashSet<SettingAccessor<Boolean>>(3);
+    private BluetoothAdapter mBluetoothAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +40,10 @@ public class SettingsActivity extends PreferenceActivity
         mModelProvider = new ModelProvider<NotificationBridgeManager>(this, NotificationBridgeService.class);
         mModelProvider.obtain();
         addPreferencesFromResource(R.xml.preferences);
+
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if(mBluetoothAdapter == null) mUnsupportedSettingSet.add(SettingAccessor.SHARE_OVER_BLUETOOTH);
+
         //Because of hierarchy involved it`s not recommend to make binding unions,
         //where one bind dst item involved depends on several src items
         bindSettingAvailability(SettingAccessor.SERVICE_ACTIVE, SettingAccessor.SHARE_NOTIFICATION);
@@ -48,6 +60,36 @@ public class SettingsActivity extends PreferenceActivity
                 }
             }
         });
+        bindSettingAction(SettingAccessor.SHARE_OVER_BLUETOOTH, new VoidClosure<SharedPreferences>() {
+            @Override
+            public void call(SharedPreferences in) {
+                boolean enable = SettingAccessor.SHARE_OVER_BLUETOOTH.getValue(in);
+                if (enable){
+                    if (!mBluetoothAdapter.isEnabled()) {
+                        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                        startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+                    } else {
+                        activateBluetooth();
+                    }
+                }
+            }
+        });
+    }
+
+    private void activateBluetooth() {
+        Toast.makeText(this,"Activate blue...", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_ENABLE_BT){
+            if (resultCode == RESULT_OK){
+                activateBluetooth();
+            } else if (resultCode == RESULT_CANCELED){
+                SettingAccessor.SHARE_OVER_BLUETOOTH.setValue(false, getPreferenceScreen());
+            }
+        }
     }
 
     private void checkAllAvailabilityBindings() {
@@ -81,7 +123,7 @@ public class SettingsActivity extends PreferenceActivity
         if (settingAccessors == null) return Collections.EMPTY_LIST;
         List<SettingAccessor<Boolean>> checkAlsoList = new ArrayList<SettingAccessor<Boolean>>();
         for (SettingAccessor<?> settingAccessor : settingAccessors) {
-            settingAccessor.setEnable(enable, getPreferenceScreen());
+             settingAccessor.setEnable(mUnsupportedSettingSet.contains(settingAccessor)? false: enable, getPreferenceScreen());
             if (settingAccessor.isType(Boolean.class)){
                 checkAlsoList.add((SettingAccessor<Boolean>) settingAccessor);
             }

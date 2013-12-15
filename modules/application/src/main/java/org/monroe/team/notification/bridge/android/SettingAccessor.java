@@ -1,6 +1,8 @@
 package org.monroe.team.notification.bridge.android;
 
 import android.content.SharedPreferences;
+import android.preference.CheckBoxPreference;
+import android.preference.Preference;
 import android.preference.PreferenceScreen;
 import org.monroe.team.libdroid.commons.Should;
 
@@ -8,7 +10,7 @@ public final class SettingAccessor<Type> {
 
     public static final SettingAccessor<Boolean> SERVICE_ACTIVE = new SettingAccessor<Boolean>("pref_service_active", false);
     public static final SettingAccessor<Boolean> SHARE_NOTIFICATION = new SettingAccessor<Boolean>("pref_out_notif_enable", false);
-    public static final SettingAccessor<Boolean> SHARE_OVER_BLUETOOTH = new SettingAccessor<Boolean>("pref_out_notif_bluetooth", true);
+    public static final SettingAccessor<Boolean> SHARE_OVER_BLUETOOTH = new SettingAccessor<Boolean>("pref_out_notif_bluetooth", false);
     public static final SettingAccessor<?>[] ALL_SETTINGS = new SettingAccessor[]{SERVICE_ACTIVE,SHARE_NOTIFICATION,SHARE_OVER_BLUETOOTH};
 
 
@@ -76,5 +78,25 @@ public final class SettingAccessor<Type> {
 
     public boolean isType(Class<?> clazz) {
         return clazz == mDefaultValue.getClass();
+    }
+
+    public void setValue(Type value, PreferenceScreen preferenceScreen) {
+        Preference preference = preferenceScreen.findPreference(mKey);
+        Should.beNotNull(value);
+        if(mDefaultValue instanceof Boolean){
+            CheckBoxPreference checkBoxPreference = (CheckBoxPreference) preference;
+            checkBoxPreference.setChecked((Boolean) value);
+            return;
+        }
+        throw Should.failsHere("Unsupported yet type = "+mDefaultValue.getClass());
+    }
+
+    public void setValue(Type value, SharedPreferences in) {
+        Should.beNotNull(value);
+        if(mDefaultValue instanceof Boolean){
+            in.edit().putBoolean(mKey, (Boolean)value);
+            return;
+        }
+        throw Should.failsHere("Unsupported yet type = "+mDefaultValue.getClass());
     }
 }

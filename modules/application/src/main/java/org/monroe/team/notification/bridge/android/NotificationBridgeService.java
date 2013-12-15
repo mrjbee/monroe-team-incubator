@@ -8,6 +8,8 @@ import android.support.v4.app.NotificationCompat;
 import org.monroe.team.libdroid.mservice.ModelService;
 import org.monroe.team.notification.bridge.R;
 
+import java.util.List;
+
 public class NotificationBridgeService extends ModelService<NotificationBridgeManager> {
 
     public NotificationBridgeService() {
@@ -42,9 +44,11 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
     private final static class NotificationBridgeManagerImpl extends Binder implements NotificationBridgeManager {
 
         private final NotificationBridgeService mService;
+        private final BluetoothBridge mBluetoothBridge;
 
         private NotificationBridgeManagerImpl(NotificationBridgeService service) {
             mService = service;
+            mBluetoothBridge = new BluetoothBridge(service);
         }
 
         @Override

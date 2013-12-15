@@ -20,7 +20,7 @@
                 android:key="pref_out_notif_bluetooth"
                 android:title="Use Bluetooth"
                 android:summary="Share incoming notification over bluetooth"
-                android:defaultValue="true"/>
+                android:defaultValue="false"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
