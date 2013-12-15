@@ -9,4 +9,5 @@ package org.monroe.team.notification.bridge.android;
 public interface NotificationBridgeManager {
     void activate();
     void disable();
+    void onSettingChange(SettingAccessor<?> accessor);
 }

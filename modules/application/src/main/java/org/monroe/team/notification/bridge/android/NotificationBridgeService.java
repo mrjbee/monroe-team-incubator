@@ -56,6 +56,11 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
         public void disable() {
             mService.disableForegroundMode();
         }
+
+        @Override
+        public void onSettingChange(SettingAccessor<?> accessor) {
+
+        }
     }
 
 }

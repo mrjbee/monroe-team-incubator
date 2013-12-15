@@ -104,15 +104,20 @@ public class SettingsActivity extends PreferenceActivity
         SettingAccessor<?> accessor = SettingAccessor.getByKey(key);
 
         if (accessor != null && accessor.isType(Boolean.class)){
-         checkAvailabilityBindingFor((SettingAccessor<Boolean>) accessor);
+            checkAvailabilityBindingFor((SettingAccessor<Boolean>) accessor);
         }
 
         if (accessor != null){
             VoidClosure<SharedPreferences> action = mSettingAccessorActionMap.get(accessor);
             if (action != null){
                 action.call(sharedPreferences);
+            } else {
+                mBridgeManager.onSettingChange(accessor);
             }
+        } else {
+           Should.fails("Unknown setting = "+key);
         }
+
     }
 
     @Override
