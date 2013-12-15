@@ -34,4 +34,12 @@ public class BluetoothGateway {
     public boolean isBluetoothEnabled() {
         return mBluetoothAdapter.isEnabled();
     }
+
+    public void activateServer() {
+        mBluetoothServer.openServerConnection();
+    }
+
+    public void deactivateServer() {
+        mBluetoothServer.closeServerConnection();
+    }
 }

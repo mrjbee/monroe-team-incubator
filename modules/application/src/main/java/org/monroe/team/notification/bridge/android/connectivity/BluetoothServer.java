@@ -22,25 +22,28 @@ class BluetoothServer {
         mDeviceAdapter = deviceAdapter;
     }
 
-    public void openServerConnection(){
+    public synchronized void openServerConnection(){
         mExecutionThread = new BluetoothServerThread();
         mExecutionThread.start();
     }
 
-    public void closeServerConnection(){
+    public synchronized void closeServerConnection(){
         if(mExecutionThread != null){
             mExecutionThread.closeConnection();
         }
     }
 
     private final class BluetoothServerThread extends Thread {
+
+        private BluetoothServerSocket serverSocket;
+
         private BluetoothServerThread() {
             super("BLT_server");
         }
 
         @Override
         public void run() {
-            BluetoothServerSocket serverSocket = null;
+            serverSocket = null;
             while (!isInterrupted()){
                 if(serverSocket == null){
                     try {
@@ -58,17 +61,22 @@ class BluetoothServer {
                     }
                 }
             }
+        }
+
+        private void safeServerSocketClosing() {
             if(serverSocket != null){
                 try {
                     serverSocket.close();
-                } catch (IOException e) {
+                 } catch (IOException e) {
                     Debug.e(e, "Something bad due closing bluetooth server");
                 }
+                serverSocket = null;
             }
         }
 
         public void closeConnection() {
             this.interrupt();
+            safeServerSocketClosing();
         }
     }
 
