@@ -17,6 +17,7 @@ class BluetoothServer {
 
     private BluetoothServerThread mExecutionThread;
     private final BluetoothAdapter mDeviceAdapter;
+    private OnClientListener mOnClientListener;
 
     BluetoothServer(BluetoothAdapter deviceAdapter) {
         mDeviceAdapter = deviceAdapter;
@@ -31,6 +32,14 @@ class BluetoothServer {
         if(mExecutionThread != null){
             mExecutionThread.closeConnection();
         }
+    }
+
+    public OnClientListener getOnClientListener() {
+        return mOnClientListener;
+    }
+
+    public void setOnClientListener(OnClientListener onClientListener) {
+        mOnClientListener = onClientListener;
     }
 
     private final class BluetoothServerThread extends Thread {
@@ -56,6 +65,12 @@ class BluetoothServer {
                 if (serverSocket != null){
                     try {
                         BluetoothSocket clientSocket = serverSocket.accept();
+                        if (mOnClientListener != null) {
+                            mOnClientListener.onClient(clientSocket);
+                        } else {
+                            clientSocket.close();
+                        }
+
                     } catch (IOException e) {
                         Debug.e(e, "Something bad with bluetooth during awaiting");
                     }
@@ -78,6 +93,10 @@ class BluetoothServer {
             this.interrupt();
             safeServerSocketClosing();
         }
+    }
+
+    public static interface OnClientListener{
+        public void onClient(BluetoothSocket clientSocket);
     }
 
 }

@@ -1,6 +1,7 @@
 package org.monroe.team.notification.bridge.android.connectivity;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 
 import java.util.UUID;
@@ -11,7 +12,7 @@ import java.util.UUID;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-public class BluetoothGateway {
+public class BluetoothGateway implements BluetoothServer.OnClientListener {
 
     static final String SERVICE_NAME = "NotificationBridgeService";
     static final String SERVICE_UUID_PLAIN = "1e3e867b-aa65-4dc0-a400-6bc4762ef15e";
@@ -19,11 +20,15 @@ public class BluetoothGateway {
 
     private final BluetoothAdapter mBluetoothAdapter;
     private final BluetoothServer mBluetoothServer;
+    private final BluetoothClientPool mBluetoothClientPool;
+
     private boolean outActivated = false;
 
     public BluetoothGateway(Context context) {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         mBluetoothServer = new BluetoothServer(mBluetoothAdapter);
+        mBluetoothServer.setOnClientListener(this);
+        mBluetoothClientPool = new BluetoothClientPool();
     }
 
     public boolean isSupported() {
@@ -48,5 +53,10 @@ public class BluetoothGateway {
 
     public void deactivateOutgoing() {
        outActivated = false;
+    }
+
+    @Override
+    public void onClient(BluetoothSocket clientSocket) {
+        BluetoothClient client = mBluetoothClientPool.getForIncomingClient(clientSocket);
     }
 }
