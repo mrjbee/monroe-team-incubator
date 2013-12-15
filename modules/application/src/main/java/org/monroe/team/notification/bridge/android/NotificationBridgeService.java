@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Binder;
+import android.support.v4.app.NotificationCompat;
 import org.monroe.team.libdroid.mservice.ModelService;
 import org.monroe.team.notification.bridge.R;
 
@@ -25,7 +26,7 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
-        startForeground(12345, new Notification.Builder(this)
+        startForeground(12345, new NotificationCompat.Builder(this)
                 .setContentTitle("Title")
                 .setContentInfo("Info")
                 .setContentText("Text")
