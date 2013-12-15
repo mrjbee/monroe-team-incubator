@@ -1,14 +1,11 @@
 package org.monroe.team.notification.bridge.android;
 
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Binder;
 import android.support.v4.app.NotificationCompat;
 import org.monroe.team.libdroid.mservice.ModelService;
 import org.monroe.team.notification.bridge.R;
-
-import java.util.List;
 
 public class NotificationBridgeService extends ModelService<NotificationBridgeManager> {
 
@@ -64,6 +61,16 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
         @Override
         public void onSettingChange(SettingAccessor<?> accessor) {
 
+        }
+
+        @Override
+        public void activateBluetooth() {
+            mBluetoothBridge.setEnable(true);
+        }
+
+        @Override
+        public void deactivateBluetooth() {
+            mBluetoothBridge.setEnable(false);
         }
     }
 

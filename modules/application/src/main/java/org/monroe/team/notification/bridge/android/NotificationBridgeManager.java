@@ -10,4 +10,8 @@ public interface NotificationBridgeManager {
     void activate();
     void disable();
     void onSettingChange(SettingAccessor<?> accessor);
+
+    void activateBluetooth();
+
+    void deactivateBluetooth();
 }

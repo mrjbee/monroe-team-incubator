@@ -69,23 +69,22 @@ public class SettingsActivity extends PreferenceActivity
                         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                         startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
                     } else {
-                        activateBluetooth();
+                        mBridgeManager.activateBluetooth();
                     }
+                } else {
+                    mBridgeManager.deactivateBluetooth();
                 }
             }
         });
     }
 
-    private void activateBluetooth() {
-        Toast.makeText(this,"Activate blue...", Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_ENABLE_BT){
             if (resultCode == RESULT_OK){
-                activateBluetooth();
+                mBridgeManager.activateBluetooth();
             } else if (resultCode == RESULT_CANCELED){
                 SettingAccessor.SHARE_OVER_BLUETOOTH.setValue(false, getPreferenceScreen());
             }
