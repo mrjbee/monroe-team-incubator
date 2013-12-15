@@ -2,10 +2,19 @@ package org.monroe.team.libdroid.mservice;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.IBinder;
+import org.monroe.team.libdroid.commons.Should;
 import org.monroe.team.libdroid.logging.Logger;
 import org.monroe.team.libdroid.logging.LoggerSetup;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -91,7 +100,7 @@ public abstract class ModelService <ModelClass> extends Service {
         return START_NOT_STICKY;
     }
 
-    protected void onFirstStart(){};
+    protected void onFirstStart(){}
 
 
     @Override
@@ -100,6 +109,50 @@ public abstract class ModelService <ModelClass> extends Service {
         super.onDestroy();
         if (mModelInstance instanceof ServiceDestroyAware){
             ((ServiceDestroyAware) mModelInstance).destroy();
+        }
+    }
+
+    public ModelClass createBinderProxy(ModelClass model){
+       return (ModelClass) Proxy.newProxyInstance(
+               this.getClassLoader(),
+               new Class<?>[]{model.getClass(), IBinder.class},
+               new DynamicInvocationHandler(model));
+    }
+
+    private static class DynamicInvocationHandler implements InvocationHandler{
+
+        private final IBinder mBinder = new Binder();
+        private final Object mModel;
+
+        private DynamicInvocationHandler(Object model) {
+            mModel = model;
+        }
+
+        private String generateMethodId(Method method) {
+            return method.getName()+":"+method.getParameterTypes().length;
+        }
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            if(isMethodOf(mModel, method)){
+               return method.invoke(mModel, args);
+            }
+
+            if(isMethodOf(mBinder, method)){
+                return method.invoke(mBinder, args);
+            }
+
+            throw Should.failsHere("Couldn`t find implementation for method = "+method);
+        }
+
+        private boolean isMethodOf(Object objectToExplore, Method method) {
+            Method[] methods = objectToExplore.getClass().getMethods();
+            for (Method methodToProbe : methods) {
+                if (methodToProbe == method){
+                    return true;
+                }
+            }
+            return false;
         }
     }
 
