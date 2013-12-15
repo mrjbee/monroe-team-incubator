@@ -11,9 +11,9 @@ public interface NotificationBridgeManager {
     void disable();
     void onSettingChange(SettingAccessor<?> accessor);
 
-    void activateBluetooth();
+    void activateBluetoothForOutgoings();
 
-    void deactivateBluetooth();
+    void deactivateBluetoothForOutGoings();
 
     boolean isBluetoothGatewayEnabled();
 

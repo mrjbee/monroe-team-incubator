@@ -19,13 +19,12 @@ public class BluetoothGateway {
 
     private final BluetoothAdapter mBluetoothAdapter;
     private final BluetoothServer mBluetoothServer;
+    private boolean outActivated = false;
 
     public BluetoothGateway(Context context) {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         mBluetoothServer = new BluetoothServer(mBluetoothAdapter);
     }
-
-
 
     public boolean isSupported() {
         return mBluetoothAdapter != null;
@@ -35,11 +34,19 @@ public class BluetoothGateway {
         return mBluetoothAdapter.isEnabled();
     }
 
-    public void activateServer() {
+    public void activateIncoming() {
         mBluetoothServer.openServerConnection();
     }
 
-    public void deactivateServer() {
+    public void deactivateIncoming() {
         mBluetoothServer.closeServerConnection();
+    }
+
+    public void activateOutgoing() {
+       outActivated = true;
+    }
+
+    public void deactivateOutgoing() {
+       outActivated = false;
     }
 }

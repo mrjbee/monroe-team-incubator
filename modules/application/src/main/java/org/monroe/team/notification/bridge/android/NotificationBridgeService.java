@@ -81,18 +81,18 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
         }
 
         @Override
-        public void activateBluetooth() {
-
+        public void activateBluetoothForOutgoings() {
+            mBluetoothGateway.activateOutgoing();
         }
 
         @Override
-        public void deactivateBluetooth() {
-
+        public void deactivateBluetoothForOutGoings() {
+            mBluetoothGateway.deactivateOutgoing();
         }
 
         @Override
         public boolean isBluetoothGatewayEnabled() {
-            return mBluetoothGateway.isBluetoothEnabled();  //To change body of implemented methods use File | Settings | File Templates.
+            return mBluetoothGateway.isBluetoothEnabled();
         }
 
         @Override
@@ -102,12 +102,12 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
 
         @Override
         public void activateBluetoothForIncomings() {
-            mBluetoothGateway.activateServer();
+            mBluetoothGateway.activateIncoming();
         }
 
         @Override
         public void deactivateBluetoothForIncomings() {
-            mBluetoothGateway.deactivateServer();
+            mBluetoothGateway.deactivateIncoming();
         }
     }
 

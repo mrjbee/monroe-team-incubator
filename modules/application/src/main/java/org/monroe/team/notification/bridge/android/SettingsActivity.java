@@ -1,13 +1,11 @@
 package org.monroe.team.notification.bridge.android;
 
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.widget.Toast;
 import org.monroe.team.libdroid.commons.Should;
 import org.monroe.team.libdroid.commons.VoidClosure;
 import org.monroe.team.libdroid.mservice.ModelProvider;
@@ -71,10 +69,10 @@ public class SettingsActivity extends PreferenceActivity
                         startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
                         SettingAccessor.SHARE_OVER_BLUETOOTH.setValue(false, getPreferenceScreen());
                     } else {
-                        mBridgeManager.activateBluetooth();
+                        mBridgeManager.activateBluetoothForOutgoings();
                     }
                 } else {
-                    mBridgeManager.deactivateBluetooth();
+                    mBridgeManager.deactivateBluetoothForOutGoings();
                 }
             }
         });
