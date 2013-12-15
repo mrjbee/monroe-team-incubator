@@ -81,6 +81,7 @@ public class SettingsActivity extends PreferenceActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_ENABLE_BT){
             if (resultCode == RESULT_OK){
+                SettingAccessor.SHARE_OVER_BLUETOOTH.setValue(true, getPreferenceScreen());
                 mBridgeManager.activateBluetooth();
             } else if (resultCode == RESULT_CANCELED){
                 SettingAccessor.SHARE_OVER_BLUETOOTH.setValue(false, getPreferenceScreen());
@@ -189,6 +190,9 @@ public class SettingsActivity extends PreferenceActivity
         mBridgeManager = notificationBridgeManager;
         if (!mBridgeManager.isBluetoothGatewaySupported()){
             mUnsupportedSettingSet.add(SettingAccessor.SHARE_OVER_BLUETOOTH);
+        }
+        if (!mBridgeManager.isBluetoothGatewayEnabled()){
+            SettingAccessor.SHARE_OVER_BLUETOOTH.setValue(false, getPreferenceScreen());
         }
         SettingAccessor.SERVICE_ACTIVE.setEnable(true, getPreferenceScreen());
         checkAllAvailabilityBindings();

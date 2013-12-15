@@ -1,8 +1,11 @@
 package org.monroe.team.notification.bridge.android;
 
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Binder;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import org.monroe.team.libdroid.mservice.ModelService;
 import org.monroe.team.notification.bridge.R;
@@ -16,7 +19,9 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
 
     @Override
     protected NotificationBridgeManager createModelInstance() {
-        return new NotificationBridgeManagerImpl(this, getOwner().getBluetoothGateway());
+        NotificationBridgeManagerImpl bridgeManager = new NotificationBridgeManagerImpl(this, getOwner().getBluetoothGateway());
+        bridgeManager.initiate(this);
+        return bridgeManager;
     }
 
     private NotificationBridgeApplication getOwner(){
@@ -48,10 +53,16 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
         private final NotificationBridgeService mService;
         private final BluetoothGateway mBluetoothGateway;
 
-
         private NotificationBridgeManagerImpl(NotificationBridgeService service, BluetoothGateway bluetoothGateway) {
             mService = service;
             mBluetoothGateway = bluetoothGateway;
+        }
+
+        public void initiate(Context context){
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            if(SettingAccessor.SERVICE_ACTIVE.getValue(preferences)){
+                activate();
+            };
         }
 
         @Override
