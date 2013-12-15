@@ -42,8 +42,12 @@ public class SettingsActivity extends PreferenceActivity
 
         //Because of hierarchy involved it`s not recommend to make binding unions,
         //where one bind dst item involved depends on several src items
-        bindSettingAvailability(SettingAccessor.SERVICE_ACTIVE, SettingAccessor.SHARE_NOTIFICATION);
+        bindSettingAvailability(SettingAccessor.SERVICE_ACTIVE,
+                SettingAccessor.SHARE_NOTIFICATION,
+                SettingAccessor.ACCEPT_NOTIFICATION);
+
         bindSettingAvailability(SettingAccessor.SHARE_NOTIFICATION, SettingAccessor.SHARE_OVER_BLUETOOTH);
+        bindSettingAvailability(SettingAccessor.ACCEPT_NOTIFICATION, SettingAccessor.ACCEPT_OVER_BLUETOOTH);
 
         bindSettingAction(SettingAccessor.SERVICE_ACTIVE, new VoidClosure<SharedPreferences>() {
             @Override
@@ -56,6 +60,7 @@ public class SettingsActivity extends PreferenceActivity
                 }
             }
         });
+
         bindSettingAction(SettingAccessor.SHARE_OVER_BLUETOOTH, new VoidClosure<SharedPreferences>() {
             @Override
             public void call(SharedPreferences in) {
@@ -64,6 +69,7 @@ public class SettingsActivity extends PreferenceActivity
                     if (!mBridgeManager.isBluetoothGatewayEnabled()) {
                         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                         startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+                        SettingAccessor.SHARE_OVER_BLUETOOTH.setValue(false, getPreferenceScreen());
                     } else {
                         mBridgeManager.activateBluetooth();
                     }
@@ -72,22 +78,28 @@ public class SettingsActivity extends PreferenceActivity
                 }
             }
         });
+
+        bindSettingAction(SettingAccessor.ACCEPT_OVER_BLUETOOTH, new VoidClosure<SharedPreferences>() {
+            @Override
+            public void call(SharedPreferences in) {
+                boolean enable = SettingAccessor.ACCEPT_OVER_BLUETOOTH.getValue(in);
+                if (enable){
+                    if (!mBridgeManager.isBluetoothGatewayEnabled()) {
+                        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                        startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+                        SettingAccessor.ACCEPT_OVER_BLUETOOTH.setValue(false, getPreferenceScreen());
+                    } else {
+                        mBridgeManager.activateBluetoothForIncomings();
+                    }
+                } else {
+                    mBridgeManager.deactivateBluetoothForIncomings();
+                }
+            }
+        });
+
         SettingAccessor.SERVICE_ACTIVE.setEnable(false, getPreferenceScreen());
     }
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_ENABLE_BT){
-            if (resultCode == RESULT_OK){
-                SettingAccessor.SHARE_OVER_BLUETOOTH.setValue(true, getPreferenceScreen());
-                mBridgeManager.activateBluetooth();
-            } else if (resultCode == RESULT_CANCELED){
-                SettingAccessor.SHARE_OVER_BLUETOOTH.setValue(false, getPreferenceScreen());
-            }
-        }
-    }
 
     private void checkAllAvailabilityBindings() {
         for (SettingAccessor<Boolean> booleanSettingAccessor : mSettingAvailabilityMap.keySet()) {
@@ -190,9 +202,11 @@ public class SettingsActivity extends PreferenceActivity
         mBridgeManager = notificationBridgeManager;
         if (!mBridgeManager.isBluetoothGatewaySupported()){
             mUnsupportedSettingSet.add(SettingAccessor.SHARE_OVER_BLUETOOTH);
+            mUnsupportedSettingSet.add(SettingAccessor.ACCEPT_OVER_BLUETOOTH);
         }
         if (!mBridgeManager.isBluetoothGatewayEnabled()){
             SettingAccessor.SHARE_OVER_BLUETOOTH.setValue(false, getPreferenceScreen());
+            SettingAccessor.ACCEPT_OVER_BLUETOOTH.setValue(false, getPreferenceScreen());
         }
         SettingAccessor.SERVICE_ACTIVE.setEnable(true, getPreferenceScreen());
         checkAllAvailabilityBindings();

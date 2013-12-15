@@ -18,4 +18,8 @@ public interface NotificationBridgeManager {
     boolean isBluetoothGatewayEnabled();
 
     boolean isBluetoothGatewaySupported();
+
+    void activateBluetoothForIncomings();
+
+    void deactivateBluetoothForIncomings();
 }

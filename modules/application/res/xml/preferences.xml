@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
     <CheckBoxPreference
             android:key="pref_service_active"
             android:title="Service Active"
@@ -8,17 +9,29 @@
             android:defaultValue="false" />
 
     <CheckBoxPreference
+            android:key="pref_in_notif_enable"
+            android:summary="Accept incoming notifications from other devices"
+            android:title="Accept notifications"
+            android:defaultValue="false"/>
+
+    <CheckBoxPreference
             android:key="pref_out_notif_enable"
             android:summary="Share incoming notifications over devices"
             android:title="Share notifications"
             android:defaultValue="false"/>
 
+
     <PreferenceCategory
-            android:title="Outcoming notification"
+            android:title="Bluetooth settings"
             android:key="pref_out_notif_settings">
         <CheckBoxPreference
+                android:key="pref_in_notif_bluetooth"
+                android:title="Use Bluetooth for incoming"
+                android:summary="Accept incoming notification over bluetooth"
+                android:defaultValue="false"/>
+        <CheckBoxPreference
                 android:key="pref_out_notif_bluetooth"
-                android:title="Use Bluetooth"
+                android:title="Use Bluetooth for outgoing"
                 android:summary="Share incoming notification over bluetooth"
                 android:defaultValue="false"/>
     </PreferenceCategory>

@@ -10,8 +10,16 @@ public final class SettingAccessor<Type> {
 
     public static final SettingAccessor<Boolean> SERVICE_ACTIVE = new SettingAccessor<Boolean>("pref_service_active", false);
     public static final SettingAccessor<Boolean> SHARE_NOTIFICATION = new SettingAccessor<Boolean>("pref_out_notif_enable", false);
+    public static final SettingAccessor<Boolean> ACCEPT_NOTIFICATION = new SettingAccessor<Boolean>("pref_in_notif_enable", false);
     public static final SettingAccessor<Boolean> SHARE_OVER_BLUETOOTH = new SettingAccessor<Boolean>("pref_out_notif_bluetooth", false);
-    public static final SettingAccessor<?>[] ALL_SETTINGS = new SettingAccessor[]{SERVICE_ACTIVE,SHARE_NOTIFICATION,SHARE_OVER_BLUETOOTH};
+    public static final SettingAccessor<Boolean> ACCEPT_OVER_BLUETOOTH = new SettingAccessor<Boolean>("pref_in_notif_bluetooth", false);
+
+    public static final SettingAccessor<?>[] ALL_SETTINGS = new SettingAccessor[]{
+            SERVICE_ACTIVE,
+            ACCEPT_NOTIFICATION,
+            SHARE_NOTIFICATION,
+            ACCEPT_OVER_BLUETOOTH,
+            SHARE_OVER_BLUETOOTH};
 
 
     private final String mKey;
