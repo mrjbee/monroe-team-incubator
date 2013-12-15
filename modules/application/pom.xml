@@ -34,10 +34,6 @@
         </dependency>
         <dependency>
             <groupId>org.monroe.team</groupId>
-            <artifactId>libdroid-commons</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.monroe.team</groupId>
             <artifactId>libdroid-test-commons</artifactId>
         </dependency>
 
