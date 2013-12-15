@@ -14,4 +14,8 @@ public interface NotificationBridgeManager {
     void activateBluetooth();
 
     void deactivateBluetooth();
+
+    boolean isBluetoothGatewayEnabled();
+
+    boolean isBluetoothGatewaySupported();
 }

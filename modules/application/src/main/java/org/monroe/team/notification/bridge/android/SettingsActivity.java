@@ -32,7 +32,6 @@ public class SettingsActivity extends PreferenceActivity
     private ModelProvider<NotificationBridgeManager> mModelProvider;
     private NotificationBridgeManager mBridgeManager;
     private Set<SettingAccessor<Boolean>> mUnsupportedSettingSet = new HashSet<SettingAccessor<Boolean>>(3);
-    private BluetoothAdapter mBluetoothAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +39,6 @@ public class SettingsActivity extends PreferenceActivity
         mModelProvider = new ModelProvider<NotificationBridgeManager>(this, NotificationBridgeService.class);
         mModelProvider.obtain();
         addPreferencesFromResource(R.xml.preferences);
-
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if(mBluetoothAdapter == null) mUnsupportedSettingSet.add(SettingAccessor.SHARE_OVER_BLUETOOTH);
 
         //Because of hierarchy involved it`s not recommend to make binding unions,
         //where one bind dst item involved depends on several src items
@@ -65,7 +61,7 @@ public class SettingsActivity extends PreferenceActivity
             public void call(SharedPreferences in) {
                 boolean enable = SettingAccessor.SHARE_OVER_BLUETOOTH.getValue(in);
                 if (enable){
-                    if (!mBluetoothAdapter.isEnabled()) {
+                    if (!mBridgeManager.isBluetoothGatewayEnabled()) {
                         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                         startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
                     } else {
@@ -76,6 +72,7 @@ public class SettingsActivity extends PreferenceActivity
                 }
             }
         });
+        SettingAccessor.SERVICE_ACTIVE.setEnable(false, getPreferenceScreen());
     }
 
 
@@ -166,7 +163,6 @@ public class SettingsActivity extends PreferenceActivity
         super.onResume();
         getPreferenceScreen().getSharedPreferences()
                 .registerOnSharedPreferenceChangeListener(this);
-        checkAllAvailabilityBindings();
     }
 
     @Override
@@ -191,6 +187,11 @@ public class SettingsActivity extends PreferenceActivity
     @Override
     public void onObtain(NotificationBridgeManager notificationBridgeManager) {
         mBridgeManager = notificationBridgeManager;
+        if (!mBridgeManager.isBluetoothGatewaySupported()){
+            mUnsupportedSettingSet.add(SettingAccessor.SHARE_OVER_BLUETOOTH);
+        }
+        SettingAccessor.SERVICE_ACTIVE.setEnable(true, getPreferenceScreen());
+        checkAllAvailabilityBindings();
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.os.Binder;
 import android.support.v4.app.NotificationCompat;
 import org.monroe.team.libdroid.mservice.ModelService;
 import org.monroe.team.notification.bridge.R;
+import org.monroe.team.notification.bridge.android.connectivity.BluetoothGateway;
 
 public class NotificationBridgeService extends ModelService<NotificationBridgeManager> {
 
@@ -15,7 +16,11 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
 
     @Override
     protected NotificationBridgeManager createModelInstance() {
-        return new NotificationBridgeManagerImpl(this);
+        return new NotificationBridgeManagerImpl(this, getOwner().getBluetoothGateway());
+    }
+
+    private NotificationBridgeApplication getOwner(){
+        return (NotificationBridgeApplication) getApplication();
     }
 
     private void enableForegroundMode() {
@@ -41,11 +46,12 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
     private final static class NotificationBridgeManagerImpl extends Binder implements NotificationBridgeManager {
 
         private final NotificationBridgeService mService;
-        private final BluetoothBridge mBluetoothBridge;
+        private final BluetoothGateway mBluetoothGateway;
 
-        private NotificationBridgeManagerImpl(NotificationBridgeService service) {
+
+        private NotificationBridgeManagerImpl(NotificationBridgeService service, BluetoothGateway bluetoothGateway) {
             mService = service;
-            mBluetoothBridge = new BluetoothBridge(service);
+            mBluetoothGateway = bluetoothGateway;
         }
 
         @Override
@@ -65,12 +71,20 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
 
         @Override
         public void activateBluetooth() {
-            mBluetoothBridge.setEnable(true);
         }
 
         @Override
         public void deactivateBluetooth() {
-            mBluetoothBridge.setEnable(false);
+        }
+
+        @Override
+        public boolean isBluetoothGatewayEnabled() {
+            return mBluetoothGateway.isBluetoothEnabled();  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        public boolean isBluetoothGatewaySupported() {
+            return mBluetoothGateway.isSupported();
         }
     }
 
