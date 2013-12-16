@@ -12,8 +12,10 @@ import org.monroe.team.notification.bridge.R;
 import org.monroe.team.notification.bridge.android.connectivity.BluetoothGateway;
 import org.monroe.team.notification.bridge.entities.Notification;
 import org.monroe.team.notification.bridge.services.DateProvider;
-import org.monroe.team.notification.bridge.usecases.UserCaseRouter;
+import org.monroe.team.notification.bridge.usecases.InjectionSupportedUserCasesContext;
+import org.monroe.team.notification.bridge.usecases.UserCasesRouter;
 import org.monroe.team.notification.bridge.services.IdGenerator;
+import org.monroe.team.notification.bridge.usecases.UserCasesContext;
 
 public class NotificationBridgeService extends ModelService<NotificationBridgeManager> {
 
@@ -56,10 +58,11 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
 
         private final NotificationBridgeService mService;
         private final BluetoothGateway mBluetoothGateway;
-        private final UserCaseRouter mController = new UserCaseRouter();
         private final IdGenerator mIdGenerator = new IdGenerator();
         private final DateProvider mDateProvider = new DateProvider();
         private String mDeviceName = "OldFuck";
+        private UserCasesContext mUserCasesContext = new InjectionSupportedUserCasesContext();
+        private UserCasesRouter mUserCasesRouter;
 
         private NotificationBridgeManagerImpl(NotificationBridgeService service, BluetoothGateway bluetoothGateway) {
             mService = service;
@@ -71,6 +74,10 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
             if(SettingAccessor.SERVICE_ACTIVE.getValue(preferences)){
                 activate();
             };
+
+
+            mUserCasesRouter = new UserCasesRouter(mUserCasesContext);
+            mUserCasesRouter.initialize();
         }
 
         @Override
@@ -126,7 +133,6 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
                     mDateProvider.getNow());
 
             notification.body.put("text", "This is test notification");
-            mController.sendNotification(notification);
         }
     }
 

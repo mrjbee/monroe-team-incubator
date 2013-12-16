@@ -37,7 +37,7 @@ public class UserCasesContext {
         return (EntityType) answer;
     }
 
-    final synchronized public void startup(){
+    final synchronized void startup(){
         started = true;
         doBeforeStart(mRegistrationStrategiesMap, mRegistrationBoundariesMap);
         Set<Object> notifiedBeansSet = new HashSet<Object>();
@@ -50,7 +50,7 @@ public class UserCasesContext {
         doAfterStart(mRegistrationStrategiesMap, mRegistrationBoundariesMap);
     }
 
-    final synchronized public void shutdown(){
+    final synchronized void shutdown(){
         doBeforeShutdown(mRegistrationStrategiesMap, mRegistrationBoundariesMap);
         Set<Object> notifiedBeansSet = new HashSet<Object>();
         for (Map.Entry<Class<?>, Object> strategyEntry : mRegistrationStrategiesMap.entrySet()) {
