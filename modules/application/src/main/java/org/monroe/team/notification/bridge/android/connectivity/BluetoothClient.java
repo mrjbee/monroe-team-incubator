@@ -18,6 +18,7 @@ class BluetoothClient {
     private ObjectInputStream mInputStream;
     private ObjectOutputStream mOutputStream;
     private BluetoothSocket mBluetoothSocket;
+
     private BluetoothClientListener mBluetoothClientListener;
 
     private OutThread mOutThread;
@@ -40,6 +41,13 @@ class BluetoothClient {
 
         if(mInThread == null){
             mInThread = new InThread() {
+                @Override
+                protected void onEndOfSession() {
+                    if(mBluetoothClientListener != null){
+                        mBluetoothClientListener.onEndReadSession(BluetoothClient.this);
+                    }
+                }
+
                 @Override
                 protected void onObject(Object object) {
                     if(mBluetoothClientListener != null){
@@ -69,7 +77,10 @@ class BluetoothClient {
         }
     }
 
-
+    public void release(){
+       mOutThread.pullAll();
+       closeConnections();
+    }
 
     private void closeConnections() {
         if (mInputStream != null){
@@ -100,11 +111,11 @@ class BluetoothClient {
         }
     }
 
-    public BluetoothClientListener getBluetoothClientListener() {
+    BluetoothClientListener getBluetoothClientListener() {
         return mBluetoothClientListener;
     }
 
-    public void setBluetoothClientListener(BluetoothClientListener bluetoothClientListener) {
+    void setBluetoothClientListener(BluetoothClientListener bluetoothClientListener) {
         mBluetoothClientListener = bluetoothClientListener;
     }
 
@@ -112,6 +123,7 @@ class BluetoothClient {
         void onWriteError(BluetoothClient client, Exception e);
         void onReadError(BluetoothClient client, Exception e);
         void onReadObject(BluetoothClient client, Object object);
+        void onEndReadSession(BluetoothClient client);
     }
 
     private abstract class InThread extends Thread {
@@ -137,12 +149,13 @@ class BluetoothClient {
                         if (object!=null){
                             onObject(object);
                         } else {
-                                try {
-                                    awaitingObject.wait();
-                                } catch (InterruptedException e) {
-                                    return;
-                                }
+                            try {
+                                onEndOfSession();
+                                awaitingObject.wait();
+                            } catch (InterruptedException e) {
+                                return;
                             }
+                        }
                     }
                 } catch (ClassNotFoundException e) {
                     Debug.e(e,"Error during fetch object");
@@ -154,6 +167,7 @@ class BluetoothClient {
             }
         }
 
+        protected abstract void onEndOfSession();
         protected abstract void onObject(Object object);
         protected abstract void onError(Exception e);
     }

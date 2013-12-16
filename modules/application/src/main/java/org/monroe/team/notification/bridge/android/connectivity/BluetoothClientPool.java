@@ -1,6 +1,10 @@
 package org.monroe.team.notification.bridge.android.connectivity;
 
 import android.bluetooth.BluetoothSocket;
+import org.monroe.team.libdroid.commons.VoidClosure;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: MisterJBee
@@ -10,10 +14,28 @@ import android.bluetooth.BluetoothSocket;
  */
 public class BluetoothClientPool {
 
+    private List<BluetoothClient> mClientPool = new ArrayList<BluetoothClient>(5);
 
     public BluetoothClient getForIncomingClient(BluetoothSocket clientSocket) {
-        BluetoothClient client = new BluetoothClient();
+        BluetoothClient client = getCachedClient();
         client.init(clientSocket);
-        return null;
+        return client;
     }
+
+    public synchronized void releaseClient(BluetoothClient bluetoothClient){
+        bluetoothClient.setBluetoothClientListener(null);
+        bluetoothClient.release();
+        if(mClientPool.size()<5){
+            mClientPool.add(bluetoothClient);
+        }
+    }
+
+    private synchronized BluetoothClient getCachedClient(){
+        if (mClientPool.isEmpty()){
+            return new BluetoothClient();
+        } else {
+            return mClientPool.remove(0);
+        }
+    }
+
 }
