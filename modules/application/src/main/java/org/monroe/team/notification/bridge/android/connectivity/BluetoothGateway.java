@@ -42,7 +42,7 @@ public class BluetoothGateway implements BluetoothServer.OnClientListener, Bluet
     }
 
     public boolean isBluetoothEnabled() {
-        return mBluetoothAdapter.isEnabled();
+        return mBluetoothAdapter!= null && mBluetoothAdapter.isEnabled();
     }
 
     public void activateIncoming() {
