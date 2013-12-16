@@ -22,4 +22,6 @@ public interface NotificationBridgeManager {
     void activateBluetoothForIncomings();
 
     void deactivateBluetoothForIncomings();
+
+    void sendTestNotification();
 }

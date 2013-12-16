@@ -8,11 +8,14 @@ import org.monroe.team.libdroid.commons.Should;
 
 public final class SettingAccessor<Type> {
 
+    private static class NoOpPreference {public static final NoOpPreference instance = new NoOpPreference();};
+
     public static final SettingAccessor<Boolean> SERVICE_ACTIVE = new SettingAccessor<Boolean>("pref_service_active", false);
     public static final SettingAccessor<Boolean> SHARE_NOTIFICATION = new SettingAccessor<Boolean>("pref_out_notif_enable", false);
     public static final SettingAccessor<Boolean> ACCEPT_NOTIFICATION = new SettingAccessor<Boolean>("pref_in_notif_enable", false);
     public static final SettingAccessor<Boolean> SHARE_OVER_BLUETOOTH = new SettingAccessor<Boolean>("pref_out_notif_bluetooth", false);
     public static final SettingAccessor<Boolean> ACCEPT_OVER_BLUETOOTH = new SettingAccessor<Boolean>("pref_in_notif_bluetooth", false);
+    public static final SettingAccessor<NoOpPreference> SEND_TEST_MESSAGE = new SettingAccessor<NoOpPreference>("pref_test_message", NoOpPreference.instance);
 
     public static final SettingAccessor<?>[] ALL_SETTINGS = new SettingAccessor[]{
             SERVICE_ACTIVE,
@@ -76,11 +79,15 @@ public final class SettingAccessor<Type> {
     }
 
     public boolean isEnabled(PreferenceScreen preferenceScreen) {
-        return preferenceScreen.findPreference(mKey).isEnabled();
+        return getPreference(preferenceScreen).isEnabled();
     }
 
     public void setEnable(boolean value, PreferenceScreen preferenceScreen) {
-        preferenceScreen.findPreference(mKey).setEnabled(value);
+        getPreference(preferenceScreen).setEnabled(value);
+    }
+
+    public Preference getPreference(PreferenceScreen preferenceScreen) {
+        return preferenceScreen.findPreference(mKey);
     }
 
 
@@ -89,7 +96,7 @@ public final class SettingAccessor<Type> {
     }
 
     public void setValue(Type value, PreferenceScreen preferenceScreen) {
-        Preference preference = preferenceScreen.findPreference(mKey);
+        Preference preference = getPreference(preferenceScreen);
         Should.beNotNull(value);
         if(mDefaultValue instanceof Boolean){
             CheckBoxPreference checkBoxPreference = (CheckBoxPreference) preference;

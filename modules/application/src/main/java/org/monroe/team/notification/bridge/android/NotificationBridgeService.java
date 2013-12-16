@@ -109,6 +109,11 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
         public void deactivateBluetoothForIncomings() {
             mBluetoothGateway.deactivateIncoming();
         }
+
+        @Override
+        public void sendTestNotification() {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
     }
 
 }

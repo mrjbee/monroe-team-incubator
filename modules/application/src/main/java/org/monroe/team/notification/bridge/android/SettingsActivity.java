@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import org.monroe.team.libdroid.commons.Should;
 import org.monroe.team.libdroid.commons.VoidClosure;
@@ -44,7 +45,7 @@ public class SettingsActivity extends PreferenceActivity
                 SettingAccessor.SHARE_NOTIFICATION,
                 SettingAccessor.ACCEPT_NOTIFICATION);
 
-        bindSettingAvailability(SettingAccessor.SHARE_NOTIFICATION, SettingAccessor.SHARE_OVER_BLUETOOTH);
+        bindSettingAvailability(SettingAccessor.SHARE_NOTIFICATION, SettingAccessor.SHARE_OVER_BLUETOOTH, SettingAccessor.SEND_TEST_MESSAGE);
         bindSettingAvailability(SettingAccessor.ACCEPT_NOTIFICATION, SettingAccessor.ACCEPT_OVER_BLUETOOTH);
 
         bindSettingAction(SettingAccessor.SERVICE_ACTIVE, new VoidClosure<SharedPreferences>() {
@@ -95,6 +96,14 @@ public class SettingsActivity extends PreferenceActivity
             }
         });
 
+        SettingAccessor.SEND_TEST_MESSAGE.getPreference(getPreferenceScreen()).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                mBridgeManager.sendTestNotification();
+                return true;
+            }
+        });
+
         SettingAccessor.SERVICE_ACTIVE.setEnable(false, getPreferenceScreen());
     }
 
@@ -138,7 +147,7 @@ public class SettingsActivity extends PreferenceActivity
         return checkAlsoList;
     }
 
-    private void bindSettingAvailability(SettingAccessor<Boolean> bindSource, SettingAccessor<Boolean>... bindTargets) {
+    private void bindSettingAvailability(SettingAccessor<Boolean> bindSource, SettingAccessor<?>... bindTargets) {
         SettingAccessor<?>[] wasValue = mSettingAvailabilityMap.put(bindSource, bindTargets);
         Should.beTrue("There was already binding for = "+bindSource, wasValue == null);
     }
