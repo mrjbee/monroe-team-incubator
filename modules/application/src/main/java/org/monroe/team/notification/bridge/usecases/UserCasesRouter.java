@@ -1,6 +1,10 @@
 package org.monroe.team.notification.bridge.usecases;
 
 
+import org.monroe.team.notification.bridge.boundaries.NotificationBoundary;
+
+import java.util.Map;
+
 public class UserCasesRouter {
 
     private final UserCasesContext mCasesContext;
@@ -13,4 +17,7 @@ public class UserCasesRouter {
         mCasesContext.startup();
     }
 
+    public void sendTestMessage(Map<String, String> notificationBody) {
+        mCasesContext.getBoundary(NotificationBoundary.class).onInternal(notificationBody);
+    }
 }

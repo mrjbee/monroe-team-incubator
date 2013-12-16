@@ -10,7 +10,7 @@ public interface NotificationBoundary {
     //Dedicated to be used outside user case
     public void onSendSuccess(Notification notification, RemoteClientBoundary.RemoteClient client);
     public void onSendFails(Notification notification, RemoteClientBoundary.RemoteClient client);
-    public void onInternal(Notification notification);
+    public void onInternal(Map<String,String> notificationBody);
     public void onExternal(Notification notification);
 
     public interface Notification {

@@ -10,12 +10,14 @@ import android.support.v4.app.NotificationCompat;
 import org.monroe.team.libdroid.mservice.ModelService;
 import org.monroe.team.notification.bridge.R;
 import org.monroe.team.notification.bridge.android.connectivity.BluetoothGateway;
-import org.monroe.team.notification.bridge.entities.Notification;
-import org.monroe.team.notification.bridge.services.DateProvider;
+import org.monroe.team.notification.bridge.strategies.DateStrategy;
+import org.monroe.team.notification.bridge.strategies.IdGeneratorStrategy;
 import org.monroe.team.notification.bridge.usecases.InjectionSupportedUserCasesContext;
 import org.monroe.team.notification.bridge.usecases.UserCasesRouter;
-import org.monroe.team.notification.bridge.services.IdGenerator;
 import org.monroe.team.notification.bridge.usecases.UserCasesContext;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class NotificationBridgeService extends ModelService<NotificationBridgeManager> {
 
@@ -58,8 +60,6 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
 
         private final NotificationBridgeService mService;
         private final BluetoothGateway mBluetoothGateway;
-        private final IdGenerator mIdGenerator = new IdGenerator();
-        private final DateProvider mDateProvider = new DateProvider();
         private String mDeviceName = "OldFuck";
         private UserCasesContext mUserCasesContext = new InjectionSupportedUserCasesContext();
         private UserCasesRouter mUserCasesRouter;
@@ -70,11 +70,15 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
         }
 
         public void initiate(Context context){
+
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
             if(SettingAccessor.SERVICE_ACTIVE.getValue(preferences)){
                 activate();
             };
 
+            mUserCasesContext.installStrategy(new DateStrategy(), DateStrategy.class);
+            mUserCasesContext.installStrategy(new IdGeneratorStrategy(), IdGeneratorStrategy.class);
 
             mUserCasesRouter = new UserCasesRouter(mUserCasesContext);
             mUserCasesRouter.initialize();
@@ -127,12 +131,9 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
 
         @Override
         public void sendTestNotification() {
-            Notification notification = new Notification(
-                    mIdGenerator.generateId(mDeviceName),
-                    mDeviceName,
-                    mDateProvider.getNow());
-
-            notification.body.put("text", "This is test notification");
+            Map<String,String> notificationBody = new HashMap<String, String>();
+            notificationBody.put("text","Test notification");
+            mUserCasesRouter.sendTestMessage(notificationBody);
         }
     }
 

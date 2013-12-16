@@ -1,8 +1,8 @@
-package org.monroe.team.notification.bridge.services;
+package org.monroe.team.notification.bridge.strategies;
 
 import java.util.Date;
 
-public class DateProvider {
+public class DateStrategy {
     public Date getNow(){
         return new Date();
     }
