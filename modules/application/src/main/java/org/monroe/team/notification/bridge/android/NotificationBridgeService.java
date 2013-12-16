@@ -10,6 +10,10 @@ import android.support.v4.app.NotificationCompat;
 import org.monroe.team.libdroid.mservice.ModelService;
 import org.monroe.team.notification.bridge.R;
 import org.monroe.team.notification.bridge.android.connectivity.BluetoothGateway;
+import org.monroe.team.notification.bridge.entities.Notification;
+import org.monroe.team.notification.bridge.services.DateProvider;
+import org.monroe.team.notification.bridge.usecases.UserCaseRouter;
+import org.monroe.team.notification.bridge.services.IdGenerator;
 
 public class NotificationBridgeService extends ModelService<NotificationBridgeManager> {
 
@@ -52,6 +56,10 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
 
         private final NotificationBridgeService mService;
         private final BluetoothGateway mBluetoothGateway;
+        private final UserCaseRouter mController = new UserCaseRouter();
+        private final IdGenerator mIdGenerator = new IdGenerator();
+        private final DateProvider mDateProvider = new DateProvider();
+        private String mDeviceName = "OldFuck";
 
         private NotificationBridgeManagerImpl(NotificationBridgeService service, BluetoothGateway bluetoothGateway) {
             mService = service;
@@ -112,7 +120,13 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
 
         @Override
         public void sendTestNotification() {
-            //To change body of implemented methods use File | Settings | File Templates.
+            Notification notification = new Notification(
+                    mIdGenerator.generateId(mDeviceName),
+                    mDeviceName,
+                    mDateProvider.getNow());
+
+            notification.body.put("text", "This is test notification");
+            mController.sendNotification(notification);
         }
     }
 
