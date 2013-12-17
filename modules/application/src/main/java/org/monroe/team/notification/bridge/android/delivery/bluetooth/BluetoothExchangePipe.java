@@ -16,16 +16,18 @@ class BluetoothExchangePipe {
     private ObjectInputStream mInputStream;
     private ObjectOutputStream mOutputStream;
     private BluetoothSocket mBluetoothSocket;
+    private BluetoothClientListener mBluetoothClientListener;
 
     private InThread mInThread;
 
-    public void setup(BluetoothSocket clientSocket, final BluetoothClientListener mBluetoothClientListener) {
+    final public void setup(BluetoothSocket clientSocket, BluetoothClientListener bluetoothClientListener) {
+        mBluetoothClientListener = bluetoothClientListener;
         if(mInThread == null){
             mInThread = new InThread() {
                 @Override
                 protected void onEndOfSession() {
                     if(mBluetoothClientListener != null){
-                        mBluetoothClientListener.onEndReadSession(BluetoothExchangePipe.this);
+                        mBluetoothClientListener.onSessionEnd(BluetoothExchangePipe.this);
                     }
                 }
 
@@ -58,21 +60,27 @@ class BluetoothExchangePipe {
         }
     }
 
-    public boolean write(BluetoothExchange exchange){
+    public void write(BluetoothExchange exchange){
         try {
             mOutputStream.writeObject(exchange);
-            return true;
         } catch (IOException e) {
-            Debug.e(e, "Exception during wtiting object");
-            return false;
+            Debug.e(e, "Exception during writing object");
+            mBluetoothClientListener.onWriteError(this, exchange);
         }
     }
 
-    public void release(){
+    public void requestSessionEnd(){
+        mInThread.stopReading();
+    }
+
+
+    public void forceSessionEnd() {
         closeConnections();
+        mBluetoothClientListener = null;
     }
 
     private void closeConnections() {
+
         if (mInputStream != null){
             try {
                 mInputStream.close();
@@ -104,13 +112,15 @@ class BluetoothExchangePipe {
 
     public static interface BluetoothClientListener{
         void onReadError(BluetoothExchangePipe client, Exception e);
+        void onWriteError(BluetoothExchangePipe bluetoothExchangePipe, BluetoothExchange exchange);
         void onExchange(BluetoothExchangePipe client, BluetoothExchange exchange);
-        void onEndReadSession(BluetoothExchangePipe client);
+        void onSessionEnd(BluetoothExchangePipe client);
     }
 
     private abstract class InThread extends Thread {
 
         private Object awaitingObject = new Object();
+        private boolean requestSessionEnd = false;
 
         private InThread() {
             super("in_thread_client");
@@ -122,16 +132,27 @@ class BluetoothExchangePipe {
             }
         }
 
+        public void stopReading() {
+            synchronized (awaitingObject){
+                requestSessionEnd = true;
+            }
+        }
+
         @Override
         public void run() {
             while (isInterrupted()){
                 try {
+
                     synchronized (awaitingObject){
-                        Object object = BluetoothExchangePipe.this.mInputStream.readObject();
+                        Object object = null;
+                        if (!requestSessionEnd && BluetoothExchangePipe.this.mInputStream != null) {
+                            object = BluetoothExchangePipe.this.mInputStream.readObject();
+                        }
                         if (object!=null){
                             onExchange((BluetoothExchange) object);
                         } else {
                             try {
+                                requestSessionEnd = false;
                                 onEndOfSession();
                                 awaitingObject.wait();
                             } catch (InterruptedException e) {
@@ -139,6 +160,7 @@ class BluetoothExchangePipe {
                             }
                         }
                     }
+
                 } catch (ClassNotFoundException e) {
                     Debug.e(e,"Error during fetch object");
                     onError(e);
@@ -152,6 +174,8 @@ class BluetoothExchangePipe {
         protected abstract void onEndOfSession();
         protected abstract void onExchange(BluetoothExchange exchange);
         protected abstract void onError(Exception e);
+
+
     }
 
 }
