@@ -41,4 +41,14 @@ public class DefaultNotification implements Serializable, NotificationBoundary.N
     public String getId() {
         return mId;
     }
+
+    @Override
+    public String toString() {
+        return "DefaultNotification{" +
+                "mOwnerId='" + mOwnerId + '\'' +
+                ", mId='" + mId + '\'' +
+                ", mBody=" + mBody +
+                ", mCreationDate=" + mCreationDate +
+                '}';
+    }
 }

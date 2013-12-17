@@ -4,9 +4,12 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import org.monroe.team.libdroid.logging.Debug;
 import org.monroe.team.notification.bridge.common.IdAwareData;
 
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * User: MisterJBee
@@ -24,6 +27,8 @@ public class BluetoothGateway implements BluetoothServer.OnClientListener{
     private final BluetoothAdapter mBluetoothAdapter;
     private final BluetoothServer mBluetoothServer;
     private final Map<String, BluetoothRemoteClient> mRemoteClientCacheMap = new HashMap<String, BluetoothRemoteClient>();
+    private ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
+    private BluetoothExchangePipe mBluetoothExchangePipe = new BluetoothExchangePipe();
 
     public BluetoothGateway(Context context) {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -47,10 +52,7 @@ public class BluetoothGateway implements BluetoothServer.OnClientListener{
         mBluetoothServer.closeServerConnection();
     }
 
-    @Override
-    public void onClient(BluetoothSocket clientSocket) {
-
-    }
+    
 
     public List<BluetoothRemoteClient> getKnownDevices() {
         Set<BluetoothDevice> devices = mBluetoothAdapter.getBondedDevices();
@@ -66,11 +68,76 @@ public class BluetoothGateway implements BluetoothServer.OnClientListener{
         return new ArrayList<BluetoothRemoteClient>(mRemoteClientCacheMap.values());
     }
 
-    public void send(BluetoothRemoteClient client, IdAwareData[] notification, BluetoothDeliveryCallback deliveryCallback) {
-        BluetoothSocket socket = client.openConnection();
+    
+    //As server
+    @Override
+    public void onClient(final BluetoothSocket clientSocket) {
+        mExecutorService.submit(new Runnable() {
+            @Override
+            public void run() {
+                mBluetoothExchangePipe.setup(clientSocket, new BluetoothExchangePipe.BluetoothClientListener() {
+                    @Override
+                    public void onReadError(BluetoothExchangePipe client, Exception e) {
+                        Debug.e(e,"Error during reading");
+                    }
+
+                    @Override
+                    public void onWriteError(BluetoothExchangePipe bluetoothExchangePipe, BluetoothExchange exchange, Exception e) {
+                        Debug.e(e,"Error during writing = %s",exchange);
+                    }
+
+                    @Override
+                    public void onExchange(BluetoothExchangePipe client, BluetoothExchange exchange) {
+                        Debug.i("new exchange = %s", exchange);
+                    }
+
+                    @Override
+                    public void onSessionEnd(BluetoothExchangePipe client) {
+                        Debug.i("Release pipe");
+                        mBluetoothExchangePipe.free();
+                    }
+                });
+            }
+        });
+    }
+
+    //As client
+    public void send(BluetoothRemoteClient client, final IdAwareData[] notification, BluetoothDeliveryCallback deliveryCallback) {
+        final BluetoothSocket socket = client.openConnection();
         if (socket == null){
             deliveryCallback.onFailBeforeSend(notification, client);
+            return;
         }
+        mExecutorService.submit(new Runnable() {
+            @Override
+            public void run() {
+                mBluetoothExchangePipe.setup(socket, new BluetoothExchangePipe.BluetoothClientListener() {
+                    @Override
+                    public void onReadError(BluetoothExchangePipe client, Exception e) {
+                        Debug.e(e,"Error during reading");
+                    }
+
+                    @Override
+                    public void onWriteError(BluetoothExchangePipe bluetoothExchangePipe, BluetoothExchange exchange, Exception e) {
+                        Debug.e(e,"Error during writing = %s",exchange);
+                    }
+
+                    @Override
+                    public void onExchange(BluetoothExchangePipe client, BluetoothExchange exchange) {
+                        Debug.i("new exchange = %s", exchange);
+                    }
+                    @Override
+                    public void onSessionEnd(BluetoothExchangePipe client) {
+                        Debug.i("Release pipe");
+                        mBluetoothExchangePipe.free();
+                    }
+                });
+                for (IdAwareData idAwareData : notification) {
+                    mBluetoothExchangePipe.write(new BluetoothExchange(idAwareData));
+                }
+
+            }
+        });
     }
 
 

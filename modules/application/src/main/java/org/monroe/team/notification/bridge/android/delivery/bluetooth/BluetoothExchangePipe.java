@@ -23,6 +23,17 @@ class BluetoothExchangePipe {
 
     final public void setup(BluetoothSocket clientSocket, BluetoothClientListener bluetoothClientListener) {
         mBluetoothClientListener = bluetoothClientListener;
+        mBluetoothSocket = clientSocket;
+        try {
+            mInputStream = new ObjectInputStream(mBluetoothSocket.getInputStream());
+            mOutputStream = new ObjectOutputStream(mBluetoothSocket.getOutputStream());
+        } catch (IOException e) {
+            Debug.e(e,"During opening client stream");
+            free();
+            bluetoothClientListener.onReadError(this, e);
+            return;
+        }
+
         if(mInThread == null){
             mInThread = new InThread() {
                 @Override
@@ -35,7 +46,7 @@ class BluetoothExchangePipe {
                 @Override
                 protected void onExchange(BluetoothExchange exchange) {
                     if(mBluetoothClientListener != null){
-                       mBluetoothClientListener.onExchange(BluetoothExchangePipe.this, exchange);
+                        mBluetoothClientListener.onExchange(BluetoothExchangePipe.this, exchange);
                     }
                 }
 
@@ -46,19 +57,11 @@ class BluetoothExchangePipe {
                     }
                 }
             };
+            mInThread.start();
         } else {
             mInThread.startReading();
         }
 
-        mBluetoothSocket = clientSocket;
-
-        try {
-            mInputStream = new ObjectInputStream(mBluetoothSocket.getInputStream());
-            mOutputStream = new ObjectOutputStream(mBluetoothSocket.getOutputStream());
-        } catch (IOException e) {
-            Debug.e(e,"During opening client stream");
-            closeConnections();
-        }
     }
 
     public void write(BluetoothExchange exchange){
@@ -66,18 +69,18 @@ class BluetoothExchangePipe {
             mOutputStream.writeObject(exchange);
         } catch (IOException e) {
             Debug.e(e, "Exception during writing object");
-            mBluetoothClientListener.onWriteError(this, exchange);
+            mBluetoothClientListener.onWriteError(this, exchange, e);
         }
     }
 
 
     public void forceSessionEnd() {
         mInThread.stopReading();
-        closeConnections();
+        free();
         mBluetoothClientListener = null;
     }
 
-    private void closeConnections() {
+    public void free() {
 
         if (mInputStream != null){
             try {
@@ -110,7 +113,7 @@ class BluetoothExchangePipe {
 
     public static interface BluetoothClientListener{
         void onReadError(BluetoothExchangePipe client, Exception e);
-        void onWriteError(BluetoothExchangePipe bluetoothExchangePipe, BluetoothExchange exchange);
+        void onWriteError(BluetoothExchangePipe bluetoothExchangePipe, BluetoothExchange exchange, Exception e);
         void onExchange(BluetoothExchangePipe client, BluetoothExchange exchange);
         void onSessionEnd(BluetoothExchangePipe client);
     }

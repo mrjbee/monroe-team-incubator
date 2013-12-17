@@ -24,4 +24,10 @@ public class BluetoothExchange {
         return body.getId();
     }
 
+    @Override
+    public String toString() {
+        return "BluetoothExchange{" +
+                "body=" + body +
+                '}';
+    }
 }
