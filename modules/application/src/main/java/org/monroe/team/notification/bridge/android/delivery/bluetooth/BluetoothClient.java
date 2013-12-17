@@ -1,4 +1,4 @@
-package org.monroe.team.notification.bridge.android.delivery;
+package org.monroe.team.notification.bridge.android.delivery.bluetooth;
 
 import android.bluetooth.BluetoothSocket;
 import org.monroe.team.libdroid.logging.Debug;

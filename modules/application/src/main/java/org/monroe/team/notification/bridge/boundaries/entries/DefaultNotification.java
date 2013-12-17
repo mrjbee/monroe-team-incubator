@@ -3,6 +3,7 @@ package org.monroe.team.notification.bridge.boundaries.entries;
 import org.monroe.team.notification.bridge.boundaries.NotificationBoundary;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
@@ -16,14 +17,10 @@ public class DefaultNotification implements Serializable, NotificationBoundary.N
     public DefaultNotification(String ownerId, String id, Map<String, String> body, Date creationDate) {
         mOwnerId = ownerId;
         mId = id;
-        mBody = body;
+        mBody = Collections.unmodifiableMap(body);
         mCreationDate = creationDate;
     }
 
-    @Override
-    public String getMessageId() {
-        return mId;
-    }
 
     @Override
     public String getOwner() {
@@ -33,5 +30,15 @@ public class DefaultNotification implements Serializable, NotificationBoundary.N
     @Override
     public Map<String, String> getBody() {
         return mBody;
+    }
+
+    @Override
+    public Date getCreationDate() {
+        return mCreationDate;
+    }
+
+    @Override
+    public String getId() {
+        return mId;
     }
 }

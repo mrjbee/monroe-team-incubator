@@ -7,12 +7,16 @@ import android.content.SharedPreferences;
 import android.os.Binder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import org.monroe.team.libdroid.commons.Should;
 import org.monroe.team.libdroid.mservice.ModelService;
 
 import org.monroe.team.notification.bridge.R;
-import org.monroe.team.notification.bridge.android.delivery.BluetoothGateway;
+import org.monroe.team.notification.bridge.android.delivery.bluetooth.BluetoothGateway;
+import org.monroe.team.notification.bridge.android.delivery.bluetooth.BluetoothRemoteClient;
 import org.monroe.team.notification.bridge.boundaries.NotificationBoundary;
 import org.monroe.team.notification.bridge.boundaries.RemoteClientBoundary;
+import org.monroe.team.notification.bridge.boundaries.entries.DefaultNotification;
+import org.monroe.team.notification.bridge.common.IdAwareData;
 import org.monroe.team.notification.bridge.strategies.DateStrategy;
 import org.monroe.team.notification.bridge.strategies.IdGeneratorStrategy;
 import org.monroe.team.notification.bridge.usecases.common.InjectionSupportedUseCaseContext;
@@ -145,7 +149,12 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
         }
 
         @Override
-        public void sendNotification(RemoteClientBoundary.RemoteClient client, NotificationBoundary.Notification... notification) {
+        public void sendNotification(RemoteClientBoundary.RemoteClient client, NotificationBoundary.Notification... notifications) {
+            if (client instanceof BluetoothRemoteClient){
+                mBluetoothGateway.send((BluetoothRemoteClient) client, notifications, mBluetoothDeliveryCallback);
+            } else {
+                Should.failsHere("Unsupported client type");
+            }
 
         }
 
@@ -162,6 +171,30 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
             return isBluetoothGatewaySupported()
                     && isBluetoothGatewayEnabled();
         }
+
+        private BluetoothGateway.BluetoothDeliveryCallback mBluetoothDeliveryCallback = new BluetoothGateway.BluetoothDeliveryCallback() {
+            @Override
+            public void onFailBeforeSend(IdAwareData[] dataset, BluetoothRemoteClient client) {
+                for (IdAwareData idAwareData : dataset) {
+                    mUseCaseContext.getBoundary(NotificationBoundary.Declare.class)
+                            .onNotificationSendFails((NotificationBoundary.Notification) idAwareData, client);
+                }
+            }
+
+            @Override
+            public void onSuccessDeliver(IdAwareData data, BluetoothRemoteClient client) {
+                mUseCaseContext.getBoundary(NotificationBoundary.Declare.class)
+                        .onNotificationSendSuccess((NotificationBoundary.Notification) data, client);
+            }
+
+            @Override
+            public void onFailDuringSend(IdAwareData data, BluetoothRemoteClient client) {
+                mUseCaseContext.getBoundary(NotificationBoundary.Declare.class)
+                        .onNotificationSendFails((NotificationBoundary.Notification) data, client);
+            }
+        };
+
+
     }
 
 }

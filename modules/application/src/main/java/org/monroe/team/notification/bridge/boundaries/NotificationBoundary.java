@@ -1,5 +1,8 @@
 package org.monroe.team.notification.bridge.boundaries;
 
+import org.monroe.team.notification.bridge.common.IdAwareData;
+
+import java.util.Date;
 import java.util.Map;
 
 public interface NotificationBoundary {
@@ -16,10 +19,10 @@ public interface NotificationBoundary {
     }
 
 
-    public interface Notification {
-        public String getMessageId();
+    public interface Notification extends IdAwareData {
         public String getOwner();
         public Map<String,String> getBody();
+        public Date getCreationDate();
     }
 
 }

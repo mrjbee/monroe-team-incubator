@@ -1,13 +1,12 @@
-package org.monroe.team.notification.bridge.android.delivery;
+package org.monroe.team.notification.bridge.android.delivery.bluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
-import android.support.v4.util.LruCache;
-import org.monroe.team.notification.bridge.boundaries.RemoteClientBoundary;
+import org.monroe.team.notification.bridge.boundaries.NotificationBoundary;
+import org.monroe.team.notification.bridge.common.IdAwareData;
 
-import java.lang.ref.WeakReference;
 import java.util.*;
 
 /**
@@ -36,10 +35,6 @@ public class BluetoothGateway implements BluetoothServer.OnClientListener, Bluet
         mBluetoothServer.setOnClientListener(this);
         mBluetoothClientPool = new BluetoothClientPool();
     }
-
-    public <Type> void sendMessage(BluetoothExchange.IdAware message){
-    }
-
 
     public boolean isSupported() {
         return mBluetoothAdapter != null;
@@ -103,7 +98,16 @@ public class BluetoothGateway implements BluetoothServer.OnClientListener, Bluet
         return new ArrayList<BluetoothRemoteClient>(mRemoteClientCacheMap.values());
     }
 
-    public static interface BluetoothDelivery {
-        public void onSuccessDeliver();
+    public void send(BluetoothRemoteClient client, IdAwareData[] notification, BluetoothDeliveryCallback deliveryCallback) {
+        BluetoothSocket socket = client.openConnection();
+        if (socket == null){
+            deliveryCallback.onFailBeforeSend(notification, client);
+        }
+    }
+
+    public static interface BluetoothDeliveryCallback {
+        public void onFailBeforeSend(IdAwareData[] dataset, BluetoothRemoteClient client);
+        public void onSuccessDeliver(IdAwareData data, BluetoothRemoteClient client);
+        public void onFailDuringSend(IdAwareData data, BluetoothRemoteClient client);
     }
 }
