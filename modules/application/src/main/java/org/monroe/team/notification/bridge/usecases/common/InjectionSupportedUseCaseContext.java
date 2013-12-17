@@ -1,10 +1,10 @@
-package org.monroe.team.notification.bridge.usecases;
+package org.monroe.team.notification.bridge.usecases.common;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class InjectionSupportedUserCaseContext extends UserCaseContext {
+public class InjectionSupportedUseCaseContext extends UseCaseContext {
 
     @Override
     protected void doBeforeStart(Map<Class<?>, Object> registrationStrategiesMap, Map<Class<?>, Object> registrationBoundariesMap) {
@@ -18,6 +18,6 @@ public class InjectionSupportedUserCaseContext extends UserCaseContext {
     }
 
     public static interface InjectionAwareStrategy {
-        public void injectUsing(UserCaseContext context);
+        public void injectUsing(UseCaseContext context);
     }
 }

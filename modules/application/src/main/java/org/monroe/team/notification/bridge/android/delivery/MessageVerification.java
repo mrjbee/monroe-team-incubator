@@ -1,4 +1,4 @@
-package org.monroe.team.notification.bridge.android.connectivity;
+package org.monroe.team.notification.bridge.android.delivery;
 
 /**
  * User: MisterJBee

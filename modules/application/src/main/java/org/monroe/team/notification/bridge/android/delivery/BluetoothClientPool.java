@@ -1,7 +1,6 @@
-package org.monroe.team.notification.bridge.android.connectivity;
+package org.monroe.team.notification.bridge.android.delivery;
 
 import android.bluetooth.BluetoothSocket;
-import org.monroe.team.libdroid.commons.VoidClosure;
 
 import java.util.ArrayList;
 import java.util.List;

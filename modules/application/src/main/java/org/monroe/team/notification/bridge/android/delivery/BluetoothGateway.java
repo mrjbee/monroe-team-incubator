@@ -1,11 +1,14 @@
-package org.monroe.team.notification.bridge.android.connectivity;
+package org.monroe.team.notification.bridge.android.delivery;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
-import org.monroe.team.libdroid.commons.VoidClosure;
+import android.support.v4.util.LruCache;
+import org.monroe.team.notification.bridge.boundaries.RemoteClientBoundary;
 
-import java.util.UUID;
+import java.lang.ref.WeakReference;
+import java.util.*;
 
 /**
  * User: MisterJBee
@@ -23,6 +26,7 @@ public class BluetoothGateway implements BluetoothServer.OnClientListener, Bluet
     private final BluetoothAdapter mBluetoothAdapter;
     private final BluetoothServer mBluetoothServer;
     private final BluetoothClientPool mBluetoothClientPool;
+    private final Map<String, BluetoothRemoteClient> mRemoteClientCacheMap = new HashMap<String, BluetoothRemoteClient>();
 
     private boolean outActivated = false;
 
@@ -83,6 +87,20 @@ public class BluetoothGateway implements BluetoothServer.OnClientListener, Bluet
     public void onEndReadSession(BluetoothClient client) {
         //greatest ever be happens
         mBluetoothClientPool.releaseClient(client);
+    }
+
+    public List<BluetoothRemoteClient> getKnownDevices() {
+        Set<BluetoothDevice> devices = mBluetoothAdapter.getBondedDevices();
+        Set<String> clientCachedIdRemoveSet = new HashSet<String>(mRemoteClientCacheMap.keySet());
+        for (BluetoothDevice device : devices) {
+            String address = device.getAddress();
+            clientCachedIdRemoveSet.remove(address);
+            mRemoteClientCacheMap.put(address, new BluetoothRemoteClient(device));
+        }
+        for (String clientToRemove : clientCachedIdRemoveSet) {
+            mRemoteClientCacheMap.remove(clientToRemove);
+        }
+        return new ArrayList<BluetoothRemoteClient>(mRemoteClientCacheMap.values());
     }
 
     public static interface BluetoothDelivery {

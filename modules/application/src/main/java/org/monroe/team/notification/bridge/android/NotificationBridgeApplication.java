@@ -1,7 +1,7 @@
 package org.monroe.team.notification.bridge.android;
 
 import android.app.Application;
-import org.monroe.team.notification.bridge.android.connectivity.BluetoothGateway;
+import org.monroe.team.notification.bridge.android.delivery.BluetoothGateway;
 
 /**
  * User: MisterJBee

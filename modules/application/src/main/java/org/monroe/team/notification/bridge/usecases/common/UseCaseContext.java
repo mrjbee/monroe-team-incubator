@@ -1,4 +1,4 @@
-package org.monroe.team.notification.bridge.usecases;
+package org.monroe.team.notification.bridge.usecases.common;
 
 import org.monroe.team.libdroid.commons.Should;
 
@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class UserCaseContext {
+public class UseCaseContext {
 
     private Map<Class<?>, Object> mRegistrationBoundariesMap = new HashMap<Class<?>, Object>();
     private Map<Class<?>, Object> mRegistrationStrategiesMap = new HashMap<Class<?>, Object>();

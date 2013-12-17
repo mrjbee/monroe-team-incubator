@@ -10,17 +10,16 @@ import android.support.v4.app.NotificationCompat;
 import org.monroe.team.libdroid.mservice.ModelService;
 
 import org.monroe.team.notification.bridge.R;
-import org.monroe.team.notification.bridge.android.connectivity.BluetoothGateway;
+import org.monroe.team.notification.bridge.android.delivery.BluetoothGateway;
 import org.monroe.team.notification.bridge.boundaries.NotificationBoundary;
 import org.monroe.team.notification.bridge.boundaries.RemoteClientBoundary;
 import org.monroe.team.notification.bridge.strategies.DateStrategy;
 import org.monroe.team.notification.bridge.strategies.IdGeneratorStrategy;
-import org.monroe.team.notification.bridge.usecases.InjectionSupportedUserCaseContext;
+import org.monroe.team.notification.bridge.usecases.common.InjectionSupportedUseCaseContext;
 import org.monroe.team.notification.bridge.usecases.UseCaseSetup;
-import org.monroe.team.notification.bridge.usecases.UserCaseContext;
+import org.monroe.team.notification.bridge.usecases.common.UseCaseContext;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class NotificationBridgeService extends ModelService<NotificationBridgeManager> {
 
@@ -67,7 +66,7 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
         private final NotificationBridgeService mService;
         private final BluetoothGateway mBluetoothGateway;
         private String mDeviceName = "OldFuck";
-        private UserCaseContext mUseCaseContext = new InjectionSupportedUserCaseContext();
+        private UseCaseContext mUseCaseContext = new InjectionSupportedUseCaseContext();
 
         private NotificationBridgeManagerImpl(NotificationBridgeService service, BluetoothGateway bluetoothGateway) {
             mService = service;
@@ -142,17 +141,26 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
         public void sendTestNotification() {
             Map<String,String> notificationBody = new HashMap<String, String>();
             notificationBody.put("text","Test notification");
-            mUseCaseContext.getBoundary(NotificationBoundary.Declare.class).onInternal(notificationBody);
+            mUseCaseContext.getBoundary(NotificationBoundary.Declare.class).onInternalNotification(notificationBody);
         }
 
         @Override
-        public void send(RemoteClientBoundary.RemoteClient client, NotificationBoundary.Notification... notification) {
+        public void sendNotification(RemoteClientBoundary.RemoteClient client, NotificationBoundary.Notification... notification) {
 
         }
 
         @Override
         public RemoteClientBoundary.RemoteClient[] getAvailableClients() {
-            return new RemoteClientBoundary.RemoteClient[0];
+            List<RemoteClientBoundary.RemoteClient> remoteClientList = new ArrayList<RemoteClientBoundary.RemoteClient>();
+            if (isBluetoothAvailable()){
+               remoteClientList.addAll(mBluetoothGateway.getKnownDevices());
+            }
+            return remoteClientList.toArray(new RemoteClientBoundary.RemoteClient[0]);
+        }
+
+        private boolean isBluetoothAvailable() {
+            return isBluetoothGatewaySupported()
+                    && isBluetoothGatewayEnabled();
         }
     }
 
