@@ -15,7 +15,6 @@ import org.monroe.team.notification.bridge.android.delivery.bluetooth.BluetoothG
 import org.monroe.team.notification.bridge.android.delivery.bluetooth.BluetoothRemoteClient;
 import org.monroe.team.notification.bridge.boundaries.NotificationBoundary;
 import org.monroe.team.notification.bridge.boundaries.RemoteClientBoundary;
-import org.monroe.team.notification.bridge.boundaries.entries.DefaultNotification;
 import org.monroe.team.notification.bridge.common.IdAwareData;
 import org.monroe.team.notification.bridge.strategies.DateStrategy;
 import org.monroe.team.notification.bridge.strategies.IdGeneratorStrategy;
@@ -71,6 +70,7 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
         private final BluetoothGateway mBluetoothGateway;
         private String mDeviceName = "OldFuck";
         private UseCaseContext mUseCaseContext = new InjectionSupportedUseCaseContext();
+        private SharedPreferences mPreferences;
 
         private NotificationBridgeManagerImpl(NotificationBridgeService service, BluetoothGateway bluetoothGateway) {
             mService = service;
@@ -88,9 +88,9 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
             UseCaseSetup.define(mUseCaseContext);
             mUseCaseContext.startup();
 
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-            if(SettingAccessor.SERVICE_ACTIVE.getValue(preferences)){
+            if(SettingAccessor.SERVICE_ACTIVE.getValue(mPreferences)){
                 activate();
             }
 
@@ -112,16 +112,6 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
         }
 
         @Override
-        public void activateBluetoothForOutgoings() {
-            mBluetoothGateway.activateOutgoing();
-        }
-
-        @Override
-        public void deactivateBluetoothForOutGoings() {
-            mBluetoothGateway.deactivateOutgoing();
-        }
-
-        @Override
         public boolean isBluetoothGatewayEnabled() {
             return mBluetoothGateway.isBluetoothEnabled();
         }
@@ -133,12 +123,12 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
 
         @Override
         public void activateBluetoothForIncomings() {
-            mBluetoothGateway.activateIncoming();
+            mBluetoothGateway.startServer();
         }
 
         @Override
         public void deactivateBluetoothForIncomings() {
-            mBluetoothGateway.deactivateIncoming();
+            mBluetoothGateway.stopServer();
         }
 
         @Override
@@ -159,12 +149,17 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
         }
 
         @Override
-        public RemoteClientBoundary.RemoteClient[] getAvailableClients() {
+        public RemoteClientBoundary.RemoteClient[] getClientsToNotify() {
             List<RemoteClientBoundary.RemoteClient> remoteClientList = new ArrayList<RemoteClientBoundary.RemoteClient>();
-            if (isBluetoothAvailable()){
+            if (isBluetoothAvailable() && isShareOverBluetoothAllowed()){
                remoteClientList.addAll(mBluetoothGateway.getKnownDevices());
             }
             return remoteClientList.toArray(new RemoteClientBoundary.RemoteClient[0]);
+        }
+
+
+        private boolean isShareOverBluetoothAllowed() {
+            return SettingAccessor.SHARE_NOTIFICATION.getValue(mPreferences) && SettingAccessor.SHARE_OVER_BLUETOOTH.getValue(mPreferences);
         }
 
         private boolean isBluetoothAvailable() {

@@ -4,8 +4,6 @@ import android.bluetooth.BluetoothSocket;
 import org.monroe.team.libdroid.logging.Debug;
 
 import java.io.*;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * User: MisterJBee
@@ -13,52 +11,35 @@ import java.util.List;
  * Open source: MIT Licence
  * (Do whatever you want with the source code)
  */
-class BluetoothClient {
+class BluetoothExchangePipe {
 
     private ObjectInputStream mInputStream;
     private ObjectOutputStream mOutputStream;
     private BluetoothSocket mBluetoothSocket;
 
-    private BluetoothClientListener mBluetoothClientListener;
-
-    private OutThread mOutThread;
     private InThread mInThread;
 
-    public void init(BluetoothSocket clientSocket) {
-        if (mOutThread == null){
-            mOutThread = new OutThread() {
-                @Override
-                protected void onOutGoingError(IOException e) {
-                    if(mBluetoothClientListener!=null){
-                        mBluetoothClientListener.onWriteError(BluetoothClient.this, e);
-                    }
-                }
-            };
-            mOutThread.start();
-        } else {
-            mOutThread.pullAll();
-        }
-
+    public void setup(BluetoothSocket clientSocket, final BluetoothClientListener mBluetoothClientListener) {
         if(mInThread == null){
             mInThread = new InThread() {
                 @Override
                 protected void onEndOfSession() {
                     if(mBluetoothClientListener != null){
-                        mBluetoothClientListener.onEndReadSession(BluetoothClient.this);
+                        mBluetoothClientListener.onEndReadSession(BluetoothExchangePipe.this);
                     }
                 }
 
                 @Override
-                protected void onObject(Object object) {
+                protected void onExchange(BluetoothExchange exchange) {
                     if(mBluetoothClientListener != null){
-                       mBluetoothClientListener.onReadObject(BluetoothClient.this, object);
+                       mBluetoothClientListener.onExchange(BluetoothExchangePipe.this, exchange);
                     }
                 }
 
                 @Override
                 protected void onError(Exception e) {
                     if(mBluetoothClientListener != null){
-                        mBluetoothClientListener.onReadError(BluetoothClient.this, e);
+                        mBluetoothClientListener.onReadError(BluetoothExchangePipe.this, e);
                     }
                 }
             };
@@ -77,9 +58,18 @@ class BluetoothClient {
         }
     }
 
+    public boolean write(BluetoothExchange exchange){
+        try {
+            mOutputStream.writeObject(exchange);
+            return true;
+        } catch (IOException e) {
+            Debug.e(e, "Exception during wtiting object");
+            return false;
+        }
+    }
+
     public void release(){
-       mOutThread.pullAll();
-       closeConnections();
+        closeConnections();
     }
 
     private void closeConnections() {
@@ -111,19 +101,11 @@ class BluetoothClient {
         }
     }
 
-    BluetoothClientListener getBluetoothClientListener() {
-        return mBluetoothClientListener;
-    }
-
-    void setBluetoothClientListener(BluetoothClientListener bluetoothClientListener) {
-        mBluetoothClientListener = bluetoothClientListener;
-    }
 
     public static interface BluetoothClientListener{
-        void onWriteError(BluetoothClient client, Exception e);
-        void onReadError(BluetoothClient client, Exception e);
-        void onReadObject(BluetoothClient client, Object object);
-        void onEndReadSession(BluetoothClient client);
+        void onReadError(BluetoothExchangePipe client, Exception e);
+        void onExchange(BluetoothExchangePipe client, BluetoothExchange exchange);
+        void onEndReadSession(BluetoothExchangePipe client);
     }
 
     private abstract class InThread extends Thread {
@@ -145,9 +127,9 @@ class BluetoothClient {
             while (isInterrupted()){
                 try {
                     synchronized (awaitingObject){
-                        Object object = BluetoothClient.this.mInputStream.readObject();
+                        Object object = BluetoothExchangePipe.this.mInputStream.readObject();
                         if (object!=null){
-                            onObject(object);
+                            onExchange((BluetoothExchange) object);
                         } else {
                             try {
                                 onEndOfSession();
@@ -168,71 +150,8 @@ class BluetoothClient {
         }
 
         protected abstract void onEndOfSession();
-        protected abstract void onObject(Object object);
+        protected abstract void onExchange(BluetoothExchange exchange);
         protected abstract void onError(Exception e);
-    }
-
-    private abstract class OutThread extends Thread {
-
-        private List<Object> objectsToWriteList = new LinkedList<Object>();
-        private Object awaitFlag = new Object();
-
-        private OutThread() {
-            super("out_thread_client");
-        }
-
-        public void push(Object obj){
-            synchronized (awaitFlag){
-                objectsToWriteList.add(obj);
-                if (objectsToWriteList.size() == 1){
-                    awaitFlag.notify();
-                }
-            }
-        }
-
-        private Object top(){
-            if (objectsToWriteList.isEmpty()) return null;
-            return objectsToWriteList.get(0);
-        }
-
-        private Object pull(){
-            return objectsToWriteList.remove(0);
-        }
-
-        @Override
-        public void run() {
-            while (isInterrupted()){
-                Object objToWrite = null;
-                synchronized (awaitFlag){
-                    objToWrite = top();
-                    if (objToWrite == null){
-                        try {
-                            awaitFlag.wait();
-                        } catch (InterruptedException e) {
-                            return;
-                        }
-                    }
-                }
-                try {
-                    BluetoothClient.this.mOutputStream.writeObject(objToWrite);
-                    synchronized (awaitFlag){
-                        pull();
-                    }
-                } catch (IOException e) {
-                    Debug.e(e,"Error during sending object = %s", objToWrite);
-                    onOutGoingError(e);
-                }
-            }
-        }
-
-        protected abstract void onOutGoingError(IOException e);
-
-
-        public void pullAll() {
-            synchronized (awaitFlag){
-                objectsToWriteList.clear();
-            }
-        }
     }
 
 }

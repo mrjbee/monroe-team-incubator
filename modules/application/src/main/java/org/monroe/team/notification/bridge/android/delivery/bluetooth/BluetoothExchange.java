@@ -1,5 +1,7 @@
 package org.monroe.team.notification.bridge.android.delivery.bluetooth;
 
+import org.monroe.team.notification.bridge.common.IdAwareData;
+
 /**
  * User: MisterJBee
  * Date: 12/16/13 Time: 1:00 AM
@@ -8,13 +10,13 @@ package org.monroe.team.notification.bridge.android.delivery.bluetooth;
  */
 public class BluetoothExchange {
 
-    private final IdAware body;
+    private final IdAwareData body;
 
-    public BluetoothExchange(IdAware body) {
+    public BluetoothExchange(IdAwareData body) {
         this.body = body;
     }
 
-    public IdAware getBody() {
+    public IdAwareData getBody() {
         return body;
     }
 
@@ -22,7 +24,4 @@ public class BluetoothExchange {
         return body.getId();
     }
 
-    public static interface IdAware {
-        public String getId();
-    }
 }

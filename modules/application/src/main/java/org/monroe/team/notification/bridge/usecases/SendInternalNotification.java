@@ -26,7 +26,7 @@ public class SendInternalNotification extends AbstractUseCase <Void, Map<String,
         String msgId = strategy(IdGeneratorStrategy.class).generateId(ownerId);
         DefaultNotification notification = new DefaultNotification(ownerId,msgId,msgBody,nowDate);
 
-        RemoteClientBoundary.RemoteClient[] remoteClients = boundary(RemoteClientBoundary.Required.class).getAvailableClients();
+        RemoteClientBoundary.RemoteClient[] remoteClients = boundary(RemoteClientBoundary.Required.class).getClientsToNotify();
         for (RemoteClientBoundary.RemoteClient remoteClient : remoteClients) {
             boundary(NotificationBoundary.Required.class).sendNotification(remoteClient, notification);
         }

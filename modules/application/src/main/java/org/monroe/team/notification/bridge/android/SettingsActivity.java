@@ -69,11 +69,7 @@ public class SettingsActivity extends PreferenceActivity
                         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                         startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
                         SettingAccessor.SHARE_OVER_BLUETOOTH.setValue(false, getPreferenceScreen());
-                    } else {
-                        mBridgeManager.activateBluetoothForOutgoings();
                     }
-                } else {
-                    mBridgeManager.deactivateBluetoothForOutGoings();
                 }
             }
         });
