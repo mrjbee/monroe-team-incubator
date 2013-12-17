@@ -35,7 +35,11 @@ final public class Should {
         throw new RuntimeException(msg);
     }
 
-    public static void beImplemented(String msg){
+    public static RuntimeException beImplemented(){
+        return beImplemented("Not implemented yet.");
+    }
+
+    public static RuntimeException beImplemented(String msg){
         throw new UnsupportedOperationException(msg);
     }
 
