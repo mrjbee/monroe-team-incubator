@@ -1,6 +1,7 @@
 package org.monroe.team.notification.bridge.android.delivery.bluetooth;
 
 import android.bluetooth.BluetoothSocket;
+import org.monroe.team.libdroid.commons.Should;
 import org.monroe.team.libdroid.logging.Debug;
 
 import java.io.*;
@@ -46,7 +47,7 @@ class BluetoothExchangePipe {
                 }
             };
         } else {
-            mInThread.restoreReading();
+            mInThread.startReading();
         }
 
         mBluetoothSocket = clientSocket;
@@ -69,12 +70,9 @@ class BluetoothExchangePipe {
         }
     }
 
-    public void requestSessionEnd(){
-        mInThread.stopReading();
-    }
-
 
     public void forceSessionEnd() {
+        mInThread.stopReading();
         closeConnections();
         mBluetoothClientListener = null;
     }
@@ -119,54 +117,71 @@ class BluetoothExchangePipe {
 
     private abstract class InThread extends Thread {
 
-        private Object awaitingObject = new Object();
-        private boolean requestSessionEnd = false;
+        private KillSignal killSignal = new KillSignal();
 
         private InThread() {
             super("in_thread_client");
         }
 
-        public void restoreReading(){
-            synchronized (awaitingObject){
-                awaitingObject.notify();
+        void startReading(){
+
+            synchronized (killSignal){
+                if(killSignal.killRequest){
+                    try {
+                        killSignal.wait();
+                    } catch (InterruptedException e) {
+                        Should.failsHere("Shouldn`t wait too long to be interrupted.", e);
+                    }
+                }
+            }
+
+            synchronized (killSignal){
+                killSignal.notify();
             }
         }
 
-        public void stopReading() {
-            synchronized (awaitingObject){
-                requestSessionEnd = true;
+        void stopReading() {
+            synchronized (killSignal){
+                if (killSignal.killRequest){
+                    return;
+                }
+                killSignal.killRequest = true;
+                try {
+                    killSignal.wait();
+                } catch (InterruptedException e) {
+                    Should.failsHere("Shouldn`t wait too long to be interrupted.", e);
+                }
             }
         }
 
         @Override
         public void run() {
-            while (isInterrupted()){
-                try {
-
-                    synchronized (awaitingObject){
+            while (isInterrupted()) {
+                synchronized (killSignal) {
+                    try {
                         Object object = null;
-                        if (!requestSessionEnd && BluetoothExchangePipe.this.mInputStream != null) {
+                        if (!killSignal.killRequest) {
                             object = BluetoothExchangePipe.this.mInputStream.readObject();
                         }
-                        if (object!=null){
+                        if (object != null) {
                             onExchange((BluetoothExchange) object);
                         } else {
+                            onEndOfSession();
+                            killSignal.notifyAll();
                             try {
-                                requestSessionEnd = false;
-                                onEndOfSession();
-                                awaitingObject.wait();
+                                killSignal.wait();
+                                killSignal.killRequest = false;
                             } catch (InterruptedException e) {
                                 return;
                             }
                         }
+                    } catch (ClassNotFoundException e) {
+                        Debug.e(e, "Error during fetch object");
+                        onError(e);
+                    } catch (IOException e) {
+                        Debug.e(e, "Error during fetch object");
+                        onError(e);
                     }
-
-                } catch (ClassNotFoundException e) {
-                    Debug.e(e,"Error during fetch object");
-                    onError(e);
-                } catch (IOException e) {
-                    Debug.e(e, "Error during fetch object");
-                    onError(e);
                 }
             }
         }
@@ -175,6 +190,9 @@ class BluetoothExchangePipe {
         protected abstract void onExchange(BluetoothExchange exchange);
         protected abstract void onError(Exception e);
 
+        private class KillSignal{
+             private boolean killRequest = false;
+        }
 
     }
 

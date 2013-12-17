@@ -122,12 +122,12 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
         }
 
         @Override
-        public void activateBluetoothForIncomings() {
+        public void activateBluetoothForIncoming() {
             mBluetoothGateway.startServer();
         }
 
         @Override
-        public void deactivateBluetoothForIncomings() {
+        public void deactivateBluetoothForIncoming() {
             mBluetoothGateway.stopServer();
         }
 

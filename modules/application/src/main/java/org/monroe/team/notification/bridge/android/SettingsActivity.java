@@ -52,9 +52,9 @@ public class SettingsActivity extends PreferenceActivity
             @Override
             public void call(SharedPreferences in) {
                 boolean value = SettingAccessor.SERVICE_ACTIVE.getValue(in);
-                if (value){
+                if (value) {
                     mBridgeManager.activate();
-                }else {
+                } else {
                     mBridgeManager.disable();
                 }
             }
@@ -84,10 +84,10 @@ public class SettingsActivity extends PreferenceActivity
                         startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
                         SettingAccessor.ACCEPT_OVER_BLUETOOTH.setValue(false, getPreferenceScreen());
                     } else {
-                        mBridgeManager.activateBluetoothForIncomings();
+                        mBridgeManager.activateBluetoothForIncoming();
                     }
                 } else {
-                    mBridgeManager.deactivateBluetoothForIncomings();
+                    mBridgeManager.deactivateBluetoothForIncoming();
                 }
             }
         });
