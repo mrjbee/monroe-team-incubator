@@ -74,6 +74,10 @@ class BluetoothExchangePipe {
     }
 
 
+    public void endWrite() {
+        write(null);
+    }
+
     public void forceSessionEnd() {
         mInThread.stopReading();
         free();
@@ -109,6 +113,7 @@ class BluetoothExchangePipe {
             mBluetoothSocket = null;
         }
     }
+
 
 
     public static interface BluetoothClientListener{

@@ -7,6 +7,7 @@ import android.content.Context;
 import org.monroe.team.libdroid.logging.Debug;
 import org.monroe.team.notification.bridge.common.IdAwareData;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -72,33 +73,34 @@ public class BluetoothGateway implements BluetoothServer.OnClientListener{
     //As server
     @Override
     public void onClient(final BluetoothSocket clientSocket) {
-        mExecutorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                mBluetoothExchangePipe.setup(clientSocket, new BluetoothExchangePipe.BluetoothClientListener() {
-                    @Override
-                    public void onReadError(BluetoothExchangePipe client, Exception e) {
-                        Debug.e(e,"Error during reading");
-                    }
+        try {
+            clientSocket.close();
+        } catch (IOException e) {
+            Debug.e(e," Test closign");
+        }
+        /*     mBluetoothExchangePipe.setup(clientSocket, new BluetoothExchangePipe.BluetoothClientListener() {
+                   @Override
+                   public void onReadError(BluetoothExchangePipe client, Exception e) {
+                       Debug.e(e,"Error during reading");
+                   }
 
-                    @Override
-                    public void onWriteError(BluetoothExchangePipe bluetoothExchangePipe, BluetoothExchange exchange, Exception e) {
-                        Debug.e(e,"Error during writing = %s",exchange);
-                    }
+                   @Override
+                   public void onWriteError(BluetoothExchangePipe bluetoothExchangePipe, BluetoothExchange exchange, Exception e) {
+                       Debug.e(e,"Error during writing = %s",exchange);
+                   }
 
-                    @Override
-                    public void onExchange(BluetoothExchangePipe client, BluetoothExchange exchange) {
-                        Debug.i("new exchange = %s", exchange);
-                    }
+                   @Override
+                   public void onExchange(BluetoothExchangePipe client, BluetoothExchange exchange) {
+                       Debug.i("new exchange = %s", exchange);
+                   }
 
-                    @Override
-                    public void onSessionEnd(BluetoothExchangePipe client) {
-                        Debug.i("Release pipe");
-                        mBluetoothExchangePipe.free();
-                    }
-                });
-            }
-        });
+                   @Override
+                   public void onSessionEnd(BluetoothExchangePipe client) {
+                       Debug.i("Release pipe");
+                       mBluetoothExchangePipe.free();
+                   }
+               });
+       stopServer(); */
     }
 
     //As client
@@ -135,7 +137,7 @@ public class BluetoothGateway implements BluetoothServer.OnClientListener{
                 for (IdAwareData idAwareData : notification) {
                     mBluetoothExchangePipe.write(new BluetoothExchange(idAwareData));
                 }
-
+                mBluetoothExchangePipe.endWrite();
             }
         });
     }

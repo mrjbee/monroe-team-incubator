@@ -13,6 +13,7 @@ import org.monroe.team.libdroid.mservice.ModelService;
 import org.monroe.team.notification.bridge.R;
 import org.monroe.team.notification.bridge.android.delivery.bluetooth.BluetoothGateway;
 import org.monroe.team.notification.bridge.android.delivery.bluetooth.BluetoothRemoteClient;
+import org.monroe.team.notification.bridge.boundaries.DeviceNameBoundary;
 import org.monroe.team.notification.bridge.boundaries.NotificationBoundary;
 import org.monroe.team.notification.bridge.boundaries.RemoteClientBoundary;
 import org.monroe.team.notification.bridge.common.IdAwareData;
@@ -64,7 +65,8 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
     private final static class NotificationBridgeManagerImpl extends Binder
             implements NotificationBridgeManager,
             NotificationBoundary.Required,
-            RemoteClientBoundary.Required{
+            RemoteClientBoundary.Required,
+            DeviceNameBoundary.Required{
 
         private final NotificationBridgeService mService;
         private final BluetoothGateway mBluetoothGateway;
@@ -84,6 +86,7 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
 
             mUseCaseContext.installBoundary(this, NotificationBoundary.Required.class);
             mUseCaseContext.installBoundary(this, RemoteClientBoundary.Required.class);
+            mUseCaseContext.installBoundary(this, DeviceNameBoundary.Required.class);
 
             UseCaseSetup.define(mUseCaseContext);
             mUseCaseContext.startup();
@@ -190,6 +193,10 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
         };
 
 
+        @Override
+        public String getDeviceName() {
+            return mDeviceName;
+        }
     }
 
 }

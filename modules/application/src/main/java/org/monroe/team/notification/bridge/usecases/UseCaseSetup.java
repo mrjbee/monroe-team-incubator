@@ -32,7 +32,7 @@ final public class UseCaseSetup implements NotificationBoundary.Declare {
 
     @Override
     public void onNotificationSendFails(NotificationBoundary.Notification notification, RemoteClientBoundary.RemoteClient client) {
-        Should.beImplemented("Not implemented yet.");
+        //Should.beImplemented("Not implemented yet.");
     }
 
 
