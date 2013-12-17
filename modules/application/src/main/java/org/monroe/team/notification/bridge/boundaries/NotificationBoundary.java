@@ -4,14 +4,17 @@ import java.util.Map;
 
 public interface NotificationBoundary {
 
-    //Dedicated to be used inside user case
-    public void send(RemoteClientBoundary.RemoteClient client, Notification... notification);
+    public interface Required{
+        public void send(RemoteClientBoundary.RemoteClient client, Notification... notification);
+    }
 
-    //Dedicated to be used outside user case
-    public void onSendSuccess(Notification notification, RemoteClientBoundary.RemoteClient client);
-    public void onSendFails(Notification notification, RemoteClientBoundary.RemoteClient client);
-    public void onInternal(Map<String,String> notificationBody);
-    public void onExternal(Notification notification);
+    public interface Declare{
+        public void onSendSuccess(Notification notification, RemoteClientBoundary.RemoteClient client);
+        public void onSendFails(Notification notification, RemoteClientBoundary.RemoteClient client);
+        public void onInternal(Map<String,String> notificationBody);
+        public void onExternal(Notification notification);
+    }
+
 
     public interface Notification {
         public String getMessageId();

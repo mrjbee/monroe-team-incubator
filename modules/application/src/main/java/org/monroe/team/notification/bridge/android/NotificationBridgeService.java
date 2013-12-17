@@ -8,13 +8,16 @@ import android.os.Binder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import org.monroe.team.libdroid.mservice.ModelService;
+
 import org.monroe.team.notification.bridge.R;
 import org.monroe.team.notification.bridge.android.connectivity.BluetoothGateway;
+import org.monroe.team.notification.bridge.boundaries.NotificationBoundary;
+import org.monroe.team.notification.bridge.boundaries.RemoteClientBoundary;
 import org.monroe.team.notification.bridge.strategies.DateStrategy;
 import org.monroe.team.notification.bridge.strategies.IdGeneratorStrategy;
-import org.monroe.team.notification.bridge.usecases.InjectionSupportedUserCasesContext;
-import org.monroe.team.notification.bridge.usecases.UserCasesRouter;
-import org.monroe.team.notification.bridge.usecases.UserCasesContext;
+import org.monroe.team.notification.bridge.usecases.InjectionSupportedUserCaseContext;
+import org.monroe.team.notification.bridge.usecases.UseCaseSetup;
+import org.monroe.team.notification.bridge.usecases.UserCaseContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,13 +59,15 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
         stopForeground(true);
     }
 
-    private final static class NotificationBridgeManagerImpl extends Binder implements NotificationBridgeManager {
+    private final static class NotificationBridgeManagerImpl extends Binder
+            implements NotificationBridgeManager,
+            NotificationBoundary.Required,
+            RemoteClientBoundary.Required{
 
         private final NotificationBridgeService mService;
         private final BluetoothGateway mBluetoothGateway;
         private String mDeviceName = "OldFuck";
-        private UserCasesContext mUserCasesContext = new InjectionSupportedUserCasesContext();
-        private UserCasesRouter mUserCasesRouter;
+        private UserCaseContext mUseCaseContext = new InjectionSupportedUserCaseContext();
 
         private NotificationBridgeManagerImpl(NotificationBridgeService service, BluetoothGateway bluetoothGateway) {
             mService = service;
@@ -71,17 +76,21 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
 
         public void initiate(Context context){
 
+            mUseCaseContext.installStrategy(new DateStrategy(), DateStrategy.class);
+            mUseCaseContext.installStrategy(new IdGeneratorStrategy(), IdGeneratorStrategy.class);
+
+            mUseCaseContext.installBoundary(this, NotificationBoundary.Required.class);
+            mUseCaseContext.installBoundary(this, RemoteClientBoundary.Required.class);
+
+            UseCaseSetup.define(mUseCaseContext);
+            mUseCaseContext.startup();
+
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
             if(SettingAccessor.SERVICE_ACTIVE.getValue(preferences)){
                 activate();
-            };
+            }
 
-            mUserCasesContext.installStrategy(new DateStrategy(), DateStrategy.class);
-            mUserCasesContext.installStrategy(new IdGeneratorStrategy(), IdGeneratorStrategy.class);
-
-            mUserCasesRouter = new UserCasesRouter(mUserCasesContext);
-            mUserCasesRouter.initialize();
         }
 
         @Override
@@ -133,7 +142,17 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
         public void sendTestNotification() {
             Map<String,String> notificationBody = new HashMap<String, String>();
             notificationBody.put("text","Test notification");
-            mUserCasesRouter.sendTestMessage(notificationBody);
+            mUseCaseContext.getBoundary(NotificationBoundary.Declare.class).onInternal(notificationBody);
+        }
+
+        @Override
+        public void send(RemoteClientBoundary.RemoteClient client, NotificationBoundary.Notification... notification) {
+
+        }
+
+        @Override
+        public RemoteClientBoundary.RemoteClient[] getAvailableClients() {
+            return new RemoteClientBoundary.RemoteClient[0];
         }
     }
 

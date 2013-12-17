@@ -1,6 +1,12 @@
 package org.monroe.team.notification.bridge.boundaries;
 
 public interface DeviceNameBoundary {
-    public String getDeviceName(String deviceName);
-    public void OnDeviceNameChanged(String deviceName, String oldDeviceName);
+
+    public interface Required {
+        public String getDeviceName(String deviceName);
+    }
+
+    public interface Declare {
+        public void OnDeviceNameChanged(String deviceName);
+    }
 }

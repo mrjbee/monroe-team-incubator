@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class InjectionSupportedUserCasesContext extends UserCasesContext {
+public class InjectionSupportedUserCaseContext extends UserCaseContext {
 
     @Override
     protected void doBeforeStart(Map<Class<?>, Object> registrationStrategiesMap, Map<Class<?>, Object> registrationBoundariesMap) {
@@ -18,6 +18,6 @@ public class InjectionSupportedUserCasesContext extends UserCasesContext {
     }
 
     public static interface InjectionAwareStrategy {
-        public void injectUsing(UserCasesContext context);
+        public void injectUsing(UserCaseContext context);
     }
 }

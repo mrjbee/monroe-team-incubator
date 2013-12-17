@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class UserCasesContext {
+public class UserCaseContext {
 
     private Map<Class<?>, Object> mRegistrationBoundariesMap = new HashMap<Class<?>, Object>();
     private Map<Class<?>, Object> mRegistrationStrategiesMap = new HashMap<Class<?>, Object>();
@@ -37,7 +37,7 @@ public class UserCasesContext {
         return (EntityType) answer;
     }
 
-    final synchronized void startup(){
+    final synchronized public void startup(){
         started = true;
         doBeforeStart(mRegistrationStrategiesMap, mRegistrationBoundariesMap);
         Set<Object> notifiedBeansSet = new HashSet<Object>();
