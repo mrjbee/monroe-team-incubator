@@ -97,6 +97,10 @@ public class NotificationBridgeService extends ModelService<NotificationBridgeMa
                 activate();
             }
 
+            if(SettingAccessor.ACCEPT_NOTIFICATION.getValue(mPreferences)
+                    && SettingAccessor.ACCEPT_OVER_BLUETOOTH.getValue(mPreferences)){
+                activateBluetoothForIncoming();
+            }
         }
 
         @Override

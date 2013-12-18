@@ -21,12 +21,17 @@ class BluetoothExchangePipe {
 
     private InThread mInThread;
 
-    final public void setup(BluetoothSocket clientSocket, BluetoothClientListener bluetoothClientListener) {
+    final public void setup(BluetoothSocket clientSocket, BluetoothClientListener bluetoothClientListener, boolean server) {
         mBluetoothClientListener = bluetoothClientListener;
         mBluetoothSocket = clientSocket;
         try {
-            mInputStream = new ObjectInputStream(mBluetoothSocket.getInputStream());
-            mOutputStream = new ObjectOutputStream(mBluetoothSocket.getOutputStream());
+            if(server){
+                mInputStream = new ObjectInputStream(mBluetoothSocket.getInputStream());
+                mOutputStream = new ObjectOutputStream(mBluetoothSocket.getOutputStream());
+            } else {
+                mOutputStream = new ObjectOutputStream(mBluetoothSocket.getOutputStream());
+                mInputStream = new ObjectInputStream(mBluetoothSocket.getInputStream());
+            }
         } catch (IOException e) {
             Debug.e(e,"During opening client stream");
             free();
@@ -164,7 +169,7 @@ class BluetoothExchangePipe {
 
         @Override
         public void run() {
-            while (isInterrupted()) {
+            while (!isInterrupted()) {
                 synchronized (killSignal) {
                     try {
                         Object object = null;
