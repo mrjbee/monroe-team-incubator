@@ -81,6 +81,7 @@ class BluetoothExchangePipe {
 
     public void endWrite() {
         write(null);
+        forceSessionEnd();
     }
 
     public void forceSessionEnd() {

@@ -129,7 +129,7 @@ public class BluetoothGateway implements BluetoothServer.OnClientListener{
         for (IdAwareData idAwareData : notification) {
             mBluetoothExchangePipe.write(new BluetoothExchange(idAwareData));
         }
-        //mBluetoothExchangePipe.endWrite();
+        mBluetoothExchangePipe.endWrite();
     }
 
 
