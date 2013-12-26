@@ -1,0 +1,89 @@
+package org.monroe.team.notification.bridge.android.delivery.socket;
+
+import android.bluetooth.BluetoothSocket;
+
+import java.io.IOException;
+
+/**
+ * User: MisterJBee
+ * Date: 12/15/13 Time: 8:51 PM
+ * Open source: MIT Licence
+ * (Do whatever you want with the source code)
+ */
+public class SocketServer {
+
+    private SocketServerThread mExecutionThread;
+    private SocketServerCallback mSocketServerCallback;
+    private boolean mStarted = false;
+    private final SocketServerDelegate mSocketServerDelegate;
+
+    public SocketServer(SocketServerDelegate socketServerDelegate) {
+        mSocketServerDelegate = socketServerDelegate;
+    }
+
+    public synchronized void start(SocketServerCallback socketServerCallback){
+        mExecutionThread = new SocketServerThread();
+        mSocketServerCallback = socketServerCallback;
+        mStarted = true;
+        mExecutionThread.start();
+    }
+
+    public synchronized void stop(){
+        mSocketServerCallback = null;
+        if(mExecutionThread != null){
+            mExecutionThread.release();
+            mExecutionThread = null;
+        }
+        mStarted = false;
+    }
+
+    public boolean isStarted() {
+        return mStarted;
+    }
+
+    private void fails(Exception e) {
+       SocketServerCallback callback = mSocketServerCallback;
+       stop();
+       callback.onStopWithError(e);
+    }
+
+    private final class SocketServerThread extends Thread {
+
+        private SocketServerThread() {
+            super("socket_server");
+        }
+
+        @Override
+        public void run() {
+            try {
+                mSocketServerDelegate.start();
+            } catch (Exception e) {
+                fails(e);
+                return;
+            }
+            while (!isInterrupted()){
+                try {
+                    SocketClient client = mSocketServerDelegate.accept();
+                } catch (IOException e) {
+                    fails(e);
+                    break;
+                }
+            }
+        }
+
+        public void release() {
+
+        }
+    }
+
+    public static interface SocketServerCallback {
+        void onClient(BluetoothSocket clientSocket);
+        void onStopWithError(Exception e);
+    }
+
+    public static interface SocketServerDelegate {
+        void start() throws Exception;
+        SocketClient accept() throws IOException;
+    }
+
+}
