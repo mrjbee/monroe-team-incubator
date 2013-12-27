@@ -40,9 +40,9 @@ public class SocketPipe {
         mReadThread = new SocketReadThread(mInputStream);
         mReadThread.start();
     }
+
     public synchronized void writeEnd(){
         write(null);
-        freeResources();
     }
 
     public synchronized void write(SocketMessage<?> message){
@@ -73,6 +73,7 @@ public class SocketPipe {
     }
 
     private synchronized void endOfData() {
+        writeEnd();
         SocketPipeCallback callback = mSocketPipeCallback;
         SocketClient client = mSocketClient;
         freeResources();
