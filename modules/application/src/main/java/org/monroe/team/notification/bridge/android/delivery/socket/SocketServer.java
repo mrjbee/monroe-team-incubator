@@ -1,7 +1,4 @@
 package org.monroe.team.notification.bridge.android.delivery.socket;
-
-import android.bluetooth.BluetoothSocket;
-
 import java.io.IOException;
 
 /**
@@ -37,11 +34,12 @@ public class SocketServer {
         mStarted = false;
     }
 
-    public boolean isStarted() {
+    public synchronized boolean isStarted() {
         return mStarted;
     }
 
-    private void fails(Exception e) {
+    private synchronized void fails(Exception e) {
+       if (mExecutionThread == null) return;
        SocketServerCallback callback = mSocketServerCallback;
        stop();
        callback.onStopWithError(e);
