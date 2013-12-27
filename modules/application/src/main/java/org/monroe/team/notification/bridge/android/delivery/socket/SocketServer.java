@@ -12,10 +12,10 @@ import java.io.IOException;
  */
 public class SocketServer {
 
-    private SocketServerThread mExecutionThread;
-    private SocketServerCallback mSocketServerCallback;
-    private boolean mStarted = false;
-    private final SocketServerDelegate mSocketServerDelegate;
+    SocketServerThread mExecutionThread;
+    SocketServerCallback mSocketServerCallback;
+    boolean mStarted = false;
+    final SocketServerDelegate mSocketServerDelegate;
 
     public SocketServer(SocketServerDelegate socketServerDelegate) {
         mSocketServerDelegate = socketServerDelegate;
@@ -64,6 +64,7 @@ public class SocketServer {
             while (!isInterrupted()){
                 try {
                     SocketClient client = mSocketServerDelegate.accept();
+                    mSocketServerCallback.onClient(client);
                 } catch (IOException e) {
                     fails(e);
                     break;
@@ -72,18 +73,20 @@ public class SocketServer {
         }
 
         public void release() {
-
+            interrupt();
+            mSocketServerDelegate.stop();
         }
     }
 
     public static interface SocketServerCallback {
-        void onClient(BluetoothSocket clientSocket);
+        void onClient(SocketClient client);
         void onStopWithError(Exception e);
     }
 
     public static interface SocketServerDelegate {
         void start() throws Exception;
         SocketClient accept() throws IOException;
+        void stop();
     }
 
 }
