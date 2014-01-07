@@ -34,11 +34,11 @@ public class SocketServerTest extends TSupport{
         Exception dummyException = new Exception();
         LazyCheck waitForServerThread = lazyCheck("There was no stop because of error");
         Mockito.doThrow(dummyException).when(mockDelegate).start();
-        Mockito.doAnswer(waitForServerThread).when(mockServerCallback).onStopWithError(dummyException);
+        Mockito.doAnswer(waitForServerThread).when(mockServerCallback).onStopWithError(testInstance, dummyException);
         testInstance.start(mockServerCallback);
         waitForServerThread.await(2000);
 
-        Mockito.verify(mockServerCallback).onStopWithError(dummyException);
+        Mockito.verify(mockServerCallback).onStopWithError(testInstance, dummyException);
         Mockito.verify(mockDelegate).start();
         Mockito.verify(mockDelegate).stop();
         shouldStop();
@@ -52,11 +52,11 @@ public class SocketServerTest extends TSupport{
         LazyCheck waitForServerThread = lazyCheck("There was no stop because of error");
         Mockito.doNothing().when(mockDelegate).start();
         Mockito.doThrow(dummyException).when(mockDelegate).accept();
-        Mockito.doAnswer(waitForServerThread).when(mockServerCallback).onStopWithError(dummyException);
+        Mockito.doAnswer(waitForServerThread).when(mockServerCallback).onStopWithError(testInstance, dummyException);
         testInstance.start(mockServerCallback);
         waitForServerThread.await(2000);
 
-        Mockito.verify(mockServerCallback).onStopWithError(dummyException);
+        Mockito.verify(mockServerCallback).onStopWithError(testInstance, dummyException);
         Mockito.verify(mockDelegate).start();
         Mockito.verify(mockDelegate).accept();
         Mockito.verify(mockDelegate).stop();
@@ -85,12 +85,12 @@ public class SocketServerTest extends TSupport{
                 waitForServerThreadStart.check();
                 return null;
             }
-        }).when(mockServerCallback).onClient(Mockito.any(SocketClient.class));
+        }).when(mockServerCallback).onClient(testInstance,mockClient);
 
         testInstance.start(mockServerCallback);
 
         waitForServerThreadStart.await(2000);
-        Mockito.verify(mockServerCallback).onClient(Mockito.any(SocketClient.class));
+        Mockito.verify(mockServerCallback).onClient(testInstance, mockClient);
         Mockito.verify(mockDelegate).start();
         Mockito.verify(mockDelegate).accept();
         Mockito.verify(mockDelegate).stop();

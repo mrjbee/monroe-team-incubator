@@ -4,6 +4,8 @@ import org.monroe.team.libdroid.commons.Should;
 import org.monroe.team.libdroid.testing.TSupport;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -47,6 +49,31 @@ public class SocketGatewayAccTest extends TSupport{
 
             public ServerSocketClient(Socket socket) {
                 mSocket = socket;
+            }
+
+            @Override
+            public ObjectInputStream getInputStream() throws IOException {
+                return null;  //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            @Override
+            public ObjectOutputStream getOutputStream() throws IOException {
+                return null;  //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            @Override
+            public boolean isConnectionOwner() {
+                return false;  //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            @Override
+            public void init() {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            @Override
+            public void deInit() {
+                //To change body of implemented methods use File | Settings | File Templates.
             }
         }
 

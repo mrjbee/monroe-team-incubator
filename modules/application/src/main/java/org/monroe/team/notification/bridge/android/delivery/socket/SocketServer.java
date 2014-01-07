@@ -42,7 +42,7 @@ public class SocketServer {
        if (mExecutionThread == null) return;
        SocketServerCallback callback = mSocketServerCallback;
        stop();
-       callback.onStopWithError(e);
+       callback.onStopWithError(this, e);
     }
 
     private final class SocketServerThread extends Thread {
@@ -62,7 +62,7 @@ public class SocketServer {
             while (!isInterrupted()){
                 try {
                     SocketClient client = mSocketServerDelegate.accept();
-                    mSocketServerCallback.onClient(client);
+                    mSocketServerCallback.onClient(SocketServer.this, client);
                 } catch (IOException e) {
                     fails(e);
                     break;
@@ -77,8 +77,8 @@ public class SocketServer {
     }
 
     public static interface SocketServerCallback {
-        void onClient(SocketClient client);
-        void onStopWithError(Exception e);
+        void onClient(SocketServer server, SocketClient client);
+        void onStopWithError(SocketServer server, Exception e);
     }
 
     public static interface SocketServerDelegate {
