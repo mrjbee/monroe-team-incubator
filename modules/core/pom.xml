@@ -8,38 +8,38 @@
         <groupId>org.monroe.team.template</groupId>
         <artifactId>suite</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>../../</relativePath>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <groupId>${parent.groupId}</groupId>
-    <artifactId>application</artifactId>
-    <version>${parent.version}</version>
+    <groupId>org.monroe.team.template</groupId>
+    <artifactId>core</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <packaging>apk</packaging>
-    <name>ass</name>
+    
+    <name>Core Module</name>
 
     <dependencies>
-
-        <dependency>
-            <groupId>android</groupId>
-            <artifactId>android</artifactId>
+       <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>android.support</groupId>
-            <artifactId>compatibility-v4</artifactId>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
-                <artifactId>android-maven-plugin</artifactId>
-            </plugin>
-
-            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
