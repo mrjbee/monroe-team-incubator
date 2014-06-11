@@ -24,8 +24,8 @@
     </repositories>
 
     <modules>
-        <module>modules/poc</module>
         <module>modules/lib-restlet</module>
+        <module>modules/example-rest</module>
     </modules>
 
 
