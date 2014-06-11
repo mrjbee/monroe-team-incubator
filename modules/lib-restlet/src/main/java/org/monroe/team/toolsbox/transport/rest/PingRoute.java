@@ -8,5 +8,6 @@ public class PingRoute extends SpringRouteBuilder {
     @Override
     public void configure() throws Exception {
         from("restlet:/ping").transform(simple("Pong [rest is up]"));
+        from("restlet:/secure-ping").transform(simple("Pong [secure rest is up]"));
     }
 }
