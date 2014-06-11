@@ -25,6 +25,7 @@
 
     <modules>
         <module>modules/poc</module>
+        <module>modules/lib-restlet</module>
     </modules>
 
 

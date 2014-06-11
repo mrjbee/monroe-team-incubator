@@ -11,20 +11,13 @@
     </parent>
 
     <groupId>org.monroe.team.toolsbox</groupId>
-    <artifactId>poc</artifactId>
+    <artifactId>lib-restlet</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
-    <name>Proof Of Concept Module</name>
+    <name>Restlet Library Module</name>
 
     <dependencies>
-
-        <dependency>
-            <groupId>org.monroe.team.toolsbox</groupId>
-            <artifactId>lib-restlet</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
 
         <dependency>
             <groupId>org.restlet.jee</groupId>

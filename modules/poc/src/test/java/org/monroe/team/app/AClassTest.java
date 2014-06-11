@@ -10,11 +10,4 @@ import org.junit.Test;
  * (Do whatever you want with the source code)
  */
 public class AClassTest {
-
-    AClass testInstance = new AClass();
-
-    @Test
-    public void shouldSayHello(){
-        Assert.assertEquals("Hello man", testInstance.hello("man"));
-    }
 }

@@ -1,4 +1,4 @@
-package org.monroe.team.poc;
+package org.monroe.team.toolsbox.transport.rest;
 
 import org.apache.camel.spring.SpringRouteBuilder;
 import org.springframework.stereotype.Component;
@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 public class PingRoute extends SpringRouteBuilder {
     @Override
     public void configure() throws Exception {
-        from("restlet:/version").transform(simple("Will be soon"));
+        from("restlet:/ping").transform(simple("Pong [rest is up]"));
     }
 }

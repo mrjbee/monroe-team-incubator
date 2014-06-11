@@ -10,18 +10,13 @@
        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring-2.13.1.xsd">
 
     <!-- enable Spring @Component scan -->
-    <context:component-scan base-package="org.monroe.team.*"/>
+    <context:component-scan base-package="org.monroe.team.toolsbox.*"/>
 
     <camel:camelContext>
         <!-- and then let Camel use those @Component scanned route builders -->
         <camel:contextScan/>
     </camel:camelContext>
 
-    <bean id="RestletComponent" class="org.restlet.Component" />
+    <import resource="classpath:restlet-spring.xml"/>
 
-    <bean id="RestletComponentService" class="org.apache.camel.component.restlet.RestletComponent">
-        <constructor-arg index="0">
-            <ref bean="RestletComponent" />
-        </constructor-arg>
-    </bean>
 </beans>
