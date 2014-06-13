@@ -9,7 +9,7 @@
     <http auto-config="true">
         <intercept-url pattern="/rest/ping" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/**" access="ROLE_REST_USER" />
-        <http-basic/>
+        <http-basic entry-point-ref="customBasicAuthenticationEntryPoint"/>
     </http>
 
    <beans:import resource="classpath:security-users.xml"/>
@@ -17,4 +17,9 @@
     <authentication-manager alias="authenticationManager">
         <authentication-provider user-service-ref="users"/>
     </authentication-manager>
+
+    <beans:bean id="customBasicAuthenticationEntryPoint" class="org.monroe.team.toolsbox.security.CustomBasicAuthenticationEntryPoint">
+        <beans:constructor-arg value="RealmName" />
+    </beans:bean>
+
 </beans:beans>

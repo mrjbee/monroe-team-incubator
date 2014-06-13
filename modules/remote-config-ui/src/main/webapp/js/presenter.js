@@ -1,21 +1,40 @@
 function Presenter(model, view){
 
-	this.model = model;
 	this.typeName = "Presenter"
+	
+	this.model = model;
 	this.view = view;
 
-	model.presenter = this;
-	
 	this.doOnStartup = function(){
+		model.setPresenter(this)
 		view.loginBtn.click(this.doOnLoggingBtnClick)
-		view.authPanel.slideToggle("slow");
+		view.authPanel.slideDown("slow");
 	}
 
 	this.doOnLoggingBtnClick = function(){
-		var userName = view.userNameInput.val();
-		var password = view.passInput.val();
-		view.authPanel.slideToggle();
-		view.waitProgressBar.fadeToggle();
+		var userNameTxt = view.userNameInput.val();
+		var passwordTxt = view.passInput.val();
+		view.authPanel.slideUp();
+		view.waitProgressBar.fadeIn();
+		var loginRequestModel = {
+			userName:userNameTxt,
+			password:passwordTxt
+		}
+		model.loginUser(loginRequestModel)	
+	}
+
+	this.doOnUserLogOut = function() {
+		view.authPanel.slideDown();
+		view.waitProgressBar.fadeOut();
+		view.infolabel.text("Authorization fails! Try again...")
+		view.infoPanel.slideDown().delay(800).fadeOut(400);	
+	}
+
+	this.doOnError = function(statusCode){
+		view.waitProgressBar.fadeOut();
+		view.infolabel.text("Error ("+statusCode+") ! Please try again later...")
+		view.infoPanel.slideDown().delay(800).fadeOut(400);	
+		view.authPanel.slideDown("slow");
 	}
 	
 }

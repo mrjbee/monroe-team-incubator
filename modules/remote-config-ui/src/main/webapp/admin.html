@@ -57,6 +57,11 @@
 		</tr>
 	</table>
 </div>
+
+<div id="info-panel" style=" display: none;">
+	<div id="info-label" class="text-light">Authroization fails</div>
+</div>
+
 <script type="text/javascript">
 $( "#login-btn" ).button();
 $( "#wait-progressbar" ).progressbar({
@@ -72,6 +77,8 @@ $(document).ready(function() {
 		passInput:$("#pass-input"),
 		authPanel:$("#auth-panel"),
 		waitProgressBar:$("#wait-progressbar"),	
+		infolabel:$("#info-label"),
+		infoPanel:$("#info-panel")
 	})
 	presenter.doOnStartup()
 });
