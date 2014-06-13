@@ -2,16 +2,79 @@
 <html>
 <head>
     <title>Remote Config UI</title>
-    <script type="text/javascript" src="js/lib/jquery-2.1.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link href="jquery-ui-1.10.4.custom/css/smoothness/jquery-ui-1.10.4.custom.css" rel="stylesheet">
+	<script src="js/model.js"></script>
+	<script src="js/presenter.js"></script>
+	<script src="jquery-ui-1.10.4.custom/js/jquery-1.10.2.js"></script>
+	<script src="jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.js"></script>
+	
 </head>
 <body>
-<div>Welcome Back</div>
-
+<div id="control-panel" style="visibility:visible">
+	<div class="text-dark-caption">Remote Config</div>
+	<hr/>
+	<div class="text-dark-sub-caption">Server Statistic</div>
+	<table>
+		<tr>
+			<td class="text-dark">Last online date</td>
+			<td class="text-dark-value">NaN</td>			
+		</tr>
+		<tr>
+			<td class="text-dark"> Status</td>
+			<td class="text-dark-value">NaN</td>			
+		</tr>
+		<tr>
+			<td class="text-dark"> Awake date</td>
+			<td class="text-dark-value">NaN</td>			
+		</tr>
+	</table>
+	<div class="text-dark-sub-caption">Settings</div>
+	<table>
+		<tr><td colspan="2" class="text-dark">Next time sleep timer</td></tr>
+		<tr><td style="width:300px;"><div id="awake-second-slider"></div></td><td class="text-dark-value">NaN</td></tr>
+	</table>		
+</div>
+<div id="block-panel" style="visibility:visible" >
+	<div id="wait-progressbar" style="display:none"></div>
+</div>
+<div id="auth-panel" style=" display: none;">
+	<div class="text-light-caption">Welcome to Remote Config</div>
+	<table>
+		<tr>
+			<td colspan="2"> <div class="text-light-hint" style="float: right;">... please login to continue</div></td>
+		</tr>
+		<tr>
+			<td class="text-light">User</td>
+			<td><input id="user-input"/></td>
+		</tr>
+		<tr>
+			<td class="text-light">Password</td>
+			<td><input type="password" id="pass-input"/></td>
+		</tr>
+		<tr>
+			<td colspan="2"> <button id="login-btn" style="float: right;">Login</button></td>
+		</tr>
+	</table>
+</div>
 <script type="text/javascript">
+$( "#login-btn" ).button();
+$( "#wait-progressbar" ).progressbar({
+		value: false
+	});
+$( "#awake-second-slider" ).slider();
 $(document).ready(function() {
-    alert("Hello")
+	var model = new Model();
+	var presenter = new Presenter(model,{
+		typeName:"View",
+		loginBtn:$("#login-btn"),
+		userNameInput:$("#user-input"),
+		passInput:$("#pass-input"),
+		authPanel:$("#auth-panel"),
+		waitProgressBar:$("#wait-progressbar"),	
+	})
+	presenter.doOnStartup()
 });
-
 </script>
 
 </body>

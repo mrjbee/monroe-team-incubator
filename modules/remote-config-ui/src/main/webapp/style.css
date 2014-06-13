@@ -1,0 +1,96 @@
+html {
+    margin: 0;
+    height: 100%;	
+}
+
+hr { background-color:#aaaaaa; /*для Firefox, Opera, Safari*/ 
+     border:0px none; height:1px; /* высота 1px IE, Firefox, Opera, Safari */ 
+     clear:both; /* для очистки, если тег идет после float елемента */ 
+ } 
+
+body {
+    background-color: #fafafa;
+    background-image: url("resources/background.jpg");
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+#control-panel{
+    background-color: rgba(255,255,255, 0.85);
+	height: 90%;
+	width: 35%;
+	z-index:10;	
+	position: absolute;
+	border-radius: 10px;
+	margin-left: 20px;
+	padding: 10px 10px 10px 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	box-shadow: 0px 0px 3px #000000;
+}
+
+#block-panel{
+    background-color: rgba(0,0, 0, 0.70);
+	min-height: 100%;
+	min-width: 100%;
+	z-index:20;
+	position: absolute;
+	width: 100%;
+}
+
+#auth-panel {
+    background-color: rgba(0, 0, 0, 0.7);
+	z-index:30;
+	position: absolute;
+	width: 100%;
+}
+#auth-panel > div,table{
+    padding: 5px 0px 5px 20px;
+}
+
+.text-light-caption {
+	color:#fdfdfd;
+	font-size: 18pt; 
+}
+.text-dark-caption {
+	color:#444444;
+	font-size: 18pt; 
+}
+
+.text-dark-sub-caption {
+	color:#aaaaaa;
+	font-size: 14pt; 
+}
+div .text-dark-sub-caption{
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.text-light-hint {
+	color:#dddddd;
+	font-size: 12pt; 
+}
+.text-light {
+	color:#fdfdfd;
+	font-size: 14pt; 
+}
+.text-dark {
+	color:#555555;
+	font-size: 14pt; 
+}
+.text-dark-value {
+	color:#436DBA;
+	font-size: 14pt; 
+}
+
+#wait-progressbar{
+	width: 200px;
+	height: 25px;
+	margin:auto;
+	margin-top: 50%;
+}
