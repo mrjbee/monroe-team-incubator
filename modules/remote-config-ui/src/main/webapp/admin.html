@@ -32,7 +32,7 @@
 	<div class="text-dark-sub-caption">Settings</div>
 	<table>
 		<tr><td colspan="2" class="text-dark">Next time sleep timer</td></tr>
-		<tr><td style="width:300px;"><div id="awake-second-slider"></div></td><td class="text-dark-value">NaN</td></tr>
+		<tr><td style="width:300px;"><div id="awake-second-slider"></div></td><td class="text-dark-value" id="awake-minutes-label">NaN</td></tr>
 	</table>		
 </div>
 <div id="block-panel" style="visibility:visible" >
@@ -67,7 +67,10 @@ $( "#login-btn" ).button();
 $( "#wait-progressbar" ).progressbar({
 		value: false
 	});
-$( "#awake-second-slider" ).slider();
+$( "#awake-second-slider" ).slider({min: 0,
+    max: 100,
+    step: 4});
+
 $(document).ready(function() {
 	var model = new Model();
 	var presenter = new Presenter(model,{
@@ -78,7 +81,11 @@ $(document).ready(function() {
 		authPanel:$("#auth-panel"),
 		waitProgressBar:$("#wait-progressbar"),	
 		infolabel:$("#info-label"),
-		infoPanel:$("#info-panel")
+		infoPanel:$("#info-panel"),
+		blockPanel:$("#block-panel"),
+		awakeMinutesLabel:$("#awake-minutes-label"),
+		awakeMinutesSlider:$("#awake-second-slider")
+
 	})
 	presenter.doOnStartup()
 });

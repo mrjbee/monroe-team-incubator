@@ -99,6 +99,7 @@ div .text-dark-sub-caption{
 	font-size: 14pt; 
 }
 .text-dark-value {
+	padding-left: 10px;
 	color:#436DBA;
 	font-size: 14pt; 
 }
