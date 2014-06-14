@@ -36,5 +36,25 @@ public class ServerConfigRoute  extends SpringRouteBuilder{
                 return (T) props.getProperty("sleepminutes","60");
             }
         });
+
+        from("restlet:/server/moon/status").transform(new Expression() {
+            @Override
+            public <T> T evaluate(Exchange exchange, Class<T> type) {
+                return (T) props.getProperty("status","NaN");
+            }
+        });
+
+        from("restlet:/server/moon/status?restletMethod=post").process(new Processor() {
+            @Override
+            public void process(Exchange exchange) throws Exception {
+                String status = exchange.getIn().getBody(String.class);
+                props.setProperty("status",status);
+            }
+        }).transform(new Expression() {
+            @Override
+            public <T> T evaluate(Exchange exchange, Class<T> type) {
+                return (T) props.getProperty("status","NaN");
+            }
+        });
     }
 }
