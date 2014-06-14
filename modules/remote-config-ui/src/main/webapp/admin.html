@@ -18,15 +18,15 @@
 	<table>
 		<tr>
 			<td class="text-dark">Last online date</td>
-			<td class="text-dark-value">NaN</td>			
+			<td class="text-dark-value" id="last-online-date-label">NaN</td>			
 		</tr>
 		<tr>
 			<td class="text-dark"> Status</td>
-			<td class="text-dark-value">NaN</td>			
+			<td class="text-dark-value" id="status-label">NaN</td>			
 		</tr>
 		<tr>
 			<td class="text-dark"> Awake date</td>
-			<td class="text-dark-value">NaN</td>			
+			<td class="text-dark-value" id="offline-till-date-label">NaN</td>			
 		</tr>
 	</table>
 	<div class="text-dark-sub-caption">Settings</div>
@@ -84,8 +84,10 @@ $(document).ready(function() {
 		infoPanel:$("#info-panel"),
 		blockPanel:$("#block-panel"),
 		awakeMinutesLabel:$("#awake-minutes-label"),
-		awakeMinutesSlider:$("#awake-second-slider")
-
+		awakeMinutesSlider:$("#awake-second-slider"),
+		lastOnlideDateLabel:$("#last-online-date-label"),
+		statusLabel:$("#status-label"),
+		offlineTillDateLabel:$("#offline-till-date-label"),
 	})
 	presenter.doOnStartup()
 });

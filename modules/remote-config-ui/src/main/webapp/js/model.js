@@ -6,6 +6,9 @@ function Model(){
 	this.username = "" 
 	this.password = ""
 	this.awakeMinutes = 0
+	this.lastStatus = "NaN"
+	this.lastDate = "NaN"
+	this.offlineTillDate = "NaN"
 
 	me = this
 	$.ajaxSetup({
@@ -38,8 +41,14 @@ function Model(){
 	}
 	
 	this.updateDetails = function(){
-		this.fetchAwakeMinutes(function(){
-			me.presenter.doOnDetailsUpdated()
+		me.fetchAwakeMinutes(function(){
+			me.fetchStatus(function(){
+				me.fetchLastDate(function(){
+					me.fetchOfflineTillDate(function(){
+						me.presenter.doOnDetailsUpdated()
+					})
+				})
+			})
 		})
 	}
 
@@ -50,6 +59,48 @@ function Model(){
 		},function(response){
 			if (response.statusCode == 200){
 				me.awakeMinutes = parseInt(response.resultText)
+				next()
+			}else {
+				me.presenter.doOnError(response.statusCode);
+			}
+        })
+	}
+
+	this.fetchStatus = function(next){
+		doRequest({
+	        type: "GET",
+	        url: this.serverUrl+'/server/moon/status',
+		},function(response){
+			if (response.statusCode == 200){
+				me.lastStatus = response.resultText
+				next()
+			}else {
+				me.presenter.doOnError(response.statusCode);
+			}
+        })
+	}
+
+	this.fetchLastDate = function(next){
+		doRequest({
+	        type: "GET",
+	        url: this.serverUrl+'/server/moon/lastDate',
+		},function(response){
+			if (response.statusCode == 200){
+				me.lastDate = response.resultText
+				next()
+			}else {
+				me.presenter.doOnError(response.statusCode);
+			}
+        })
+	}
+	
+	this.fetchOfflineTillDate = function(next){
+		doRequest({
+	        type: "GET",
+	        url: this.serverUrl+'/server/moon/offlineTillDate',
+		},function(response){
+			if (response.statusCode == 200){
+				me.offlineTillDate = response.resultText
 				next()
 			}else {
 				me.presenter.doOnError(response.statusCode);

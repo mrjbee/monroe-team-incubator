@@ -77,10 +77,12 @@ function Presenter(model, view){
 	}
 
 	this.doOnDetailsUpdated = function(){
-		this.updateAwakeSecondsUI(model.awakeMinutes);
+		this.updateAwakeSecondsUI(model.awakeMinutes)
+		view.statusLabel.text(model.lastStatus)
+		view.lastOnlideDateLabel.text(model.lastDate)
+		view.offlineTillDateLabel.text(model.offlineTillDate)
 		view.waitProgressBar.fadeOut("fast");
 		view.blockPanel.fadeOut();
-		
 	}
 
 	this.doOnAwakeFetch = function(value){

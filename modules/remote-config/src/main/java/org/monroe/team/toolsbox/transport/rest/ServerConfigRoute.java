@@ -6,9 +6,8 @@ import org.apache.camel.Processor;
 import org.apache.camel.spring.SpringRouteBuilder;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Component
 public class ServerConfigRoute  extends SpringRouteBuilder{
@@ -44,11 +43,37 @@ public class ServerConfigRoute  extends SpringRouteBuilder{
             }
         });
 
+        from("restlet:/server/moon/offlineTillDate").transform(new Expression() {
+            @Override
+            public <T> T evaluate(Exchange exchange, Class<T> type) {
+                return (T) props.getProperty("offlineTillDate","NaN");
+            }
+        });
+
+        from("restlet:/server/moon/lastDate").transform(new Expression() {
+            @Override
+            public <T> T evaluate(Exchange exchange, Class<T> type) {
+                return (T) props.getProperty("lastDate","NaN");
+            }
+        });
+
         from("restlet:/server/moon/status?restletMethod=post").process(new Processor() {
             @Override
             public void process(Exchange exchange) throws Exception {
                 String status = exchange.getIn().getBody(String.class);
                 props.setProperty("status",status);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm [dd-MM-yyyy]");
+
+                Calendar now = Calendar.getInstance(); // gets a calendar using the default time zone and locale.
+                props.setProperty("lastDate",dateFormat.format(now.getTime()));
+                int minutes = Integer.parseInt(props.getProperty("sleepminutes","60"));
+                if ("Offline".equals(status)){
+                    now.add(Calendar.MINUTE, minutes);
+                    props.setProperty("offlineTillDate",dateFormat.format(now.getTime()));
+                } else {
+                    props.setProperty("offlineTillDate","NaN");
+                }
+
             }
         }).transform(new Expression() {
             @Override
