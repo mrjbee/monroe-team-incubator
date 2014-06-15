@@ -28,6 +28,7 @@
         <module>modules/lib-restlet</module>
         <module>modules/lib-security</module>
         <module>modules/remote-config-ui</module>
+        <module>modules/remote-config-ui-mobile</module>
         <module>modules/remote-config</module>
         <!-- <module>modules/example-rest</module> -->
     </modules>
