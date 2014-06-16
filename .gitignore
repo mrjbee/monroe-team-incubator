@@ -7,3 +7,4 @@ classes/
 gen/
 log/
 logs/
+*nohup.out

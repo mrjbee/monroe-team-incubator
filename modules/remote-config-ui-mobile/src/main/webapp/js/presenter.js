@@ -1,6 +1,6 @@
 function Presenter(model, view){
 
-	this.typeName = "Presenter"
+	this._typeName = "Presenter"
 	
 	this.model = model;
 	this.view = view;
@@ -33,7 +33,6 @@ function Presenter(model, view){
 	}
 
 	this.doOnStartup = function(){
-		model.setPresenter(this)
 		view.loginBtn.click(this.doOnLoggingBtnClick)
 		
 		view.authDialog.popup("open");
@@ -91,16 +90,16 @@ function Presenter(model, view){
 	}
 
 	this.doOnDetailsUpdated = function(){
-		this.updateAwakeSecondsUI(model.awakeMinutes)
-		view.statusLabel.text(model.lastStatus)
-		view.lastOnlideDateLabel.text(model.lastDate)
-		view.offlineTillDateLabel.text(model.offlineTillDate)
+		this.updateAwakeSecondsUI(model._awakeMinutes)
+		view.statusLabel.text(model._lastStatus)
+		view.lastOnlideDateLabel.text(model._lastDate)
+		view.offlineTillDateLabel.text(model._offlineTillDate)
 		//view.waitProgressBar.fadeOut("fast");
 		//view.blockPanel.fadeOut();
 	}
 
 	this.doOnAwakeFetch = function(value){
-		this.updateAwakeSecondsUI(model.awakeMinutes);	
+		this.updateAwakeSecondsUI(model._awakeMinutes);
 	}
 	
 }
