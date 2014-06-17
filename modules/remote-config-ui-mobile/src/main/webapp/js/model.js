@@ -1,6 +1,5 @@
 var ModelPrototype = {
 
-    _typeName:"Model",
     _presenter:null,
 
     _serverUrl : "http://192.168.0.201:8080/remote-config-1.0-SNAPSHOT/rest",

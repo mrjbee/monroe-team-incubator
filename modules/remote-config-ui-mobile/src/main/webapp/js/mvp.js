@@ -1,6 +1,7 @@
 function initMVP(){
     var model = Object.create(ModelPrototype);
-    var presenter = new Presenter(model,{
+    var presenter = Object.create(PresenterPrototype)
+    presenter.constructor(model,{
         _typeName:"View",
         loginBtn:$("#login-btn"),
         userNameInput:$("#user-input"),
