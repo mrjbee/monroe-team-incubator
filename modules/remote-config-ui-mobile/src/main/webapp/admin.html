@@ -17,13 +17,14 @@
 <div class="top-content" data-role="page">
 
 <div data-role="popup" id="loginDialog" data-theme="b" data-overlay-theme="b" class="ui-corner-all" data-dismissible="false" data-history="false">
-        <div style="padding:10px 20px;">
+
+        <form id="login-form" data-ajax="false"  style="padding:10px 20px;">
                 <h3>Please sign in</h3>
                 <div id="info-label" class="warning"></div>
                 <input name="user" id="user-input" value="" placeholder="username" data-theme="a" type="text">
                 <input name="pass" id="pass-input" value="" placeholder="password" data-theme="a" type="password">
-                <button type="submit"  id="login-btn" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Sign in</button>
-        </div>
+                <button type="submit" id="login-btn" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-check">Sign in</button>
+        </form>
 </div>
 
 
@@ -61,7 +62,8 @@
                             NaN     
                         </div>
                     </div>
-                <br/>
+                    <br/>
+                    <button class="ui-btn ui-mini" id="refresh-btn">Refresh</button>
                 </div>
                 <h3>Server Settings</h3>
                 <div class="panel">
@@ -72,7 +74,6 @@
                                     <option value="off">Off</option>
                                     <option value="on">On</option>
                                 </select>
-                                                   
                         </div>
                         <div class="ui-block-d text-value">
                            <p id="awake-minutes-label" >NaN</p>                                                
@@ -84,6 +85,7 @@
             <div class="ui-block-b"></div>
         </div>
     </div>
+    <div id="lockPanel"/>
 </div>
 <script type="text/javascript">
 $(document).ready(initMVP);

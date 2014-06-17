@@ -10,8 +10,13 @@ var PresenterPrototype = {
         this._view = view;
 
         this._view.loginBtn.click(function(){
-            this.doOnLoggingBtnClick();
+            this.initiateLogin();
         }.bind(this));
+
+        this._view.refreshBtn.click(function(){
+            this._initiateModelUpdate();
+        }.bind(this));
+
         this._view.awakeMinutesSlider.parent().change(function() {
             var minutesValue = this._view.awakeMinutesSlider.val();
             this.updateAwakeSecondsUI(minutesValue);
@@ -19,15 +24,15 @@ var PresenterPrototype = {
         this._view.awakeMinutesSlider.slider({
             stop: function( event, ui ) {
                 var minutesValue = this._view.awakeMinutesSlider.val();
-                this._model.saveAwakeSeconds(minutesValue);
+                this._saveAwakeMinutesSetting(minutesValue);
             }.bind(this)
         });
         this._view.awakeSleep.bind( "change", function(event, ui) {
             if (this._view.awakeSleep.val()=="on"){
                 minutesValue = this._view.awakeMinutesSlider.val();
-                this._model.saveAwakeSeconds(minutesValue);
+                this._saveAwakeMinutesSetting(minutesValue);
             } else {
-                this._model.saveAwakeSeconds(0);
+                this._saveAwakeMinutesSetting(0);
             }
         }.bind(this));
     },
@@ -59,46 +64,90 @@ var PresenterPrototype = {
         }
     },
 
-    doOnStartup : function(){
+
+    _saveAwakeMinutesSetting: function (minutesValue) {
+        this._lockUI(true);
+        this._model.saveAwakeSeconds(minutesValue,
+            function(minutes){
+                this._unlockUI();
+                this.updateAwakeSecondsUI(minutes);
+            }.bind(this),
+            function(statusCode){
+                this._unlockUI();
+                this._askForReLogin(statusCode);
+            }.bind(this)
+        );
+    },
+
+    initial : function(){
         this._view.authDialog.popup("open");
     },
 
-    doOnLoggingBtnClick : function(){
+    initiateLogin : function(){
         var userNameTxt = this._view.userNameInput.val();
         var passwordTxt = this._view.passInput.val();
         this._view.authDialog.popup("close");
-        var loginRequestModel = {
-            userName:userNameTxt,
-            password:passwordTxt
-        };
-        this._model.loginUser(loginRequestModel);
+
+        this._model.loginUser({
+                userName:userNameTxt,
+                password:passwordTxt
+            },
+            function(){
+                this._initiateModelUpdate();
+            }.bind(this),
+            function(){
+                this._askForReLogin();
+            }.bind(this),
+            function(statusCode){
+                this._askForReLogin(statusCode);
+            }.bind(this)
+        );
     },
 
-    doOnUserLogIn : function() {
-        this._model.updateDetails();
+    _unlockUI: function () {
+        this._view.lockPanel.fadeOut("fast");
+        $.mobile.loading("hide");
     },
 
-    doOnUserLogOut : function() {
-        this._view.authDialog.popup("open");
-        //this._view.waitProgressBar.fadeOut();
+    _lockUI: function (noActualBlock) {
+        $.mobile.loading("show", {
+            text: "Fetching...",
+            textVisible: true,
+            theme: "a",
+            html: ""
+        });
+        if (noActualBlock == true) return;
+        this._view.lockPanel.fadeIn("fast");
+    },
+
+    _initiateModelUpdate : function() {
+        this._lockUI();
+        this._model.updateDetails(
+            function(){
+                this._unlockUI();
+                this._updatedStatistic()
+            }.bind(this),
+            function(statusCode){
+                this._view.lockPanel.fadeOut();
+                $.mobile.loading( "hide");
+                this._askForReLogin(statusCode)
+            }.bind(this)
+        );
+    },
+
+    _askForReLogin : function(statusCode){
         this._view.infolabel.text("Authorization fails! Try again...")
-        this._view.infolabel.slideDown().delay(800).fadeOut(400);
-    },
-
-    doOnError : function(statusCode){
-        this._view.infolabel.text("Error ("+statusCode+") ! Please try again later...")
-        this._view.infolabel.slideDown().delay(800).fadeOut(400);
+        if (statusCode != null){
+            this._view.infolabel.text("Error ("+statusCode+") ! Please try again later...")
+        }
         this._view.authDialog.popup("open");
+        this._view.infolabel.slideDown().delay(1000).fadeOut(400);
     },
 
-    doOnDetailsUpdated : function(){
+    _updatedStatistic : function(){
         this.updateAwakeSecondsUI(this._model.awakeMinutes)
         this._view.statusLabel.text(this._model.lastStatus)
         this._view.lastOnlineDateLabel.text(this._model.lastDate)
         this._view.offlineTillDateLabel.text(this._model.offlineTillDate)
-    },
-
-    doOnAwakeFetch : function(value){
-        this.updateAwakeSecondsUI(this._model.awakeMinutes);
     }
 }

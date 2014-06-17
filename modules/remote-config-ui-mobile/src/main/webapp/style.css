@@ -60,3 +60,14 @@
     color: #A10342;
     margin: 2px 2px 2px 2px;
  }
+
+#lockPanel{
+    background-color: rgba(0,0,0, 0.80);
+    position:absolute;
+    top:0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 3;
+    display: none;
+}

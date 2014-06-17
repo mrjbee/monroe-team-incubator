@@ -1,5 +1,7 @@
 function initMVP(){
     var model = Object.create(ModelPrototype);
+    model.constructor();
+
     var presenter = Object.create(PresenterPrototype)
     presenter.constructor(model,{
         loginBtn:$("#login-btn"),
@@ -12,8 +14,14 @@ function initMVP(){
         awakeMinutesSlider:$("#awake-second-slider"),
         lastOnlineDateLabel:$("#last-online-date-label"),
         statusLabel:$("#status-label"),
-        offlineTillDateLabel:$("#offline-till-date-label")
+        offlineTillDateLabel:$("#offline-till-date-label"),
+        lockPanel: $("#lockPanel"),
+        refreshBtn:$("#refresh-btn")
     });
-    model.constructor(presenter);
-    presenter.doOnStartup();
+    //TODO: disbale form submission. Place it in presenter
+    $("#login-form").submit(function() {
+        return false;
+    });
+
+    presenter.initial();
 }

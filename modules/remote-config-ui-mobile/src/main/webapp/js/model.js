@@ -15,8 +15,7 @@ var ModelPrototype = {
 
     _settings:null,
 
-    constructor:function _constructor(presenter){
-        this._presenter = presenter;
+    constructor:function _constructor(){
         $.ajaxSetup({
             beforeSend: function (request) {
                 request.setRequestHeader("Avoid-WWW-Authenticate", "yes");
@@ -52,7 +51,7 @@ var ModelPrototype = {
         }
     },
 
-    loginUser : function _loginUser (loginRequestModel) {
+    loginUser : function (loginRequestModel, whenSuccess, whenFails, whenError) {
         this._username = loginRequestModel.userName;
         this._password = loginRequestModel.password;
         this._doRequest({
@@ -60,23 +59,19 @@ var ModelPrototype = {
             url: this._serverUrl + '/secure-ping'
         }, function (response) {
             if (response.statusCode == 401) {
-                this._presenter.doOnUserLogOut();
+                whenFails();
             } else if (response.statusCode == 200) {
-                this._presenter.doOnUserLogIn();
+                whenSuccess();
             } else {
-                this._presenter.doOnError(response.statusCode);
+                whenError(response.statusCode);
             }
         }.bind(this))
     },
 
-    updateDetails : function () {
-        var onFetchError = function(statusCode){
-            this._presenter.doOnError(statusCode);
-        }.bind(this)
+    updateDetails : function (onSuccess,onFailure) {
 
-        this._fetchSettings([_settings.lastStatus, _settings.awakeMinutes,_settings.lastDate, _settings.offlineTillDate],function() {
-            this._presenter.doOnDetailsUpdated();
-        }.bind(this),onFetchError);
+        this._fetchSettings([_settings.lastStatus, _settings.awakeMinutes,_settings.lastDate, _settings.offlineTillDate],
+            onSuccess, onFailure);
 
     },
 
@@ -122,7 +117,7 @@ var ModelPrototype = {
         })
     },
 
-    saveAwakeSeconds : function (value) {
+    saveAwakeSeconds : function (value, whenSuccess, whenFails) {
         this._doRequest({
             type: "POST",
             url: this._serverUrl + '/server/moon/sleepminutes',
@@ -130,9 +125,9 @@ var ModelPrototype = {
         }, function (response) {
             if (response.statusCode == 200) {
                 this.awakeMinutes = parseInt(response.resultText);
-                this._presenter.doOnAwakeFetch(this.awakeMinutes)
+                whenSuccess(this.awakeMinutes)
             } else {
-                this._presenter.doOnError(response.statusCode);
+                whenFails(response.statusCode);
             }
         }.bind(this))
     },
