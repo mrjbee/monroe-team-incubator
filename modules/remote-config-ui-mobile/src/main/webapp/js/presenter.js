@@ -8,6 +8,28 @@ var PresenterPrototype = {
     constructor:function _constructor(model,view){
         this._model = model;
         this._view = view;
+
+        this._view.loginBtn.click(function(){
+            this.doOnLoggingBtnClick();
+        }.bind(this));
+        this._view.awakeMinutesSlider.parent().change(function() {
+            var minutesValue = this._view.awakeMinutesSlider.val();
+            this.updateAwakeSecondsUI(minutesValue);
+        }.bind(this));
+        this._view.awakeMinutesSlider.slider({
+            stop: function( event, ui ) {
+                var minutesValue = this._view.awakeMinutesSlider.val();
+                this._model.saveAwakeSeconds(minutesValue);
+            }.bind(this)
+        });
+        this._view.awakeSleep.bind( "change", function(event, ui) {
+            if (this._view.awakeSleep.val()=="on"){
+                minutesValue = this._view.awakeMinutesSlider.val();
+                this._model.saveAwakeSeconds(minutesValue);
+            } else {
+                this._model.saveAwakeSeconds(0);
+            }
+        }.bind(this));
     },
 
     updateAwakeSecondsUI : function(minutes){
@@ -38,32 +60,9 @@ var PresenterPrototype = {
     },
 
     doOnStartup : function(){
-        this._view.loginBtn.click(function(){
-            this.doOnLoggingBtnClick();
-        }.bind(this));
         this._view.authDialog.popup("open");
-        this._view.awakeMinutesSlider.parent().change(function() {
-            var minutesValue = this._view.awakeMinutesSlider.val();
-            this.updateAwakeSecondsUI(minutesValue);
-        }.bind(this));
-
-        this._view.awakeMinutesSlider.slider({
-            stop: function( event, ui ) {
-                var minutesValue = this._view.awakeMinutesSlider.val();
-                this._model.saveAwakeSeconds(minutesValue);
-            }.bind(this)
-        });
-
-        this._view.awakeSleep.bind( "change", function(event, ui) {
-            if (this._view.awakeSleep.val()=="on"){
-                minutesValue = this._view.awakeMinutesSlider.val();
-                this._model.saveAwakeSeconds(minutesValue);
-            } else {
-                this._model.saveAwakeSeconds(0);
-            }
-        }.bind(this));
-
     },
+
     doOnLoggingBtnClick : function(){
         var userNameTxt = this._view.userNameInput.val();
         var passwordTxt = this._view.passInput.val();
