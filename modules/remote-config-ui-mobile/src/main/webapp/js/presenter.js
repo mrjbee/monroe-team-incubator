@@ -92,13 +92,13 @@ var PresenterPrototype = {
     },
 
     doOnDetailsUpdated : function(){
-        this.updateAwakeSecondsUI(this._model._awakeMinutes)
-        this._view.statusLabel.text(this._model._lastStatus)
-        this._view.lastOnlideDateLabel.text(this._model._lastDate)
-        this._view.offlineTillDateLabel.text(this._model._offlineTillDate)
+        this.updateAwakeSecondsUI(this._model.awakeMinutes)
+        this._view.statusLabel.text(this._model.lastStatus)
+        this._view.lastOnlineDateLabel.text(this._model.lastDate)
+        this._view.offlineTillDateLabel.text(this._model.offlineTillDate)
     },
 
     doOnAwakeFetch : function(value){
-        this.updateAwakeSecondsUI(this._model._awakeMinutes);
+        this.updateAwakeSecondsUI(this._model.awakeMinutes);
     }
 }

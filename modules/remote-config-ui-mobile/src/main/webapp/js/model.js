@@ -8,10 +8,12 @@ var ModelPrototype = {
     _password : "",
 
     //Server statistic fields
-    _awakeMinutes : 0,
-    _lastStatus : "NaN",
-    _lastDate : "NaN",
-    _offlineTillDate : "NaN",
+    awakeMinutes : 0,
+    lastStatus : "NaN",
+    lastDate : "NaN",
+    offlineTillDate : "NaN",
+
+    _settings:null,
 
     constructor:function _constructor(presenter){
         this._presenter = presenter;
@@ -21,11 +23,38 @@ var ModelPrototype = {
                 request.setRequestHeader("Authorization", "Basic " + btoa(this._username + ":" + this._password));
             }.bind(this)
         });
+        var model = this;
+        _settings = {
+            awakeMinutes:{
+                name:"sleepminutes",
+                applyValue: function (resultText) {
+                    model.awakeMinutes = parseInt(resultText);
+                }
+            },
+            lastStatus:{
+                name:"status",
+                applyValue: function (resultText) {
+                    model.lastStatus = resultText;
+                }
+            },
+            lastDate:{
+                name:"lastDate",
+                applyValue: function (resultText) {
+                    model.lastDate = resultText;
+                }
+            },
+            offlineTillDate:{
+                name:"offlineTillDate",
+                applyValue: function (resultText) {
+                    model.offlineTillDate = resultText;
+                }
+            }
+        }
     },
 
     loginUser : function _loginUser (loginRequestModel) {
         this._username = loginRequestModel.userName;
-        this._password = loginRequestModel._password;
+        this._password = loginRequestModel.password;
         this._doRequest({
             type: "GET",
             url: this._serverUrl + '/secure-ping'
@@ -40,72 +69,57 @@ var ModelPrototype = {
         }.bind(this))
     },
 
-    updateDetails : function _updateDetails () {
-        this.fetchAwakeMinutes(function () {
-            this.fetchStatus(function () {
-                this.fetchLastDate(function () {
-                    this.fetchOfflineTillDate(function () {
-                        this._presenter.doOnDetailsUpdated();
-                    }.bind(this))
-                }.bind(this))
-            }.bind(this))
-        }.bind(this))
+    updateDetails : function () {
+        var onFetchError = function(statusCode){
+            this._presenter.doOnError(statusCode);
+        }.bind(this)
+
+        this._fetchSettings([_settings.lastStatus, _settings.awakeMinutes,_settings.lastDate, _settings.offlineTillDate],function() {
+            this._presenter.doOnDetailsUpdated();
+        }.bind(this),onFetchError);
+
     },
 
-    fetchAwakeMinutes: function _fetchAwakeMinutes(next) {
-        this._doRequest({
-            type: "GET",
-            url: this._serverUrl + '/server/moon/sleepminutes'
-        }, function (response) {
-            if (response.statusCode == 200) {
-                this._awakeMinutes = parseInt(response.resultText);
-                next()
-            } else {
-                this._presenter.doOnError(response.statusCode);
-            }
-        }.bind(this))
+    _fetchSettings:function (settings, onSuccess, onFails){
+        var functionToExecute = null;
+        var model = this;
+        for (var index = 0; index < settings.length; ++index) {
+            var setting = settings[index];
+            var nextFunctionToExecute = function(){
+                model._fetchSetting(nextFunctionToExecute.setting.name,function(successText){
+                    console.log("Fetching "+nextFunctionToExecute.setting.name + ' by using:'+ nextFunctionToExecute.a_name);
+                    nextFunctionToExecute.setting.applyValue(successText);
+                    var nextFunc = nextFunctionToExecute.next;
+                    if (nextFunc!=null){
+                        nextFunctionToExecute = nextFunc;
+                    }
+                    //call next... or prev
+                    if (nextFunc != null){
+                        nextFunc()
+                    } else {
+                        onSuccess()
+                    }
+                },onFails)
+            };
+            nextFunctionToExecute.a_name = "fetchCallback_"+setting.name;
+            nextFunctionToExecute.next = functionToExecute;
+            nextFunctionToExecute.setting = setting;
+            functionToExecute = nextFunctionToExecute;
+        }
+        functionToExecute()
     },
 
-    fetchStatus : function (next) {
+    _fetchSetting: function (settingName, onSuccess, onFails){
         this._doRequest({
             type: "GET",
-            url: this._serverUrl + '/server/moon/status'
+            url: this._serverUrl + '/server/moon/'+settingName
         }, function (response) {
             if (response.statusCode == 200) {
-                this._lastStatus = response.resultText;
-                next();
+                onSuccess(response.resultText, response);
             } else {
-                this._presenter.doOnError(response.statusCode);
+                onFails(response.statusCode, response);
             }
-        }.bind(this))
-    },
-
-    fetchLastDate : function (next) {
-        this._doRequest({
-            type: "GET",
-            url: this._serverUrl + '/server/moon/lastDate'
-        }, function (response) {
-            if (response.statusCode == 200) {
-                this._lastDate = response.resultText;
-                next()
-            } else {
-                this._presenter.doOnError(response.statusCode);
-            }
-        }.bind(this))
-    },
-
-    fetchOfflineTillDate : function (next) {
-        this._doRequest({
-            type: "GET",
-            url: this._serverUrl + '/server/moon/offlineTillDate'
-        }, function (response) {
-            if (response.statusCode == 200) {
-                this._offlineTillDate = response.resultText;
-                next()
-            } else {
-                this._presenter.doOnError(response.statusCode);
-            }
-        }.bind(this))
+        })
     },
 
     saveAwakeSeconds : function (value) {
@@ -115,8 +129,8 @@ var ModelPrototype = {
             data: "" + value
         }, function (response) {
             if (response.statusCode == 200) {
-                this._awakeMinutes = parseInt(response.resultText);
-                this._presenter.doOnAwakeFetch(this._awakeMinutes)
+                this.awakeMinutes = parseInt(response.resultText);
+                this._presenter.doOnAwakeFetch(this.awakeMinutes)
             } else {
                 this._presenter.doOnError(response.statusCode);
             }
