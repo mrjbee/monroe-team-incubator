@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Desire smoke brake per day"
+        android:layout_marginLeft="10dip"
+        android:id="@+id/qs_label"
+        android:textSize="@dimen/text_size_normal"
+        android:layout_alignBottom="@+id/qs_times_text"
+        />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/qs_times_text"
+        android:layout_marginRight="20dip"
+        android:layout_marginLeft="20dip"
+        android:text="0"
+        android:layout_toRightOf="@+id/qs_label" />
+
+
+    <LinearLayout
+        android:id="@+id/qs_separator_layout"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="1px"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@+id/qs_label"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="15dp"
+        >
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quit program loyalty"
+        android:layout_marginLeft="10dip"
+        android:id="@+id/qs_level_label"
+        android:textSize="@dimen/text_size_normal"
+        android:layout_below="@+id/qs_separator_layout"
+        />
+
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:id="@+id/qs_level_seekBar"
+        android:layout_below="@+id/qs_level_label"
+        android:layout_centerHorizontal="true"
+        android:indeterminate="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Here going to be description of level...."
+        android:layout_marginTop="10dip"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="10dip"
+        android:id="@+id/qs_level_label_description"
+        android:textSize="@dimen/text_size_normal_small"
+        android:layout_below="@+id/qs_level_seekBar"
+        />
+
+
+</RelativeLayout>

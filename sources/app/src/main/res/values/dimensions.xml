@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="action_bar">50dip</dimen>
+
+    <dimen name="logo_counter_text_size">50sp</dimen>
+    <dimen name="action_counter_text_size">30sp</dimen>
+    <dimen name="action_counter_caption_text_size">16sp</dimen>
+    <dimen name="login_caption_text_size">70sp</dimen>
+    <dimen name="login_description_text_size">18sp</dimen>
+
+    <dimen name="text_size_caption_big">30sp</dimen>
+    <dimen name="text_size_caption">24sp</dimen>
+    <dimen name="text_size_caption_small">20sp</dimen>
+    <dimen name="text_size_normal">18sp</dimen>
+    <dimen name="text_size_normal_small">16sp</dimen>
+
+</resources>
