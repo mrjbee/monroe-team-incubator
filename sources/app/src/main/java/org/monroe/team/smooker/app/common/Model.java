@@ -3,6 +3,8 @@ package org.monroe.team.smooker.app.common;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.monroe.team.smooker.app.dp.DBHelper;
+import org.monroe.team.smooker.app.dp.TransactionManager;
 import org.monroe.team.smooker.app.uc.common.UserCase;
 import org.monroe.team.smooker.app.uc.common.UserCaseSupport;
 
@@ -11,9 +13,13 @@ public class Model {
     private final Registry registry = new Registry();
 
     public Model(Context applicationContext) {
+        DBHelper dbHelper = new DBHelper(applicationContext);
+        TransactionManager transactionManager = new TransactionManager(dbHelper);
         SharedPreferences sharedPreferences = applicationContext.getSharedPreferences("SMOOKER_Preferences", Context.MODE_PRIVATE);
-        PreferenceManager preferenceManager = new PreferenceManager(sharedPreferences);
-        registry.registrate(PreferenceManager.class, preferenceManager);
+        Preferences preferences = new Preferences(sharedPreferences);
+
+        registry.registrate(TransactionManager.class, transactionManager);
+        registry.registrate(Preferences.class, preferences);
     }
 
     public <RequestType,ResponseType> ResponseType execute(

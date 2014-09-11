@@ -1,10 +1,6 @@
 package org.monroe.team.smooker.app.uc;
 
-import android.content.Context;
-import android.view.View;
-
-import org.monroe.team.smooker.app.R;
-import org.monroe.team.smooker.app.common.PreferenceManager;
+import org.monroe.team.smooker.app.common.Preferences;
 import org.monroe.team.smooker.app.common.Registry;
 import org.monroe.team.smooker.app.common.SetupPage;
 import org.monroe.team.smooker.app.uc.common.UserCaseSupport;
@@ -23,7 +19,7 @@ public class CalculateRequiredSetupPages extends UserCaseSupport<Void,List<Setup
 
         List<SetupPage> answer = new ArrayList<SetupPage>(4);
 
-        if(using(PreferenceManager.class).isFirstStart()){
+        if(using(Preferences.class).isFirstStart()){
             answer.add(SetupPage.WELCOME_PAGE);
         }
 

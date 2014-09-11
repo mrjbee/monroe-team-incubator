@@ -2,12 +2,16 @@ package org.monroe.team.smooker.app.common;
 
 import android.content.SharedPreferences;
 
-public class PreferenceManager {
+import org.monroe.team.smooker.app.dp.DAO;
+import org.monroe.team.smooker.app.uc.common.DateUtils;
+
+import java.util.Date;
+
+public class Preferences {
 
     private final SharedPreferences preferences;
-    private float costPerSmoke = 1.75f;
 
-    public PreferenceManager(SharedPreferences preferences) {
+    public Preferences(SharedPreferences preferences) {
         this.preferences = preferences;
     }
 
@@ -55,17 +59,42 @@ public class PreferenceManager {
         preferences.edit().putInt("QUIT_PROGRAM", quiteProgramLevel.toIndex()).apply();
     }
 
-    //========Data Base
-
-    public void setCostPerSmoke(float costPerSmoke) {
-        this.costPerSmoke = costPerSmoke;
+    @Deprecated
+    public <Result> Result usingDB (DAO dao,DBAction<Result> action){
+        return action.execute(this,new DB(dao));
     }
 
-    public float getCostPerSmoke() {
-        return costPerSmoke;
+    @Deprecated
+    public static interface DBAction<ResultType>{
+        public ResultType execute(Preferences preferences, DB dbPreferences);
     }
 
-    public boolean hasFinancialHistory() {
-        return false;
+    public DB db(DAO dao){
+        return new DB(dao);
     }
+
+    public static class DB {
+
+        private final DAO dao;
+
+        public DB(DAO dao) {
+            this.dao = dao;
+        }
+
+        public void setCostPerSmoke(float costPerSmoke) {
+            dao.savePrice(costPerSmoke, DateUtils.dateOnly(DateUtils.getNow()));
+        }
+
+        public float getCostPerSmoke() {
+            DAO.Result result = dao.getLastPrice();
+            if (result == null) return 1.75f;
+            return result.get(2, Float.class);
+        }
+
+        public boolean hasFinancialHistory() {
+            //TODO: implement financial history lookup
+            return false;
+        }
+    }
+
 }

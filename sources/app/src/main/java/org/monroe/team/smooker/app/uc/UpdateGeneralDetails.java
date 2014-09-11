@@ -1,29 +1,34 @@
 package org.monroe.team.smooker.app.uc;
 
 import org.monroe.team.smooker.app.common.Currency;
-import org.monroe.team.smooker.app.common.PreferenceManager;
+import org.monroe.team.smooker.app.common.Preferences;
 import org.monroe.team.smooker.app.common.Registry;
 import org.monroe.team.smooker.app.common.SmokeQuitProgramDifficult;
+import org.monroe.team.smooker.app.dp.DAO;
+import org.monroe.team.smooker.app.dp.TransactionManager;
+import org.monroe.team.smooker.app.uc.common.TransactionUserCase;
 import org.monroe.team.smooker.app.uc.common.UserCaseSupport;
 
-public class UpdateGeneralDetails extends UserCaseSupport<UpdateGeneralDetails.DetailsUpdateRequest, Void> {
+public class UpdateGeneralDetails extends TransactionUserCase<UpdateGeneralDetails.DetailsUpdateRequest, Void> {
 
     public UpdateGeneralDetails(Registry registry) {
         super(registry);
     }
 
     @Override
-    public Void execute(DetailsUpdateRequest request) {
+    protected Void transactionalExecute(DetailsUpdateRequest request, DAO dao) {
+        Preferences preferences = using(Preferences.class);
+        Preferences.DB dbPreferences = preferences.db(dao);
         if (exists(request.smokePerDay)){
-            using(PreferenceManager.class).setSmokePerDay(request.smokePerDay.intValue());
+            preferences.setSmokePerDay(request.smokePerDay.intValue());
         }
 
         if (exists(request.desireSmokePerDay)){
-            using(PreferenceManager.class).setDesireSmokePerDay(request.desireSmokePerDay);
+            preferences.setDesireSmokePerDay(request.desireSmokePerDay);
         }
 
         if (exists(request.difficultLevel)){
-            using(PreferenceManager.class).setQuiteProgram(request.difficultLevel);
+            preferences.setQuiteProgram(request.difficultLevel);
         }
 
         if (exists(request.financialHistoryRecalculateRequest)){
@@ -31,15 +36,16 @@ public class UpdateGeneralDetails extends UserCaseSupport<UpdateGeneralDetails.D
         }
 
         if (exists(request.costPerSmoke)){
-            using(PreferenceManager.class).setCostPerSmoke(request.costPerSmoke.floatValue());
+            dbPreferences.setCostPerSmoke(request.costPerSmoke.floatValue());
         }
 
         if (exists(request.currency)){
-            using(PreferenceManager.class).setCurrency(request.currency);
+            preferences.setCurrency(request.currency);
         }
-
         return null;
     }
+
+
 
     private boolean exists(Object value) {
         return value != null;

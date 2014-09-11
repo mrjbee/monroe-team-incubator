@@ -1,26 +1,29 @@
 package org.monroe.team.smooker.app.uc;
 
 import org.monroe.team.smooker.app.common.Currency;
-import org.monroe.team.smooker.app.common.PreferenceManager;
+import org.monroe.team.smooker.app.common.Preferences;
 import org.monroe.team.smooker.app.common.Registry;
 import org.monroe.team.smooker.app.common.SmokeQuitProgramDifficult;
-import org.monroe.team.smooker.app.uc.common.UserCaseSupport;
+import org.monroe.team.smooker.app.dp.DAO;
+import org.monroe.team.smooker.app.uc.common.TransactionUserCase;
 
-public class GetGeneralDetails extends UserCaseSupport<Void,GetGeneralDetails.GeneralDetailsResponse>{
+public class GetGeneralDetails extends TransactionUserCase<Void,GetGeneralDetails.GeneralDetailsResponse>{
 
     public GetGeneralDetails(Registry registry) {
         super(registry);
     }
 
     @Override
-    public GeneralDetailsResponse execute(Void request) {
-        int smokePerDay = using(PreferenceManager.class).getSmokePerDay(GeneralDetailsResponse.SMOKE_PER_DAY_UNDEFINED);
-        int desireSmokePerDay = using(PreferenceManager.class).getDesireSmokePerDay();
-        SmokeQuitProgramDifficult difficultLevel = using(PreferenceManager.class).getQuitProgram();
+    protected GeneralDetailsResponse transactionalExecute(Void request, DAO dao) {
+        Preferences preferences = using(Preferences.class);
+        Preferences.DB dbPreferences = using(Preferences.class).db(dao);
+        int smokePerDay = preferences.getSmokePerDay(GeneralDetailsResponse.SMOKE_PER_DAY_UNDEFINED);
+        int desireSmokePerDay = preferences.getDesireSmokePerDay();
+        SmokeQuitProgramDifficult difficultLevel = preferences.getQuitProgram();
         return new GeneralDetailsResponse(smokePerDay, desireSmokePerDay, difficultLevel,
-                using(PreferenceManager.class).getCostPerSmoke(),
-                using(PreferenceManager.class).getCurrency(),
-                using(PreferenceManager.class).hasFinancialHistory());
+                dbPreferences.getCostPerSmoke(),
+                preferences.getCurrency(),
+                dbPreferences.hasFinancialHistory());
     }
 
     public static class GeneralDetailsResponse {

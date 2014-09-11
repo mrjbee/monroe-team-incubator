@@ -14,4 +14,5 @@ public abstract class UserCaseSupport<RequestType,ResponseType> implements UserC
         if (!registry.contains(serviceId)) throw new IllegalStateException("Unexpected service = "+serviceId);
         return registry.get(serviceId);
     }
+
 }
