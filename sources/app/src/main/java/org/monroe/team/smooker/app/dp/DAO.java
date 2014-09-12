@@ -32,8 +32,13 @@ public class DAO {
                 DB.SmokePriceEntry._SINCE_DATE+" DESC",
                 "1"
         );
-        if (!cursor.moveToFirst()) return null;
-        return Result.answer().with(cursor.getLong(0),cursor.getLong(1),cursor.getFloat(2));
+        //TODO: Replace with collect
+        try {
+            if (!cursor.moveToFirst()) return null;
+            return Result.answer().with(cursor.getLong(0),cursor.getLong(1),cursor.getFloat(2));
+        }finally {
+            cursor.close();
+        }
     }
 
     private String[] strs(String... columnNames) {
@@ -126,6 +131,7 @@ public class DAO {
             itResult = closure.execute(cursor);
             if (itResult != null) answer.add(itResult);
         }
+        cursor.close();
         return answer;
     }
 

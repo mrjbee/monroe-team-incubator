@@ -25,11 +25,11 @@ public class Preferences {
     }
 
     public void markAsQuitProgramSuggested() {
-        preferences.edit().putBoolean("SUGGESTED_QUIT",true).apply();
+        preferences.edit().putBoolean("SUGGESTED_QUIT",true).commit();
     }
 
     public void markAsFirstStartDone(){
-        preferences.edit().putBoolean("FIRST_START",false).apply();
+        preferences.edit().putBoolean("FIRST_START",false).commit();
     }
 
 
@@ -38,7 +38,7 @@ public class Preferences {
     }
 
     public void setCurrency(Currency currency) {
-        preferences.edit().putInt("CURRENCY_ID", currency.id).apply();
+        preferences.edit().putInt("CURRENCY_ID", currency.id).commit();
     }
 
     public int getSmokePerDay() {
@@ -47,7 +47,7 @@ public class Preferences {
     }
 
     public void setSmokePerDay(int smokePerDay) {
-        preferences.edit().putInt("SMOKE_PER_DAY", smokePerDay).apply();
+        preferences.edit().putInt("SMOKE_PER_DAY", smokePerDay).commit();
     }
 
     public int getDesireSmokePerDay() {
@@ -55,7 +55,7 @@ public class Preferences {
     }
 
     public void setDesireSmokePerDay(int desireSmokePerDay) {
-        preferences.edit().putInt("TARGET_SMOKE_PER_DAY", desireSmokePerDay).apply();
+        preferences.edit().putInt("TARGET_SMOKE_PER_DAY", desireSmokePerDay).commit();
     }
 
     public SmokeQuitProgramDifficult getQuitProgram() {
@@ -64,7 +64,7 @@ public class Preferences {
     }
 
     public void setQuiteProgram(SmokeQuitProgramDifficult quiteProgramLevel) {
-        preferences.edit().putInt("QUIT_PROGRAM", quiteProgramLevel.toIndex()).apply();
+        preferences.edit().putInt("QUIT_PROGRAM", quiteProgramLevel.toIndex()).commit();
     }
 
     @Deprecated

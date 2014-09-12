@@ -236,7 +236,7 @@ public class WizardActivity extends SupportActivity {
             }
 
             String text = ((TextView)wizardActivity.findViewById(R.id.spd_cost_edit)).getText().toString();
-            if (text.isEmpty()){
+            if (text.trim().length() == 0){
                 Toast.makeText(wizardActivity,"Please specify smoke break cost'",Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -326,7 +326,7 @@ public class WizardActivity extends SupportActivity {
             int desireSmokePerDayCount = 0;
 
             if (difficult.mayHaveDifferentTargetCount()) {
-                if (text.isEmpty()) {
+                if (text.trim().length() == 0) {
                     Toast.makeText(wizardActivity, "Please specify desire smoke per day. In case you want quit completely put zero", Toast.LENGTH_LONG).show();
                     return false;
                 }
