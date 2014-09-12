@@ -28,7 +28,7 @@ public class DashboardActivity extends SupportActivity {
         view(ImageButton.class, R.id.add_smoke_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateUiPerStatistic(model().execute(AddSmoke.class,null));
+                updateUiPerStatistic(model().execute(AddSmoke.class, null));
             }
         });
     }
@@ -36,13 +36,18 @@ public class DashboardActivity extends SupportActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        GetStatisticState.StatisticState statistics = model().execute(GetStatisticState.class, null);
-        updateUiPerStatistic(statistics);
+        updateUiPerStatistic(model().execute(GetStatisticState.class,
+                GetStatisticState.StatisticRequest.create(
+                        GetStatisticState.StatisticName.ALL
+                )));
     }
 
     private void updateUiPerStatistic(GetStatisticState.StatisticState statistics) {
         if (exists(statistics.getSmokeTimesTodayCounter())){
             view(TextView.class,R.id.d_smoke_today_counter_text).setText(Integer.toString(statistics.getSmokeTimesTodayCounter()));
+        }
+        if (exists(statistics.getSpendMoney())){
+            view(TextView.class,R.id.d_spend_money_counter_text).setText(statistics.getSpendMoney());
         }
     }
 

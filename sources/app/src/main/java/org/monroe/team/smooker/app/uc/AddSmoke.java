@@ -13,6 +13,9 @@ public class AddSmoke extends TransactionUserCase<Void,GetStatisticState.Statist
     @Override
     protected GetStatisticState.StatisticState transactionalExecute(Void request, DAO dao) {
         dao.addOneSmoke();
-        return usingModel().execute(GetStatisticState.class,null);
+        return usingModel().execute(GetStatisticState.class,
+                GetStatisticState.StatisticRequest.create(
+                        GetStatisticState.StatisticName.SMOKE_TODAY,
+                        GetStatisticState.StatisticName.SPEND_MONEY));
     }
 }

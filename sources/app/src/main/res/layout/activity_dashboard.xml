@@ -82,15 +82,6 @@
             android:gravity="bottom"
             android:id="@+id/action_layout">
             <TextView
-                android:id="@+id/d_spend_money_counter_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/action_counter_text_size"
-                android:paddingLeft="10dp"
-                android:text="Price $"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"/>
-            <TextView
                 android:id="@+id/d_spend_money_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -98,6 +89,16 @@
                 android:text=" spend money"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/d_spend_money_counter_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_caption"
+                android:paddingLeft="10dp"
+                android:text="Price $"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"/>
+
         </LinearLayout>
             <ImageButton
                 android:id="@+id/add_smoke_btn"

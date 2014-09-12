@@ -9,7 +9,6 @@ import org.monroe.team.smooker.app.common.Closure;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -68,11 +67,27 @@ public class DAO {
         return id;
     }
 
-    public List<Result> getSmokeForPeriod(Date startDate, Date endDate) {
+    public List<Result> getSmokesForPeriod(Date startDate, Date endDate) {
+        String whereStatement = null;
+        String[] whereArgs = null;
+
+        if (startDate != null || endDate != null){
+            if (startDate != null && endDate != null){
+                whereStatement = "? <= " + DB.SmokeEntry._DATE + " AND ? > " + DB.SmokeEntry._DATE;
+                whereArgs = strs(Long.toString(startDate.getTime()), Long.toString(endDate.getTime()));
+            } else if (startDate != null){
+                whereStatement = "? > " + DB.SmokeEntry._DATE;
+                whereArgs = strs(Long.toString(endDate.getTime()));
+            } else {
+                whereStatement = "? <= " + DB.SmokeEntry._DATE;
+                whereArgs = strs(Long.toString(startDate.getTime()));
+            }
+        }
+
         Cursor cursor = db.query(DB.SmokeEntry.TABLE_NAME,
                 strs(DB.SmokeEntry._ID, DB.SmokeEntry._DATE),
-                "? <= " + DB.SmokeEntry._DATE + " AND ? > " + DB.SmokeEntry._DATE,
-                strs(Long.toString(startDate.getTime()), Long.toString(endDate.getTime())),
+                whereStatement,
+                whereArgs,
                 null,
                 null,
                 null);
@@ -84,6 +99,26 @@ public class DAO {
         });
     }
 
+
+    public List<Result> getPrices() {
+        Cursor cursor = db.query(DB.SmokePriceEntry.TABLE_NAME,
+                strs(DB.SmokePriceEntry._PRICE, DB.SmokePriceEntry._SINCE_DATE),
+                null,
+                null,
+                null,
+                null,
+                DB.SmokePriceEntry._SINCE_DATE);
+        return collect(cursor, new Closure<Cursor, Result>() {
+            @Override
+            public Result execute(Cursor arg) {
+                return Result.answer().with(arg.getFloat(0),arg.getLong(1));
+            }
+        });
+    }
+
+
+
+
     private List<Result> collect(Cursor cursor, Closure<Cursor,Result> closure) {
         List<Result> answer = new ArrayList<Result>(cursor.getCount());
         Result itResult;
@@ -92,6 +127,10 @@ public class DAO {
             if (itResult != null) answer.add(itResult);
         }
         return answer;
+    }
+
+    public List<Result> getSmokesAllPeriod() {
+        return getSmokesForPeriod(null, null);
     }
 
 
@@ -118,6 +157,9 @@ public class DAO {
 
 
         public <Type> Type get(int index, Class<Type> asClass) {
+            if (asClass.equals(Date.class)){
+                return (Type) new Date(get(index,Long.class));
+            }
             return (Type) fetchedFiledList.get(index);
         }
     }
