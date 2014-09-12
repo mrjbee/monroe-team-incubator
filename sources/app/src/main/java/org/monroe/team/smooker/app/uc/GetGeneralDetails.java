@@ -17,7 +17,7 @@ public class GetGeneralDetails extends TransactionUserCase<Void,GetGeneralDetail
     protected GeneralDetailsResponse transactionalExecute(Void request, DAO dao) {
         Preferences preferences = using(Preferences.class);
         Preferences.DB dbPreferences = using(Preferences.class).db(dao);
-        int smokePerDay = preferences.getSmokePerDay(GeneralDetailsResponse.SMOKE_PER_DAY_UNDEFINED);
+        int smokePerDay = preferences.getSmokePerDay();
         int desireSmokePerDay = preferences.getDesireSmokePerDay();
         SmokeQuitProgramDifficult difficultLevel = preferences.getQuitProgram();
         return new GeneralDetailsResponse(smokePerDay, desireSmokePerDay, difficultLevel,

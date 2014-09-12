@@ -4,12 +4,13 @@ public enum SmokeQuitProgramDifficult {
 
     HARDEST , //once and forever
     HARD , // one cigarette per day
-    MEDIUM , // one cigarette per day - one cigarette per month
+    SMART, // one cigarette per day - one cigarette per month
+    SMARTEST, // one cigarette per day - one cigarette per month
     LOW , // one cigarette per week
     LOWEST,  // one cigarette per month
     DISABLED;
 
-    private final static  SmokeQuitProgramDifficult[] LEVELS = {DISABLED, LOWEST,LOW,MEDIUM,HARD,HARDEST};
+    private final static  SmokeQuitProgramDifficult[] LEVELS = {DISABLED, LOWEST,LOW, SMARTEST,HARD,HARDEST};
 
     public static int difficultCount(){return LEVELS.length;}
 

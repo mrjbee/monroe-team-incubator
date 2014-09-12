@@ -11,11 +11,15 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(DB.SQL_CREATE_ENTRIES);
+        for (String sqlCreateEntry : DB.SQL_CREATE_ENTRIES) {
+            db.execSQL(sqlCreateEntry);
+        }
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(DB.SQL_DELETE_ENTRIES);
+        for (String sqlDeleteEntry : DB.SQL_DELETE_ENTRIES) {
+            db.execSQL(sqlDeleteEntry);
+        }
         onCreate(db);
     }
 

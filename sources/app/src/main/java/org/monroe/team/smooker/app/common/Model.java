@@ -13,6 +13,8 @@ public class Model {
     private final Registry registry = new Registry();
 
     public Model(Context applicationContext) {
+        registry.registrate(Model.class, this);
+
         DBHelper dbHelper = new DBHelper(applicationContext);
         TransactionManager transactionManager = new TransactionManager(dbHelper);
         SharedPreferences sharedPreferences = applicationContext.getSharedPreferences("SMOOKER_Preferences", Context.MODE_PRIVATE);

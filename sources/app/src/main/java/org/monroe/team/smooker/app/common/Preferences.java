@@ -3,9 +3,8 @@ package org.monroe.team.smooker.app.common;
 import android.content.SharedPreferences;
 
 import org.monroe.team.smooker.app.dp.DAO;
+import org.monroe.team.smooker.app.uc.GetGeneralDetails;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
-
-import java.util.Date;
 
 public class Preferences {
 
@@ -21,6 +20,14 @@ public class Preferences {
         return preferences.getBoolean("FIRST_START", true);
     }
 
+    public boolean isQuitProgramSuggested() {
+        return preferences.getBoolean("SUGGESTED_QUIT", false);
+    }
+
+    public void markAsQuitProgramSuggested() {
+        preferences.edit().putBoolean("SUGGESTED_QUIT",true).apply();
+    }
+
     public void markAsFirstStartDone(){
         preferences.edit().putBoolean("FIRST_START",false).apply();
     }
@@ -34,8 +41,9 @@ public class Preferences {
         preferences.edit().putInt("CURRENCY_ID", currency.id).apply();
     }
 
-    public int getSmokePerDay(int defaultValue) {
-        return preferences.getInt("SMOKE_PER_DAY", defaultValue);
+    public int getSmokePerDay() {
+        return preferences.getInt("SMOKE_PER_DAY",
+                GetGeneralDetails.GeneralDetailsResponse.SMOKE_PER_DAY_UNDEFINED);
     }
 
     public void setSmokePerDay(int smokePerDay) {
@@ -64,6 +72,7 @@ public class Preferences {
         return action.execute(this,new DB(dao));
     }
 
+
     @Deprecated
     public static interface DBAction<ResultType>{
         public ResultType execute(Preferences preferences, DB dbPreferences);
@@ -82,7 +91,7 @@ public class Preferences {
         }
 
         public void setCostPerSmoke(float costPerSmoke) {
-            dao.savePrice(costPerSmoke, DateUtils.dateOnly(DateUtils.getNow()));
+            dao.savePrice(costPerSmoke, DateUtils.dateOnly(DateUtils.now()));
         }
 
         public float getCostPerSmoke() {

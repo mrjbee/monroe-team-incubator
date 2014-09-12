@@ -1,5 +1,6 @@
 package org.monroe.team.smooker.app.uc.common;
 
+import org.monroe.team.smooker.app.common.Model;
 import org.monroe.team.smooker.app.common.Registry;
 
 public abstract class UserCaseSupport<RequestType,ResponseType> implements UserCase <RequestType,ResponseType> {
@@ -13,6 +14,10 @@ public abstract class UserCaseSupport<RequestType,ResponseType> implements UserC
     protected final <ServiceType> ServiceType using(Class<ServiceType> serviceId){
         if (!registry.contains(serviceId)) throw new IllegalStateException("Unexpected service = "+serviceId);
         return registry.get(serviceId);
+    }
+
+    protected final Model usingModel(){
+        return registry.get(Model.class);
     }
 
 }

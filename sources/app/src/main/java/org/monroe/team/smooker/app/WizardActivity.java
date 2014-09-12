@@ -95,7 +95,7 @@ public class WizardActivity extends SupportActivity {
         Bundle bundle = getIntent().getExtras();
         requestsStack = (List<SetupPage>) bundle.getSerializable("PAGE_STACK");
         requestIndex = 0;
-        force = bundle.getBoolean("FORCE",true);
+        force = bundle.getBoolean("FORCE",false);
 
         if (requestsStack == null || requestIndex < 0){
             throw new IllegalStateException("Not enough data: requestIndex = "+requestIndex+" ; request stack = "+requestsStack);
@@ -306,10 +306,11 @@ public class WizardActivity extends SupportActivity {
 
         private String getProgramDescription(SmokeQuitProgramDifficult difficult) {
             switch (difficult){
-                case DISABLED: return "Disabled - for people who want to get smoke statistic only without quiting smoking.";
-                case LOWEST: return "Lowest - most loyal program forcing you to pass up one smoke break per month.";
-                case LOW: return "Low - quite loyal program forcing you to pass up one smoke break per week.";
-                case MEDIUM: return "Medium - most clever program forcing you to pass up one smoke break per day at the beginning and ending with one break per month.";
+                case DISABLED: return "Disabled - for people who want to get smoke statistic only without quiting smoking";
+                case LOWEST: return "Lowest - most loyal program forcing you to pass up one smoke break per month";
+                case LOW: return "Low - quite loyal program forcing you to pass up one smoke break per week";
+                case SMART: return "Smart - clever program forcing you to pass up one smoke break first day, second in next two day, third in next three days and so on";
+                case SMARTEST: return "Smartest - most clever program forcing you to pass up one smoke break per day at the beginning and ending with one break per month.";
                 case HARD: return "Hard - program which forcing you to pass up one smoke break per day, unless you quit.";
                 case HARDEST: return "Hardest - program which forcing you to quite today and for forever.";
             }
