@@ -15,4 +15,7 @@ public class SupportActivity extends Activity {
         return (ViewType) findViewById(resourceId);
     }
 
+    final protected View view(int resourceId){
+        return findViewById(resourceId);
+    }
 }

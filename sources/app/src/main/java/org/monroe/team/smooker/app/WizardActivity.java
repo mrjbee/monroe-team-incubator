@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -42,6 +43,7 @@ public class WizardActivity extends SupportActivity {
 
     private void updateHandlerUI() {
         initHandler();
+        view(R.id.wizard_back_btn).setVisibility((requestIndex == 0 && force)?View.INVISIBLE:View.VISIBLE);
         ((TextView)findViewById(R.id.wizzard_setting_label)).setText(pageHandler.caption);
         ((TextView)findViewById(R.id.wizzard_description_label)).setText(pageHandler.description);
         View view = getLayoutInflater().inflate(
@@ -62,7 +64,7 @@ public class WizardActivity extends SupportActivity {
             } else {
                 if (!awareShown){
                     Toast.makeText(this,
-                            "Please pass wizard or click on time more for exit.",
+                            "Please pass wizard or click one time more for exit.",
                             Toast.LENGTH_LONG).show();
                     awareShown = true;
                 } else {
