@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,6 +7,7 @@
     tools:context="${packageName}.${activityClass}">
 
         <RelativeLayout
+            android:id="@+id/d_logo_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <ImageView
@@ -100,19 +101,8 @@
                 android:textStyle="bold"/>
 
         </LinearLayout>
-            <ImageButton
-                android:id="@+id/add_smoke_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Add"
-                android:layout_below="@+id/d_smoke_today_text"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="25px"
-                android:background="@drawable/add_cigareta_btn"
-                />
         </RelativeLayout>
-        <RelativeLayout
+        <!--<RelativeLayout
             android:layout_marginTop="-10pt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -146,5 +136,29 @@
                 android:layout_marginRight="5pt"
                 android:layout_below="@id/time_value"
                 android:background="@android:color/darker_gray"/>
-        </RelativeLayout>
-</LinearLayout>
+        </RelativeLayout> -->
+
+        <LinearLayout
+            android:id="@+id/d_content_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/d_logo_layout">
+            <view
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                class="org.monroe.team.smooker.app.ChartView"
+                android:id="@+id/view" />
+        </LinearLayout>
+        <ImageButton
+            android:id="@+id/add_smoke_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/d_content_layout"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="-35dp"
+            android:background="@drawable/add_cigareta_btn"
+        />
+
+</RelativeLayout>
