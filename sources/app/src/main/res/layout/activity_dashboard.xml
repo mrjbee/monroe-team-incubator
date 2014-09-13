@@ -137,11 +137,11 @@
                 android:layout_below="@id/time_value"
                 android:background="@android:color/darker_gray"/>
         </RelativeLayout> -->
-
         <LinearLayout
             android:layout_margin="5dp"
             android:id="@+id/d_content_layout"
             android:layout_width="match_parent"
+
             android:layout_height="match_parent"
             android:layout_below="@+id/d_logo_layout">
             <view
