@@ -3,7 +3,7 @@
     package="org.monroe.team.smooker.app" >
 
     <application
-        android:name=".SmookerApplication"
+        android:name="org.monroe.team.smooker.app.SmookerApplication"
         android:allowBackup="true"
         android:icon="@drawable/smooker_logo"
         android:label="@string/app_name"
@@ -18,10 +18,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".WizardActivity"
+            android:name="org.monroe.team.smooker.app.WizardActivity"
             android:label="@string/title_activity_wizzard"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
+
+        <service
+            android:name=".SmookerRemoteControlNotificationService"
+            android:enabled="true"
+            android:exported="false" >
+        </service>
+
+        <receiver
+            android:name=".AddSmokeReceiver"
+            android:enabled="true"
+            android:exported="false" >
+        </receiver>
     </application>
 
 </manifest>

@@ -121,6 +121,7 @@ public class SmokeChartView extends View {
 
 
         //DEBUG
+        /*
         limit = 15;
         List<Date> model = new ArrayList<Date>(10);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
@@ -137,6 +138,7 @@ public class SmokeChartView extends View {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
+        */
     }
 
     @Override
@@ -346,6 +348,7 @@ public class SmokeChartView extends View {
             int minutes = calendar.get(Calendar.MINUTE);
             model.add(hours*60+minutes);
         }
+        invalidate();
     }
 
     public float getMinuteWidth() {
@@ -356,4 +359,8 @@ public class SmokeChartView extends View {
         return verticalAxisPadding + (24 * 60) * getMinuteWidth();
     }
 
+    public void setLimit(int limit) {
+        this.limit = limit;
+        invalidate();
+    }
 }

@@ -148,7 +148,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 class="org.monroe.team.smooker.app.SmokeChartView"
-                android:id="@+id/view" />
+                android:id="@+id/d_smoke_chart_view" />
         </LinearLayout>
         <ImageButton
             android:id="@+id/add_smoke_btn"

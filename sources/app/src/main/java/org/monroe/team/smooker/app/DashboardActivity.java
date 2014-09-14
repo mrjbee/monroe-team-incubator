@@ -3,7 +3,6 @@ package org.monroe.team.smooker.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -43,11 +42,16 @@ public class DashboardActivity extends SupportActivity {
     }
 
     private void updateUiPerStatistic(GetStatisticState.StatisticState statistics) {
-        if (exists(statistics.getSmokeTimesTodayCounter())){
-            view(TextView.class,R.id.d_smoke_today_counter_text).setText(Integer.toString(statistics.getSmokeTimesTodayCounter()));
+        if (exists(statistics.getTodaySmokeDates())){
+            view(TextView.class,R.id.d_smoke_today_counter_text).setText(Integer.toString(statistics.getTodaySmokeDates().size()));
+            view(SmokeChartView.class,R.id.d_smoke_chart_view).setModel(statistics.getTodaySmokeDates());
         }
         if (exists(statistics.getSpendMoney())){
             view(TextView.class,R.id.d_spend_money_counter_text).setText(statistics.getSpendMoney());
+        }
+
+        if(exists(statistics.getAverageSmoke())){
+            view(SmokeChartView.class,R.id.d_smoke_chart_view).setLimit(statistics.getAverageSmoke());
         }
     }
 

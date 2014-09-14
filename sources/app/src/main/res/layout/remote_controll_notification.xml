@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ImageView
+        android:id="@+id/cn_logo_image"
+        android:src="@drawable/smooker_logo"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"/>
+
+    <TextView
+        android:id="@+id/cn_title_text"
+        android:text="Hello"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_toRightOf="@+id/cn_logo_image" />
+
+
+    <Button
+        android:id="@+id/cn_add_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+1 smoke"
+        android:layout_toRightOf="@+id/cn_logo_image"
+        android:layout_toLeftOf="@+id/cn_close_btn"
+        android:layout_below="@+id/cn_title_text"/>
+
+    <Button
+        android:id="@+id/cn_close_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="Close"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>

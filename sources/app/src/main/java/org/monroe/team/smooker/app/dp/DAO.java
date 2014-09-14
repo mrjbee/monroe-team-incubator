@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import org.monroe.team.smooker.app.common.Closure;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -104,6 +106,31 @@ public class DAO {
         });
     }
 
+    //Date,Count
+    public List<Result> groupSmokesPerDay() {
+
+        //SELECT strftime('%Y-%m-%d', date / 1000, 'unixepoch'), count(*) FROM smoke GROUP BY strftime('%Y-%m-%d', date / 1000, 'unixepoch');
+
+        Cursor cursor = db.query(DB.SmokeEntry.TABLE_NAME,
+                strs("strftime('%Y-%m-%d', "+DB.SmokeEntry._DATE+" / 1000, 'unixepoch'), count(*)"),
+                null,
+                null,
+                "strftime('%Y-%m-%d', "+DB.SmokeEntry._DATE+" / 1000, 'unixepoch')",
+                null,
+                null);
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        return collect(cursor, new Closure<Cursor, Result>() {
+            @Override
+            public Result execute(Cursor arg) {
+                try {
+                    return Result.answer().with(dateFormat.parse(arg.getString(0)).getTime(),arg.getLong(1));
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
 
     public List<Result> getPrices() {
         Cursor cursor = db.query(DB.SmokePriceEntry.TABLE_NAME,

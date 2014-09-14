@@ -7,8 +7,9 @@ import org.monroe.team.smooker.app.uc.common.DateUtils;
 import org.monroe.team.smooker.app.uc.common.TransactionUserCase;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Currency;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -26,8 +27,14 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
         for (StatisticName statisticName : request.nameSet) {
             switch (statisticName){
                 case SMOKE_TODAY:
-                    statisticState.smokeTimesTodayCounter = dao.getSmokesForPeriod(DateUtils.dateOnly(DateUtils.now()),
-                            DateUtils.dateOnly(DateUtils.addDays(DateUtils.now(), 1))).size();
+                    List<DAO.Result> todaySmokeDaoList = dao.getSmokesForPeriod(DateUtils.dateOnly(DateUtils.now()),
+                            DateUtils.dateOnly(DateUtils.addDays(DateUtils.now(), 1)));
+                    statisticState.todaySmokeDates = new ArrayList<Date>(todaySmokeDaoList.size());
+                    for (int i = 0; i < todaySmokeDaoList.size() ; i++) {
+                        statisticState.todaySmokeDates.add(todaySmokeDaoList.get(i).get(1, Date.class));
+                    }
+                    statisticState.todaySmokeDates = Collections.unmodifiableList(statisticState.todaySmokeDates);
+                    break;
                 case SPEND_MONEY:
                     Float money = calculateSpendMoney(dao);
                     DecimalFormat df = new DecimalFormat();
@@ -35,6 +42,24 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                     df.setMaximumFractionDigits(2);
                     df.setMinimumFractionDigits(2);
                     statisticState.spendMoney = df.format(money) +" "+using(Preferences.class).getCurrency().symbol;
+                    break;
+                case AVERAGE_PER_DAY:
+                    List<DAO.Result> results = dao.groupSmokesPerDay();
+                    int answer = GetGeneralDetails.GeneralDetailsResponse.SMOKE_PER_DAY_UNDEFINED;
+                    if (results.size() > 3){
+                        //at least two full days
+                        answer = 0;
+                        for (int i=1; i<results.size()-1; i++){
+                           answer+= results.get(i).get(2,Long.class);
+                        }
+                        answer = Math.round(answer/(results.size()-2));
+                    } else {
+                        answer = using(Preferences.class).getSmokePerDay();
+                    }
+                    if (answer > 0){
+                        statisticState.averageSmoke = answer;
+                    }
+                    break;
             }
         }
         return statisticState;
@@ -71,8 +96,8 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
 
 
     public static enum StatisticName{
-        SMOKE_TODAY, SPEND_MONEY, ALL;
-        private static final StatisticName[] ALL_NAMES = {SMOKE_TODAY, SPEND_MONEY};
+        SMOKE_TODAY, SPEND_MONEY, AVERAGE_PER_DAY, ALL;
+        private static final StatisticName[] ALL_NAMES = {SMOKE_TODAY, SPEND_MONEY, AVERAGE_PER_DAY};
     }
 
     public static class StatisticRequest {
@@ -100,15 +125,20 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
 
     public static class StatisticState {
 
-        Integer smokeTimesTodayCounter;
+        List<Date> todaySmokeDates;
         String spendMoney;
+        Integer averageSmoke;
 
-        public Integer getSmokeTimesTodayCounter() {
-            return smokeTimesTodayCounter;
+        public List<Date> getTodaySmokeDates() {
+            return todaySmokeDates;
         }
 
         public String getSpendMoney() {
             return spendMoney;
+        }
+
+        public Integer getAverageSmoke() {
+            return averageSmoke;
         }
     }
 }

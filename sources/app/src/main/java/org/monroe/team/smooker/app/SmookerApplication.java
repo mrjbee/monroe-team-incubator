@@ -7,11 +7,13 @@ import org.monroe.team.smooker.app.common.Model;
 
 public class SmookerApplication extends Application {
 
+    public static SmookerApplication instance;
     private Model model;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
     }
 
     public synchronized Model getModel() {
