@@ -1,4 +1,4 @@
-package org.monroe.team.smooker.app.dp;
+package org.monroe.team.smooker.app.db;
 
 import android.content.ContentValues;
 import android.provider.BaseColumns;

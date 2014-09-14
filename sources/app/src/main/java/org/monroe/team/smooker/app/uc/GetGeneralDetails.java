@@ -4,7 +4,7 @@ import org.monroe.team.smooker.app.common.Currency;
 import org.monroe.team.smooker.app.common.Preferences;
 import org.monroe.team.smooker.app.common.Registry;
 import org.monroe.team.smooker.app.common.SmokeQuitProgramDifficult;
-import org.monroe.team.smooker.app.dp.DAO;
+import org.monroe.team.smooker.app.db.DAO;
 import org.monroe.team.smooker.app.uc.common.TransactionUserCase;
 
 public class GetGeneralDetails extends TransactionUserCase<Void,GetGeneralDetails.GeneralDetailsResponse>{

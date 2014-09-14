@@ -2,7 +2,7 @@ package org.monroe.team.smooker.app.common;
 
 import android.content.SharedPreferences;
 
-import org.monroe.team.smooker.app.dp.DAO;
+import org.monroe.team.smooker.app.db.DAO;
 import org.monroe.team.smooker.app.uc.GetGeneralDetails;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
 

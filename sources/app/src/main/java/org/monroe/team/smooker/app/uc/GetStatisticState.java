@@ -2,7 +2,7 @@ package org.monroe.team.smooker.app.uc;
 
 import org.monroe.team.smooker.app.common.Preferences;
 import org.monroe.team.smooker.app.common.Registry;
-import org.monroe.team.smooker.app.dp.DAO;
+import org.monroe.team.smooker.app.db.DAO;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
 import org.monroe.team.smooker.app.uc.common.TransactionUserCase;
 

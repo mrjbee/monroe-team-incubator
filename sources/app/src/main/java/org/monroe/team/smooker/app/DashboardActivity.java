@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import org.monroe.team.smooker.app.common.Closure;
+import org.monroe.team.smooker.app.common.Events;
 import org.monroe.team.smooker.app.common.SupportActivity;
 import org.monroe.team.smooker.app.common.SetupPage;
 import org.monroe.team.smooker.app.uc.AddSmoke;
@@ -33,12 +35,34 @@ public class DashboardActivity extends SupportActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        subscribeOnEvent(Events.ADD_SMOKE,new Closure<Integer, Void>() {
+            @Override
+            public Void execute(Integer arg) {
+                requestAndUpdateUiPerStatisticState();
+                return null;
+            }
+        });
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+        requestAndUpdateUiPerStatisticState();
+    }
+
+    private void requestAndUpdateUiPerStatisticState() {
         updateUiPerStatistic(model().execute(GetStatisticState.class,
                 GetStatisticState.StatisticRequest.create(
                         GetStatisticState.StatisticName.ALL
                 )));
+    }
+
+    @Override
+    protected void onDestroy() {
+        onDestroy();
+        unSubscribeFromEvents();
     }
 
     private void updateUiPerStatistic(GetStatisticState.StatisticState statistics) {

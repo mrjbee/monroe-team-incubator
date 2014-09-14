@@ -11,6 +11,11 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
+import org.monroe.team.smooker.app.common.Closure;
+import org.monroe.team.smooker.app.common.Events;
+import org.monroe.team.smooker.app.event.Event;
+import org.monroe.team.smooker.app.uc.GetStatisticState;
+
 public class SmookerRemoteControlNotificationService extends Service {
 
     private static NotificationRemoteControl notification;
@@ -27,8 +32,31 @@ public class SmookerRemoteControlNotificationService extends Service {
             startForeground(
                     NotificationRemoteControl.NOTIFICATION_ID,
                     notification.createNotification(getNotificationInitialText()));
+            Event.subscribeOnEvent(getApplicationContext(),this, Events.ADD_SMOKE,new Closure<Integer, Void>() {
+                @Override
+                public Void execute(Integer arg) {
+                    setText(generateNotificationStringFor(arg));
+                    return null;
+                }
+            });
         }
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    private String generateNotificationStringFor(Integer smokeCount) {
+        return " "+smokeCount +" smoke breaks today";
+    }
+
+    private String getNotificationInitialText() {
+        GetStatisticState.StatisticState statisticState = ((SmookerApplication) getApplication()).getModel().execute(GetStatisticState.class,
+                GetStatisticState.StatisticRequest.create(GetStatisticState.StatisticName.SMOKE_TODAY));
+        return generateNotificationStringFor(statisticState.getTodaySmokeDates().size());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Event.unSubscribeFromEvents(getApplicationContext(),this);
     }
 
     public static void setText(String text){
@@ -36,9 +64,7 @@ public class SmookerRemoteControlNotificationService extends Service {
         notification.setText(text);
     }
 
-    public String getNotificationInitialText() {
-        return "Smooker. Smoke club.";
-    }
+
 
     public class NotificationRemoteControl {
 
