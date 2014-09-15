@@ -110,7 +110,7 @@ public class WizardActivity extends SupportActivity {
             case WELCOME_PAGE: pageHandler = new WelcomePageHandler();break;
             case SMOKE_PER_DAYS: pageHandler = new SmokePerDayPageHandler();break;
             case QUIT_SMOKING: pageHandler = new QuitSmokingPageHandler();break;
-            case UI_SETTINGS: pageHandler = new WelcomePageHandler();break;
+            case UI_SETTINGS: pageHandler = new UIPageHandler();break;
             default: throw new IllegalStateException("Unsupported page "+ curPage);
         }
     }
@@ -342,5 +342,29 @@ public class WizardActivity extends SupportActivity {
             return true;
         }
     }
+
+    public static class UIPageHandler extends SetupPageHandler {
+
+        protected UIPageHandler() {
+            super("UI Settings",
+                    "Please specify which of user interface extension you would like to use",
+                    R.layout.ui_setting_setup_page);
+        }
+
+
+        @Override
+        public void onCreateUI(final WizardActivity wizardActivity) {
+            wizardActivity.view(CheckBox.class,R.id.ui_sticky_notif_check).setChecked(
+                    wizardActivity.application().isStickyNotificationEnabled());
+            wizardActivity.view(CheckBox.class,R.id.ui_sticky_notif_check).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    wizardActivity.application().updateStickyNotification(isChecked);
+                }
+            });
+        }
+
+    }
+
 
 }

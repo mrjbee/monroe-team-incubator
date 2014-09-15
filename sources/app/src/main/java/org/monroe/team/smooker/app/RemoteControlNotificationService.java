@@ -55,6 +55,7 @@ public class RemoteControlNotificationService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        notification = null;
         Event.unSubscribeFromEvents(getApplicationContext(),this);
     }
 

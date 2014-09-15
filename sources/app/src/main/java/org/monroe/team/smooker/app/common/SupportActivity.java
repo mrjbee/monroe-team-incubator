@@ -27,4 +27,7 @@ public class SupportActivity extends Activity {
     final protected View view(int resourceId){
         return findViewById(resourceId);
     }
+    final protected SmookerApplication application(){
+        return (SmookerApplication) getApplication();
+    }
 }

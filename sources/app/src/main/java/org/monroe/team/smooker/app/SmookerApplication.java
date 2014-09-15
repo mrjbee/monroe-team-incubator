@@ -62,4 +62,17 @@ public class SmookerApplication extends Application {
         Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
         this.getApplicationContext().sendBroadcast(it);
     }
+
+    public boolean isStickyNotificationEnabled() {
+        return preferences().isStickyNotificationEnabled();
+    }
+
+    public void updateStickyNotification(boolean enabled) {
+        if (enabled){
+            getModel().startNotificationControlService();
+        } else {
+            getModel().stopNotificationControlService();
+        }
+        preferences().setStickyNotificationEnabled(enabled);
+    }
 }
