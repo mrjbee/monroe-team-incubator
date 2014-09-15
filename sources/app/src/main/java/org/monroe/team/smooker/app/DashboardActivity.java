@@ -3,6 +3,7 @@ package org.monroe.team.smooker.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -41,36 +42,40 @@ public class DashboardActivity extends SupportActivity {
             }
         });
 
-        view(Button.class,R.id.d_setting_btn).setOnClickListener(new View.OnClickListener() {
+        view(ImageButton.class,R.id.d_setting_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (settingsMenu == null){
-                    settingsMenu = new PopupMenu(DashboardActivity.this,view(R.id.d_setting_btn));
-                    settingsMenu.inflate(R.menu.setting_popup_menu_layout);
-                    settingsMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            int id = menuItem.getItemId();
-                            SetupPage page = null;
-                            switch (id){
-                                case R.id.setting_general_item: page = SetupPage.GENERAL; break;
-                                case R.id.setting_quit_item: page = SetupPage.QUIT_PROGRAM; break;
-                                case R.id.setting_ui_item: page = SetupPage.UI; break;
-                                default: throw new IllegalStateException();
-                            }
-                            Intent intent = new Intent(DashboardActivity.this, WizardActivity.class);
-                            intent.putExtra("PAGE_INDEX", 0);
-                            intent.putExtra("PAGE_STACK", new ArrayList<SetupPage>(Arrays.asList(page)));
-                            intent.putExtra("FORCE",false);
-                            startActivityForResult(intent, WIZARD_ACTIVITY_REQUEST);
-                            return true;
-                        }
-                    });
-                }
-                settingsMenu.getMenu().getItem(2).setEnabled(isQuitProgramAvailable);
-                settingsMenu.show();
+                showSettingPopup();
             }
         });
+    }
+
+    private void showSettingPopup() {
+        if (settingsMenu == null){
+            settingsMenu = new PopupMenu(this,view(R.id.d_setting_btn));
+            settingsMenu.inflate(R.menu.setting_popup_menu_layout);
+            settingsMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    int id = menuItem.getItemId();
+                    SetupPage page = null;
+                    switch (id){
+                        case R.id.setting_general_item: page = SetupPage.GENERAL; break;
+                        case R.id.setting_quit_item: page = SetupPage.QUIT_PROGRAM; break;
+                        case R.id.setting_ui_item: page = SetupPage.UI; break;
+                        default: throw new IllegalStateException();
+                    }
+                    Intent intent = new Intent(DashboardActivity.this, WizardActivity.class);
+                    intent.putExtra("PAGE_INDEX", 0);
+                    intent.putExtra("PAGE_STACK", new ArrayList<SetupPage>(Arrays.asList(page)));
+                    intent.putExtra("FORCE",false);
+                    startActivityForResult(intent, WIZARD_ACTIVITY_REQUEST);
+                    return true;
+                }
+            });
+        }
+        settingsMenu.getMenu().getItem(2).setEnabled(isQuitProgramAvailable);
+        settingsMenu.show();
     }
 
     @Override
@@ -102,6 +107,16 @@ public class DashboardActivity extends SupportActivity {
     protected void onDestroy() {
         super.onDestroy();
         unSubscribeFromEvents();
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+            switch(keyCode) {
+                case KeyEvent.KEYCODE_MENU:
+                    showSettingPopup();
+                    return true;
+            }
+            return super.onKeyUp(keyCode, event);
     }
 
     private void updateUiPerStatistic(GetStatisticState.StatisticState statistics) {
