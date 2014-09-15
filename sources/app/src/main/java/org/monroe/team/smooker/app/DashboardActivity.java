@@ -2,9 +2,13 @@ package org.monroe.team.smooker.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.monroe.team.smooker.app.common.Closure;
 import org.monroe.team.smooker.app.common.Events;
@@ -15,21 +19,56 @@ import org.monroe.team.smooker.app.uc.CalculateRequiredSetupPages;
 import org.monroe.team.smooker.app.uc.GetStatisticState;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DashboardActivity extends SupportActivity {
 
     private static final int WIZARD_ACTIVITY_FORCE_REQUEST = 1;
     private static final int WIZARD_ACTIVITY_REQUEST = 2;
+    private PopupMenu settingsMenu;
+    private boolean isQuitProgramAvailable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         checkSetupRequired();
+
         view(ImageButton.class, R.id.add_smoke_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateUiPerStatistic(model().execute(AddSmoke.class, null));
+            }
+        });
+
+        view(Button.class,R.id.d_setting_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (settingsMenu == null){
+                    settingsMenu = new PopupMenu(DashboardActivity.this,view(R.id.d_setting_btn));
+                    settingsMenu.inflate(R.menu.setting_popup_menu_layout);
+                    settingsMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            int id = menuItem.getItemId();
+                            SetupPage page = null;
+                            switch (id){
+                                case R.id.setting_general_item: page = SetupPage.GENERAL; break;
+                                case R.id.setting_quit_item: page = SetupPage.QUIT_PROGRAM; break;
+                                case R.id.setting_ui_item: page = SetupPage.UI; break;
+                                default: throw new IllegalStateException();
+                            }
+                            Intent intent = new Intent(DashboardActivity.this, WizardActivity.class);
+                            intent.putExtra("PAGE_INDEX", 0);
+                            intent.putExtra("PAGE_STACK", new ArrayList<SetupPage>(Arrays.asList(page)));
+                            intent.putExtra("FORCE",false);
+                            startActivityForResult(intent, WIZARD_ACTIVITY_REQUEST);
+                            return true;
+                        }
+                    });
+                }
+                settingsMenu.getMenu().getItem(2).setEnabled(isQuitProgramAvailable);
+                settingsMenu.show();
             }
         });
     }

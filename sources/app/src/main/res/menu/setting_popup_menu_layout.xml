@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/setting_general_item"
+        android:title="General"/>
+
+    <item android:id="@+id/setting_ui_item"
+        android:title="User interface"/>
+
+    <item android:id="@+id/setting_quit_item"
+        android:title="Quit program"/>
+
+</menu>

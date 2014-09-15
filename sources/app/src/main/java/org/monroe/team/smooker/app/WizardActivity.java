@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -108,9 +107,9 @@ public class WizardActivity extends SupportActivity {
         SetupPage curPage = requestsStack.get(requestIndex);
         switch (curPage){
             case WELCOME_PAGE: pageHandler = new WelcomePageHandler();break;
-            case SMOKE_PER_DAYS: pageHandler = new SmokePerDayPageHandler();break;
-            case QUIT_SMOKING: pageHandler = new QuitSmokingPageHandler();break;
-            case UI_SETTINGS: pageHandler = new UIPageHandler();break;
+            case GENERAL: pageHandler = new SmokePerDayPageHandler();break;
+            case QUIT_PROGRAM: pageHandler = new QuitSmokingPageHandler();break;
+            case UI: pageHandler = new UIPageHandler();break;
             default: throw new IllegalStateException("Unsupported page "+ curPage);
         }
     }

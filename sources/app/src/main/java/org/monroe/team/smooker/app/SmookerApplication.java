@@ -1,6 +1,5 @@
 package org.monroe.team.smooker.app;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
 import android.widget.Toast;
@@ -40,7 +39,7 @@ public class SmookerApplication extends Application {
             Intent intent = new Intent(this, WizardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("PAGE_INDEX", 0);
-            intent.putExtra("PAGE_STACK", new ArrayList<SetupPage>(Arrays.asList(SetupPage.UI_SETTINGS)));
+            intent.putExtra("PAGE_STACK", new ArrayList<SetupPage>(Arrays.asList(SetupPage.UI)));
             intent.putExtra("FORCE", false);
             startActivity(intent);
         }

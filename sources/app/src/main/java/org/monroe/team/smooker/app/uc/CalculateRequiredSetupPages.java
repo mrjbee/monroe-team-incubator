@@ -29,7 +29,7 @@ public class CalculateRequiredSetupPages extends UserCaseSupport<Void,CalculateR
         }
 
         if (isSmokePerDayUndefined()){
-            answer.add(SetupPage.SMOKE_PER_DAYS);
+            answer.add(SetupPage.GENERAL);
             required = true;
         }
 
@@ -40,7 +40,7 @@ public class CalculateRequiredSetupPages extends UserCaseSupport<Void,CalculateR
                     DAO.Result result = dao.getFirstLoggedSmoke();
                     //TODO: add date logic
                     if (result != null) {
-                        answer.add(SetupPage.QUIT_SMOKING);
+                        answer.add(SetupPage.QUIT_PROGRAM);
                         using(Preferences.class).markAsQuitProgramSuggested();
                     }
                     return null;
