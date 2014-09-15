@@ -4,7 +4,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
@@ -16,7 +15,7 @@ import org.monroe.team.smooker.app.common.Events;
 import org.monroe.team.smooker.app.event.Event;
 import org.monroe.team.smooker.app.uc.GetStatisticState;
 
-public class SmookerRemoteControlNotificationService extends Service {
+public class RemoteControlNotificationService extends Service {
 
     private static NotificationRemoteControl notification;
 
@@ -85,6 +84,7 @@ public class SmookerRemoteControlNotificationService extends Service {
 
             // Open NotificationView Class on Notification Click
             Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             // Open NotificationView.java Activity
             PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent,
                     PendingIntent.FLAG_UPDATE_CURRENT);
@@ -98,9 +98,17 @@ public class SmookerRemoteControlNotificationService extends Service {
                     .setContent(remoteViews);
 
             remoteViews.setTextViewText(R.id.cn_title_text,text);
-            Intent addActionIntent = new Intent(getApplicationContext(), AddSmokeReceiver.class);
+
+            Intent addActionIntent = new Intent(getApplicationContext(), RemoteControlNotificationReceiver.class);
             PendingIntent addBtnIntent = PendingIntent.getBroadcast(getApplicationContext(), 2, addActionIntent, 0);
+
+            Intent closeActionIntent = new Intent(getApplicationContext(), RemoteControlNotificationReceiver.class);
+            closeActionIntent.putExtra("CLOSE",true);
+            PendingIntent closeBtnIntent = PendingIntent.getBroadcast(getApplicationContext(), 3, closeActionIntent, 0);
+
             remoteViews.setOnClickPendingIntent(R.id.cn_add_btn,addBtnIntent);
+            remoteViews.setOnClickPendingIntent(R.id.cn_close_btn,closeBtnIntent);
+
             return builder.build();
         }
     }

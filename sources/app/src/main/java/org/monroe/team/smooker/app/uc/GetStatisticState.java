@@ -50,7 +50,7 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                         //at least two full days
                         answer = 0;
                         for (int i=1; i<results.size()-1; i++){
-                           answer+= results.get(i).get(2,Long.class);
+                           answer+= results.get(i).get(1,Long.class);
                         }
                         answer = Math.round(answer/(results.size()-2));
                     } else {

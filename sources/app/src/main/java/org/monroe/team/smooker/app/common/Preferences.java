@@ -72,6 +72,21 @@ public class Preferences {
         return action.execute(this,new DB(dao));
     }
 
+    public boolean isStickyNotificationEnabled() {
+        return preferences.getBoolean("STICKY_NOTIFICATION",true);
+    }
+
+    public void setStickyNotificationEnabled(boolean stickyNotificationEnabled) {
+        preferences.edit().putBoolean("STICKY_NOTIFICATION",stickyNotificationEnabled).commit();
+    }
+
+    public boolean isStickyNotificationFirstTimeClose() {
+        return preferences.getBoolean("STICKY_NOTIFICATION_CLOSE_FIRST_TIME",true);
+    }
+
+    public void setStickyNotificationFirstTimeClose(boolean value) {
+        preferences.getBoolean("STICKY_NOTIFICATION_CLOSE_FIRST_TIME",value);
+    }
 
     @Deprecated
     public static interface DBAction<ResultType>{

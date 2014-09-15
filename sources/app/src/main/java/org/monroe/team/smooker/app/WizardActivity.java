@@ -110,6 +110,7 @@ public class WizardActivity extends SupportActivity {
             case WELCOME_PAGE: pageHandler = new WelcomePageHandler();break;
             case SMOKE_PER_DAYS: pageHandler = new SmokePerDayPageHandler();break;
             case QUIT_SMOKING: pageHandler = new QuitSmokingPageHandler();break;
+            case UI_SETTINGS: pageHandler = new WelcomePageHandler();break;
             default: throw new IllegalStateException("Unsupported page "+ curPage);
         }
     }

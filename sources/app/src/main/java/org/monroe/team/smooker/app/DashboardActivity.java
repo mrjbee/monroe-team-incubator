@@ -61,7 +61,7 @@ public class DashboardActivity extends SupportActivity {
 
     @Override
     protected void onDestroy() {
-        onDestroy();
+        super.onDestroy();
         unSubscribeFromEvents();
     }
 

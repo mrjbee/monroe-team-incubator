@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import org.monroe.team.smooker.app.SmookerRemoteControlNotificationService;
+import org.monroe.team.smooker.app.RemoteControlNotificationService;
 import org.monroe.team.smooker.app.db.DBHelper;
 import org.monroe.team.smooker.app.db.TransactionManager;
 import org.monroe.team.smooker.app.uc.common.UserCase;
@@ -13,8 +13,10 @@ import org.monroe.team.smooker.app.uc.common.UserCaseSupport;
 public class Model {
 
     private final Registry registry = new Registry();
+    private final Context context;
 
     public Model(Context applicationContext) {
+        context = applicationContext;
         registry.registrate(Model.class, this);
         DBHelper dbHelper = new DBHelper(applicationContext);
         TransactionManager transactionManager = new TransactionManager(dbHelper);
@@ -24,8 +26,8 @@ public class Model {
         registry.registrate(TransactionManager.class, transactionManager);
         registry.registrate(Preferences.class, preferences);
         registry.registrate(EventMessenger.class, messenger);
-        applicationContext.startService(new Intent(applicationContext,SmookerRemoteControlNotificationService.class));
     }
+
 
     public <RequestType,ResponseType> ResponseType execute(
             Class<? extends UserCase<RequestType,ResponseType>> ucId,
@@ -50,4 +52,23 @@ public class Model {
         }
         return registry.get(ucId);
     }
+
+    public void stopNotificationControlService() {
+        context.stopService(new Intent(context,RemoteControlNotificationService.class));
+    }
+
+    public void startNotificationControlService() {
+        context.startService(new Intent(context,RemoteControlNotificationService.class));
+    }
+
+    public void onCreate() {
+        if (registry.get(Preferences.class).isStickyNotificationEnabled()) {
+            startNotificationControlService();
+        }
+    }
+
+    public <Type> Type usingService(Class<Type> serviceClass) {
+        return registry.get(serviceClass);
+    }
+
 }
