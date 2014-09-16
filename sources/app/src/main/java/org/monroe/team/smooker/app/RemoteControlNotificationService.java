@@ -85,7 +85,7 @@ public class RemoteControlNotificationService extends Service {
 
             // Open NotificationView Class on Notification Click
             Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
             // Open NotificationView.java Activity
             PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent,
                     PendingIntent.FLAG_UPDATE_CURRENT);

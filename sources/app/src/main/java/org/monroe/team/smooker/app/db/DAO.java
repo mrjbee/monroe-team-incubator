@@ -82,7 +82,7 @@ public class DAO {
             if (startDate != null && endDate != null){
                 whereStatement = "? <= " + DB.SmokeEntry._DATE + " AND ? > " + DB.SmokeEntry._DATE;
                 whereArgs = strs(Long.toString(startDate.getTime()), Long.toString(endDate.getTime()));
-            } else if (startDate != null){
+            } else if (endDate != null){
                 whereStatement = "? > " + DB.SmokeEntry._DATE;
                 whereArgs = strs(Long.toString(endDate.getTime()));
             } else {

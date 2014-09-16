@@ -73,7 +73,7 @@ public class Preferences {
     }
 
     public boolean isStickyNotificationEnabled() {
-        return preferences.getBoolean("STICKY_NOTIFICATION",true);
+        return preferences.getBoolean("STICKY_NOTIFICATION",false);
     }
 
     public void setStickyNotificationEnabled(boolean stickyNotificationEnabled) {
@@ -86,6 +86,12 @@ public class Preferences {
 
     public void setStickyNotificationFirstTimeClose(boolean value) {
         preferences.getBoolean("STICKY_NOTIFICATION_CLOSE_FIRST_TIME",value);
+    }
+
+    public boolean markFirstSetup() {
+        boolean answer = preferences.getBoolean("FIRST_SETUP_DONE", false);
+        preferences.edit().putBoolean("FIRST_SETUP_DONE",true);
+        return !answer;
     }
 
     @Deprecated

@@ -3,24 +3,23 @@ package org.monroe.team.smooker.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
+import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.monroe.team.smooker.app.common.Closure;
 import org.monroe.team.smooker.app.common.Events;
 import org.monroe.team.smooker.app.common.SupportActivity;
 import org.monroe.team.smooker.app.common.SetupPage;
 import org.monroe.team.smooker.app.uc.AddSmoke;
-import org.monroe.team.smooker.app.uc.CalculateRequiredSetupPages;
 import org.monroe.team.smooker.app.uc.GetStatisticState;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class DashboardActivity extends SupportActivity {
 
@@ -34,7 +33,9 @@ public class DashboardActivity extends SupportActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         checkSetupRequired();
-
+        if (application().isStickyNotificationEnabled()){
+            application().updateStickyNotification(true);
+        }
         view(ImageButton.class, R.id.add_smoke_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,13 +139,15 @@ public class DashboardActivity extends SupportActivity {
     }
 
     private void checkSetupRequired() {
-        CalculateRequiredSetupPages.RequiredSetupResponse requiredSetup = model().execute(CalculateRequiredSetupPages.class,null);
-        if (!requiredSetup.setupPageList.isEmpty()){
+
+        Pair<Boolean, List<SetupPage>> requiredSetup = application().getRequiredSetupPages();
+
+        if (!requiredSetup.second.isEmpty()){
             Intent intent = new Intent(this, WizardActivity.class);
             intent.putExtra("PAGE_INDEX", 0);
-            intent.putExtra("PAGE_STACK", new ArrayList<SetupPage>(requiredSetup.setupPageList));
-            intent.putExtra("FORCE",requiredSetup.force);
-            startActivityForResult(intent, requiredSetup.force ? WIZARD_ACTIVITY_FORCE_REQUEST : WIZARD_ACTIVITY_REQUEST);
+            intent.putExtra("PAGE_STACK", new ArrayList<SetupPage>(requiredSetup.second));
+            intent.putExtra("FORCE",requiredSetup.first.booleanValue());
+            startActivityForResult(intent, requiredSetup.first.booleanValue() ? WIZARD_ACTIVITY_FORCE_REQUEST : WIZARD_ACTIVITY_REQUEST);
         }
     }
 
@@ -156,6 +159,9 @@ public class DashboardActivity extends SupportActivity {
                 if (resultCode == RESULT_CANCELED){
                     finish();
                     return;
+                }
+                if (application().firstSetupDoneTrigger()){
+                    application().updateStickyNotification(true);
                 }
                 checkSetupRequired();
                 break;

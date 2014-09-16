@@ -107,8 +107,8 @@ public class WizardActivity extends SupportActivity {
         SetupPage curPage = requestsStack.get(requestIndex);
         switch (curPage){
             case WELCOME_PAGE: pageHandler = new WelcomePageHandler();break;
-            case GENERAL: pageHandler = new SmokePerDayPageHandler();break;
-            case QUIT_PROGRAM: pageHandler = new QuitSmokingPageHandler();break;
+            case GENERAL: pageHandler = new GeneralSetupHandler();break;
+            case QUIT_PROGRAM: pageHandler = new QuitSmokingSetupHandler();break;
             case UI: pageHandler = new UIPageHandler();break;
             default: throw new IllegalStateException("Unsupported page "+ curPage);
         }
@@ -149,12 +149,13 @@ public class WizardActivity extends SupportActivity {
                            "will be used in future for calculation and etc.",
                    R.layout.welcome_setup_page);
         }
+
     }
 
 
-    public static class SmokePerDayPageHandler extends SetupPageHandler {
+    public static class GeneralSetupHandler extends SetupPageHandler {
 
-        protected SmokePerDayPageHandler() {
+        protected GeneralSetupHandler() {
             super("General",
                     "Please specify how much cost you spent per smoke and how much times you smoke usually in a day (If You have a " +
                             "doubt You could choose 'detect automatically option', so application will " +
@@ -269,9 +270,9 @@ public class WizardActivity extends SupportActivity {
     }
 
 
-    public static class QuitSmokingPageHandler extends SetupPageHandler {
+    public static class QuitSmokingSetupHandler extends SetupPageHandler {
 
-        protected QuitSmokingPageHandler() {
+        protected QuitSmokingSetupHandler() {
             super("Quit Smoking",
                   "Please choose quit smoking program loyalty and final target. Please note that you " +
                   "would be able to change settings latter using setting menu",
@@ -353,6 +354,7 @@ public class WizardActivity extends SupportActivity {
 
         @Override
         public void onCreateUI(final WizardActivity wizardActivity) {
+            wizardActivity.application().onUISettingSetupPageShown();
             wizardActivity.view(CheckBox.class,R.id.ui_sticky_notif_check).setChecked(
                     wizardActivity.application().isStickyNotificationEnabled());
             wizardActivity.view(CheckBox.class,R.id.ui_sticky_notif_check).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

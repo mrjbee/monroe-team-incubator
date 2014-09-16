@@ -2,15 +2,20 @@ package org.monroe.team.smooker.app;
 
 import android.app.Application;
 import android.content.Intent;
+import android.util.Pair;
 import android.widget.Toast;
 
 import org.monroe.team.smooker.app.common.Model;
 import org.monroe.team.smooker.app.common.Preferences;
 import org.monroe.team.smooker.app.common.SetupPage;
+import org.monroe.team.smooker.app.db.DAO;
+import org.monroe.team.smooker.app.db.TransactionManager;
 import org.monroe.team.smooker.app.uc.AddSmoke;
+import org.monroe.team.smooker.app.uc.GetGeneralDetails;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 public class SmookerApplication extends Application {
@@ -33,9 +38,8 @@ public class SmookerApplication extends Application {
 
     public void onRemoteControlNotificationCloseRequest() {
         getModel().stopNotificationControlService();
-        preferences().setStickyNotificationEnabled(false);
+        updateStickyNotification(false);
         if (preferences().isStickyNotificationFirstTimeClose()){
-            preferences().setStickyNotificationFirstTimeClose(false);
             Intent intent = new Intent(this, WizardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("PAGE_INDEX", 0);
@@ -72,6 +76,45 @@ public class SmookerApplication extends Application {
         } else {
             getModel().stopNotificationControlService();
         }
+        setStickyNotificationEnabled(enabled);
+    }
+
+    public void setStickyNotificationEnabled(boolean enabled) {
         preferences().setStickyNotificationEnabled(enabled);
+    }
+
+    public void onUISettingSetupPageShown() {
+        preferences().setStickyNotificationFirstTimeClose(false);
+    }
+
+    public Pair<Boolean, List<SetupPage>> getRequiredSetupPages() {
+        final List<SetupPage> answer = new ArrayList<SetupPage>(4);
+        boolean required = false;
+
+        if(preferences().isFirstStart()){
+            answer.add(SetupPage.WELCOME_PAGE);
+            preferences().markAsFirstStartDone();
+            required = true;
+        }
+
+        if (isSmokePerDayUndefined()){
+            answer.add(SetupPage.GENERAL);
+            required = true;
+        }
+
+        if (!isSmokePerDayUndefined() && preferences().isQuitProgramSuggested()){
+           //answer.add(SetupPage.QUIT_PROGRAM);
+        }
+
+        return new Pair<Boolean, List<SetupPage>>(required,answer);
+    }
+
+
+    private boolean isSmokePerDayUndefined() {
+        return preferences().getSmokePerDay() == GetGeneralDetails.GeneralDetailsResponse.SMOKE_PER_DAY_UNDEFINED;
+    }
+
+    public boolean firstSetupDoneTrigger() {
+        return preferences().markFirstSetup();
     }
 }

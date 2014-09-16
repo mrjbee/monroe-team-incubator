@@ -35,6 +35,7 @@ public class SmokeChartView extends View {
     Paint selectionValueTextPaint;
 
     float axisCaptionTextSize =30f;
+    float limitTextSize = 20f;
 
     String verticalAxisName = "smokes count";
     String horizontalAxisName = "today hours";
@@ -45,7 +46,7 @@ public class SmokeChartView extends View {
     private float backgroundStripeHeight = 100f;
     private float stripeHeight = 20f;
     private List<Integer> model = new ArrayList<Integer>();
-    private int limit = -1;
+    private int limit = 15;
 
     PointF originalTouch = null;
 
@@ -112,12 +113,12 @@ public class SmokeChartView extends View {
         stripePaint.setAlpha(30);
 
         limitPaint = new Paint();
-        limitPaint.setColor(Color.RED);
-        limitPaint.setStrokeWidth(3);
+        limitPaint.setColor(Color.DKGRAY);
+        limitPaint.setStrokeWidth(1);
 
         limitLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.LINEAR_TEXT_FLAG);
-        limitLabelPaint.setColor(Color.RED);
-        limitLabelPaint.setTextSize(axisCaptionTextSize);
+        limitLabelPaint.setColor(Color.DKGRAY);
+        limitLabelPaint.setTextSize(limitTextSize);
 
 
         //DEBUG
@@ -191,22 +192,24 @@ public class SmokeChartView extends View {
         int minutesTotal = Math.round((touch.x - verticalAxisPadding)/getMinuteWidth());
         int minutes = minutesTotal%60;
         int hours = minutesTotal/60;
-        String time = ((hours == 0)? "00":hours) +":"+((minutes<10)?"0"+minutes:minutes);
-        Rect timeBounds = new Rect();
-        selectionValuePaint.getTextBounds(time,0,time.length(),timeBounds);
-        float textXPosition = touch.x - timeBounds.width()/2;
+        String timeText = ((hours == 0)? "00":hours) +":"+((minutes<10)?"0"+minutes:minutes);
+        Rect timeTextBounds = new Rect();
+        Rect timeText2Bounds = new Rect();
+        selectionValuePaint.getTextBounds(timeText,0,timeText.length(),timeTextBounds);
+        selectionValuePaint.getTextBounds("W",0,1,timeText2Bounds);
+        float textXPosition = touch.x - timeTextBounds.width()/2;
         if (textXPosition < verticalAxisPadding){
             textXPosition = verticalAxisPadding;
-        } else if (textXPosition + timeBounds.width()  > getWidth()){
-            textXPosition = getWidth() - timeBounds.width() - 5;
+        } else if (textXPosition + timeTextBounds.width()  > getWidth()){
+            textXPosition = getWidth() - timeTextBounds.width() - 5;
         }
-        canvas.drawText(time,textXPosition, getHeight()-horizontalAxisPadding+timeBounds.height()*1.5f,selectionValuePaint);
+        canvas.drawText(timeText,textXPosition, getHeight()-horizontalAxisPadding +timeText2Bounds.height()*1.5f,selectionValuePaint);
 
 
         if (smokePoint != null){
             String text = smokePoint.first.toString();
-            selectionValuePaint.getTextBounds(text,0,text.length(),timeBounds);
-            canvas.drawText(text,smokePoint.second.x - stripeHeight-timeBounds.width(), smokePoint.second.y -stripeHeight, selectionValuePaint);
+            selectionValuePaint.getTextBounds(text,0,text.length(),timeTextBounds);
+            canvas.drawText(text,smokePoint.second.x - stripeHeight-timeTextBounds.width(), smokePoint.second.y -stripeHeight, selectionValuePaint);
             canvas.drawCircle(smokePoint.second.x,smokePoint.second.y,stripeHeight / 2, selectionValuePaint);
         }
     }
@@ -244,16 +247,18 @@ public class SmokeChartView extends View {
         float limitYPosition = getHeight()-horizontalAxisPadding-itemHeight*limit;
 
         Rect textBounds = new Rect();
-        String limitAsText = Integer.toString(limit);
+        String limitAsText = Integer.toString(limit)+" average";
         limitLabelPaint.getTextBounds(limitAsText, 0, limitAsText.length(),textBounds);
 
-        canvas.drawLine(verticalAxisPadding + textBounds.width() + verticalAxisTextBounds.height() * 1.5f,
+        canvas.drawLine(verticalAxisPadding,
                 limitYPosition,
                 getWidth(),
                 limitYPosition,
                 limitPaint);
 
-        canvas.drawText(limitAsText, verticalAxisPadding + verticalAxisTextBounds.height(), limitYPosition  + textBounds.width() * 0.25f, limitLabelPaint);
+        canvas.drawText(limitAsText,
+                verticalAxisPadding + 15,
+                limitYPosition - 5, limitLabelPaint);
 
 
     }
