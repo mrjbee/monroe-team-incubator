@@ -3,7 +3,6 @@ package org.monroe.team.smooker.app;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -14,11 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.monroe.team.smooker.app.common.Currency;
+import org.monroe.team.smooker.app.common.Settings;
 import org.monroe.team.smooker.app.common.SmokeQuitProgramDifficult;
 import org.monroe.team.smooker.app.common.SupportActivity;
 import org.monroe.team.smooker.app.common.SetupPage;
-import org.monroe.team.smooker.app.uc.GetGeneralDetails;
-import org.monroe.team.smooker.app.uc.UpdateGeneralDetails;
 
 import java.util.List;
 
@@ -53,6 +51,7 @@ public class WizardActivity extends SupportActivity {
         ((ViewGroup) findViewById(R.id.wizzard_content_layout)).removeAllViews();
         ((ViewGroup) findViewById(R.id.wizzard_content_layout)).addView(view);
         pageHandler.onCreateUI(this);
+        application().onSetupPageShown(requestsStack.get(requestIndex));
     }
 
     public void performBack(View v){
@@ -119,6 +118,19 @@ public class WizardActivity extends SupportActivity {
         performBack(null);
     }
 
+
+    public <Type> Type getSetting(Settings.SettingItem<Type> item){
+        return application().settings().get(item);
+    }
+
+    public <Type> String getSettingAsString(Settings.SettingItem<Type> item){
+        Type answer = application().settings().get(item);
+        return (answer == null)? "": String.valueOf(answer);
+    }
+
+    public <Type> void setSetting(Settings.SettingItem<Type> item, Type value){
+        application().settings().set(item, value);
+    }
     //===============================
 
     public abstract static class SetupPageHandler {
@@ -147,7 +159,8 @@ public class WizardActivity extends SupportActivity {
             super("Welcome",
                    "Please follow setup wizard in order to configure application. Information " +
                            "will be used in future for calculation and etc.",
-                   R.layout.welcome_setup_page);
+                   R.layout.setup_page_welcome
+            );
         }
 
     }
@@ -160,21 +173,14 @@ public class WizardActivity extends SupportActivity {
                     "Please specify how much cost you spent per smoke and how much times you smoke usually in a day (If You have a " +
                             "doubt You could choose 'detect automatically option', so application will " +
                             "follow you few days and provide average count)",
-                    R.layout.smoke_per_day_page);
+                    R.layout.setup_page_general
+            );
         }
 
         @Override
         public void onCreateUI(final WizardActivity wizardActivity) {
 
-            ((CheckBox) wizardActivity.findViewById(R.id.spd_auto_detect_check)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    wizardActivity.findViewById(R.id.spd_times_text).setEnabled(!isChecked);
-                    wizardActivity.findViewById(R.id.spd_label).setEnabled(!isChecked);
-                }
-            });
-
-            final Spinner spinner = wizardActivity.view(Spinner.class, R.id.spd_cur_spinner);
+            final Spinner spinner = wizardActivity.view(Spinner.class, R.id.gs_cur_spinner);
 
             // Create an ArrayAdapter using the string array and a default spinner layout
             ArrayAdapter<Currency> adapter = new ArrayAdapter<Currency>(wizardActivity, android.R.layout.simple_spinner_item,Currency.SUPPORTED_CURRENCIES){
@@ -194,78 +200,29 @@ public class WizardActivity extends SupportActivity {
             // Apply the adapter to the spinner
             spinner.setAdapter(adapter);
 
-
-            final GetGeneralDetails.GeneralDetailsResponse generalDetails =
-                    wizardActivity.model().execute(GetGeneralDetails.class, null);
-
-            spinner.setSelection(Currency.supportedArrayIndex(generalDetails.currency));
-            wizardActivity.view(EditText.class,R.id.spd_cost_edit).setText(Float.toString(generalDetails.costPerSmoke));
-
-            if (generalDetails.isSmokingPerDay(
-                    GetGeneralDetails.GeneralDetailsResponse.SMOKE_PER_DAY_UNDER_DETECT)) {
-                ((CheckBox) wizardActivity.findViewById(R.id.spd_auto_detect_check)).setChecked(true);
-            } else if (!generalDetails.isSmokingPerDay(
-                    GetGeneralDetails.GeneralDetailsResponse.SMOKE_PER_DAY_UNDEFINED)) {
-                wizardActivity.view(EditText.class,R.id.spd_times_text).setText(Integer.toString(generalDetails.smokePerDay));
-            }
-            wizardActivity.view(CheckBox.class,R.id.spd_recalculate_check).setVisibility(
-                    generalDetails.hasFinancialHistory?View.VISIBLE:View.INVISIBLE);
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (!generalDetails.hasFinancialHistory) return;
-                    Currency newCurrency = (Currency) spinner.getSelectedItem();
-                    Currency wasCurrency = generalDetails.currency;
-                    wizardActivity.view(CheckBox.class,R.id.spd_recalculate_check).setChecked(newCurrency!=wasCurrency);
-                    wizardActivity.view(CheckBox.class,R.id.spd_recalculate_check).setEnabled(newCurrency == wasCurrency);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {}
-            });
+            spinner.setSelection(Currency.supportedArrayIndex(
+                    Currency.byId(wizardActivity.getSetting(Settings.CURRENCY_ID))));
+            wizardActivity.view(EditText.class,R.id.gs_price_edit)
+                    .setText(wizardActivity.getSettingAsString(Settings.SMOKE_PRICE));
         }
 
         @Override
         public boolean persistsSetup(WizardActivity wizardActivity) {
-            boolean autoDetect = ((CheckBox)wizardActivity.findViewById(R.id.spd_auto_detect_check)).isChecked();
-            if (!autoDetect){
-               String text = ((TextView)wizardActivity.findViewById(R.id.spd_times_text)).getText().toString();
-               if (text.length() == 0){
-                   Toast.makeText(wizardActivity,"Please specify times per day or check 'detect automatically'",Toast.LENGTH_SHORT).show();
-                   return false;
-               }
-            }
-
-            String text = ((TextView)wizardActivity.findViewById(R.id.spd_cost_edit)).getText().toString();
+            String text = ((TextView)wizardActivity.findViewById(R.id.gs_price_edit)).getText().toString();
             if (text.trim().length() == 0){
                 Toast.makeText(wizardActivity,"Please specify smoke break cost'",Toast.LENGTH_SHORT).show();
                 return false;
             }
 
-            updateDetails(wizardActivity, autoDetect);
-            return true;
-        }
-
-        private void updateDetails(WizardActivity wizardActivity, boolean autoDetect) {
-            int smokePerDay = 0;
-            if (autoDetect){
-                smokePerDay = GetGeneralDetails.GeneralDetailsResponse.SMOKE_PER_DAY_UNDER_DETECT;
-            } else {
-                smokePerDay = Integer.parseInt(wizardActivity
-                        .view(TextView.class, R.id.spd_times_text).getText().toString());
-            }
-
             float smokeCost = Math.abs(Float.parseFloat(wizardActivity
-                    .view(TextView.class, R.id.spd_cost_edit).getText().toString()));
+                    .view(TextView.class, R.id.gs_price_edit).getText().toString()));
 
-            Spinner spinner = wizardActivity.view(Spinner.class, R.id.spd_cur_spinner);
+            Spinner spinner = wizardActivity.view(Spinner.class, R.id.gs_cur_spinner);
 
-            wizardActivity.model().execute(UpdateGeneralDetails.class,
-                    new UpdateGeneralDetails.DetailsUpdateRequest()
-                            .withSmokePerDay(smokePerDay)
-                            .withCostPerSmoke(smokeCost)
-                            .withCurrency((Currency)spinner.getSelectedItem())
-                            .withFinancialHistoryRecalculateRequest(wizardActivity.view(CheckBox.class, R.id.spd_recalculate_check).isChecked()));
+            wizardActivity.setSetting(Settings.SMOKE_PRICE,smokeCost);
+            wizardActivity.setSetting(Settings.CURRENCY_ID, ((Currency) spinner.getSelectedItem()).id);
+
+            return true;
         }
     }
 
@@ -276,14 +233,14 @@ public class WizardActivity extends SupportActivity {
             super("Quit Smoking",
                   "Please choose quit smoking program loyalty and final target. Please note that you " +
                   "would be able to change settings latter using setting menu",
-                   R.layout.quit_smoking_setup_page);
+                   R.layout.setup_page_quit_smoking
+            );
         }
 
         @Override
         public void onCreateUI(final WizardActivity wizardActivity) {
-            GetGeneralDetails.GeneralDetailsResponse generalDetails =
-                    wizardActivity.model().execute(GetGeneralDetails.class, null);
-            wizardActivity.view(EditText.class,R.id.qs_times_text).setText(String.valueOf(generalDetails.desireSmokePerDay));
+            wizardActivity.view(EditText.class,R.id.qs_start_edit).setText(wizardActivity.getSettingAsString(Settings.QUITE_START_SMOKE));
+            wizardActivity.view(EditText.class,R.id.qs_end_edit).setText(wizardActivity.getSettingAsString(Settings.QUITE_END_SMOKE));
             wizardActivity.view(SeekBar.class,R.id.qs_level_seekBar).setMax(SmokeQuitProgramDifficult.difficultCount()-1);
             wizardActivity.view(SeekBar.class,R.id.qs_level_seekBar).setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
@@ -296,13 +253,16 @@ public class WizardActivity extends SupportActivity {
                 @Override public void onStartTrackingTouch(SeekBar seekBar) {}
                 @Override public void onStopTrackingTouch(SeekBar seekBar) {}
             });
-            wizardActivity.view(SeekBar.class,R.id.qs_level_seekBar).setProgress(generalDetails.difficultLevel.toIndex());
-            updateUIByDifficultLevel(generalDetails.difficultLevel,wizardActivity);
+            wizardActivity.view(SeekBar.class,R.id.qs_level_seekBar).setProgress(wizardActivity.getSetting(Settings.QUIT_PROGRAM_INDEX));
+            updateUIByDifficultLevel(SmokeQuitProgramDifficult.levelByIndex(wizardActivity.getSetting(Settings.QUIT_PROGRAM_INDEX)),
+                    wizardActivity);
         }
 
         private void updateUIByDifficultLevel(SmokeQuitProgramDifficult difficult, WizardActivity wizardActivity) {
-            wizardActivity.view(EditText.class, R.id.qs_times_text).setEnabled(difficult.mayHaveDifferentTargetCount());
-            wizardActivity.view(TextView.class,R.id.qs_label).setEnabled(difficult.mayHaveDifferentTargetCount());
+            wizardActivity.view(EditText.class, R.id.qs_end_edit).setEnabled(difficult.mayHaveDifferentTargetCount());
+            wizardActivity.view(TextView.class,R.id.qs_end_text).setEnabled(difficult.mayHaveDifferentTargetCount());
+            wizardActivity.view(EditText.class, R.id.qs_start_edit).setEnabled(difficult.mayHaveDifferentTargetCount());
+            wizardActivity.view(TextView.class,R.id.qs_start_text).setEnabled(difficult.mayHaveDifferentTargetCount());
             String programDescription = getProgramDescription(difficult);
             wizardActivity.view(TextView.class,R.id.qs_level_label_description).setText(programDescription);
         }
@@ -322,8 +282,21 @@ public class WizardActivity extends SupportActivity {
 
         @Override
         public boolean persistsSetup(WizardActivity wizardActivity) {
+
             SmokeQuitProgramDifficult difficult = SmokeQuitProgramDifficult.levelByIndex(wizardActivity.view(SeekBar.class,R.id.qs_level_seekBar).getProgress());
-            String text = wizardActivity.view(EditText.class,R.id.qs_times_text).getText().toString();
+            Integer smokePerDay = null;
+            if (difficult.mayHaveDifferentTargetCount()) {
+                String startText = ((TextView) wizardActivity.findViewById(R.id.qs_start_edit)).getText().toString();
+                if (startText.trim().length() == 0) {
+                    Toast.makeText(wizardActivity, "Please specify your current smokes per day", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+
+                smokePerDay = Integer.parseInt(wizardActivity
+                        .view(TextView.class, R.id.qs_start_edit).getText().toString());
+            }
+
+            String text = wizardActivity.view(EditText.class,R.id.qs_end_edit).getText().toString();
             int desireSmokePerDayCount = 0;
 
             if (difficult.mayHaveDifferentTargetCount()) {
@@ -334,10 +307,9 @@ public class WizardActivity extends SupportActivity {
                 desireSmokePerDayCount = Integer.parseInt(text);
             }
 
-            wizardActivity.model().execute(UpdateGeneralDetails.class,
-                    new UpdateGeneralDetails.DetailsUpdateRequest()
-                            .withDesireSmokePerDay(desireSmokePerDayCount)
-                            .withQuitDifficultLevel(difficult));
+            wizardActivity.setSetting(Settings.QUITE_START_SMOKE, smokePerDay);
+            wizardActivity.setSetting(Settings.QUITE_END_SMOKE, desireSmokePerDayCount);
+            wizardActivity.setSetting(Settings.QUIT_PROGRAM_INDEX, difficult.toIndex());
 
             return true;
         }
@@ -348,15 +320,14 @@ public class WizardActivity extends SupportActivity {
         protected UIPageHandler() {
             super("UI Settings",
                     "Please specify which of user interface extension you would like to use",
-                    R.layout.ui_setting_setup_page);
+                    R.layout.setup_page_ui_setting);
         }
 
 
         @Override
         public void onCreateUI(final WizardActivity wizardActivity) {
-            wizardActivity.application().onUISettingSetupPageShown();
             wizardActivity.view(CheckBox.class,R.id.ui_sticky_notif_check).setChecked(
-                    wizardActivity.application().isStickyNotificationEnabled());
+                    wizardActivity.application().settings().get(Settings.ENABLED_STICKY_NOTIFICATION));
             wizardActivity.view(CheckBox.class,R.id.ui_sticky_notif_check).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

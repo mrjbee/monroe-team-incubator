@@ -22,9 +22,11 @@ public class Model {
         TransactionManager transactionManager = new TransactionManager(dbHelper);
         SharedPreferences sharedPreferences = applicationContext.getSharedPreferences("SMOOKER_Preferences", Context.MODE_PRIVATE);
         Preferences preferences = new Preferences(sharedPreferences);
+        Settings settings = new Settings(sharedPreferences);
         EventMessenger messenger = new EventMessenger(applicationContext);
         registry.registrate(TransactionManager.class, transactionManager);
         registry.registrate(Preferences.class, preferences);
+        registry.registrate(Settings.class, settings);
         registry.registrate(EventMessenger.class, messenger);
     }
 
@@ -62,7 +64,7 @@ public class Model {
     }
 
     public void onCreate() {
-        if (registry.get(Preferences.class).isStickyNotificationEnabled()) {
+        if (registry.get(Settings.class).get(Settings.ENABLED_STICKY_NOTIFICATION)) {
             startNotificationControlService();
         }
     }

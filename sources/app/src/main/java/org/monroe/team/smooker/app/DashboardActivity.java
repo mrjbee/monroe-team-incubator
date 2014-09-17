@@ -23,18 +23,16 @@ import java.util.List;
 
 public class DashboardActivity extends SupportActivity {
 
-    private static final int WIZARD_ACTIVITY_FORCE_REQUEST = 1;
-    private static final int WIZARD_ACTIVITY_REQUEST = 2;
+    static final int WIZARD_ACTIVITY_FORCE_REQUEST = 1;
+    static final int WIZARD_ACTIVITY_REQUEST = 2;
     private PopupMenu settingsMenu;
-    private boolean isQuitProgramAvailable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        if (application().isStickyNotificationEnabled()){
-            application().updateStickyNotification(true);
-        }
+        application().onDashboardCreate();
+
         view(ImageButton.class, R.id.add_smoke_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,7 +55,24 @@ public class DashboardActivity extends SupportActivity {
             }
         });
 
-        checkSetupRequired();
+        if (!checkIfSetupRequested(getIntent())){
+            checkSetupRequired();
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        checkIfSetupRequested(intent);
+    }
+
+    private boolean checkIfSetupRequested(Intent intent) {
+        if (intent != null && intent.getExtras() != null && intent.getExtras().get("PAGE_STACK")!=null){
+            Intent s = new Intent(this, WizardActivity.class);
+            s.putExtras(intent.getExtras());
+            startActivityForResult(s,WIZARD_ACTIVITY_REQUEST);
+            return true;
+        }
+        return false;
     }
 
     private void showSettingPopup() {
@@ -84,7 +99,6 @@ public class DashboardActivity extends SupportActivity {
                 }
             });
         }
-        settingsMenu.getMenu().getItem(2).setEnabled(isQuitProgramAvailable);
         settingsMenu.show();
     }
 
@@ -135,9 +149,8 @@ public class DashboardActivity extends SupportActivity {
             view(SmokeChartView.class,R.id.d_smoke_chart_view).setLimit(statistics.getAverageSmoke());
             view(TextView.class,R.id.d_smoke_average_value_text).setText(String.valueOf(statistics.getAverageSmoke()));
         }
-        isQuitProgramAvailable = exists(statistics.getAverageSmoke());
         view(TextView.class,R.id.d_smoke_average_value_text).setVisibility(exists(statistics.getAverageSmoke())?View.VISIBLE:View.INVISIBLE);
-        view(TextView.class,R.id.d_smoke_average_text).setVisibility(exists(statistics.getAverageSmoke())?View.VISIBLE:View.INVISIBLE);
+        view(TextView.class,R.id.d_smoke_average_text).setVisibility(exists(statistics.getAverageSmoke()) ? View.VISIBLE : View.INVISIBLE);
     }
 
     private boolean exists(Object value) {

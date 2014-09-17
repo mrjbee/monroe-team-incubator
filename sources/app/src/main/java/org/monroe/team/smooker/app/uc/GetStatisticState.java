@@ -1,7 +1,10 @@
 package org.monroe.team.smooker.app.uc;
 
+import org.monroe.team.smooker.app.common.EventMessenger;
+import org.monroe.team.smooker.app.common.Events;
 import org.monroe.team.smooker.app.common.Preferences;
 import org.monroe.team.smooker.app.common.Registry;
+import org.monroe.team.smooker.app.common.Settings;
 import org.monroe.team.smooker.app.db.DAO;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
 import org.monroe.team.smooker.app.uc.common.TransactionUserCase;
@@ -38,27 +41,23 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                 case SPEND_MONEY:
                     Float money = calculateSpendMoney(dao);
                     DecimalFormat df = new DecimalFormat();
-                    df.setCurrency(using(Preferences.class).getCurrency().nativeInstance);
+                    df.setCurrency(using(Settings.class).getAs(Settings.CURRENCY_ID, Settings.CONVERT_CURRENCY).nativeInstance);
                     df.setMaximumFractionDigits(2);
                     df.setMinimumFractionDigits(2);
-                    statisticState.spendMoney = df.format(money) +" "+using(Preferences.class).getCurrency().symbol;
+                    statisticState.spendMoney = df.format(money) +" "+using(Settings.class).getAs(Settings.CURRENCY_ID, Settings.CONVERT_CURRENCY).symbol;
                     break;
                 case AVERAGE_PER_DAY:
                     List<DAO.Result> results = dao.groupSmokesPerDay();
-                    int answer = GetGeneralDetails.GeneralDetailsResponse.SMOKE_PER_DAY_UNDEFINED;
+                    Integer average = null;
                     if (results.size() > 3){
                         //at least two full days
-                        answer = 0;
+                        int answer = 0;
                         for (int i=1; i<results.size()-1; i++){
                            answer+= results.get(i).get(1,Long.class);
                         }
-                        answer = Math.round(answer/(results.size()-2));
-                    } else {
-                        answer = using(Preferences.class).getSmokePerDay();
+                        average = Math.round(answer/(results.size()-2));
                     }
-                    if (answer > 0){
-                        statisticState.averageSmoke = answer;
-                    }
+                    statisticState.averageSmoke = average;
                     break;
             }
         }
@@ -66,34 +65,8 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
     }
 
     private Float calculateSpendMoney(DAO dao) {
-        List<DAO.Result> priceList = dao.getPrices();
-        if (priceList.isEmpty()) return 0f;
-
-        if (priceList.size() == 1){
-            return priceList.get(0).get(0,Float.class) * dao.getSmokesAllPeriod().size();
-        } else {
-            float answer = 0;
-            DAO.Result price;
-            DAO.Result nextPrice = null;
-
-            for (int i = 1; i < priceList.size(); i++) {
-                price = priceList.get(i-1);
-                nextPrice = priceList.get(i);
-                long count = dao.getSmokesForPeriod(
-                        i == 1 ? null : price.get(1, Date.class),
-                        nextPrice.get(1, Date.class)
-                ).size();
-                answer += price.get(0, Float.class) * count;
-            }
-
-            price = nextPrice;
-            long count = dao.getSmokesForPeriod(price.get(1, Date.class), null).size();
-            answer += price.get(0, Float.class) * count;
-            return answer;
-        }
+        return using(Settings.class).get(Settings.SMOKE_PRICE) * dao.getSmokesAllPeriod().size();
     }
-
-
 
     public static enum StatisticName{
         SMOKE_TODAY, SPEND_MONEY, AVERAGE_PER_DAY, ALL;

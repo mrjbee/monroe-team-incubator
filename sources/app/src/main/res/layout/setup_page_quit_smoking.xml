@@ -4,27 +4,46 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/qs_start_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:text="Times per day"
+        android:textSize="@dimen/text_size_normal"
+        />
+
+    <EditText
+        android:layout_width="100dip"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/qs_start_edit"
+        android:layout_alignBottom="@+id/qs_start_text"
+        android:layout_alignParentRight="true"/>
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Desire smoke brake per day"
+        android:text="Desire times per day"
         android:layout_marginLeft="10dip"
-        android:id="@+id/qs_label"
+        android:id="@+id/qs_end_text"
         android:textSize="@dimen/text_size_normal"
-        android:layout_alignBottom="@+id/qs_times_text"
+        android:layout_alignBottom="@+id/qs_end_edit"
         />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="100dip"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/qs_times_text"
-        android:layout_marginRight="20dip"
-        android:layout_marginLeft="20dip"
+        android:id="@+id/qs_end_edit"
         android:text="0"
-        android:layout_toRightOf="@+id/qs_label" />
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/qs_start_edit"
+        />
 
 
     <LinearLayout
@@ -33,7 +52,7 @@
         android:orientation="horizontal"
         android:layout_height="1px"
         android:background="@android:color/darker_gray"
-        android:layout_below="@+id/qs_label"
+        android:layout_below="@+id/qs_end_text"
         android:layout_centerHorizontal="true"
         android:layout_margin="15dp"
         >

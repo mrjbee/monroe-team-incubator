@@ -1,17 +1,23 @@
 package org.monroe.team.smooker.app;
 
+import android.app.Activity;
 import android.app.Application;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.util.Pair;
 import android.widget.Toast;
 
+import org.monroe.team.smooker.app.common.Closure;
+import org.monroe.team.smooker.app.common.Events;
 import org.monroe.team.smooker.app.common.Model;
 import org.monroe.team.smooker.app.common.Preferences;
+import org.monroe.team.smooker.app.common.Settings;
 import org.monroe.team.smooker.app.common.SetupPage;
-import org.monroe.team.smooker.app.db.DAO;
-import org.monroe.team.smooker.app.db.TransactionManager;
+import org.monroe.team.smooker.app.event.Event;
 import org.monroe.team.smooker.app.uc.AddSmoke;
-import org.monroe.team.smooker.app.uc.GetGeneralDetails;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +28,8 @@ public class SmookerApplication extends Application {
 
     public static SmookerApplication instance;
     private Model model;
+
+    private final static int QUIT_SMOKE_PROPOSAL_NOTIFICATION_ID = 333;
 
     @Override public void onCreate() {
         super.onCreate();
@@ -39,8 +47,7 @@ public class SmookerApplication extends Application {
     public void onRemoteControlNotificationCloseRequest() {
         getModel().stopNotificationControlService();
         updateStickyNotification(false);
-        if (preferences().isStickyNotificationFirstTimeClose()){
-            preferences().setStickyNotificationFirstTimeClose(false);
+        if (settings().getAndSet(Settings.FIRST_TIME_CLOSE_STICKY_NOTIFICATION, false)){
             Intent intent = new Intent(this, WizardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("PAGE_INDEX", 0);
@@ -51,9 +58,10 @@ public class SmookerApplication extends Application {
         closeSystemDialogs();
     }
 
-    private Preferences preferences() {
-        return getModel().usingService(Preferences.class);
+    final public Settings settings() {
+        return getModel().usingService(Settings.class);
     }
+
 
     public void onRemoteControlNotificationAddSmokeRequest() {
         getModel().execute(AddSmoke.class, null);
@@ -67,55 +75,78 @@ public class SmookerApplication extends Application {
         this.getApplicationContext().sendBroadcast(it);
     }
 
-    public boolean isStickyNotificationEnabled() {
-        return preferences().isStickyNotificationEnabled();
-    }
-
     public void updateStickyNotification(boolean enabled) {
         if (enabled){
             getModel().startNotificationControlService();
         } else {
             getModel().stopNotificationControlService();
         }
-        setStickyNotificationEnabled(enabled);
-    }
-
-    public void setStickyNotificationEnabled(boolean enabled) {
-        preferences().setStickyNotificationEnabled(enabled);
-    }
-
-    public void onUISettingSetupPageShown() {
-        preferences().setStickyNotificationFirstTimeClose(false);
+        settings().set(Settings.ENABLED_STICKY_NOTIFICATION, enabled);
     }
 
     public Pair<Boolean, List<SetupPage>> getRequiredSetupPages() {
         final List<SetupPage> answer = new ArrayList<SetupPage>(4);
         boolean required = false;
 
-        if(preferences().isFirstStart()){
+        if(settings().getAndSet(Settings.FIRST_TIME_ENTER_APP, false)){
             answer.add(SetupPage.WELCOME_PAGE);
-            preferences().markAsFirstStartDone();
             required = true;
         }
 
-        if (isSmokePerDayUndefined()){
+        if (!settings().has(Settings.SMOKE_PRICE)){
             answer.add(SetupPage.GENERAL);
             required = true;
         }
 
-        if (preferences().getSmokePerDay() > 0 && !preferences().isQuitProgramSuggested()){
-            preferences().markAsQuitProgramSuggested();
-            answer.add(SetupPage.QUIT_PROGRAM);
-        }
         return new Pair<Boolean, List<SetupPage>>(required,answer);
     }
-
-
-    private boolean isSmokePerDayUndefined() {
-        return preferences().getSmokePerDay() == GetGeneralDetails.GeneralDetailsResponse.SMOKE_PER_DAY_UNDEFINED;
+    public boolean firstSetupDoneTrigger() {
+        return settings().getAndSet(Settings.FIRST_TIME_AFTER_SETUP,false);
     }
 
-    public boolean firstSetupDoneTrigger() {
-        return preferences().markFirstSetup();
+    public void onSetupPageShown(SetupPage setupPage) {
+        if (setupPage == SetupPage.UI){
+            settings().set(Settings.FIRST_TIME_CLOSE_STICKY_NOTIFICATION, false);
+        } else if(setupPage == SetupPage.QUIT_PROGRAM){
+            settings().set(Settings.FIRST_TIME_QUIT_SMOKE_PAGE, false);
+            NotificationManager manager = (NotificationManager) getSystemService(Activity.NOTIFICATION_SERVICE);
+            manager.cancel(QUIT_SMOKE_PROPOSAL_NOTIFICATION_ID);
+        }
+    }
+
+    public void onDashboardCreate() {
+        if (settings().get(Settings.ENABLED_STICKY_NOTIFICATION)){
+            updateStickyNotification(true);
+        }
+        if (!settings().get(Settings.FIRST_TIME_AFTER_SETUP) && settings().get(Settings.FIRST_TIME_QUIT_SMOKE_PAGE)){
+            NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+
+            Intent dashBoardIntent = new Intent(this, DashboardActivity.class);
+            dashBoardIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            dashBoardIntent.putExtra("PAGE_INDEX", 0);
+            dashBoardIntent.putExtra("PAGE_STACK", new ArrayList<SetupPage>(Arrays.asList(SetupPage.QUIT_PROGRAM)));
+            dashBoardIntent.putExtra("FORCE", false);
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                    DashboardActivity.WIZARD_ACTIVITY_REQUEST,
+                    dashBoardIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+            Intent dropNotificationIntent = new Intent(getApplicationContext(), SmokeQuitNotificationClosedReceiver.class);
+            PendingIntent dropNotificationPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 2, dropNotificationIntent, 0);
+
+
+            builder.setAutoCancel(true)
+                    .setContentTitle("Quit Smoking")
+                    .setContentText("Choose a way to quit smoking")
+                    .setSubText("... which fits to you")
+                    .setSmallIcon(R.drawable.smooker_logo)
+                    .setDeleteIntent(dropNotificationPendingIntent)
+                    .setContentIntent(pendingIntent);
+
+            manager.notify(QUIT_SMOKE_PROPOSAL_NOTIFICATION_ID, builder.build());
+        }
     }
 }
