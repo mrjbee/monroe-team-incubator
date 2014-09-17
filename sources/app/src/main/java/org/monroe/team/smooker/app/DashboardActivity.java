@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.monroe.team.smooker.app.common.Closure;
 import org.monroe.team.smooker.app.common.Events;
@@ -16,6 +17,7 @@ import org.monroe.team.smooker.app.common.SupportActivity;
 import org.monroe.team.smooker.app.common.SetupPage;
 import org.monroe.team.smooker.app.uc.AddSmoke;
 import org.monroe.team.smooker.app.uc.GetStatisticState;
+import org.monroe.team.smooker.app.uc.RemoveSmoke;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,7 +49,7 @@ public class DashboardActivity extends SupportActivity {
             }
         });
 
-        subscribeOnEvent(Events.ADD_SMOKE,new Closure<Integer, Void>() {
+        subscribeOnEvent(Events.SMOKE_COUNT_CHANGED,new Closure<Integer, Void>() {
             @Override
             public Void execute(Integer arg) {
                 requestAndUpdateUiPerStatisticState();
@@ -83,6 +85,16 @@ public class DashboardActivity extends SupportActivity {
                 @Override
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     int id = menuItem.getItemId();
+
+                    if (id == R.id.remove_smoke_item){
+                        if (model().execute(RemoveSmoke.class,null)){
+                            Toast.makeText(DashboardActivity.this,"Last logged smoke was removed",Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(DashboardActivity.this,"There were no smoke breaks in last 30 minutes",Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
+                    }
+
                     SetupPage page = null;
                     switch (id){
                         case R.id.setting_general_item: page = SetupPage.GENERAL; break;

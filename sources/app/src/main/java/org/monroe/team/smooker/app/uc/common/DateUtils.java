@@ -28,4 +28,11 @@ public class DateUtils {
         cal.add(Calendar.DATE, daysCount);
         return cal.getTime();
     }
+
+    public static Date minutes(Date date, int minutes) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.MINUTE, minutes);
+        return cal.getTime();
+    }
 }

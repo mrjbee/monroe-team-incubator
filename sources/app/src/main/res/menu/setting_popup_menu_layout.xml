@@ -2,13 +2,14 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item android:id="@+id/remove_smoke_item"
+        android:title="Remove Last Smoke"/>
+
     <item android:id="@+id/setting_general_item"
-        android:title="General"/>
-
+        android:title="General Preference"/>
     <item android:id="@+id/setting_ui_item"
-        android:title="User interface"/>
-
+        android:title="Behaviour Settings"/>
     <item android:id="@+id/setting_quit_item"
-        android:title="Quit program"/>
+        android:title="Smoke Quit Settings"/>
 
 </menu>

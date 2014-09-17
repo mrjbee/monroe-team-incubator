@@ -43,8 +43,12 @@ public class DAO {
         }
     }
 
-    private String[] strs(String... columnNames) {
-        return columnNames;
+    private String[] strs(Object... vals) {
+        String[] strings = new String[vals.length];
+        for (int i = 0; i < vals.length; i++) {
+            strings[i]=String.valueOf(vals[i]);
+        }
+        return strings;
     }
 
     public long savePrice(float costPerSmoke, Date date) {
@@ -164,6 +168,15 @@ public class DAO {
 
     public List<Result> getSmokesAllPeriod() {
         return getSmokesForPeriod(null, null);
+    }
+
+    public void removeSmokeById(Long id) {
+        int i = db.delete(DB.SmokeEntry.TABLE_NAME,
+                "? == "+DB.SmokeEntry._ID,
+                strs(id));
+        if (i != 1){
+            throw new IllegalStateException("Supposed to remove single instance but was "+i);
+        }
     }
 
 
