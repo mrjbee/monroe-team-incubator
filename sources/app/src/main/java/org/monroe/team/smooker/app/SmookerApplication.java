@@ -103,10 +103,10 @@ public class SmookerApplication extends Application {
             required = true;
         }
 
-        if (!isSmokePerDayUndefined() && preferences().isQuitProgramSuggested()){
-           //answer.add(SetupPage.QUIT_PROGRAM);
+        if (preferences().getSmokePerDay() > 0 && !preferences().isQuitProgramSuggested()){
+            preferences().markAsQuitProgramSuggested();
+            answer.add(SetupPage.QUIT_PROGRAM);
         }
-
         return new Pair<Boolean, List<SetupPage>>(required,answer);
     }
 
