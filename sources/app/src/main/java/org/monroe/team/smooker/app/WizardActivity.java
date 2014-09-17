@@ -1,5 +1,7 @@
 package org.monroe.team.smooker.app;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.monroe.team.smooker.app.common.Currency;
+import org.monroe.team.smooker.app.common.QuitSmokeStrategyLevel;
 import org.monroe.team.smooker.app.common.Settings;
-import org.monroe.team.smooker.app.common.SmokeQuitProgramDifficult;
 import org.monroe.team.smooker.app.common.SupportActivity;
 import org.monroe.team.smooker.app.common.SetupPage;
 
@@ -23,6 +25,7 @@ import java.util.List;
 
 public class WizardActivity extends SupportActivity {
 
+    private AlertDialog.Builder TOAST_WARNING;
     private List<SetupPage> requestsStack;
     private int requestIndex=-1;
     private SetupPageHandler pageHandler;
@@ -32,6 +35,7 @@ public class WizardActivity extends SupportActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TOAST_WARNING = new AlertDialog.Builder(this);
         awareShown = false;
         setContentView(R.layout.activity_wizard);
         fetchSetupData();
@@ -75,9 +79,18 @@ public class WizardActivity extends SupportActivity {
             updateHandlerUI();
         }
     }
-
-    public void performNext(View v){
-        if (!pageHandler.persistsSetup(this)) return;
+    public void performNext(View v) {
+        performNext(true);
+    }
+    public void performNext(boolean doPageHandlerCheck){
+        if (doPageHandlerCheck){
+            AlertDialog.Builder builder = pageHandler.persistsSetup(this);
+            if (builder != null){
+                if (builder == TOAST_WARNING) return;
+                builder.show();
+                return;
+            }
+        }
         awareShown = false;
         requestIndex++;
         if (requestIndex > requestsStack.size()-1){
@@ -145,8 +158,8 @@ public class WizardActivity extends SupportActivity {
             this.layout = layout;
         }
 
-        public boolean persistsSetup(WizardActivity wizardActivity) {
-            return true;
+        public AlertDialog.Builder persistsSetup(WizardActivity wizardActivity) {
+            return null;
         }
 
         public void onCreateUI(WizardActivity wizardActivity){};
@@ -207,11 +220,11 @@ public class WizardActivity extends SupportActivity {
         }
 
         @Override
-        public boolean persistsSetup(WizardActivity wizardActivity) {
+        public AlertDialog.Builder persistsSetup(WizardActivity wizardActivity) {
             String text = ((TextView)wizardActivity.findViewById(R.id.gs_price_edit)).getText().toString();
             if (text.trim().length() == 0){
                 Toast.makeText(wizardActivity,"Please specify smoke break cost'",Toast.LENGTH_SHORT).show();
-                return false;
+                return wizardActivity.TOAST_WARNING;
             }
 
             float smokeCost = Math.abs(Float.parseFloat(wizardActivity
@@ -222,7 +235,7 @@ public class WizardActivity extends SupportActivity {
             wizardActivity.setSetting(Settings.SMOKE_PRICE,smokeCost);
             wizardActivity.setSetting(Settings.CURRENCY_ID, ((Currency) spinner.getSelectedItem()).id);
 
-            return true;
+            return null;
         }
     }
 
@@ -241,12 +254,12 @@ public class WizardActivity extends SupportActivity {
         public void onCreateUI(final WizardActivity wizardActivity) {
             wizardActivity.view(EditText.class,R.id.qs_start_edit).setText(wizardActivity.getSettingAsString(Settings.QUITE_START_SMOKE));
             wizardActivity.view(EditText.class,R.id.qs_end_edit).setText(wizardActivity.getSettingAsString(Settings.QUITE_END_SMOKE));
-            wizardActivity.view(SeekBar.class,R.id.qs_level_seekBar).setMax(SmokeQuitProgramDifficult.difficultCount()-1);
+            wizardActivity.view(SeekBar.class,R.id.qs_level_seekBar).setMax(QuitSmokeStrategyLevel.difficultCount()-1);
             wizardActivity.view(SeekBar.class,R.id.qs_level_seekBar).setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     int difficultIndex = progress;
-                    SmokeQuitProgramDifficult difficult = SmokeQuitProgramDifficult.levelByIndex(difficultIndex);
+                    QuitSmokeStrategyLevel difficult = QuitSmokeStrategyLevel.levelByIndex(difficultIndex);
                     updateUIByDifficultLevel(difficult,wizardActivity);
                 }
 
@@ -254,11 +267,11 @@ public class WizardActivity extends SupportActivity {
                 @Override public void onStopTrackingTouch(SeekBar seekBar) {}
             });
             wizardActivity.view(SeekBar.class,R.id.qs_level_seekBar).setProgress(wizardActivity.getSetting(Settings.QUIT_PROGRAM_INDEX));
-            updateUIByDifficultLevel(SmokeQuitProgramDifficult.levelByIndex(wizardActivity.getSetting(Settings.QUIT_PROGRAM_INDEX)),
+            updateUIByDifficultLevel(QuitSmokeStrategyLevel.levelByIndex(wizardActivity.getSetting(Settings.QUIT_PROGRAM_INDEX)),
                     wizardActivity);
         }
 
-        private void updateUIByDifficultLevel(SmokeQuitProgramDifficult difficult, WizardActivity wizardActivity) {
+        private void updateUIByDifficultLevel(QuitSmokeStrategyLevel difficult, WizardActivity wizardActivity) {
             wizardActivity.view(EditText.class, R.id.qs_end_edit).setEnabled(difficult.mayHaveDifferentTargetCount());
             wizardActivity.view(TextView.class,R.id.qs_end_text).setEnabled(difficult.mayHaveDifferentTargetCount());
             wizardActivity.view(EditText.class, R.id.qs_start_edit).setEnabled(difficult.mayHaveDifferentTargetCount());
@@ -267,7 +280,7 @@ public class WizardActivity extends SupportActivity {
             wizardActivity.view(TextView.class,R.id.qs_level_label_description).setText(programDescription);
         }
 
-        private String getProgramDescription(SmokeQuitProgramDifficult difficult) {
+        private String getProgramDescription(QuitSmokeStrategyLevel difficult) {
             switch (difficult){
                 case DISABLED: return "Disabled - for people who want to get smoke statistic only without quiting smoking";
                 case LOWEST: return "Lowest - most loyal program forcing you to pass up one smoke break per month";
@@ -281,20 +294,23 @@ public class WizardActivity extends SupportActivity {
         }
 
         @Override
-        public boolean persistsSetup(WizardActivity wizardActivity) {
+        public AlertDialog.Builder persistsSetup(final WizardActivity wizardActivity) {
+            //TODO: add aware of what is going on
+            final QuitSmokeStrategyLevel difficult = QuitSmokeStrategyLevel.levelByIndex(wizardActivity.view(SeekBar.class, R.id.qs_level_seekBar).getProgress());
+            final QuitSmokeStrategyLevel oldDifficult = QuitSmokeStrategyLevel.levelByIndex(wizardActivity.getSetting(Settings.QUIT_PROGRAM_INDEX));
 
-            SmokeQuitProgramDifficult difficult = SmokeQuitProgramDifficult.levelByIndex(wizardActivity.view(SeekBar.class,R.id.qs_level_seekBar).getProgress());
             Integer smokePerDay = null;
             if (difficult.mayHaveDifferentTargetCount()) {
                 String startText = ((TextView) wizardActivity.findViewById(R.id.qs_start_edit)).getText().toString();
                 if (startText.trim().length() == 0) {
                     Toast.makeText(wizardActivity, "Please specify your current smokes per day", Toast.LENGTH_SHORT).show();
-                    return false;
+                    return wizardActivity.TOAST_WARNING;
                 }
 
                 smokePerDay = Integer.parseInt(wizardActivity
                         .view(TextView.class, R.id.qs_start_edit).getText().toString());
             }
+
 
             String text = wizardActivity.view(EditText.class,R.id.qs_end_edit).getText().toString();
             int desireSmokePerDayCount = 0;
@@ -302,16 +318,48 @@ public class WizardActivity extends SupportActivity {
             if (difficult.mayHaveDifferentTargetCount()) {
                 if (text.trim().length() == 0) {
                     Toast.makeText(wizardActivity, "Please specify desire smoke per day. In case you want quit completely put zero", Toast.LENGTH_LONG).show();
-                    return false;
+                    return wizardActivity.TOAST_WARNING;
                 }
                 desireSmokePerDayCount = Integer.parseInt(text);
             }
 
-            wizardActivity.setSetting(Settings.QUITE_START_SMOKE, smokePerDay);
-            wizardActivity.setSetting(Settings.QUITE_END_SMOKE, desireSmokePerDayCount);
-            wizardActivity.setSetting(Settings.QUIT_PROGRAM_INDEX, difficult.toIndex());
+            final Integer finalSmokePerDay = smokePerDay;
+            final int finalDesireSmokePerDayCount = desireSmokePerDayCount;
 
-            return true;
+            if (!wizardActivity.getSetting(Settings.IS_SMOKE_QUIT_ACTIVE) ||
+                    (oldDifficult == difficult && !oldDifficult.mayHaveDifferentTargetCount())){
+                doActualUpdate(wizardActivity, difficult, finalSmokePerDay, finalDesireSmokePerDayCount);
+                return null;
+            }
+
+            return new AlertDialog.Builder(wizardActivity)
+                    .setTitle("Restarting quit smoke program")
+                    .setMessage("You are going to restart Quit Smoke program which you did choose before. Is that what you are really want?")
+                    .setPositiveButton("Yes, I want to restart with new details", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            doActualUpdate(wizardActivity, difficult, finalSmokePerDay, finalDesireSmokePerDayCount);
+                            wizardActivity.performNext(false);
+                        }
+                    }).setNegativeButton("No, I just want to exit", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            wizardActivity.performNext(false);
+                        }
+                    });
+        }
+
+        private void doActualUpdate(WizardActivity wizardActivity, QuitSmokeStrategyLevel difficult, Integer smokePerDay, int desireSmokePerDayCount) {
+
+            wizardActivity.setSetting(Settings.QUIT_PROGRAM_INDEX, difficult.toIndex());
+            if (difficult == QuitSmokeStrategyLevel.DISABLED){
+                wizardActivity.setSetting(Settings.IS_SMOKE_QUIT_ACTIVE, false);
+                wizardActivity.setSetting(Settings.QUITE_START_SMOKE, null);
+            } else {
+                wizardActivity.setSetting(Settings.IS_SMOKE_QUIT_ACTIVE,true);
+                wizardActivity.setSetting(Settings.QUITE_START_SMOKE, smokePerDay);
+            }
+            wizardActivity.setSetting(Settings.QUITE_END_SMOKE, desireSmokePerDayCount);
         }
     }
 

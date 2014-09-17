@@ -18,29 +18,8 @@ public class DAO {
 
     private final SQLiteDatabase db;
 
-
     public DAO(SQLiteDatabase db) {
         this.db = db;
-    }
-
-    public Result getLastPrice() {
-        Cursor cursor = db.query(
-                DB.SmokePriceEntry.TABLE_NAME,
-                strs(DB.SmokePriceEntry._ID, DB.SmokePriceEntry._SINCE_DATE, DB.SmokePriceEntry._PRICE),
-                null,
-                null,
-                null,
-                null,
-                DB.SmokePriceEntry._SINCE_DATE+" DESC",
-                "1"
-        );
-        //TODO: Replace with collect
-        try {
-            if (!cursor.moveToFirst()) return null;
-            return Result.answer().with(cursor.getLong(0),cursor.getLong(1),cursor.getFloat(2));
-        }finally {
-            cursor.close();
-        }
     }
 
     private String[] strs(Object... vals) {
@@ -49,25 +28,6 @@ public class DAO {
             strings[i]=String.valueOf(vals[i]);
         }
         return strings;
-    }
-
-    public long savePrice(float costPerSmoke, Date date) {
-
-        // Create a new map of values, where column names are the keys
-        ContentValues values = new ContentValues();
-
-        // Insert the new row, returning the primary key value of the new row
-        long id = db.insertWithOnConflict(
-                DB.SmokePriceEntry.TABLE_NAME,
-                null,
-                DB.SmokePriceEntry.asRow(costPerSmoke,date),
-                SQLiteDatabase.CONFLICT_REPLACE);
-        if (id == -1) throw new RuntimeException("Couldn`t insert.");
-        return id;
-    }
-
-    public Result getFirstLoggedSmoke() {
-        return null;
     }
 
     public long addOneSmoke() {
@@ -135,24 +95,6 @@ public class DAO {
             }
         });
     }
-
-    public List<Result> getPrices() {
-        Cursor cursor = db.query(DB.SmokePriceEntry.TABLE_NAME,
-                strs(DB.SmokePriceEntry._PRICE, DB.SmokePriceEntry._SINCE_DATE),
-                null,
-                null,
-                null,
-                null,
-                DB.SmokePriceEntry._SINCE_DATE);
-        return collect(cursor, new Closure<Cursor, Result>() {
-            @Override
-            public Result execute(Cursor arg) {
-                return Result.answer().with(arg.getFloat(0),arg.getLong(1));
-            }
-        });
-    }
-
-
 
 
     private List<Result> collect(Cursor cursor, Closure<Cursor,Result> closure) {

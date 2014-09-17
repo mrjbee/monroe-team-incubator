@@ -1,6 +1,6 @@
 package org.monroe.team.smooker.app.common;
 
-public enum SmokeQuitProgramDifficult {
+public enum QuitSmokeStrategyLevel {
 
     HARDEST , //once and forever
     HARD , // one cigarette per day
@@ -10,15 +10,15 @@ public enum SmokeQuitProgramDifficult {
     LOWEST,  // one cigarette per month
     DISABLED;
 
-    private final static  SmokeQuitProgramDifficult[] LEVELS = {DISABLED, LOWEST,LOW, SMARTEST,HARD,HARDEST};
+    private final static  QuitSmokeStrategyLevel[] LEVELS = {DISABLED, LOWEST,LOW, SMARTEST,HARD,HARDEST};
 
     public static int difficultCount(){return LEVELS.length;}
 
-    public static SmokeQuitProgramDifficult levelByIndex(int index){
+    public static QuitSmokeStrategyLevel levelByIndex(int index){
         return LEVELS[index];
     }
 
-    public static int indexByLevel(SmokeQuitProgramDifficult level){
+    public static int indexByLevel(QuitSmokeStrategyLevel level){
         for (int i = 0; i < LEVELS.length; i++) {
             if (LEVELS[i] == level) return i;
         }

@@ -13,7 +13,6 @@ import android.widget.Toast;
 import org.monroe.team.smooker.app.common.Closure;
 import org.monroe.team.smooker.app.common.Events;
 import org.monroe.team.smooker.app.common.Model;
-import org.monroe.team.smooker.app.common.Preferences;
 import org.monroe.team.smooker.app.common.Settings;
 import org.monroe.team.smooker.app.common.SetupPage;
 import org.monroe.team.smooker.app.event.Event;

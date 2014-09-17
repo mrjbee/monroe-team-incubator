@@ -80,7 +80,7 @@ public class SmokeChartView extends View {
         selectionValuePaint.setColor(Color.parseColor("#008cec"));
         selectionValuePaint.setStrokeWidth(4);
         selectionValuePaint.setTextSize(axisCaptionTextSize);
-        //selectionValuePaint.setShadowLayer(3, 4, 6, Color.LTGRAY);
+        selectionValuePaint.setShadowLayer(3, 4, 6, Color.LTGRAY);
         try {
             Method method = this.getClass().getMethod("setLayerType",int.class,Paint.class);
             if (method!=null){

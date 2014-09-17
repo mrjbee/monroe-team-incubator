@@ -19,6 +19,7 @@ public class Settings {
     public static final Flag FIRST_TIME_ENTER_APP = new Flag("FIRST_TIME_ENTER_APP", true);
     public static final Flag FIRST_TIME_AFTER_SETUP = new Flag("FIRST_TIME_AFTER_SETUP", true);
     public static final Flag FIRST_TIME_QUIT_SMOKE_PAGE = new Flag("FIRST_TIME_QUIT_SMOKE_PAGE", true);
+    public static final Flag IS_SMOKE_QUIT_ACTIVE = new Flag("IS_SMOKE_QUIT_ACTIVE", false);
 
     public static final Closure<Integer,Currency> CONVERT_CURRENCY = new Closure<Integer, Currency>() {
         @Override

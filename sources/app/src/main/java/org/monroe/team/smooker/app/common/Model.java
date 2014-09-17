@@ -21,11 +21,9 @@ public class Model {
         DBHelper dbHelper = new DBHelper(applicationContext);
         TransactionManager transactionManager = new TransactionManager(dbHelper);
         SharedPreferences sharedPreferences = applicationContext.getSharedPreferences("SMOOKER_Preferences", Context.MODE_PRIVATE);
-        Preferences preferences = new Preferences(sharedPreferences);
         Settings settings = new Settings(sharedPreferences);
         EventMessenger messenger = new EventMessenger(applicationContext);
         registry.registrate(TransactionManager.class, transactionManager);
-        registry.registrate(Preferences.class, preferences);
         registry.registrate(Settings.class, settings);
         registry.registrate(EventMessenger.class, messenger);
     }

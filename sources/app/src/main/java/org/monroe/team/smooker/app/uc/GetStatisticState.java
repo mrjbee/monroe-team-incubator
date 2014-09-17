@@ -1,8 +1,6 @@
 package org.monroe.team.smooker.app.uc;
 
-import org.monroe.team.smooker.app.common.EventMessenger;
-import org.monroe.team.smooker.app.common.Events;
-import org.monroe.team.smooker.app.common.Preferences;
+import org.monroe.team.smooker.app.common.QuitSmokeStrategyLevel;
 import org.monroe.team.smooker.app.common.Registry;
 import org.monroe.team.smooker.app.common.Settings;
 import org.monroe.team.smooker.app.db.DAO;
@@ -59,6 +57,12 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                     }
                     statisticState.averageSmoke = average;
                     break;
+                case QUIT_SMOKE:
+                    QuitSmokeStrategyLevel difficult = QuitSmokeStrategyLevel.levelByIndex(using(Settings.class).get(Settings.QUIT_PROGRAM_INDEX));
+                    if (difficult != QuitSmokeStrategyLevel.DISABLED ){
+
+                    }
+                    break;
             }
         }
         return statisticState;
@@ -69,8 +73,8 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
     }
 
     public static enum StatisticName{
-        SMOKE_TODAY, SPEND_MONEY, AVERAGE_PER_DAY, ALL;
-        private static final StatisticName[] ALL_NAMES = {SMOKE_TODAY, SPEND_MONEY, AVERAGE_PER_DAY};
+        SMOKE_TODAY, SPEND_MONEY, AVERAGE_PER_DAY, QUIT_SMOKE, ALL;
+        private static final StatisticName[] ALL_NAMES = {SMOKE_TODAY, SPEND_MONEY, AVERAGE_PER_DAY, QUIT_SMOKE};
     }
 
     public static class StatisticRequest {
