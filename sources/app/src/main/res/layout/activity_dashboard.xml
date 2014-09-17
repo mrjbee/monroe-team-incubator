@@ -19,7 +19,7 @@
 
 
             <TextView
-                android:id="@+id/d_smoke_recommended_counter_text"
+                android:id="@+id/d_smoke_average_value_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_caption_big"
@@ -29,21 +29,21 @@
                 android:textStyle="bold"
                 android:layout_above="@+id/d_smoke_today_text"
                 android:layout_alignParentLeft="true"
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:layout_marginBottom="-5dp"/>
 
             <TextView
-                android:id="@+id/d_smoke_recommended_text"
+                android:id="@+id/d_smoke_average_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/action_counter_caption_text_size"
                 android:paddingLeft="10dp"
                 android:layout_marginBottom="2dp"
-                android:text="suggested smokes"
+                android:text="average smokes per day"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
                 android:layout_above="@+id/action_layout"
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:layout_alignParentLeft="true"/>
 
 

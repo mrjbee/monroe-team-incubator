@@ -46,7 +46,7 @@ public class SmokeChartView extends View {
     private float backgroundStripeHeight = 100f;
     private float stripeHeight = 20f;
     private List<Integer> model = new ArrayList<Integer>();
-    private int limit = 15;
+    private int limit = -1;
 
     PointF originalTouch = null;
 
@@ -80,8 +80,7 @@ public class SmokeChartView extends View {
         selectionValuePaint.setColor(Color.parseColor("#008cec"));
         selectionValuePaint.setStrokeWidth(4);
         selectionValuePaint.setTextSize(axisCaptionTextSize);
-
-        selectionValuePaint.setShadowLayer(3, 4, 6, Color.LTGRAY);
+        //selectionValuePaint.setShadowLayer(3, 4, 6, Color.LTGRAY);
         try {
             Method method = this.getClass().getMethod("setLayerType",int.class,Paint.class);
             if (method!=null){
@@ -174,7 +173,6 @@ public class SmokeChartView extends View {
     }
 
     private void drawSelection(Canvas canvas, List<PointF> valuePoints) {
-
         PointF touch = new PointF(originalTouch.x,originalTouch.y);
         if (touch.x < verticalAxisPadding + 5){
             touch.set(verticalAxisPadding + 5,touch.y);
@@ -242,6 +240,24 @@ public class SmokeChartView extends View {
         canvas.drawPath(path,valuePaint);
     }
 
+    private void drawOldLimit(Canvas canvas) {
+        float itemHeight = getItemHeight();
+        float limitYPosition = getHeight()-horizontalAxisPadding-itemHeight*limit;
+
+        Rect textBounds = new Rect();
+        String limitAsText = Integer.toString(limit);
+        limitLabelPaint.getTextBounds(limitAsText, 0, limitAsText.length(),textBounds);
+
+        canvas.drawLine(verticalAxisPadding + textBounds.width() + verticalAxisTextBounds.height() * 1.5f,
+                limitYPosition,
+                getWidth(),
+                limitYPosition,
+                limitPaint);
+
+        canvas.drawText(limitAsText, verticalAxisPadding + verticalAxisTextBounds.height(), limitYPosition  + textBounds.width() * 0.25f, limitLabelPaint);
+    }
+
+
     private void drawLimit(Canvas canvas) {
         float itemHeight = getItemHeight();
         float limitYPosition = getHeight()-horizontalAxisPadding-itemHeight*limit;
@@ -259,8 +275,6 @@ public class SmokeChartView extends View {
         canvas.drawText(limitAsText,
                 verticalAxisPadding + 15,
                 limitYPosition - 5, limitLabelPaint);
-
-
     }
 
     private float drawStripes(Canvas canvas) {

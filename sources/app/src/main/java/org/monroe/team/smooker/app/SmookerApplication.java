@@ -40,6 +40,7 @@ public class SmookerApplication extends Application {
         getModel().stopNotificationControlService();
         updateStickyNotification(false);
         if (preferences().isStickyNotificationFirstTimeClose()){
+            preferences().setStickyNotificationFirstTimeClose(false);
             Intent intent = new Intent(this, WizardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("PAGE_INDEX", 0);

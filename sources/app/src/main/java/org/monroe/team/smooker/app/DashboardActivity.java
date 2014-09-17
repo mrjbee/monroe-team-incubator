@@ -32,7 +32,6 @@ public class DashboardActivity extends SupportActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        checkSetupRequired();
         if (application().isStickyNotificationEnabled()){
             application().updateStickyNotification(true);
         }
@@ -49,6 +48,16 @@ public class DashboardActivity extends SupportActivity {
                 showSettingPopup();
             }
         });
+
+        subscribeOnEvent(Events.ADD_SMOKE,new Closure<Integer, Void>() {
+            @Override
+            public Void execute(Integer arg) {
+                requestAndUpdateUiPerStatisticState();
+                return null;
+            }
+        });
+
+        checkSetupRequired();
     }
 
     private void showSettingPopup() {
@@ -82,13 +91,6 @@ public class DashboardActivity extends SupportActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        subscribeOnEvent(Events.ADD_SMOKE,new Closure<Integer, Void>() {
-            @Override
-            public Void execute(Integer arg) {
-                requestAndUpdateUiPerStatisticState();
-                return null;
-            }
-        });
     }
 
     @Override
@@ -131,7 +133,10 @@ public class DashboardActivity extends SupportActivity {
 
         if(exists(statistics.getAverageSmoke())){
             view(SmokeChartView.class,R.id.d_smoke_chart_view).setLimit(statistics.getAverageSmoke());
+            view(TextView.class,R.id.d_smoke_average_value_text).setText(String.valueOf(statistics.getAverageSmoke()));
         }
+        view(TextView.class,R.id.d_smoke_average_value_text).setVisibility(exists(statistics.getAverageSmoke())?View.VISIBLE:View.INVISIBLE);
+        view(TextView.class,R.id.d_smoke_average_text).setVisibility(exists(statistics.getAverageSmoke())?View.VISIBLE:View.INVISIBLE);
     }
 
     private boolean exists(Object value) {

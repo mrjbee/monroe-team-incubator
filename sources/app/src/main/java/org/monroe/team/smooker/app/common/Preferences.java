@@ -85,7 +85,7 @@ public class Preferences {
     }
 
     public void setStickyNotificationFirstTimeClose(boolean value) {
-        preferences.getBoolean("STICKY_NOTIFICATION_CLOSE_FIRST_TIME",value);
+        preferences.edit().putBoolean("STICKY_NOTIFICATION_CLOSE_FIRST_TIME",value).commit();
     }
 
     public boolean markFirstSetup() {
