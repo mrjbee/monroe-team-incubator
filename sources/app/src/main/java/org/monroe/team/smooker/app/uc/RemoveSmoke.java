@@ -17,6 +17,7 @@ public class RemoveSmoke extends TransactionUserCase<Void,Boolean> {
 
     @Override
     protected Boolean transactionalExecute(Void request, DAO dao) {
+        //TODO: Disallow to remove smoke if "-30" min is yesterday
         List<DAO.Result> results = dao.getSmokesForPeriod(DateUtils.minutes(DateUtils.now(), -30), DateUtils.now());
         if (results.isEmpty()){
             return false;
