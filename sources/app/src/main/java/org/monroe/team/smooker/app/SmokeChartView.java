@@ -12,10 +12,7 @@ import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,8 +25,11 @@ public class SmokeChartView extends View {
     Paint transparentPaint;
     Paint backgroundStripePaint;
     Paint stripePaint;
+
     Paint limitPaint;
     Paint limitLabelPaint;
+
+
     Paint valuePaint;
     Paint selectionValuePaint;
     Paint selectionValueTextPaint;
@@ -112,33 +112,12 @@ public class SmokeChartView extends View {
         stripePaint.setAlpha(30);
 
         limitPaint = new Paint();
-        limitPaint.setColor(Color.DKGRAY);
-        limitPaint.setStrokeWidth(1);
+        limitPaint.setColor(Color.RED);
+        limitPaint.setStrokeWidth(3);
 
         limitLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.LINEAR_TEXT_FLAG);
-        limitLabelPaint.setColor(Color.DKGRAY);
-        limitLabelPaint.setTextSize(limitTextSize);
-
-
-        //DEBUG
-        /*
-        limit = 15;
-        List<Date> model = new ArrayList<Date>(10);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-        try {
-            model.add(simpleDateFormat.parse("08:00"));
-            model.add(simpleDateFormat.parse("08:10"));
-            model.add(simpleDateFormat.parse("08:10"));
-            model.add(simpleDateFormat.parse("09:00"));
-            model.add(simpleDateFormat.parse("12:00"));
-            model.add(simpleDateFormat.parse("23:00"));
-            model.add(simpleDateFormat.parse("23:11"));
-            model.add(simpleDateFormat.parse("23:59"));
-            setModel(model);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        */
+        limitLabelPaint.setColor(Color.RED);
+        limitLabelPaint.setTextSize(axisCaptionTextSize);
     }
 
     @Override
@@ -157,9 +136,7 @@ public class SmokeChartView extends View {
         drawBackgroundStripes(canvas);
         float topPadding = drawStripes(canvas);
         drawAxis(canvas, topPadding);
-        if (limit > 0){
-            drawLimit(canvas);
-        }
+        if (limit > 0) drawLimit(canvas);
 
         List<PointF> valuePoints = new ArrayList<PointF>();
 
@@ -240,41 +217,22 @@ public class SmokeChartView extends View {
         canvas.drawPath(path,valuePaint);
     }
 
-    private void drawOldLimit(Canvas canvas) {
-        float itemHeight = getItemHeight();
-        float limitYPosition = getHeight()-horizontalAxisPadding-itemHeight*limit;
-
-        Rect textBounds = new Rect();
-        String limitAsText = Integer.toString(limit);
-        limitLabelPaint.getTextBounds(limitAsText, 0, limitAsText.length(),textBounds);
-
-        canvas.drawLine(verticalAxisPadding + textBounds.width() + verticalAxisTextBounds.height() * 1.5f,
-                limitYPosition,
-                getWidth(),
-                limitYPosition,
-                limitPaint);
-
-        canvas.drawText(limitAsText, verticalAxisPadding + verticalAxisTextBounds.height(), limitYPosition  + textBounds.width() * 0.25f, limitLabelPaint);
-    }
-
 
     private void drawLimit(Canvas canvas) {
         float itemHeight = getItemHeight();
-        float limitYPosition = getHeight()-horizontalAxisPadding-itemHeight*limit;
+        float limitYPosition = getHeight()-horizontalAxisPadding-itemHeight* limit;
+
+
 
         Rect textBounds = new Rect();
-        String limitAsText = Integer.toString(limit)+" average";
-        limitLabelPaint.getTextBounds(limitAsText, 0, limitAsText.length(),textBounds);
-
-        canvas.drawLine(verticalAxisPadding,
-                limitYPosition,
-                getWidth(),
-                limitYPosition,
-                limitPaint);
-
-        canvas.drawText(limitAsText,
-                verticalAxisPadding + 15,
-                limitYPosition - 5, limitLabelPaint);
+        String limitAsText = Integer.toString(limit);
+        limitLabelPaint.getTextBounds(limitAsText, 0, limitAsText.length(), textBounds);
+            canvas.drawLine(verticalAxisPadding + textBounds.width() + verticalAxisTextBounds.height() * 1.5f,
+                    limitYPosition,
+                    getWidth(),
+                    limitYPosition,
+                    limitPaint);
+            canvas.drawText(limitAsText, verticalAxisPadding + verticalAxisTextBounds.height(), limitYPosition + textBounds.width() * 0.25f, limitLabelPaint);
     }
 
     private float drawStripes(Canvas canvas) {
@@ -349,7 +307,7 @@ public class SmokeChartView extends View {
 
     private float getItemHeight() {
        float max = maxItemsOnABoard();
-       float maxToDraw = Math.max(limit,model.size());
+       float maxToDraw = Math.max(limit, model.size());
        if (max >= maxToDraw){
            //1 stripe : 1 smoke
            return stripeHeight;

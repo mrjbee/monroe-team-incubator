@@ -158,12 +158,18 @@ public class DashboardActivity extends SupportActivity {
         }
 
         if(exists(statistics.getAverageSmoke())){
-            view(SmokeChartView.class,R.id.d_smoke_chart_view).setLimit(statistics.getAverageSmoke());
             view(TextView.class,R.id.d_smoke_average_value_text).setText(String.valueOf(statistics.getAverageSmoke()));
         }
-        view(TextView.class,R.id.d_smoke_average_value_text).setVisibility(exists(statistics.getAverageSmoke())?View.VISIBLE:View.INVISIBLE);
-        view(TextView.class,R.id.d_smoke_average_text).setVisibility(exists(statistics.getAverageSmoke()) ? View.VISIBLE : View.INVISIBLE);
-    }
+
+        if (statistics.isRequested(GetStatisticState.StatisticName.AVERAGE_PER_DAY)) {
+            view(TextView.class, R.id.d_smoke_average_value_text).setVisibility(exists(statistics.getAverageSmoke()) ? View.VISIBLE : View.INVISIBLE);
+            view(TextView.class, R.id.d_smoke_average_text).setVisibility(exists(statistics.getAverageSmoke()) ? View.VISIBLE : View.INVISIBLE);
+        }
+
+        if (exists(statistics.getTodaySmokeLimit())){
+            view(SmokeChartView.class,R.id.d_smoke_chart_view).setLimit(statistics.getTodaySmokeLimit());
+        }
+ }
 
     private boolean exists(Object value) {
         return value != null;

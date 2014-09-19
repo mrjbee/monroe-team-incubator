@@ -15,10 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.monroe.team.smooker.app.common.Currency;
-import org.monroe.team.smooker.app.common.QuitSmokeStrategyLevel;
+import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeStrategyLevel;
 import org.monroe.team.smooker.app.common.Settings;
 import org.monroe.team.smooker.app.common.SupportActivity;
 import org.monroe.team.smooker.app.common.SetupPage;
+import org.monroe.team.smooker.app.uc.SetupQuitSmokeProgram;
 
 import java.util.List;
 
@@ -360,6 +361,11 @@ public class WizardActivity extends SupportActivity {
                 wizardActivity.setSetting(Settings.QUITE_START_SMOKE, smokePerDay);
             }
             wizardActivity.setSetting(Settings.QUITE_END_SMOKE, desireSmokePerDayCount);
+            wizardActivity.model().execute(SetupQuitSmokeProgram.class,new SetupQuitSmokeProgram.QuitSmokeProgramRequest(
+               difficult,
+               smokePerDay == null?-1:smokePerDay,
+               desireSmokePerDayCount
+            ));
         }
     }
 

@@ -1,4 +1,4 @@
-package org.monroe.team.smooker.app.common;
+package org.monroe.team.smooker.app.common.quitsmoke;
 
 import android.content.Context;
 
@@ -7,19 +7,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 
 public class QuitSmokeDataManager {
 
-    private QuitSmokeScheduleData schedule;
     private final Context context;
 
     public QuitSmokeDataManager(Context context) {
         this.context = context;
     }
 
-    private synchronized void persistSchedule(){
-
+    public synchronized void persist(QuitSmokeData schedule){
         FileOutputStream fos = null;
         ObjectOutputStream os = null;
 
@@ -47,14 +44,24 @@ public class QuitSmokeDataManager {
         }
     }
 
-    public synchronized void restoreSchedule(){
+    public synchronized boolean delete() {
+        return context.deleteFile("quitschedule.bin");
+    }
+
+
+    public synchronized boolean exists() {
+        return context.getFileStreamPath("quitschedule.bin").exists();
+    }
+
+    public synchronized QuitSmokeData restore(){
         FileInputStream fis = null;
         ObjectInputStream is = null;
         try {
             fis = context.openFileInput("quitschedule.bin");
             is = new ObjectInputStream(fis);
-            schedule = (QuitSmokeScheduleData) is.readObject();
-        } catch (Exception e) {
+            return  (QuitSmokeData) is.readObject();
+        }
+        catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
             if (is != null){
@@ -74,22 +81,4 @@ public class QuitSmokeDataManager {
         }
     }
 
-    public synchronized QuitSmokeScheduleData getSchedule(){
-        if (schedule == null){
-            restoreSchedule();
-        }
-        return schedule;
-    }
-
-    public synchronized void updateSchedule(Closure<QuitSmokeScheduleData,Void> update){
-        try {
-            update.execute(getSchedule());
-        }finally {
-            persistSchedule();
-        }
-    }
-
-    public static class QuitSmokeScheduleData implements Serializable {
-
-    }
 }

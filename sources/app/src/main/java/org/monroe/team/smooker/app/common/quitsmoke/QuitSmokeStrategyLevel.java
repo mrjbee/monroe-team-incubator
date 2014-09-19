@@ -1,6 +1,8 @@
-package org.monroe.team.smooker.app.common;
+package org.monroe.team.smooker.app.common.quitsmoke;
 
-public enum QuitSmokeStrategyLevel {
+import java.io.Serializable;
+
+public enum QuitSmokeStrategyLevel implements Serializable {
 
     HARDEST , //once and forever
     HARD , // one cigarette per day

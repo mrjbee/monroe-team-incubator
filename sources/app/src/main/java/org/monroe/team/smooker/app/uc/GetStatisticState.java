@@ -1,6 +1,8 @@
 package org.monroe.team.smooker.app.uc;
 
-import org.monroe.team.smooker.app.common.QuitSmokeStrategyLevel;
+import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgram;
+import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
+import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeStrategyLevel;
 import org.monroe.team.smooker.app.common.Registry;
 import org.monroe.team.smooker.app.common.Settings;
 import org.monroe.team.smooker.app.db.DAO;
@@ -25,6 +27,8 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
     @Override
     protected StatisticState transactionalExecute(StatisticRequest request, DAO dao) {
         StatisticState statisticState = new StatisticState();
+        statisticState.requested = request.nameSet;
+
         for (StatisticName statisticName : request.nameSet) {
             switch (statisticName){
                 case SMOKE_TODAY:
@@ -47,20 +51,21 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                 case AVERAGE_PER_DAY:
                     List<DAO.Result> results = dao.groupSmokesPerDay();
                     Integer average = null;
-                    if (results.size() > 3){
-                        //at least two full days
+                    if (results.size() > 0){
                         int answer = 0;
-                        for (int i=1; i<results.size()-1; i++){
+                        for (int i=0; i<results.size(); i++){
                            answer+= results.get(i).get(1,Long.class);
                         }
-                        average = Math.round(answer/(results.size()-2));
+                        average = Math.round(answer/(results.size()));
                     }
                     statisticState.averageSmoke = average;
                     break;
                 case QUIT_SMOKE:
-                    QuitSmokeStrategyLevel difficult = QuitSmokeStrategyLevel.levelByIndex(using(Settings.class).get(Settings.QUIT_PROGRAM_INDEX));
-                    if (difficult != QuitSmokeStrategyLevel.DISABLED ){
-
+                    QuitSmokeProgram quitSmokeProgram = using(QuitSmokeProgramManager.class).get();
+                    if (quitSmokeProgram != null) {
+                        statisticState.todaySmokeLimit = quitSmokeProgram.getTodaySmokeCount();
+                    } else {
+                        statisticState.todaySmokeLimit = -1;
                     }
                     break;
             }
@@ -105,6 +110,9 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
         List<Date> todaySmokeDates;
         String spendMoney;
         Integer averageSmoke;
+        Integer todaySmokeLimit;
+        Set<StatisticName> requested;
+
 
         public List<Date> getTodaySmokeDates() {
             return todaySmokeDates;
@@ -117,5 +125,14 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
         public Integer getAverageSmoke() {
             return averageSmoke;
         }
+
+        public Integer getTodaySmokeLimit() {
+            return todaySmokeLimit;
+        }
+
+        public boolean isRequested(StatisticName name){
+            return requested.contains(name);
+        }
+
     }
 }

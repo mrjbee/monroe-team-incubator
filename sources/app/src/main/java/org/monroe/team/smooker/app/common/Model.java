@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import org.monroe.team.smooker.app.RemoteControlNotificationService;
+import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
 import org.monroe.team.smooker.app.db.DBHelper;
 import org.monroe.team.smooker.app.db.TransactionManager;
 import org.monroe.team.smooker.app.uc.common.UserCase;
@@ -26,6 +27,7 @@ public class Model {
         registry.registrate(TransactionManager.class, transactionManager);
         registry.registrate(Settings.class, settings);
         registry.registrate(EventMessenger.class, messenger);
+        registry.registrate(QuitSmokeProgramManager.class, new QuitSmokeProgramManager(context));
     }
 
 
