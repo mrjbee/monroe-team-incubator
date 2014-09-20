@@ -2,7 +2,6 @@ package org.monroe.team.smooker.app;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Rasterizer;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
 import android.util.Pair;
@@ -29,10 +28,13 @@ import org.monroe.team.smooker.app.uc.AddSmoke;
 import org.monroe.team.smooker.app.uc.GetStatisticState;
 import org.monroe.team.smooker.app.uc.RemoveSmoke;
 import org.monroe.team.smooker.app.uc.UpdateQuitSmokeSchedule;
+import org.monroe.team.smooker.app.uc.common.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class DashboardActivity extends SupportActivity {
 
@@ -41,14 +43,18 @@ public class DashboardActivity extends SupportActivity {
     private PopupMenu settingsMenu;
     private SmokeChartView chartView;
     private ListView calendarListView;
+    private View lastTimeSmokeView;
     private ArrayAdapter<UpdateQuitSmokeSchedule.QuitSmokeSchedule.DayModel> calendarListAdapter;
+    private Timer lastSmokeTimer;
+    private long lastTimeSmokeTime = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_dashboard);
         chartView = new SmokeChartView(this);
         calendarListView = new ListView(this);
-        setContentView(R.layout.activity_dashboard);
+        lastTimeSmokeView = getLayoutInflater().inflate(R.layout.last_time_smoke_panel, (ViewGroup) findViewById(R.id.d_content_layout),false);
         application().onDashboardCreate();
 
         view(ImageButton.class, R.id.add_smoke_btn).setOnClickListener(new View.OnClickListener() {
@@ -89,7 +95,29 @@ public class DashboardActivity extends SupportActivity {
         view(RadioButton.class,R.id.d_chart_radio).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                application().settings().set(Settings.CONTENT_VIEW_CONFIG,isChecked?0:1);
+                if (isChecked){
+                    application().settings().set(Settings.CONTENT_VIEW_CONFIG,0);
+                }
+                updateContentView();
+            }
+        });
+
+        view(RadioButton.class,R.id.d_calendar_radio).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    application().settings().set(Settings.CONTENT_VIEW_CONFIG,1);
+                }
+                updateContentView();
+            }
+        });
+
+        view(RadioButton.class,R.id.d_time_radio).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    application().settings().set(Settings.CONTENT_VIEW_CONFIG,2);
+                }
                 updateContentView();
             }
         });
@@ -148,12 +176,15 @@ public class DashboardActivity extends SupportActivity {
 
     private void updateContentView() {
         view(LinearLayout.class, R.id.d_content_layout).removeAllViews();
-        if (application().settings().get(Settings.CONTENT_VIEW_CONFIG)==0){
+        if (application().settings().get(Settings.CONTENT_VIEW_CONFIG) == 0){
             view(LinearLayout.class, R.id.d_content_layout).setPadding(10,0,0,0);
             view(LinearLayout.class, R.id.d_content_layout).addView(chartView);
-        } else {
+        } else if (application().settings().get(Settings.CONTENT_VIEW_CONFIG) == 1) {
             view(LinearLayout.class, R.id.d_content_layout).setPadding(0,0,0,0);
             view(LinearLayout.class, R.id.d_content_layout).addView(calendarListView);
+        } else {
+            view(LinearLayout.class, R.id.d_content_layout).setPadding(0, 0, 0, 0);
+            view(LinearLayout.class, R.id.d_content_layout).addView(lastTimeSmokeView);
         }
     }
 
@@ -219,6 +250,49 @@ public class DashboardActivity extends SupportActivity {
         super.onResume();
         requestAndUpdateUiPerStatisticState();
         requestAndUpdateQuitSchedule();
+        lastSmokeTimer = new Timer("last_smoke_time",true);
+        lastSmokeTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (lastTimeSmokeTime < 1){
+                    ((TextView)lastTimeSmokeView.findViewById(R.id.lts_days_text)).setText("");
+                    ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_text)).setText("");
+                } else {
+                   long nowMs = DateUtils.now().getTime();
+                   long rest = nowMs - lastTimeSmokeTime;
+                   final long days = rest / (24*60*60*1000);
+                   rest = rest % (24*60*60*1000);
+                   long hours = rest / (60*60*1000);
+                   rest = rest % (60*60*1000);
+                   long minutes = rest / (60*1000);
+                   rest = rest % (60*1000);
+                   long seconds = rest / 1000;
+                   final String time =  new StringBuilder()
+                           .append((hours<10)?"0"+hours:hours)
+                           .append(":")
+                           .append((minutes<10)?"0"+minutes:minutes)
+                           .append(":")
+                           .append((seconds<10)?"0"+seconds:seconds)
+                           .toString();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((TextView) lastTimeSmokeView.findViewById(R.id.lts_days_text)).setText(days + " days ago");
+                            ((TextView) lastTimeSmokeView.findViewById(R.id.lts_time_text)).setText(time);
+                        }
+                    });
+                }
+            }
+        }, 0, 1500);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (lastSmokeTimer != null) {
+            lastSmokeTimer.cancel();
+        }
+        lastSmokeTimer = null;
     }
 
     private void requestAndUpdateQuitSchedule() {
@@ -276,10 +350,19 @@ public class DashboardActivity extends SupportActivity {
         if (statistics.isRequested(GetStatisticState.StatisticName.QUIT_SMOKE)){
             chartView.setLimit(statistics.getTodaySmokeLimit());
             if (statistics.getQuitSmokeDifficult() == QuitSmokeDifficultLevel.DISABLED){
-                view(R.id.d_content_view_group).setVisibility(View.INVISIBLE);
-                view(RadioButton.class,R.id.d_chart_radio).setChecked(true);
+                view(R.id.d_calendar_radio).setVisibility(View.INVISIBLE);
+                if (view(RadioButton.class,R.id.d_calendar_radio).isChecked()){
+                    view(RadioButton.class,R.id.d_time_radio).setChecked(true);
+                }
             } else {
-                view(R.id.d_content_view_group).setVisibility(View.VISIBLE);
+                view(R.id.d_calendar_radio).setVisibility(View.VISIBLE);
+            }
+        }
+        if (statistics.isRequested(GetStatisticState.StatisticName.LAST_LOGGED_SMOKE)){
+            if (exists(statistics.getLastSmokeDate())){
+                lastTimeSmokeTime = statistics.getLastSmokeDate().getTime();
+            } else {
+              //TODO: think if leave blank
             }
         }
  }

@@ -4,6 +4,9 @@
     <color name="background.main.highlight">#c31010</color>
     <color name="white">#FFFFFF</color>
 
+    <color name="last.time.smoke.bkg">#fafafa</color>
+    <color name="last.time.smoke.date">#333333</color>
+
     <color name="calendar.future.bkg">#ececec</color>
     <color name="calendar.future.bkg2">#fefefe</color>
     <color name="calendar.status.text">#213c64</color>

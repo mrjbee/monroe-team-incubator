@@ -70,7 +70,13 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                         statisticState.quitSmokeDifficult = QuitSmokeDifficultLevel.DISABLED;
                     }
                     break;
-            }
+                case LAST_LOGGED_SMOKE:
+                        DAO.Result result = dao.getLastLoggedSmoke();
+                        if (result != null){
+                            statisticState.lastSmokeDate = result.get(1,Date.class);
+                        }
+                    break;
+                }
         }
         return statisticState;
     }
@@ -80,8 +86,8 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
     }
 
     public static enum StatisticName{
-        SMOKE_TODAY, SPEND_MONEY, AVERAGE_PER_DAY, QUIT_SMOKE, ALL;
-        private static final StatisticName[] ALL_NAMES = {SMOKE_TODAY, SPEND_MONEY, AVERAGE_PER_DAY, QUIT_SMOKE};
+        SMOKE_TODAY, SPEND_MONEY, AVERAGE_PER_DAY, QUIT_SMOKE, LAST_LOGGED_SMOKE, ALL;
+        private static final StatisticName[] ALL_NAMES = {SMOKE_TODAY, SPEND_MONEY, AVERAGE_PER_DAY, QUIT_SMOKE, LAST_LOGGED_SMOKE};
     }
 
     public static class StatisticRequest {
@@ -115,6 +121,7 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
         Integer todaySmokeLimit;
         Set<StatisticName> requested;
         QuitSmokeDifficultLevel quitSmokeDifficult;
+        Date lastSmokeDate;
 
 
         public List<Date> getTodaySmokeDates() {
@@ -139,6 +146,10 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
 
         public QuitSmokeDifficultLevel getQuitSmokeDifficult() {
             return quitSmokeDifficult;
+        }
+
+        public Date getLastSmokeDate() {
+            return lastSmokeDate;
         }
     }
 }

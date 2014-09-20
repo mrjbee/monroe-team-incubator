@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/last.time.smoke.bkg">
+
+
+    <TextView
+        android:id="@+id/lts_time_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_marginTop="15dip"
+        android:text="00:00:12"
+        android:textColor="@color/background.main"
+        android:textSize="@dimen/text_size_caption_big"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/lts_caption_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="past after last smoke"
+        android:textSize="@dimen/text_size_normal"
+        android:layout_marginLeft="5dip"
+        android:layout_toRightOf="@+id/lts_time_text"
+        android:layout_alignBottom="@+id/lts_time_text"
+        android:textColor="@color/last.time.smoke.date"
+    />
+
+
+    <LinearLayout
+        android:id="@+id/lts_separator_layout"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="1px"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@+id/lts_caption_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"
+        />
+
+    <TextView
+        android:id="@+id/lts_days_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10 days ago"
+        android:textColor="@color/last.time.smoke.date"
+        android:textStyle="bold"
+        android:layout_below="@+id/lts_separator_layout"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/text_size_caption_biggest"
+        android:textAlignment="center"/>
+
+
+</RelativeLayout>

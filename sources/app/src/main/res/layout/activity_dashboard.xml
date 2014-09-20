@@ -144,19 +144,25 @@
             android:id="@+id/d_content_view_group"
             android:layout_toLeftOf="@+id/d_setting_btn"
             >
-         <RadioButton
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:background="@drawable/schedule_option"
-             android:button="@android:color/transparent"
-             android:id="@+id/d_calendar_radio"/>
-         <RadioButton
+             <RadioButton
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:background="@drawable/schedule_option"
+                 android:button="@android:color/transparent"
+                 android:id="@+id/d_calendar_radio"/>
+             <RadioButton
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:checked="true"
+                 android:background="@drawable/chart_option"
+                 android:button="@android:color/transparent"
+                 android:id="@+id/d_chart_radio"/>
+            <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:background="@drawable/chart_option"
                 android:button="@android:color/transparent"
-                android:id="@+id/d_chart_radio"/>
-
+                android:id="@+id/d_time_radio"/>
         </RadioGroup>
 </RelativeLayout>

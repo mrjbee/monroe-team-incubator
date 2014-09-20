@@ -121,6 +121,23 @@ public class DAO {
         }
     }
 
+    public Result getLastLoggedSmoke() {
+        Cursor cursor = db.query(DB.SmokeEntry.TABLE_NAME,
+                strs(DB.SmokeEntry._ID, DB.SmokeEntry._DATE),
+                null,
+                null,
+                null,
+                null,
+                DB.SmokeEntry._DATE + " DESC",
+                "1");
+        if (!cursor.moveToFirst()){
+            return null;
+        }
+
+        return new Result().with(cursor.getLong(0),cursor.getLong(1));
+
+    }
+
 
     public static class Result {
 
