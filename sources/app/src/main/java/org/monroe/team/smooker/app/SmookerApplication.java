@@ -1,6 +1,7 @@
 package org.monroe.team.smooker.app;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Application;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -20,6 +21,7 @@ import org.monroe.team.smooker.app.uc.AddSmoke;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -33,6 +35,7 @@ public class SmookerApplication extends Application {
     @Override public void onCreate() {
         super.onCreate();
         instance = this;
+        scheduleAlarms();
     }
 
     public synchronized Model getModel() {
@@ -147,5 +150,35 @@ public class SmookerApplication extends Application {
 
             manager.notify(QUIT_SMOKE_PROPOSAL_NOTIFICATION_ID, builder.build());
         }
+    }
+
+    public void scheduleAlarms() {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 1);
+
+        Intent intent = new Intent(this, SystemAlarmBroadcastReceiver.class);
+        intent.putExtra("TIME_TO_UPDATE_STATISTICS",true);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 401, intent, 0);
+
+        // With setInexactRepeating(), you have to use one of the AlarmManager interval
+        // constants--in this case, AlarmManager.INTERVAL_DAY.
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, alarmIntent);
+
+        calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 11);
+        calendar.set(Calendar.MINUTE, 0);
+
+        intent = new Intent(this, SystemAlarmBroadcastReceiver.class);
+        intent.putExtra("TIME_TO_NOTIFICATION_STATISTICS",true);
+        alarmIntent = PendingIntent.getBroadcast(this, 402, intent, 0);
+
+        alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, alarmIntent);
     }
 }

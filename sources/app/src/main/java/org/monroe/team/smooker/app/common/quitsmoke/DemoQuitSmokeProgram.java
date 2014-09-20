@@ -1,5 +1,7 @@
 package org.monroe.team.smooker.app.common.quitsmoke;
 
+import java.util.Date;
+
 public class DemoQuitSmokeProgram extends QuitSmokeProgram {
 
     protected DemoQuitSmokeProgram(QuitSmokeDataDriver dataDriver) {
@@ -15,4 +17,11 @@ public class DemoQuitSmokeProgram extends QuitSmokeProgram {
     public int getTodaySmokeCount() {
         return 12;
     }
+
+    @Override
+    protected boolean doLogSmokesForDate(QuitSmokeData smokeData, Date date, int smokeCount) {
+        return false;
+    }
+
+
 }

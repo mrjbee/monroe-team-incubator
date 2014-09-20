@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class QuitSmokeProgram {
 
-    private final QuitSmokeDataDriver dataDriver;
+    protected final QuitSmokeDataDriver dataDriver;
 
     protected QuitSmokeProgram(QuitSmokeDataDriver dataDriver) {
         this.dataDriver = dataDriver;
@@ -49,4 +49,29 @@ public abstract class QuitSmokeProgram {
     public List<QuitSmokeData.Stage> getStages() {
         return dataDriver.getData().stageList;
     }
+
+    final public boolean doLogSmokesForDate(final Date date, final int smokeCount){
+
+        if (date.compareTo(getStartDate()) < 0) return false;
+
+        return dataDriver.updateData(new Closure<QuitSmokeData, Boolean>() {
+            @Override
+            public Boolean execute(QuitSmokeData smokeData) {
+                boolean changed = doLogSmokesForDate(smokeData, date ,smokeCount);
+                smokeData.lastLoggedDate = date;
+                return changed;
+            }
+        });
+    }
+
+    public Date getStartDate() {
+        return getStages().get(0).date;
+    }
+
+    protected abstract boolean doLogSmokesForDate(QuitSmokeData smokeData, Date date, int smokeCount);
+
+    public Date getLastLoggedDate() {
+        return dataDriver.getData().lastLoggedDate;
+    }
+
 }

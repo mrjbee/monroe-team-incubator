@@ -9,6 +9,7 @@ public class QuitSmokeData implements Serializable {
 
     public final QuitSmokeDifficultLevel level;
     public final List<Stage> stageList = new ArrayList<Stage>();
+    public Date lastLoggedDate;
 
     public QuitSmokeData(QuitSmokeDifficultLevel level) {
            this.level = level;
@@ -17,8 +18,8 @@ public class QuitSmokeData implements Serializable {
     public static class Stage implements Serializable {
 
         public QuiteStageResult result = QuiteStageResult.IN_FUTURE;
-        public final int smokeLimit;
-        public final Date date;
+        public int smokeLimit;
+        public Date date;
 
         public Stage(int smokeLimit, Date date) {
             this.smokeLimit = smokeLimit;

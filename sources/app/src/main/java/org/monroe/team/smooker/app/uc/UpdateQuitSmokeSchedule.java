@@ -46,8 +46,6 @@ public class UpdateQuitSmokeSchedule extends TransactionUserCase<Void,UpdateQuit
                smokeSchedule.nearest = dayModel;
            }
         }
-        smokeSchedule.nearest.past = true;
-        smokeSchedule.nearest.successful = false;
         return smokeSchedule;
     }
 

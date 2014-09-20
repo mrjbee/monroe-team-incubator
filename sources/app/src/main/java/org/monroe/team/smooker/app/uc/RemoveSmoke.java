@@ -1,8 +1,11 @@
 package org.monroe.team.smooker.app.uc;
 
+import org.monroe.team.smooker.app.common.Closure;
 import org.monroe.team.smooker.app.common.EventMessenger;
 import org.monroe.team.smooker.app.common.Events;
 import org.monroe.team.smooker.app.common.Registry;
+import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgram;
+import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
 import org.monroe.team.smooker.app.db.DAO;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
 import org.monroe.team.smooker.app.uc.common.TransactionUserCase;

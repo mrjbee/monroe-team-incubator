@@ -27,9 +27,10 @@ public class QuitSmokeDataDriver {
         return quitSmokeData.level;
     }
 
-    public void updateData(Closure<QuitSmokeData, Void> updateAction) {
-        updateAction.execute(quitSmokeData);
+    public <Type>  Type updateData(Closure<QuitSmokeData, Type> updateAction) {
+        Type answer = updateAction.execute(quitSmokeData);
         dataManager.persist(quitSmokeData);
+        return answer;
     }
 
     public QuitSmokeData getData() {

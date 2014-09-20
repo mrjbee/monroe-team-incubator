@@ -2,16 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.monroe.team.smooker.app" >
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:name="org.monroe.team.smooker.app.SmookerApplication"
         android:allowBackup="true"
         android:icon="@drawable/smooker_logo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name="org.monroe.team.smooker.app.DashboardActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,20 +27,33 @@
         </activity>
 
         <service
-            android:name=".RemoteControlNotificationService"
+            android:name="org.monroe.team.smooker.app.RemoteControlNotificationService"
             android:enabled="true"
             android:exported="false" >
         </service>
 
         <receiver
-            android:name=".RemoteControlNotificationReceiver"
+            android:name="org.monroe.team.smooker.app.RemoteControlNotificationReceiver"
             android:enabled="true"
             android:exported="false" >
         </receiver>
         <receiver
-            android:name=".SmokeQuitNotificationClosedReceiver"
+            android:name="org.monroe.team.smooker.app.SmokeQuitNotificationClosedReceiver"
             android:enabled="true"
             android:exported="false" >
+        </receiver>
+        <receiver
+            android:name="org.monroe.team.smooker.app.DeviceBootBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="org.monroe.team.smooker.app.SystemAlarmBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true" >
         </receiver>
     </application>
 

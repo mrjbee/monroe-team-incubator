@@ -73,6 +73,16 @@ public class DashboardActivity extends SupportActivity {
             }
         });
 
+        subscribeOnEvent(Events.QUIT_SCHEDULE_UPDATED,new Closure<Boolean, Void>() {
+            @Override
+            public Void execute(Boolean arg) {
+                requestAndUpdateQuitSchedule();
+                return null;
+            }
+        });
+
+
+
         view(RadioButton.class,R.id.d_chart_radio).setChecked(application().settings().get(Settings.CONTENT_VIEW_CONFIG) == 0);
         view(RadioButton.class,R.id.d_calendar_radio).setChecked(application().settings().get(Settings.CONTENT_VIEW_CONFIG) == 1);
 
@@ -208,6 +218,10 @@ public class DashboardActivity extends SupportActivity {
     protected void onResume() {
         super.onResume();
         requestAndUpdateUiPerStatisticState();
+        requestAndUpdateQuitSchedule();
+    }
+
+    private void requestAndUpdateQuitSchedule() {
         UpdateQuitSmokeSchedule.QuitSmokeSchedule smokeSchedule = model().execute(UpdateQuitSmokeSchedule.class, null);
         if (smokeSchedule != null){
             calendarListAdapter.clear();

@@ -2,6 +2,8 @@ package org.monroe.team.smooker.app.common.quitsmoke;
 
 import android.content.Context;
 
+import org.monroe.team.smooker.app.common.Closure;
+
 public class QuitSmokeProgramManager {
 
     private final Context context;
@@ -58,4 +60,10 @@ public class QuitSmokeProgramManager {
         throw new IllegalStateException("Unsupported quit program "+dataDriver.getLevel());
     }
 
+    public void update(Closure<QuitSmokeProgram, Void> updateClosure) {
+        QuitSmokeProgram quitSmokeProgram = get();
+        if (quitSmokeProgram != null){
+            updateClosure.execute(quitSmokeProgram);
+        }
+    }
 }

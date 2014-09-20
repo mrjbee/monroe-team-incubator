@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import org.monroe.team.smooker.app.common.Closure;
 import org.monroe.team.smooker.app.common.Events;
@@ -64,12 +65,9 @@ public class RemoteControlNotificationService extends Service {
         notification.setText(text);
     }
 
-
-
     public class NotificationRemoteControl {
 
         private static final int NOTIFICATION_ID = 23;
-
 
         public void setText(String text){
             Notification notification = createNotification(text);
