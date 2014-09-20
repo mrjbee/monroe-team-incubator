@@ -255,8 +255,13 @@ public class DashboardActivity extends SupportActivity {
             @Override
             public void run() {
                 if (lastTimeSmokeTime < 1){
-                    ((TextView)lastTimeSmokeView.findViewById(R.id.lts_days_text)).setText("");
-                    ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_text)).setText("");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((TextView)lastTimeSmokeView.findViewById(R.id.lts_days_text)).setText("0 day ago");
+                            ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_text)).setText("00:00:00");
+                        }
+                    });
                 } else {
                    long nowMs = DateUtils.now().getTime();
                    long rest = nowMs - lastTimeSmokeTime;
