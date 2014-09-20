@@ -50,7 +50,7 @@
                 <LinearLayout
                     android:id="@+id/wizzard_separator_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/action_bar"
+                    android:layout_height="@dimen/action_bar_height"
                     android:background="@drawable/action_bar"
                     android:orientation="horizontal"
                     android:layout_alignParentBottom="true"

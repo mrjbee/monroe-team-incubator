@@ -18,17 +18,21 @@ public class QuitSmokeDataDriver {
         return answer;
     }
 
-    public static QuitSmokeDataDriver createEmpty(QuitSmokeDataManager dataManager, QuitSmokeStrategyLevel level) {
+    public static QuitSmokeDataDriver createEmpty(QuitSmokeDataManager dataManager, QuitSmokeDifficultLevel level) {
         QuitSmokeData quitSmokeData = new QuitSmokeData(level);
         return new QuitSmokeDataDriver(dataManager,quitSmokeData);
     }
 
-    public QuitSmokeStrategyLevel getLevel() {
+    public QuitSmokeDifficultLevel getLevel() {
         return quitSmokeData.level;
     }
 
     public void updateData(Closure<QuitSmokeData, Void> updateAction) {
         updateAction.execute(quitSmokeData);
         dataManager.persist(quitSmokeData);
+    }
+
+    public QuitSmokeData getData() {
+        return quitSmokeData;
     }
 }

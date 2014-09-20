@@ -22,17 +22,24 @@ public class DateUtils {
     }
 
 
-    public static Date addDays(Date date, int daysCount) {
+    public static Date mathDays(Date date, int daysCount) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.add(Calendar.DATE, daysCount);
         return cal.getTime();
     }
 
-    public static Date minutes(Date date, int minutes) {
+    public static Date mathMinutes(Date date, int minutes) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.add(Calendar.MINUTE, minutes);
+        return cal.getTime();
+    }
+
+    public static Date mathMonth(Date date, int month) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.MONTH, month);
         return cal.getTime();
     }
 }

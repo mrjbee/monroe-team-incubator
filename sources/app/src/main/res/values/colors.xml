@@ -3,4 +3,16 @@
     <color name="background.main">#fe1313</color>
     <color name="background.main.highlight">#c31010</color>
     <color name="white">#FFFFFF</color>
+
+    <color name="calendar.future.bkg">#ececec</color>
+    <color name="calendar.future.bkg2">#fefefe</color>
+    <color name="calendar.status.text">#213c64</color>
+    <color name="calendar.future.text">#163246</color>
+    <color name="calendar.past.text">#0573bf</color>
+
+    <color name="calendar.past.bkg">#0397ff</color>
+    <color name="calendar.past.failed.bkg">#008cec</color>
+    <color name="calendar.past.separator">#2b74a7</color>
+    <color name="calendar.future.separator">#555555</color>
+
 </resources>

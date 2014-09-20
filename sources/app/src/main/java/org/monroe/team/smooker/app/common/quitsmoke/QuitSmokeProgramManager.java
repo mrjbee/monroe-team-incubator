@@ -22,8 +22,10 @@ public class QuitSmokeProgramManager {
         }
     }
 
-    public synchronized QuitSmokeProgram setup(QuitSmokeStrategyLevel level, int startSmokeCount, int endSmokeCount) {
-        if (currentInstance != null) throw new IllegalStateException("There are running quit smoke program");
+    public synchronized QuitSmokeProgram setup(QuitSmokeDifficultLevel level, int startSmokeCount, int endSmokeCount) {
+        if (currentInstance != null){
+            disable();
+        }
         QuitSmokeDataDriver dataDriver = QuitSmokeDataDriver.createEmpty(dataManager, level);
         currentInstance = instanceBy(dataDriver);
         currentInstance.initialize(startSmokeCount, endSmokeCount);
@@ -46,7 +48,7 @@ public class QuitSmokeProgramManager {
 
     private QuitSmokeProgram instanceBy(QuitSmokeDataDriver dataDriver) {
         switch (dataDriver.getLevel()){
-            case LOWEST: return new DemoQuitSmokeProgram(dataDriver);
+            case LOWEST: return new OnePerMonthQuitSmokeProgram(dataDriver);
             case LOW: return new DemoQuitSmokeProgram(dataDriver);
             case SMART: return new DemoQuitSmokeProgram(dataDriver);
             case SMARTEST: return new DemoQuitSmokeProgram(dataDriver);

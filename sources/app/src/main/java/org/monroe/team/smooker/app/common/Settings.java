@@ -13,6 +13,7 @@ public class Settings {
     public static final SettingItem<Float> SMOKE_PRICE = new SettingItem<Float>("SMOKE_PRICE",Float.class,0.6f);
     public static final SettingItem<Integer> CURRENCY_ID = new SettingItem<Integer>("CURRENCY_INDEX",Integer.class,Currency.RUB.id);
     public static final SettingItem<Integer> QUIT_PROGRAM_INDEX = new SettingItem<Integer>("QUITE_PROGRAM",Integer.class, 0);
+    public static final SettingItem<Integer> CONTENT_VIEW_CONFIG = new SettingItem<Integer>("CONTENT_VIEW",Integer.class, 0);
 
     public static final Flag ENABLED_STICKY_NOTIFICATION = new Flag("STICKY_NOTIFICATION",false);
     public static final Flag FIRST_TIME_CLOSE_STICKY_NOTIFICATION = new Flag("STICKY_NOTIFICATION_FIRST_CLOSE", true);

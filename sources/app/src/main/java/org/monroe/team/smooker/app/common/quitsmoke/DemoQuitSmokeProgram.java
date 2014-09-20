@@ -10,4 +10,9 @@ public class DemoQuitSmokeProgram extends QuitSmokeProgram {
     protected void doInitialize(QuitSmokeData smokeData, int startSmokeCount, int endSmokeCount) {
         //do nothing here yet
     }
+
+    @Override
+    public int getTodaySmokeCount() {
+        return 12;
+    }
 }

@@ -1,8 +1,8 @@
 package org.monroe.team.smooker.app.uc;
 
+import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgram;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
-import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeStrategyLevel;
 import org.monroe.team.smooker.app.common.Registry;
 import org.monroe.team.smooker.app.common.Settings;
 import org.monroe.team.smooker.app.db.DAO;
@@ -33,7 +33,7 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
             switch (statisticName){
                 case SMOKE_TODAY:
                     List<DAO.Result> todaySmokeDaoList = dao.getSmokesForPeriod(DateUtils.dateOnly(DateUtils.now()),
-                            DateUtils.dateOnly(DateUtils.addDays(DateUtils.now(), 1)));
+                            DateUtils.dateOnly(DateUtils.mathDays(DateUtils.now(), 1)));
                     statisticState.todaySmokeDates = new ArrayList<Date>(todaySmokeDaoList.size());
                     for (int i = 0; i < todaySmokeDaoList.size() ; i++) {
                         statisticState.todaySmokeDates.add(todaySmokeDaoList.get(i).get(1, Date.class));
@@ -64,8 +64,10 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                     QuitSmokeProgram quitSmokeProgram = using(QuitSmokeProgramManager.class).get();
                     if (quitSmokeProgram != null) {
                         statisticState.todaySmokeLimit = quitSmokeProgram.getTodaySmokeCount();
+                        statisticState.quitSmokeDifficult = quitSmokeProgram.getLevel();
                     } else {
                         statisticState.todaySmokeLimit = -1;
+                        statisticState.quitSmokeDifficult = QuitSmokeDifficultLevel.DISABLED;
                     }
                     break;
             }
@@ -112,6 +114,7 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
         Integer averageSmoke;
         Integer todaySmokeLimit;
         Set<StatisticName> requested;
+        QuitSmokeDifficultLevel quitSmokeDifficult;
 
 
         public List<Date> getTodaySmokeDates() {
@@ -134,5 +137,8 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
             return requested.contains(name);
         }
 
+        public QuitSmokeDifficultLevel getQuitSmokeDifficult() {
+            return quitSmokeDifficult;
+        }
     }
 }
