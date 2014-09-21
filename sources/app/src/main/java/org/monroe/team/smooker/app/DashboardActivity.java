@@ -355,7 +355,7 @@ public class DashboardActivity extends SupportActivity {
         if (statistics.isRequested(GetStatisticState.StatisticName.QUIT_SMOKE)){
             chartView.setLimit(statistics.getTodaySmokeLimit());
             if (statistics.getQuitSmokeDifficult() == QuitSmokeDifficultLevel.DISABLED){
-                view(R.id.d_calendar_radio).setVisibility(View.INVISIBLE);
+                view(R.id.d_calendar_radio).setVisibility(View.GONE);
                 if (view(RadioButton.class,R.id.d_calendar_radio).isChecked()){
                     view(RadioButton.class,R.id.d_time_radio).setChecked(true);
                 }

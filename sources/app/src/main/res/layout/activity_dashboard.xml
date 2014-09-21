@@ -39,7 +39,7 @@
                 android:text="12"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
-                android:layout_above="@+id/d_smoke_today_text"
+                android:layout_above="@+id/d_smoke_average_text"
                 android:layout_alignParentLeft="true"
                 android:visibility="visible"
                 android:layout_marginBottom="-5dp"/>
@@ -83,9 +83,40 @@
                 android:text="today smokes"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
-                android:layout_above="@+id/action_layout"
+                android:layout_above="@+id/d_content_view_group"
                 android:layout_alignParentRight="true"/>
 
+
+            <RadioGroup
+                android:layout_marginTop="0dp"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_above="@+id/action_layout"
+                android:layout_alignParentRight="true"
+                android:id="@+id/d_content_view_group">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/schedule_option"
+                    android:button="@android:color/transparent"
+                    android:id="@+id/d_calendar_radio"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:background="@drawable/chart_option"
+                    android:button="@android:color/transparent"
+                    android:id="@+id/d_chart_radio"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:background="@drawable/time_option"
+                    android:button="@android:color/transparent"
+                    android:id="@+id/d_time_radio"/>
+            </RadioGroup>
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="horizontal"
@@ -94,12 +125,13 @@
             android:layout_below="@id/logo_image"
             android:gravity="bottom"
             android:id="@+id/action_layout">
+
             <TextView
                 android:id="@+id/d_spend_money_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/action_counter_caption_text_size"
-                android:text=" spend money"
+                android:text=" spend"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"/>
             <TextView
@@ -135,34 +167,5 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"/>
 
-        <RadioGroup
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/d_content_view_group"
-            android:layout_toLeftOf="@+id/d_setting_btn"
-            >
-             <RadioButton
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:background="@drawable/schedule_option"
-                 android:button="@android:color/transparent"
-                 android:id="@+id/d_calendar_radio"/>
-             <RadioButton
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:checked="true"
-                 android:background="@drawable/chart_option"
-                 android:button="@android:color/transparent"
-                 android:id="@+id/d_chart_radio"/>
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:background="@drawable/chart_option"
-                android:button="@android:color/transparent"
-                android:id="@+id/d_time_radio"/>
-        </RadioGroup>
+
 </RelativeLayout>
