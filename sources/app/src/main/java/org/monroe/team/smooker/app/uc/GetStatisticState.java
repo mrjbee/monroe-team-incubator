@@ -39,6 +39,17 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                         statisticState.todaySmokeDates.add(todaySmokeDaoList.get(i).get(1, Date.class));
                     }
                     statisticState.todaySmokeDates = Collections.unmodifiableList(statisticState.todaySmokeDates);
+
+                    List<DAO.Result> results = dao.groupSmokesPerDay();
+                    Integer average = null;
+                    if (results.size() > 0){
+                        int answer = 0;
+                        for (int i=0; i<results.size(); i++){
+                            answer+= results.get(i).get(1,Long.class);
+                        }
+                        average = Math.round(answer/(results.size()));
+                    }
+                    statisticState.averageSmoke = average;
                     break;
                 case SPEND_MONEY:
                     Float money = calculateSpendMoney(dao);
@@ -47,18 +58,6 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                     df.setMaximumFractionDigits(2);
                     df.setMinimumFractionDigits(2);
                     statisticState.spendMoney = df.format(money) +" "+using(Settings.class).getAs(Settings.CURRENCY_ID, Settings.CONVERT_CURRENCY).symbol;
-                    break;
-                case AVERAGE_PER_DAY:
-                    List<DAO.Result> results = dao.groupSmokesPerDay();
-                    Integer average = null;
-                    if (results.size() > 0){
-                        int answer = 0;
-                        for (int i=0; i<results.size(); i++){
-                           answer+= results.get(i).get(1,Long.class);
-                        }
-                        average = Math.round(answer/(results.size()));
-                    }
-                    statisticState.averageSmoke = average;
                     break;
                 case QUIT_SMOKE:
                     QuitSmokeProgram quitSmokeProgram = using(QuitSmokeProgramManager.class).get();
@@ -86,8 +85,8 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
     }
 
     public static enum StatisticName{
-        SMOKE_TODAY, SPEND_MONEY, AVERAGE_PER_DAY, QUIT_SMOKE, LAST_LOGGED_SMOKE, ALL;
-        private static final StatisticName[] ALL_NAMES = {SMOKE_TODAY, SPEND_MONEY, AVERAGE_PER_DAY, QUIT_SMOKE, LAST_LOGGED_SMOKE};
+        SMOKE_TODAY, SPEND_MONEY, QUIT_SMOKE, LAST_LOGGED_SMOKE, ALL;
+        private static final StatisticName[] ALL_NAMES = {SMOKE_TODAY, SPEND_MONEY, QUIT_SMOKE, LAST_LOGGED_SMOKE};
     }
 
     public static class StatisticRequest {

@@ -336,20 +336,13 @@ public class DashboardActivity extends SupportActivity {
 
     private void updateUiPerStatistic(GetStatisticState.StatisticState statistics) {
         if (exists(statistics.getTodaySmokeDates())){
-            view(TextView.class,R.id.d_smoke_today_counter_text).setText(Integer.toString(statistics.getTodaySmokeDates().size()));
+            view(TextView.class,R.id.d_smoke_today_counter_text).setText(
+                    Integer.toString(statistics.getTodaySmokeDates().size())+"/"+
+                            Integer.toString(statistics.getAverageSmoke()));
             chartView.setModel(statistics.getTodaySmokeDates());
         }
         if (exists(statistics.getSpendMoney())){
             view(TextView.class,R.id.d_spend_money_counter_text).setText(statistics.getSpendMoney());
-        }
-
-        if(exists(statistics.getAverageSmoke())){
-            view(TextView.class,R.id.d_smoke_average_value_text).setText(String.valueOf(statistics.getAverageSmoke()));
-        }
-
-        if (statistics.isRequested(GetStatisticState.StatisticName.AVERAGE_PER_DAY)) {
-            view(TextView.class, R.id.d_smoke_average_value_text).setVisibility(exists(statistics.getAverageSmoke()) ? View.VISIBLE : View.INVISIBLE);
-            view(TextView.class, R.id.d_smoke_average_text).setVisibility(exists(statistics.getAverageSmoke()) ? View.VISIBLE : View.INVISIBLE);
         }
 
         if (statistics.isRequested(GetStatisticState.StatisticName.QUIT_SMOKE)){
