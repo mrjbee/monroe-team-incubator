@@ -14,9 +14,7 @@
         android:orientation="vertical"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
-        android:layout_below="@+id/d_logo_layout">
-
-    </LinearLayout>
+        android:layout_below="@+id/d_logo_layout"/>
 
         <RelativeLayout
             android:id="@+id/d_logo_layout"
