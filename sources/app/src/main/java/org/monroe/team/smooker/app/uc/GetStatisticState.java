@@ -41,7 +41,7 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                     statisticState.todaySmokeDates = Collections.unmodifiableList(statisticState.todaySmokeDates);
 
                     List<DAO.Result> results = dao.groupSmokesPerDay();
-                    Integer average = null;
+                    Integer average = 0;
                     if (results.size() > 0){
                         int answer = 0;
                         for (int i=0; i<results.size(); i++){

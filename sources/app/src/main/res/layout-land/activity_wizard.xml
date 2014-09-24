@@ -1,0 +1,93 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="org.monroe.team.smooker.app.WizardActivity">
+
+        <RelativeLayout
+            android:id="@+id/wizzard_separator_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/action_bar"
+            android:layout_alignParentTop="true">
+
+            <TextView
+                android:id="@+id/wizzard_description_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                />
+
+            <ImageView
+                android:id="@+id/logo_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/smooker_logo"
+                android:layout_margin="5pt"
+                />
+
+            <TextView
+                android:id="@+id/wizzard_caption_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User Preference"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_normal_smalles"
+                android:layout_marginTop="5dp"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/logo_image"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                    android:id="@+id/wizzard_setting_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Settings"
+                    android:layout_marginLeft="5pt"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_caption"
+                    android:layout_below="@+id/wizzard_caption_label"
+                    android:layout_toRightOf="@+id/logo_image"
+                    android:textStyle="bold"
+                />
+
+        </RelativeLayout>
+
+        <ImageButton
+            android:id="@+id/wizzard_next_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/next_button"
+            android:onClick="performNext"
+            />
+
+        <ImageButton
+            android:id="@+id/wizard_back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:layout_toLeftOf="@+id/wizzard_next_btn"
+            android:layout_alignBottom="@+id/wizzard_separator_layout"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/back_buttton"
+            android:onClick="performBack"
+            />
+
+    <LinearLayout
+        android:id="@+id/wizzard_content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_below="@+id/wizzard_separator_layout"
+        android:animateLayoutChanges="true"
+        />
+
+</RelativeLayout>
