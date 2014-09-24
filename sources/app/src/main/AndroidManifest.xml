@@ -22,7 +22,7 @@
         </activity>
         <activity
             android:name="org.monroe.team.smooker.app.WizardActivity"
-            android:label="@string/title_activity_wizzard">
+            android:label="@string/title_activity_wizzard" >
         </activity>
 
         <service
@@ -53,6 +53,15 @@
             android:name="org.monroe.team.smooker.app.SystemAlarmBroadcastReceiver"
             android:enabled="true"
             android:exported="true" >
+        </receiver>
+        <receiver android:name="org.monroe.team.smooker.app.CalendarWidget" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/calendar_widget_info" />
         </receiver>
     </application>
 
