@@ -14,6 +14,7 @@ import android.widget.Toast;
 import org.monroe.team.smooker.app.common.Model;
 import org.monroe.team.smooker.app.common.Settings;
 import org.monroe.team.smooker.app.common.SetupPage;
+import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
 import org.monroe.team.smooker.app.uc.AddSmoke;
 import org.monroe.team.smooker.app.uc.GetStatisticState;
 import org.monroe.team.smooker.app.uc.UpdateQuitSmokeSchedule;
@@ -33,6 +34,8 @@ public class SmookerApplication extends Application {
     private Model model;
 
     private final static int QUIT_SMOKE_PROPOSAL_NOTIFICATION_ID = 333;
+    private final static int QUIT_SMOKE_UPDATE_NOTIFICATION = 335;
+    private final static int STATISTIC_UPDATE_NOTIFICATION = 336;
 
     @Override public void onCreate() {
         super.onCreate();
@@ -229,6 +232,40 @@ public class SmookerApplication extends Application {
                     future.getText(),
                     "New day limit"
             );
+        }
+    }
+
+    public void doMorningNotification() {
+        if (settings().get(Settings.ENABLED_STATISTIC_NOTIFICATION)){
+            GetStatisticState.StatisticState state =  getModel().execute(GetStatisticState.class, new GetStatisticState.StatisticRequest().with(
+                    GetStatisticState.StatisticName.QUIT_SMOKE,
+                    GetStatisticState.StatisticName.SMOKE_YESTERDAY,
+                    GetStatisticState.StatisticName.SMOKE_TODAY));
+
+            NotificationManager manager = (NotificationManager) getSystemService(Activity.NOTIFICATION_SERVICE);
+
+            if (state.getQuitSmokeDifficult() != QuitSmokeDifficultLevel.DISABLED && state.getSmokeLimitChangedToday()){
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+                builder.setAutoCancel(true)
+                        .setTicker("Smoke limit decreased")
+                        .setContentTitle("Quit Smoking")
+                        .setContentText("Smoke limit decreased")
+                        .setSubText("New smoke limit "+state.getTodaySmokeLimit()+" smokes per day")
+                        .setSmallIcon(R.drawable.smooker_logo)
+                        .setContentIntent(DashboardActivity.openDashboard(this));
+                manager.notify(QUIT_SMOKE_UPDATE_NOTIFICATION, builder.build());
+            }
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+            builder.setAutoCancel(true)
+                    .setTicker("Smoke statistic")
+                    .setContentTitle("Smoke statistic")
+                    .setContentText("Yesterday smokes "+state.getYesterdaySmokeDates().size()+" . Average per day "+ state.getAverageSmoke())
+                    .setSubText((state.getQuitSmokeDifficult() != QuitSmokeDifficultLevel.DISABLED)?"Today smoke limit  "+state.getTodaySmokeLimit():null)
+                    .setSmallIcon(R.drawable.smooker_logo)
+                    .setContentIntent(DashboardActivity.openDashboard(this));
+            manager.notify(STATISTIC_UPDATE_NOTIFICATION, builder.build());
+
         }
     }
 }

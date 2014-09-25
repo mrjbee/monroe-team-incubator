@@ -14,13 +14,15 @@ public class SystemAlarmBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
         if (intent.getBooleanExtra("TIME_TO_UPDATE_STATISTICS",false)){
             SmookerApplication.instance.getModel().execute(OverNightUpdate.class,null);
         }
+
         if (intent.getBooleanExtra("TIME_TO_NOTIFICATION_STATISTICS",false)){
-            //TODO: calculate and fire smoke today
-            //TODO: re calculate quit smoke schedule
+            SmookerApplication.instance.doMorningNotification();
         }
+
         if (intent.getBooleanExtra("TIME_TO_UPDATE_CALENDAR_WIDGET",false)){
              Event.send(context,Events.QUIT_SCHEDULE_REFRESH,true);
         }

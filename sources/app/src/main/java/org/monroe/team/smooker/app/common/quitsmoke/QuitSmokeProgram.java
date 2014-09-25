@@ -27,7 +27,7 @@ public abstract class QuitSmokeProgram {
     protected abstract void doInitialize(QuitSmokeData smokeData, int startSmokeCount, int endSmokeCount);
 
     public int getTodaySmokeCount() {
-        QuitSmokeData.Stage stage = getStageForDay(DateUtils.now());
+        QuitSmokeData.Stage stage = getStageForDay(DateUtils.dateOnly(DateUtils.now()));
         if (stage == null){
             stage = getStageBeforeDay(DateUtils.now());
         }
@@ -114,4 +114,7 @@ public abstract class QuitSmokeProgram {
         return dataDriver.getData().lastLoggedDate;
     }
 
+    public boolean isChangedToday() {
+        return getStageForDay(DateUtils.dateOnly(DateUtils.now())) != null;
+    }
 }

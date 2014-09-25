@@ -31,6 +31,18 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
 
         for (StatisticName statisticName : request.nameSet) {
             switch (statisticName){
+                case SMOKE_YESTERDAY:
+
+                    List<DAO.Result> smokeDaoList = dao.getSmokesForPeriod(
+                                    DateUtils.dateOnly(DateUtils.mathDays(DateUtils.now(), -1)),
+                                    DateUtils.dateOnly(DateUtils.now())
+                                    );
+                    statisticState.yesterdaySmokeDates = new ArrayList<Date>(smokeDaoList.size());
+                    for (int i = 0; i < smokeDaoList.size() ; i++) {
+                        statisticState.yesterdaySmokeDates.add(smokeDaoList.get(i).get(1, Date.class));
+                    }
+                    statisticState.yesterdaySmokeDates = Collections.unmodifiableList(statisticState.yesterdaySmokeDates);
+                break;
                 case SMOKE_TODAY:
                     List<DAO.Result> todaySmokeDaoList = dao.getSmokesForPeriod(DateUtils.dateOnly(DateUtils.now()),
                             DateUtils.dateOnly(DateUtils.mathDays(DateUtils.now(), 1)));
@@ -42,9 +54,9 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
 
                     List<DAO.Result> results = dao.groupSmokesPerDay();
                     Integer average = 0;
-                    if (results.size() > 0){
+                    if (results.size() > 1){
                         int answer = 0;
-                        for (int i=0; i<results.size(); i++){
+                        for (int i=0; i<results.size()-1; i++){
                             answer+= results.get(i).get(1,Long.class);
                         }
                         average = Math.round(answer/(results.size()));
@@ -63,7 +75,9 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                     QuitSmokeProgram quitSmokeProgram = using(QuitSmokeProgramManager.class).get();
                     if (quitSmokeProgram != null) {
                         statisticState.todaySmokeLimit = quitSmokeProgram.getTodaySmokeCount();
+                        statisticState.smokeLimitChangedToday = quitSmokeProgram.isChangedToday();
                         statisticState.quitSmokeDifficult = quitSmokeProgram.getLevel();
+
                     } else {
                         statisticState.todaySmokeLimit = -1;
                         statisticState.quitSmokeDifficult = QuitSmokeDifficultLevel.DISABLED;
@@ -87,7 +101,7 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
     }
 
     public static enum StatisticName{
-        SMOKE_TODAY, SPEND_MONEY, QUIT_SMOKE, LAST_LOGGED_SMOKE, ALL;
+        SMOKE_TODAY, SMOKE_YESTERDAY, SPEND_MONEY, QUIT_SMOKE, LAST_LOGGED_SMOKE, ALL;
         private static final StatisticName[] ALL_NAMES = {SMOKE_TODAY, SPEND_MONEY, QUIT_SMOKE, LAST_LOGGED_SMOKE};
     }
 
@@ -117,13 +131,23 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
     public static class StatisticState {
 
         List<Date> todaySmokeDates;
+        List<Date> yesterdaySmokeDates;
         String spendMoney;
         Integer averageSmoke;
         Integer todaySmokeLimit;
         Set<StatisticName> requested;
         QuitSmokeDifficultLevel quitSmokeDifficult;
         Date lastSmokeDate;
+        Boolean smokeLimitChangedToday;
 
+
+        public List<Date> getYesterdaySmokeDates() {
+            return yesterdaySmokeDates;
+        }
+
+        public Boolean getSmokeLimitChangedToday() {
+            return smokeLimitChangedToday;
+        }
 
         public List<Date> getTodaySmokeDates() {
             return todaySmokeDates;

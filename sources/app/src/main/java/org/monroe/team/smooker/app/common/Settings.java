@@ -19,6 +19,8 @@ public class Settings {
 
 
     public static final Flag ENABLED_STICKY_NOTIFICATION = new Flag("STICKY_NOTIFICATION",false);
+    public static final Flag ENABLED_STATISTIC_NOTIFICATION = new Flag("STATISTIC_NOTIFICATION",false);
+
     public static final Flag FIRST_TIME_CLOSE_STICKY_NOTIFICATION = new Flag("STICKY_NOTIFICATION_FIRST_CLOSE", true);
     public static final Flag FIRST_TIME_ENTER_APP = new Flag("FIRST_TIME_ENTER_APP", true);
     public static final Flag FIRST_TIME_AFTER_SETUP = new Flag("FIRST_TIME_AFTER_SETUP", true);

@@ -28,6 +28,7 @@ import org.monroe.team.smooker.app.common.SetupPage;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
 import org.monroe.team.smooker.app.uc.AddSmoke;
 import org.monroe.team.smooker.app.uc.GetStatisticState;
+import org.monroe.team.smooker.app.uc.OverNightUpdate;
 import org.monroe.team.smooker.app.uc.RemoveSmoke;
 import org.monroe.team.smooker.app.uc.UpdateQuitSmokeSchedule;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
@@ -138,6 +139,9 @@ public class DashboardActivity extends SupportActivity {
                 ((TextView)convertView.findViewById(R.id.cal_text)).setText(dayModel.getText());
 
                 if (!dayModel.isPast()){
+                    if (dayModel.isToday()){
+                        ((TextView)convertView.findViewById(R.id.cal_state_text)).setText("TODAY");
+                    }
                     if(position % 2 == 0) {
                         convertView.setBackgroundColor(getResources().getColor(R.color.calendar_future_bkg));
                     }else {
@@ -174,6 +178,9 @@ public class DashboardActivity extends SupportActivity {
         if (!checkIfSetupRequested(getIntent())){
             checkSetupRequired();
         }
+
+        SmookerApplication.instance.getModel().execute(OverNightUpdate.class,null);
+
     }
 
 
@@ -393,6 +400,7 @@ public class DashboardActivity extends SupportActivity {
                 }
                 if (application().firstSetupDoneTrigger()){
                     application().updateStickyNotification(true);
+                    application().settings().set(Settings.ENABLED_STATISTIC_NOTIFICATION,true);
                 }
                 checkSetupRequired();
                 break;
