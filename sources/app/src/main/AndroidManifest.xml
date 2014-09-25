@@ -68,6 +68,10 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
+            <intent-filter>
+                <action android:name="org.monroe.team.smooker.app.event.SMOKE_COUNT_CHANGED"/>
+            </intent-filter>
+
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/smoke_counter_widget_info" />

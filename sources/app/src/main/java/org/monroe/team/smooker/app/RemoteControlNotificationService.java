@@ -80,13 +80,8 @@ public class RemoteControlNotificationService extends Service {
             // Using RemoteViews to bind custom layouts into Notification
             RemoteViews remoteViews = new RemoteViews(getPackageName(),
                     R.layout.remote_controll_notification);
+            PendingIntent pIntent = DashboardActivity.openDashboard(getApplicationContext());
 
-            // Open NotificationView Class on Notification Click
-            Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-            // Open NotificationView.java Activity
-            PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext())
                     // Set Icon
@@ -98,8 +93,7 @@ public class RemoteControlNotificationService extends Service {
 
             remoteViews.setTextViewText(R.id.cn_title_text,text);
 
-            Intent addActionIntent = new Intent(getApplicationContext(), RemoteControlNotificationReceiver.class);
-            PendingIntent addBtnIntent = PendingIntent.getBroadcast(getApplicationContext(), 2, addActionIntent, 0);
+            PendingIntent addBtnIntent = RemoteControlNotificationReceiver.createAddSmokeIntent(getApplicationContext());
 
             Intent closeActionIntent = new Intent(getApplicationContext(), RemoteControlNotificationReceiver.class);
             closeActionIntent.putExtra("CLOSE",true);
@@ -110,5 +104,6 @@ public class RemoteControlNotificationService extends Service {
 
             return builder.build();
         }
+
     }
 }

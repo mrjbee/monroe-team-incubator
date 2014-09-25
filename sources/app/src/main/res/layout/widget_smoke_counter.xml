@@ -13,7 +13,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="12"
-            android:textAlignment="center"
             android:textStyle="bold"
             android:layout_centerInParent="true"
             android:textColor="@color/white"
@@ -22,13 +21,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ws_count_text"
-            android:text="details"
+            android:text="today smokes"
             android:layout_centerHorizontal="true"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_widget_details"/>
     </RelativeLayout>
 
     <ImageButton
+        android:id="@+id/ws_add_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/ws_add_cigareta_btn"/>

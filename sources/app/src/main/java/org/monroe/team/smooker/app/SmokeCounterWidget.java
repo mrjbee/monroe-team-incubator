@@ -2,14 +2,33 @@ package org.monroe.team.smooker.app;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.widget.RemoteViews;
+
+import org.monroe.team.smooker.app.common.Closure;
+import org.monroe.team.smooker.app.common.Events;
+import org.monroe.team.smooker.app.event.Event;
+import org.monroe.team.smooker.app.uc.GetStatisticState;
 
 
 /**
  * Implementation of App Widget functionality.
  */
 public class SmokeCounterWidget extends AppWidgetProvider {
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        if (Events.SMOKE_COUNT_CHANGED.getAction().equals(intent.getAction())) {
+            int smokeCount = Events.SMOKE_COUNT_CHANGED.extractValue(intent);
+            RemoteViews views = createRemoteView(context,smokeCount);
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            appWidgetManager.updateAppWidget(new ComponentName(context,SmokeCounterWidget.class),views);
+        }
+        super.onReceive(context, intent);
+    }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -20,26 +39,32 @@ public class SmokeCounterWidget extends AppWidgetProvider {
         }
     }
 
+    @Override
+    public void onEnabled(final Context context) {}
 
     @Override
-    public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
-    }
+    public void onDisabled(Context context) {}
 
-    @Override
-    public void onDisabled(Context context) {
-        // Enter relevant functionality for when the last widget is disabled
-    }
+    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-            int appWidgetId) {
-
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.smoke_counter_widget);
-        //views.setTextViewText(R.id.appwidget_text, widgetText);
+        GetStatisticState.StatisticState statisticState = SmookerApplication.instance.getModel().execute(GetStatisticState.class,new GetStatisticState.StatisticRequest().with(GetStatisticState.StatisticName.SMOKE_TODAY));
+        int count = statisticState.getTodaySmokeDates().size();
+        RemoteViews views = createRemoteView(context, count);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+    }
+
+    private static RemoteViews createRemoteView(Context context, int count) {
+        // Construct the RemoteViews object
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_smoke_counter);
+        String countText = ""+count;
+        views.setTextViewText(R.id.ws_count_text,countText);
+        views.setOnClickPendingIntent(R.id.ws_add_btn,
+                RemoteControlNotificationReceiver.createAddSmokeIntent(context));
+        views.setOnClickPendingIntent(R.id.ws_count_text,
+                DashboardActivity.openDashboard(context));
+        return views;
     }
 }
 

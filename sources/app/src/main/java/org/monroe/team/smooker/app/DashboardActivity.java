@@ -1,5 +1,7 @@
 package org.monroe.team.smooker.app;
 
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -402,5 +404,14 @@ public class DashboardActivity extends SupportActivity {
                 break;
             }
         }
+    }
+
+    public static PendingIntent openDashboard(Context context) {
+        // Open NotificationView Class on Notification Click
+        Intent intent = new Intent(context, DashboardActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        // Open NotificationView.java Activity
+        return PendingIntent.getActivity(context, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

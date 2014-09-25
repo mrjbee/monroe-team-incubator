@@ -14,7 +14,7 @@ public class GenericEvent <Data extends Serializable> extends Event<Data>{
     }
 
     @Override
-    protected Data extractValue(Intent intent) {
+    public Data extractValue(Intent intent) {
         return (Data) intent.getExtras().getSerializable("DATA");
     }
 
