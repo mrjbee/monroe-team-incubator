@@ -1,0 +1,36 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="150dp"
+    android:layout_height="150dp"
+    android:padding="@dimen/widget_margin">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/ws_bkg_orange">
+
+        <TextView
+            android:id="@+id/ws_count_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_widget_big"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ws_count_text"
+            android:text="details"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_widget_details"/>
+    </RelativeLayout>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ws_add_cigareta_btn"/>
+
+</RelativeLayout>
