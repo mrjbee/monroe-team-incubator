@@ -4,43 +4,54 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:background="@drawable/widget_dark_bkg">
-    <TextView
-        android:id="@+id/wc_left_data_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="2dp"
-        android:layout_marginLeft="5dp"
-        android:text="20"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/text_size_widget"
-        android:textStyle="bold"
-        android:shadowColor="@android:color/black"
-        android:shadowDx="2"
-        android:shadowDy="-1"
-        android:shadowRadius="1"/>
 
-    <TextView
-        android:id="@+id/wc_left_data_det_text"
+    <RelativeLayout
+        android:id="@+id/wc_left_content_panel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/wc_left_data_text"
-        android:layout_below="@id/wc_left_data_text"
-        android:text="min"
-        android:layout_marginTop="-3dp"
-        android:textSize="@dimen/text_size_widget_details"
-        android:textStyle="bold"
-        android:textColor="@android:color/white"
-        />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        >
+
+        <TextView
+            android:id="@+id/wc_left_data_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="2dp"
+            android:text="20"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_widget"
+            android:textStyle="bold"
+            android:shadowColor="@android:color/black"
+            android:shadowDx="2"
+            android:shadowDy="-1"
+            android:shadowRadius="1"/>
+
+        <TextView
+            android:id="@+id/wc_left_data_det_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/wc_left_data_text"
+            android:text="min"
+            android:layout_marginTop="-3dp"
+            android:textSize="@dimen/text_size_widget_details"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            />
+
+    </RelativeLayout>
+
 
     <ImageView
         android:id="@+id/wc_separ"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="@drawable/widget_separ"
-        android:layout_marginLeft="10dp"
         android:layout_marginRight="0dp"
-        android:layout_toRightOf="@+id/wc_left_data_det_text"/>
+        android:layout_toRightOf="@+id/wc_left_content_panel"/>
 
     <TextView
         android:layout_marginTop="2dp"
