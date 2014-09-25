@@ -42,4 +42,16 @@ public class DateUtils {
         cal.add(Calendar.MONTH, month);
         return cal.getTime();
     }
+
+    public static long[] splitPeriod(Date endDate, Date startDate) {
+        long rest = endDate.getTime() - startDate.getTime();
+        final long days = rest / (24*60*60*1000);
+        rest = rest % (24*60*60*1000);
+        long hours = rest / (60*60*1000);
+        rest = rest % (60*60*1000);
+        long minutes = rest / (60*1000);
+        rest = rest % (60*1000);
+        long seconds = rest / 1000;
+        return new long[]{days,hours,minutes,seconds};
+    }
 }

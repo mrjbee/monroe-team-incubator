@@ -22,8 +22,10 @@ public class UpdateQuitSmokeSchedule extends TransactionUserCase<Void,UpdateQuit
 
     @Override
     protected QuitSmokeSchedule transactionalExecute(Void request, DAO dao) {
+
         QuitSmokeProgram program = using(QuitSmokeProgramManager.class).get();
         if (program == null) return null;
+
         QuitSmokeSchedule smokeSchedule = new QuitSmokeSchedule();
         Date today = DateUtils.dateOnly(DateUtils.now());
         DateFormat dateFormat = DateFormat.getDateInstance();
@@ -31,7 +33,7 @@ public class UpdateQuitSmokeSchedule extends TransactionUserCase<Void,UpdateQuit
             QuitSmokeSchedule.DayModel dayModel = new QuitSmokeSchedule.DayModel();
             dayModel.date = stage.date;
             dayModel.dateString = dateFormat.format(stage.date);
-            dayModel.text = stage.smokeLimit +" smokes";
+            dayModel.text = stage.smokeLimit +" smokes limit";
             if (stage.result == QuitSmokeData.QuiteStageResult.IN_FUTURE){
                 dayModel.past =false;
             } else if (stage.result == QuitSmokeData.QuiteStageResult.PASS){
@@ -42,7 +44,7 @@ public class UpdateQuitSmokeSchedule extends TransactionUserCase<Void,UpdateQuit
                 dayModel.past = true;
             }
            smokeSchedule.scheduleList.add(dayModel);
-           if (today.compareTo(dayModel.date) <= 0){
+           if (today.compareTo(dayModel.date) > 0){
                smokeSchedule.nearest = dayModel;
            }
         }
@@ -91,7 +93,20 @@ public class UpdateQuitSmokeSchedule extends TransactionUserCase<Void,UpdateQuit
             public String getText() {
                 return text;
             }
+
+            public boolean isToday(){
+                return  DateUtils.dateOnly(date).compareTo(DateUtils.dateOnly(DateUtils.now())) == 0;
+            }
         }
+
+        public DayModel getNearestFuture(){
+           int index = scheduleList.indexOf(nearest);
+           if (index == scheduleList.size()-1){
+               return null;
+           }
+           return scheduleList.get(index+1);
+        }
+
 
     }
 }

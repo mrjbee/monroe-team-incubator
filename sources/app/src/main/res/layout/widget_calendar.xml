@@ -40,7 +40,7 @@
         android:background="@drawable/widget_separ"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="0dp"
-        android:layout_toRightOf="@+id/wc_left_data_text"/>
+        android:layout_toRightOf="@+id/wc_left_data_det_text"/>
 
     <TextView
         android:layout_marginTop="2dp"

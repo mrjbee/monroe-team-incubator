@@ -34,6 +34,7 @@ import org.monroe.team.smooker.app.uc.common.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -143,7 +144,7 @@ public class DashboardActivity extends SupportActivity {
                         convertView.setBackgroundColor(getResources().getColor(R.color.calendar_future_bkg2));
                     }
                     convertView.findViewById(R.id.cal_date_panel).setBackgroundResource(R.drawable.date_bkg_blue);
-                    ((TextView)convertView.findViewById(R.id.cal_date_comment)).setText("next day limit");
+                    ((TextView)convertView.findViewById(R.id.cal_date_comment)).setText("new day limit");
                     ((TextView) convertView.findViewById(R.id.cal_date_text)).setTextColor(Color.WHITE);
                     ((TextView) convertView.findViewById(R.id.cal_text)).setShadowLayer(0,0,0,Color.BLACK);
                     ((TextView) convertView.findViewById(R.id.cal_text)).setTextColor(getResources().getColor(R.color.calendar_future_text));
@@ -265,15 +266,12 @@ public class DashboardActivity extends SupportActivity {
                         }
                     });
                 } else {
-                   long nowMs = DateUtils.now().getTime();
-                   long rest = nowMs - lastTimeSmokeTime;
-                   final long days = rest / (24*60*60*1000);
-                   rest = rest % (24*60*60*1000);
-                   long hours = rest / (60*60*1000);
-                   rest = rest % (60*60*1000);
-                   long minutes = rest / (60*1000);
-                   rest = rest % (60*1000);
-                   long seconds = rest / 1000;
+                   long[] dayHrMinSec = DateUtils.splitPeriod(DateUtils.now(), new Date(lastTimeSmokeTime));
+
+                   final long days = dayHrMinSec[0];
+                   long hours = dayHrMinSec[1];
+                   long minutes = dayHrMinSec[2];
+                   long seconds = dayHrMinSec[3];
                    final String time =  new StringBuilder()
                            .append((hours<10)?"0"+hours:hours)
                            .append(":")

@@ -73,6 +73,8 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                         DAO.Result result = dao.getLastLoggedSmoke();
                         if (result != null){
                             statisticState.lastSmokeDate = result.get(1,Date.class);
+                        } else {
+                            statisticState.lastSmokeDate = new Date(using(Settings.class).get(Settings.APP_FIRST_TIME_DATE));
                         }
                     break;
                 }

@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import org.monroe.team.smooker.app.common.Events;
+import org.monroe.team.smooker.app.event.Event;
 import org.monroe.team.smooker.app.uc.OverNightUpdate;
 
 public class SystemAlarmBroadcastReceiver extends BroadcastReceiver {
@@ -18,6 +20,9 @@ public class SystemAlarmBroadcastReceiver extends BroadcastReceiver {
         if (intent.getBooleanExtra("TIME_TO_NOTIFICATION_STATISTICS",false)){
             //TODO: calculate and fire smoke today
             //TODO: re calculate quit smoke schedule
+        }
+        if (intent.getBooleanExtra("TIME_TO_UPDATE_CALENDAR_WIDGET",false)){
+             Event.send(context,Events.QUIT_SCHEDULE_REFRESH,true);
         }
     }
 }

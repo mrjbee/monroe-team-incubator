@@ -15,6 +15,9 @@ public class Settings {
     public static final SettingItem<Integer> QUIT_PROGRAM_INDEX = new SettingItem<Integer>("QUITE_PROGRAM",Integer.class, 0);
     public static final SettingItem<Integer> CONTENT_VIEW_CONFIG = new SettingItem<Integer>("CONTENT_VIEW",Integer.class, 0);
 
+    public static final SettingItem<Long> APP_FIRST_TIME_DATE = new SettingItem<Long>("APP_FIRST_TIME_DATE",Long.class, null);
+
+
     public static final Flag ENABLED_STICKY_NOTIFICATION = new Flag("STICKY_NOTIFICATION",false);
     public static final Flag FIRST_TIME_CLOSE_STICKY_NOTIFICATION = new Flag("STICKY_NOTIFICATION_FIRST_CLOSE", true);
     public static final Flag FIRST_TIME_ENTER_APP = new Flag("FIRST_TIME_ENTER_APP", true);
@@ -89,6 +92,8 @@ public class Settings {
                 editor.putFloat(id, (Float) value);
             }else if (valueClass == Boolean.class){
                 editor.putBoolean(id, (Boolean) value);
+            } else if (valueClass == Long.class){
+                editor.putLong(id, (Long) value);
             } else {
                 throw new IllegalStateException();
             }
@@ -103,6 +108,8 @@ public class Settings {
                 return (Type)(Float) preferences.getFloat(id, 0);
             }else if (valueClass == Boolean.class){
                 return (Type)(Boolean) preferences.getBoolean(id, false);
+            } else if (valueClass == Long.class){
+                return (Type) (Long)preferences.getLong(id, 0l);
             } else {
                 throw new IllegalStateException();
             }

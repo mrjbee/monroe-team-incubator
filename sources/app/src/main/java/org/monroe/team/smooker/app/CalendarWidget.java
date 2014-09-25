@@ -2,8 +2,12 @@ package org.monroe.team.smooker.app;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.RemoteViews;
+
+import org.monroe.team.smooker.app.common.Events;
 
 
 /**
@@ -12,12 +16,34 @@ import android.widget.RemoteViews;
 public class CalendarWidget extends AppWidgetProvider {
 
     @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        // There may be multiple widgets active, so update all of them
-        final int N = appWidgetIds.length;
-        for (int i=0; i<N; i++) {
-            updateAppWidget(context, appWidgetManager, appWidgetIds[i]);
+    public void onReceive(Context context, Intent intent) {
+        if (Events.QUIT_SCHEDULE_REFRESH.getAction().equals(intent.getAction())||
+            Events.QUIT_SCHEDULE_UPDATED.getAction().equals(intent.getAction())||
+            Events.SMOKE_COUNT_CHANGED.getAction().equals(intent.getAction())) {
+
+            RemoteViews views = createRemoteView(context);
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            appWidgetManager.updateAppWidget(new ComponentName(context,CalendarWidget.class),views);
         }
+        super.onReceive(context, intent);
+    }
+
+    private static RemoteViews createRemoteView(Context context) {
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_calendar);
+        CalendarWidgetUpdate update = SmookerApplication.instance.fetchCalendarWidgetContent();
+
+        remoteViews.setTextViewText(R.id.wc_left_data_text, update.digitText);
+        remoteViews.setTextViewText(R.id.wc_left_data_det_text, update.digitDetailsText);
+        remoteViews.setTextViewText(R.id.wc_right_data_text, update.contentText);
+        remoteViews.setTextViewText(R.id.wc_right_data_det_text, update.contentDetailsText);
+
+        remoteViews.setOnClickPendingIntent(R.id.wc_right_data_text, DashboardActivity.openDashboard(context));
+        return remoteViews;
+    }
+
+    @Override
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        appWidgetManager.updateAppWidget(new ComponentName(context,CalendarWidget.class),createRemoteView(context));
     }
 
 
@@ -31,15 +57,19 @@ public class CalendarWidget extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
     }
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
 
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_calendar);
-        //views.setTextViewText(R.id.appwidget_text, widgetText);
+    public static class CalendarWidgetUpdate {
+        public final String digitText;
+        public final String digitDetailsText;
+        public final String contentText;
+        public final String contentDetailsText;
 
-        // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);
+        public CalendarWidgetUpdate(String digitText, String digitDetatilsText, String contentText, String contentDetatilsText) {
+            this.digitText = digitText;
+            this.digitDetailsText = digitDetatilsText;
+            this.contentText = contentText;
+            this.contentDetailsText = contentDetatilsText;
+        }
     }
 }
 

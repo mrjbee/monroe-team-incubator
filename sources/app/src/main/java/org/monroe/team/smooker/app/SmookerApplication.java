@@ -11,14 +11,16 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Pair;
 import android.widget.Toast;
 
-import org.monroe.team.smooker.app.common.Closure;
-import org.monroe.team.smooker.app.common.Events;
 import org.monroe.team.smooker.app.common.Model;
 import org.monroe.team.smooker.app.common.Settings;
 import org.monroe.team.smooker.app.common.SetupPage;
-import org.monroe.team.smooker.app.event.Event;
 import org.monroe.team.smooker.app.uc.AddSmoke;
+import org.monroe.team.smooker.app.uc.GetStatisticState;
+import org.monroe.team.smooker.app.uc.UpdateQuitSmokeSchedule;
+import org.monroe.team.smooker.app.uc.common.DateUtils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -35,6 +37,9 @@ public class SmookerApplication extends Application {
     @Override public void onCreate() {
         super.onCreate();
         instance = this;
+        if (!settings().has(Settings.APP_FIRST_TIME_DATE)){
+            settings().set(Settings.APP_FIRST_TIME_DATE,DateUtils.now().getTime());
+        }
         scheduleAlarms();
     }
 
@@ -180,5 +185,50 @@ public class SmookerApplication extends Application {
 
         alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, alarmIntent);
+
+        calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 11);
+        calendar.set(Calendar.MINUTE, 0);
+
+        intent = new Intent(this, SystemAlarmBroadcastReceiver.class);
+        intent.putExtra("TIME_TO_UPDATE_CALENDAR_WIDGET",true);
+        alarmIntent = PendingIntent.getBroadcast(this, 403, intent, 0);
+
+        alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_HALF_HOUR, alarmIntent);
+    }
+
+    public CalendarWidget.CalendarWidgetUpdate fetchCalendarWidgetContent() {
+        UpdateQuitSmokeSchedule.QuitSmokeSchedule smokeSchedule = getModel().execute(UpdateQuitSmokeSchedule.class, null);
+        if (smokeSchedule == null || smokeSchedule.getNearestFuture() == null){
+            //construct non smoking time schedule
+            GetStatisticState.StatisticState state = model.execute(GetStatisticState.class, new GetStatisticState.StatisticRequest().with(GetStatisticState.StatisticName.LAST_LOGGED_SMOKE));
+            long[] DHMS = DateUtils.splitPeriod(DateUtils.now(), state.getLastSmokeDate());
+
+            String details = "min";
+            String content = ""+DHMS[2];
+            if (DHMS[0] > 0){
+                details = "days";
+                content =  ""+DHMS[0];
+            } else if(DHMS[1] > 0){
+                details = "hours";
+                content =  ""+DHMS[1];
+            }
+            return new CalendarWidget.CalendarWidgetUpdate(
+                    content,
+                    details,
+                    "Time since last smoking",
+                    DateFormat.getDateTimeInstance(DateFormat.LONG,DateFormat.SHORT).format(state.getLastSmokeDate())
+            );
+        }else {
+            UpdateQuitSmokeSchedule.QuitSmokeSchedule.DayModel future = smokeSchedule.getNearestFuture();
+            return new CalendarWidget.CalendarWidgetUpdate(
+                    future.isToday()? "Today":new SimpleDateFormat("dd").format(future.getDate()),
+                    future.isToday()? new SimpleDateFormat("dd MMM yyyy").format(future.getDate()):new SimpleDateFormat("MMM yyyy").format(future.getDate()),
+                    future.getText(),
+                    "New day limit"
+            );
+        }
     }
 }

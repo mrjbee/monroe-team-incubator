@@ -1,5 +1,7 @@
 package org.monroe.team.smooker.app.uc;
 
+import org.monroe.team.smooker.app.common.EventMessenger;
+import org.monroe.team.smooker.app.common.Events;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgram;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
@@ -22,6 +24,7 @@ public class SetupQuitSmokeProgram extends UserCaseSupport<SetupQuitSmokeProgram
                     request.endSmokeCount);
         }
 
+        using(EventMessenger.class).send(Events.QUIT_SCHEDULE_UPDATED, true);
         return null;
     }
 
