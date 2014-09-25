@@ -12,7 +12,7 @@ public enum QuitSmokeDifficultLevel implements Serializable {
     LOWEST,  // one cigarette per month
     DISABLED;
 
-    private final static  QuitSmokeDifficultLevel[] LEVELS = {DISABLED, LOWEST,LOW, SMARTEST,HARD,HARDEST};
+    private final static  QuitSmokeDifficultLevel[] LEVELS = {DISABLED, LOWEST,LOW, SMART, SMARTEST,HARD,HARDEST};
 
     public static int difficultCount(){return LEVELS.length;}
 

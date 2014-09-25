@@ -1,6 +1,7 @@
 package org.monroe.team.smooker.app.common.quitsmoke;
 
 import org.monroe.team.smooker.app.common.Closure;
+import org.monroe.team.smooker.app.uc.common.DateUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -25,7 +26,15 @@ public abstract class QuitSmokeProgram {
 
     protected abstract void doInitialize(QuitSmokeData smokeData, int startSmokeCount, int endSmokeCount);
 
-    public abstract int getTodaySmokeCount();
+    public int getTodaySmokeCount() {
+        QuitSmokeData.Stage stage = getStageForDay(DateUtils.now());
+        if (stage == null){
+            stage = getStageBeforeDay(DateUtils.now());
+        }
+        if (stage == null) return -1;
+        return stage.smokeLimit;
+    }
+
 
     protected QuitSmokeData.Stage getStageBeforeDay(Date date) {
         for (int i =dataDriver.getData().stageList.size()-1; i>-1; i--){
@@ -68,7 +77,38 @@ public abstract class QuitSmokeProgram {
         return getStages().get(0).date;
     }
 
-    protected abstract boolean doLogSmokesForDate(QuitSmokeData smokeData, Date date, int smokeCount);
+    protected boolean doLogSmokesForDate(QuitSmokeData smokeData, Date date, int smokeCount) {
+        QuitSmokeData.Stage stage = getStageForDay(date);
+        if (stage != null){
+            stage.result = smokeCount > stage.smokeLimit? QuitSmokeData.QuiteStageResult.FAILS: QuitSmokeData.QuiteStageResult.PASS;
+            if (stage.result == QuitSmokeData.QuiteStageResult.FAILS) {
+                int insertIndex = smokeData.stageList.indexOf(stage) + 1;
+                QuitSmokeData.Stage newAttempt = new QuitSmokeData.Stage(stage.smokeLimit, DateUtils.mathDays(stage.date, 1));
+                smokeData.stageList.add(insertIndex, newAttempt);
+                moveDayForwardFutureStagesStartedFrom(smokeData, insertIndex + 1);
+            }
+            return true;
+        } else {
+            final QuitSmokeData.Stage beforeStage = getStageBeforeDay(date);
+            if (beforeStage.smokeLimit < smokeCount){
+                QuitSmokeData.Stage failedStage = new QuitSmokeData.Stage(beforeStage.smokeLimit,date);
+                failedStage.result = QuitSmokeData.QuiteStageResult.FAILS;
+                int insertIndex = smokeData.stageList.indexOf(beforeStage)+1;
+                smokeData.stageList.add(insertIndex,failedStage);
+                moveDayForwardFutureStagesStartedFrom(smokeData, insertIndex+1);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void moveDayForwardFutureStagesStartedFrom(QuitSmokeData data, int startIndex) {
+        if (startIndex >= data.stageList.size()) return;
+        for (int i = startIndex;i<data.stageList.size();i++){
+            data.stageList.get(i).date = DateUtils.mathDays(data.stageList.get(i).date, 1);
+        }
+    }
+
 
     public Date getLastLoggedDate() {
         return dataDriver.getData().lastLoggedDate;

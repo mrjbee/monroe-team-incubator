@@ -43,6 +43,10 @@ public class DateUtils {
         return cal.getTime();
     }
 
+    public static Date mathWeek(Date date, int weeks) {
+        return mathDays(date, weeks*7);
+    }
+
     public static long[] splitPeriod(Date endDate, Date startDate) {
         long rest = endDate.getTime() - startDate.getTime();
         final long days = rest / (24*60*60*1000);
@@ -54,4 +58,6 @@ public class DateUtils {
         long seconds = rest / 1000;
         return new long[]{days,hours,minutes,seconds};
     }
+
+
 }

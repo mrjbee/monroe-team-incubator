@@ -38,7 +38,9 @@ public class SetupQuitSmokeProgram extends UserCaseSupport<SetupQuitSmokeProgram
             this.level = level;
             this.startSmokeCount = startSmokeCount;
             this.endSmokeCount = endSmokeCount;
-            if (level != QuitSmokeDifficultLevel.DISABLED && startSmokeCount == -1){
+            if (level != QuitSmokeDifficultLevel.DISABLED &&
+                level != QuitSmokeDifficultLevel.HARDEST &&
+                startSmokeCount == -1){
                 throw new IllegalStateException();
             }
         }
