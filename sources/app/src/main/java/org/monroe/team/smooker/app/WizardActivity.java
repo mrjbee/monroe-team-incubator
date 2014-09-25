@@ -372,9 +372,9 @@ public class WizardActivity extends SupportActivity {
     public static class UIPageHandler extends SetupPageHandler {
 
         protected UIPageHandler() {
-            super("UI Settings",
-                    "Please specify which of user interface extension you would like to use",
-                    R.layout.setup_page_ui_setting);
+            super("Notification Settings",
+                  "Please specify which of notification you would like to use",
+                   R.layout.setup_page_ui_setting);
         }
 
 
@@ -382,10 +382,20 @@ public class WizardActivity extends SupportActivity {
         public void onCreateUI(final WizardActivity wizardActivity) {
             wizardActivity.view(CheckBox.class,R.id.ui_sticky_notif_check).setChecked(
                     wizardActivity.application().settings().get(Settings.ENABLED_STICKY_NOTIFICATION));
+
+            wizardActivity.view(CheckBox.class,R.id.ui_status_notif_check).setChecked(
+                    wizardActivity.application().settings().get(Settings.ENABLED_STATISTIC_NOTIFICATION));
+
             wizardActivity.view(CheckBox.class,R.id.ui_sticky_notif_check).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     wizardActivity.application().updateStickyNotification(isChecked);
+                }
+            });
+            wizardActivity.view(CheckBox.class,R.id.ui_status_notif_check).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        wizardActivity.setSetting(Settings.ENABLED_STATISTIC_NOTIFICATION,isChecked);
                 }
             });
         }
