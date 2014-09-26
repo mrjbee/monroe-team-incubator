@@ -8,9 +8,10 @@
 
         <RelativeLayout
             android:id="@+id/wizzard_separator_layout"
+            android:padding="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/action_bar"
+            android:background="@color/background.main.highlight"
             android:layout_alignParentTop="true">
 
             <TextView
@@ -20,27 +21,6 @@
                 android:visibility="gone"
                 />
 
-            <ImageView
-                android:id="@+id/logo_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:src="@drawable/smooker_logo"
-                android:layout_margin="5pt"
-                />
-
-            <TextView
-                android:id="@+id/wizzard_caption_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="User Preference"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_normal_smalles"
-                android:layout_marginTop="5dp"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/logo_image"
-                android:textStyle="bold"
-                />
 
             <TextView
                     android:id="@+id/wizzard_setting_label"
@@ -57,29 +37,6 @@
 
         </RelativeLayout>
 
-        <ImageButton
-            android:id="@+id/wizzard_next_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Next"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/next_button"
-            android:onClick="performNext"
-            />
-
-        <ImageButton
-            android:id="@+id/wizard_back_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Back"
-            android:layout_toLeftOf="@+id/wizzard_next_btn"
-            android:layout_alignBottom="@+id/wizzard_separator_layout"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/back_buttton"
-            android:onClick="performBack"
-            />
 
     <LinearLayout
         android:id="@+id/wizzard_content_layout"
@@ -88,6 +45,28 @@
         android:orientation="horizontal"
         android:layout_below="@+id/wizzard_separator_layout"
         android:animateLayoutChanges="true"
+        />
+
+    <ImageButton
+        android:id="@+id/wizzard_next_btn"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:text="Next"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/next_button"
+        android:onClick="performNext"
+        />
+
+    <ImageButton
+        android:id="@+id/wizard_back_btn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="Back"
+        android:layout_toLeftOf="@+id/wizzard_next_btn"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/back_buttton"
+        android:onClick="performBack"
         />
 
 </RelativeLayout>

@@ -23,8 +23,7 @@
             android:textColor="@color/white"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:textSize="@dimen/text_size_normal_smalles"
-            android:textStyle="bold"/>
+            android:textSize="@dimen/text_size_normal_smalles"/>
     </LinearLayout>
 
     <TextView
@@ -49,22 +48,21 @@
         android:id="@+id/cal_date_comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/cal_date_panel"
+        android:layout_alignParentTop="true"
         android:text="limit"
         android:textColor="@color/calendar.future.text"
-        android:textSize="@dimen/text_size_normal_small"
-        android:layout_toRightOf="@id/cal_date_panel"
+        android:textSize="@dimen/text_size_normal_smalles"
         android:paddingTop="10dp"
-        android:layout_marginBottom="-10sp"
-        android:layout_alignParentTop="true"
         />
 
     <TextView
         android:id="@+id/cal_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingRight="5dp"
         android:text="15 smokes"
-        android:textSize="@dimen/text_size_caption"
-        android:textStyle="bold"
+        android:textSize="@dimen/text_size_caption_small"
         android:textColor="@color/calendar.future.text"
         android:layout_below="@+id/cal_date_comment"
         android:layout_alignLeft="@id/cal_date_comment"

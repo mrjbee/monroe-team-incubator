@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="One smoke cost"
-        android:textSize="@dimen/text_size_caption_small"
+        android:textSize="@dimen/text_size_normal"
         />
 
     <EditText
@@ -20,8 +20,8 @@
         android:inputType="numberDecimal"
         android:ems="10"
         android:id="@+id/gs_price_edit"
-        android:layout_alignBottom="@+id/gs_price_text"
-        android:layout_toRightOf="@+id/gs_price_text" />
+        android:layout_alignLeft="@+id/gs_price_text"
+        android:layout_below="@+id/gs_price_text" />
 
     <Spinner
         android:layout_width="fill_parent"

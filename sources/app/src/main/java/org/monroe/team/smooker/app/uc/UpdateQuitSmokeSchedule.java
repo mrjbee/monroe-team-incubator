@@ -33,7 +33,7 @@ public class UpdateQuitSmokeSchedule extends TransactionUserCase<Void,UpdateQuit
             QuitSmokeSchedule.DayModel dayModel = new QuitSmokeSchedule.DayModel();
             dayModel.date = stage.date;
             dayModel.dateString = dateFormat.format(stage.date);
-            dayModel.text = stage.smokeLimit +" smokes limit";
+            dayModel.text = stage.smokeLimit +" smokes per day";
             if (stage.result == QuitSmokeData.QuiteStageResult.IN_FUTURE){
                 dayModel.past =false;
             } else if (stage.result == QuitSmokeData.QuiteStageResult.PASS){

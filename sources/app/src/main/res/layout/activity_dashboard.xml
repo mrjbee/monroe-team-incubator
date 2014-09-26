@@ -9,12 +9,12 @@
 
     <LinearLayout
         android:id="@+id/d_content_layout"
-        android:layout_marginTop="-12px"
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
-        android:layout_below="@+id/d_logo_layout"/>
+        android:layout_below="@+id/d_logo_layout">
+    </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/d_logo_layout"
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content">
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/logo_height"
             android:src="@drawable/smooker_logo_big"
             android:background="@color/background.main"
             android:id="@+id/logo_image"/>
@@ -79,9 +79,10 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
+            android:padding="5dp"
             android:orientation="horizontal"
-            android:layout_height="@dimen/action_bar_height"
-            android:background="@drawable/action_bar"
+            android:layout_height="wrap_content"
+            android:background="@color/background.main.highlight"
             android:layout_below="@id/logo_image"
             android:gravity="bottom"
             android:id="@+id/action_layout">
@@ -92,30 +93,29 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
                 android:id="@+id/d_content_view_group">
                 <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/views_btn_size"
+                    android:layout_height="@dimen/views_btn_size"
                     android:background="@drawable/schedule_option"
                     android:button="@android:color/transparent"
                     android:id="@+id/d_calendar_radio"/>
                 <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/views_btn_size"
+                    android:layout_height="@dimen/views_btn_size"
                     android:checked="true"
                     android:background="@drawable/chart_option"
                     android:button="@android:color/transparent"
                     android:id="@+id/d_chart_radio"/>
                 <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/views_btn_size"
+                    android:layout_height="@dimen/views_btn_size"
                     android:checked="true"
                     android:background="@drawable/time_option"
                     android:button="@android:color/transparent"
-                    android:id="@+id/d_time_radio"/>
+                    android:id="@+id/d_time_radio"
+                    />
             </RadioGroup>
-
 
 
         </RelativeLayout>
@@ -124,21 +124,21 @@
 
         <ImageButton
             android:id="@+id/add_smoke_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:text="Add"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/d_content_layout"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="-35dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="-40dp"
             android:background="@drawable/add_cigareta_btn"
         />
         <ImageButton
             android:id="@+id/d_setting_btn"
             android:layout_marginTop="11dp"
             android:background="@drawable/setting_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"/>
 

@@ -184,9 +184,7 @@ public class WizardActivity extends SupportActivity {
 
         protected GeneralSetupHandler() {
             super("General",
-                    "Please specify how much cost you spent per smoke and how much times you smoke usually in a day (If You have a " +
-                            "doubt You could choose 'detect automatically option', so application will " +
-                            "follow you few days and provide average count)",
+                    "Please specify general settings aka smoke cost",
                     R.layout.setup_page_general
             );
         }
@@ -336,13 +334,13 @@ public class WizardActivity extends SupportActivity {
             return new AlertDialog.Builder(wizardActivity)
                     .setTitle("Restarting quit smoke program")
                     .setMessage("You are going to restart Quit Smoke program which you did choose before. Is that what you are really want?")
-                    .setPositiveButton("Yes, I want to restart with new details", new DialogInterface.OnClickListener() {
+                    .setPositiveButton("Yes, change settings", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             doActualUpdate(wizardActivity, difficult, finalSmokePerDay, finalDesireSmokePerDayCount);
                             wizardActivity.performNext(false);
                         }
-                    }).setNegativeButton("No, I just want to exit", new DialogInterface.OnClickListener() {
+                    }).setNegativeButton("No, just exit", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             wizardActivity.performNext(false);
@@ -372,7 +370,7 @@ public class WizardActivity extends SupportActivity {
     public static class UIPageHandler extends SetupPageHandler {
 
         protected UIPageHandler() {
-            super("Notification Settings",
+            super("Notification",
                   "Please specify which of notification you would like to use",
                    R.layout.setup_page_ui_setting);
         }

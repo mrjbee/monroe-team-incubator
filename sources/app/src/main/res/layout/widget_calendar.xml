@@ -2,7 +2,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="wrap_content"
     android:background="@drawable/widget_dark_bkg">
 
     <RelativeLayout
@@ -47,10 +47,11 @@
 
     <ImageView
         android:id="@+id/wc_separ"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="3px"
+        android:layout_height="50dp"
         android:background="@drawable/widget_separ"
         android:layout_marginRight="0dp"
+        android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/wc_left_content_panel"/>
 
     <TextView
@@ -70,7 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/wc_right_data_det_text"
-        android:layout_below="@+id/wc_right_data_det_text"
+        android:layout_centerVertical="true"
         android:text="Without smoking"
         android:textStyle="bold"
         android:textColor="@android:color/white"

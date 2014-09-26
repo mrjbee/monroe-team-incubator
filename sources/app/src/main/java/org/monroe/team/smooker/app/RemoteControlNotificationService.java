@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import org.monroe.team.smooker.app.common.Closure;
 import org.monroe.team.smooker.app.common.Events;
+import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeData;
 import org.monroe.team.smooker.app.event.Event;
 import org.monroe.team.smooker.app.uc.GetStatisticState;
 
@@ -35,7 +36,17 @@ public class RemoteControlNotificationService extends Service {
             Event.subscribeOnEvent(getApplicationContext(),this, Events.SMOKE_COUNT_CHANGED,new Closure<Integer, Void>() {
                 @Override
                 public Void execute(Integer arg) {
-                    setText(generateNotificationStringFor(arg));
+                    GetStatisticState.StatisticState state = SmookerApplication.instance.getModel().execute(GetStatisticState.class,new GetStatisticState.StatisticRequest().with(GetStatisticState.StatisticName.SMOKE_TODAY, GetStatisticState.StatisticName.QUIT_SMOKE));
+                    String text = generateNotificationStringFor(arg);
+                    if (state.getTodaySmokeLimit() != null){
+                        int delta = state.getTodaySmokeLimit() - state.getTodaySmokeDates().size();
+                        if (delta > 0){
+                            text = delta +" smokes left for today";
+                        } else {
+                            text = Math.abs(delta) +" smokes over limit today";
+                        }
+                    }
+                    setText(text);
                     return null;
                 }
             });

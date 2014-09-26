@@ -32,10 +32,7 @@ public class SmokeChartView extends View {
 
     Paint valuePaint;
     Paint selectionValuePaint;
-    Paint selectionValueTextPaint;
 
-    float axisCaptionTextSize =30f;
-    float limitTextSize = 20f;
 
     String verticalAxisName = "smokes count";
     String horizontalAxisName = "today hours";
@@ -43,12 +40,14 @@ public class SmokeChartView extends View {
     private float verticalAxisPadding;
     Rect horizontalAxisTextBounds = new Rect();
     private float horizontalAxisPadding;
-    private float backgroundStripeHeight = 100f;
-    private float stripeHeight = 20f;
     private List<Integer> model = new ArrayList<Integer>();
     private int limit = -1;
 
     PointF originalTouch = null;
+
+    private float backgroundStripeHeight = 100f;
+    private float stripeHeight = 20f;
+    private float axisCaptionTextSize =30f;
 
     public SmokeChartView(Context context) {
         super(context);
@@ -65,7 +64,16 @@ public class SmokeChartView extends View {
         initialize(context);
     }
 
+    private float dimen(int id){
+        return (float)getContext().getResources().getInteger(id)/100f;
+    }
+
     private void initialize(Context context) {
+
+        backgroundStripeHeight = dimen(R.integer.chart_stripe_background_height_float);
+        stripeHeight = dimen(R.integer.chart_stripe_height_float);
+        axisCaptionTextSize = dimen(R.integer.chart_axis_text_size_float);
+
         axisPaint = new Paint();
         axisPaint.setColor(Color.BLACK);
 
@@ -73,14 +81,17 @@ public class SmokeChartView extends View {
         valuePaint.setAntiAlias(true);
         valuePaint.setColor(Color.parseColor("#58cb1c"));
         valuePaint.setStyle(Paint.Style.STROKE);
-        valuePaint.setStrokeWidth(2);
+        valuePaint.setStrokeWidth(dimen(R.integer.chart_stroke_default_float));
 
         selectionValuePaint= new Paint();
         selectionValuePaint.setAntiAlias(true);
         selectionValuePaint.setColor(Color.parseColor("#008cec"));
-        selectionValuePaint.setStrokeWidth(4);
+        selectionValuePaint.setStrokeWidth(dimen(R.integer.chart_stroke_boldest_float));
         selectionValuePaint.setTextSize(axisCaptionTextSize);
-        selectionValuePaint.setShadowLayer(3, 4, 6, Color.LTGRAY);
+        selectionValuePaint.setShadowLayer(
+                dimen(R.integer.chart_shadow_radius_float),
+                dimen(R.integer.chart_shadow_dx_float),
+                dimen(R.integer.chart_shadow_dy_float), Color.LTGRAY);
         try {
             Method method = this.getClass().getMethod("setLayerType",int.class,Paint.class);
             if (method!=null){
@@ -98,7 +109,7 @@ public class SmokeChartView extends View {
         verticalAxisPadding = verticalAxisTextBounds.height() / 2;
 
         axisLabelPaint.getTextBounds(horizontalAxisName, 0, horizontalAxisName.length(), horizontalAxisTextBounds);
-        horizontalAxisPadding = horizontalAxisTextBounds.height() * 2.5f;
+        horizontalAxisPadding = horizontalAxisTextBounds.height() * 1.5f;
 
         transparentPaint = new Paint();
         transparentPaint.setColor(Color.TRANSPARENT);
@@ -113,7 +124,7 @@ public class SmokeChartView extends View {
 
         limitPaint = new Paint();
         limitPaint.setColor(Color.RED);
-        limitPaint.setStrokeWidth(3);
+        limitPaint.setStrokeWidth(dimen(R.integer.chart_stroke_bolder_float));
 
         limitLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.LINEAR_TEXT_FLAG);
         limitLabelPaint.setColor(Color.RED);
