@@ -251,7 +251,7 @@ public class SmookerApplication extends Application {
                         .setContentTitle("Quit Smoking")
                         .setContentText("Smoke limit decreased")
                         .setSubText("New smoke limit "+state.getTodaySmokeLimit()+" smokes per day")
-                        .setSmallIcon(R.drawable.smooker_logo)
+                        .setSmallIcon(R.drawable.notif_white_small)
                         .setContentIntent(DashboardActivity.openDashboard(this));
                 manager.notify(QUIT_SMOKE_UPDATE_NOTIFICATION, builder.build());
             }
@@ -262,7 +262,7 @@ public class SmookerApplication extends Application {
                     .setContentTitle("Smoke statistic")
                     .setContentText("Yesterday smokes "+state.getYesterdaySmokeDates().size()+" . Average per day "+ state.getAverageSmoke())
                     .setSubText((state.getQuitSmokeDifficult() != QuitSmokeDifficultLevel.DISABLED)?"Today smoke limit  "+state.getTodaySmokeLimit():null)
-                    .setSmallIcon(R.drawable.smooker_logo)
+                    .setSmallIcon(R.drawable.notif_white_small)
                     .setContentIntent(DashboardActivity.openDashboard(this));
             manager.notify(STATISTIC_UPDATE_NOTIFICATION, builder.build());
 

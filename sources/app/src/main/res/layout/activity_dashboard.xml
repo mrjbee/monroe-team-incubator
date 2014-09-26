@@ -13,18 +13,18 @@
         android:orientation="vertical"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
-        android:layout_below="@+id/d_logo_layout">
-    </LinearLayout>
+        android:layout_below="@+id/d_logo_layout"/>
 
         <RelativeLayout
             android:id="@+id/d_logo_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/background.main2">
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="@dimen/logo_height"
             android:src="@drawable/smooker_logo_big"
-            android:background="@color/background.main"
+            android:background="@drawable/background_rects"
             android:id="@+id/logo_image"/>
 
 
@@ -121,6 +121,12 @@
         </RelativeLayout>
 
         </RelativeLayout>
+
+        <LinearLayout
+            android:layout_below="@+id/d_logo_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shadow_vertical"/>
 
         <ImageButton
             android:id="@+id/add_smoke_btn"

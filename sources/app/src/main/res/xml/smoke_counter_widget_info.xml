@@ -2,7 +2,7 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="150dp"
     android:minHeight="150dp"
-    android:previewImage="@drawable/example_appwidget_preview"
+    android:previewImage="@drawable/counter_widget"
     android:initialLayout="@layout/widget_smoke_counter"
     android:widgetCategory="home_screen"
     android:initialKeyguardLayout="@layout/widget_smoke_counter">

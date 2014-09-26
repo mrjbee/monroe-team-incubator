@@ -5,17 +5,17 @@
     android:layout_height="match_parent"
     >
 
-    <ImageButton
+    <ImageView
         android:id="@+id/cn_add_btn"
-        android:background="@drawable/add_cigareta_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="5dp"
         android:layout_centerVertical="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"/>
+        android:src="@drawable/add_cigareta_btn"/>
 
     <TextView
         android:id="@+id/cn_caption_text"
-        android:text="press icon for +1 smoke"
+        android:text="Press for +1 smoke"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"

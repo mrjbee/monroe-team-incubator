@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="background.main2">#5c0000</color>
     <color name="background.main">#fe1313</color>
     <color name="background.main.highlight">#c31010</color>
     <color name="background.widget">#f63225</color>

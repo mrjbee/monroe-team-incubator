@@ -38,7 +38,7 @@ public class RemoteControlNotificationService extends Service {
                 public Void execute(Integer arg) {
                     GetStatisticState.StatisticState state = SmookerApplication.instance.getModel().execute(GetStatisticState.class,new GetStatisticState.StatisticRequest().with(GetStatisticState.StatisticName.SMOKE_TODAY, GetStatisticState.StatisticName.QUIT_SMOKE));
                     String text = generateNotificationStringFor(arg);
-                    if (state.getTodaySmokeLimit() != null){
+                    if (state.getTodaySmokeLimit() != null && state.getTodaySmokeLimit() > -1){
                         int delta = state.getTodaySmokeLimit() - state.getTodaySmokeDates().size();
                         if (delta > 0){
                             text = delta +" smokes left for today";
@@ -93,24 +93,27 @@ public class RemoteControlNotificationService extends Service {
                     R.layout.remote_controll_notification);
             PendingIntent pIntent = DashboardActivity.openDashboard(getApplicationContext());
 
+            PendingIntent addBtnIntent = RemoteControlNotificationReceiver.createAddSmokeIntent(getApplicationContext());
+
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext())
                     // Set Icon
-                    .setSmallIcon(R.drawable.smooker_logo)
+                    .setSmallIcon(R.drawable.notif_orange_small)
                             // Set PendingIntent into Notification
-                    .setContentIntent(pIntent)
+                    .setContentIntent(addBtnIntent)
+                    .setContentText(text)
+                    .setContentTitle("Press for +1 smoke")
                             // Set RemoteViews into Notification
                     .setContent(remoteViews);
 
             remoteViews.setTextViewText(R.id.cn_title_text,text);
 
-            PendingIntent addBtnIntent = RemoteControlNotificationReceiver.createAddSmokeIntent(getApplicationContext());
 
             Intent closeActionIntent = new Intent(getApplicationContext(), RemoteControlNotificationReceiver.class);
             closeActionIntent.putExtra("CLOSE",true);
             PendingIntent closeBtnIntent = PendingIntent.getBroadcast(getApplicationContext(), 3, closeActionIntent, 0);
 
-            remoteViews.setOnClickPendingIntent(R.id.cn_add_btn,addBtnIntent);
+           // remoteViews.setOnClickPendingIntent(R.id.cn_add_btn,addBtnIntent);
             remoteViews.setOnClickPendingIntent(R.id.cn_close_btn,closeBtnIntent);
 
             return builder.build();
