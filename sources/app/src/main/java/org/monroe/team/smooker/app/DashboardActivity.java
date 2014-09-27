@@ -368,6 +368,10 @@ public class DashboardActivity extends SupportActivity {
             chartView.setModel(statistics.getTodaySmokeDates());
         }
 
+        if (exists(statistics.getMonthSmokeList())){
+            histogramView.setModel(statistics.getMonthSmokeList());
+        }
+
         if (exists(statistics.getTotalSmokes())){
             view(TextView.class,R.id.d_total_smokes_counter_text).setText(statistics.getTotalSmokes().toString()   );
         }

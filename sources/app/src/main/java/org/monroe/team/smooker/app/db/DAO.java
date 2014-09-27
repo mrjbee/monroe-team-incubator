@@ -70,16 +70,21 @@ public class DAO {
         });
     }
 
-    //Date,Count
+    /**
+     * @return
+     * 0:Date,
+     * 1:Count(LONG)
+     */
+
     public List<Result> groupSmokesPerDay() {
 
         //SELECT strftime('%Y-%m-%d', date / 1000, 'unixepoch'), count(*) FROM smoke GROUP BY strftime('%Y-%m-%d', date / 1000, 'unixepoch');
 
         Cursor cursor = db.query(DB.SmokeEntry.TABLE_NAME,
-                strs("strftime('%Y-%m-%d', "+DB.SmokeEntry._DATE+" / 1000, 'unixepoch'), count(*)"),
+                strs("strftime('%Y-%m-%d', "+DB.SmokeEntry._DATE+" / 1000, 'unixepoch','localtime'), count(*)"),
                 null,
                 null,
-                "strftime('%Y-%m-%d', "+DB.SmokeEntry._DATE+" / 1000, 'unixepoch')",
+                "strftime('%Y-%m-%d', "+DB.SmokeEntry._DATE+" / 1000, 'unixepoch','localtime')",
                 null,
                 null);
         final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

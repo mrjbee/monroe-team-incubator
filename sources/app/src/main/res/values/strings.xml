@@ -10,9 +10,9 @@
     <string name="add_widget">Add widget</string>
 
 
-    <string name="chart_time_axis">today</string>
+    <string name="chart_time_axis">hours</string>
     <string name="chart_smokes_axis">smokes</string>
-    <string name="chart_day_axis">days</string>
+    <string name="chart_day_axis">dates</string>
 
 
 </resources>

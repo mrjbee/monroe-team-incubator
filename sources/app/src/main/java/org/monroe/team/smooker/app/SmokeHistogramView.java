@@ -12,6 +12,8 @@ import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 
+import org.monroe.team.smooker.app.uc.common.DateUtils;
+
 import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -158,7 +160,7 @@ public class SmokeHistogramView extends View {
         if(originalTouch != null){
             drawSelectionShadow(canvas, valuePoints);
             valuePoints.clear();
-            drawModel(canvas,valuePoints);
+            drawModel(canvas, valuePoints);
         }
 
         drawAxis(canvas, topPadding);
@@ -186,9 +188,6 @@ public class SmokeHistogramView extends View {
 
         canvas.drawLine(touch.x, 0, touch.x, getHeight() - horizontalAxisPadding, selectionValuePaint);
 
-        if (modelItem != null){
-            canvas.drawCircle(modelItem.valueAnchor.x,modelItem.valueAnchor.y,stripeHeight / 2, selectionValuePaint);
-        }
     }
 
     private void drawSelection(Canvas canvas,   List<TempModelItem> valuePoints) {
@@ -232,10 +231,14 @@ public class SmokeHistogramView extends View {
             canvas.drawText(timeText, textXPosition, getHeight() - horizontalAxisPadding + timeText2Bounds.height() * 1.5f, selectionValuePaint);
         }
 
-        if (modelItem != null){
+        if (modelItem != null && modelItem.value > 0){
             String text = modelItem.value.toString();
             selectionValuePaint.getTextBounds(text,0,text.length(),textBounds);
-            canvas.drawText(text,modelItem.valueAnchor.x - stripeHeight-textBounds.width(), modelItem.valueAnchor.y -stripeHeight, selectionValuePaint);
+            float valueTextX = modelItem.valueAnchor.x - stripeHeight-textBounds.width();
+            if (valueTextX < (verticalAxisPadding*2)){
+                valueTextX = modelItem.valueAnchor.x + stripeHeight;
+            }
+            canvas.drawText(text,valueTextX, modelItem.valueAnchor.y -stripeHeight, selectionValuePaint);
             canvas.drawCircle(modelItem.valueAnchor.x,modelItem.valueAnchor.y,stripeHeight / 2, selectionValuePaintWithoutShadow);
         }
     }
@@ -246,7 +249,7 @@ public class SmokeHistogramView extends View {
                 return model.get(i).first;
             }
         }
-        return items.get(0).date;
+        return (items.isEmpty())?DateUtils.now():items.get(0).date;
     }
 
 

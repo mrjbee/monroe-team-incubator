@@ -1,5 +1,7 @@
 package org.monroe.team.smooker.app.uc;
 
+import android.util.Pair;
+
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgram;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
@@ -93,9 +95,31 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                     break;
                 case TOTAL_SMOKES:
                       statisticState.totalSmokes =  dao.getSmokesAllPeriod().size();
+                    break;
+                case LAST_30_DAYS_COUNT:
+                    statisticState.monthSmokeList = new ArrayList<Pair<Date, Integer>>();
+                    List<DAO.Result> loggedDates = dao.groupSmokesPerDay();
+                    Date tomorrow = DateUtils.mathDays(DateUtils.dateOnly(DateUtils.now()),+1);
+                    Date itDate = null;
+                    for (int i = 0; i < 32; i++){
+                        itDate = DateUtils.mathDays(tomorrow,-i);
+                        statisticState.monthSmokeList.add(new Pair<Date, Integer>(itDate,getSmokeCountForDate(itDate,loggedDates)));
+                    }
+
+                    break;
                 }
+
         }
         return statisticState;
+    }
+
+    private int getSmokeCountForDate(Date itDate, List<DAO.Result> loggedDates) {
+        for (DAO.Result loggedDate : loggedDates) {
+            if (loggedDate.get(0,Date.class).compareTo(itDate) == 0){
+                return (int)loggedDate.get(1,Long.class).longValue();
+            }
+        }
+        return 0;
     }
 
     private Float calculateSpendMoney(DAO dao) {
@@ -103,8 +127,8 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
     }
 
     public static enum StatisticName{
-        SMOKE_TODAY, SMOKE_YESTERDAY, SPEND_MONEY, QUIT_SMOKE, LAST_LOGGED_SMOKE, TOTAL_SMOKES, ALL;
-        private static final StatisticName[] ALL_NAMES = {SMOKE_TODAY, SPEND_MONEY, QUIT_SMOKE, TOTAL_SMOKES, LAST_LOGGED_SMOKE};
+        SMOKE_TODAY, SMOKE_YESTERDAY, SPEND_MONEY, QUIT_SMOKE, LAST_LOGGED_SMOKE, TOTAL_SMOKES, LAST_30_DAYS_COUNT, ALL;
+        private static final StatisticName[] ALL_NAMES = {SMOKE_TODAY, SPEND_MONEY, QUIT_SMOKE, TOTAL_SMOKES, LAST_LOGGED_SMOKE, LAST_30_DAYS_COUNT};
     }
 
     public static class StatisticRequest {
@@ -142,7 +166,12 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
         Date lastSmokeDate;
         Boolean smokeLimitChangedToday;
         Integer totalSmokes;
+        List<Pair<Date, Integer>> monthSmokeList;
 
+
+        public List<Pair<Date, Integer>> getMonthSmokeList() {
+            return monthSmokeList;
+        }
 
         public List<Date> getYesterdaySmokeDates() {
             return yesterdaySmokeDates;

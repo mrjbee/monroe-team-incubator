@@ -201,7 +201,11 @@ public class SmokeChartView extends View {
         if (smokePoint != null){
             String text = smokePoint.first.toString();
             selectionValuePaint.getTextBounds(text,0,text.length(),timeTextBounds);
-            canvas.drawText(text,smokePoint.second.x - stripeHeight-timeTextBounds.width(), smokePoint.second.y -stripeHeight, selectionValuePaint);
+            float valueTextX = smokePoint.second.x - stripeHeight-timeTextBounds.width();
+            if (valueTextX < (verticalAxisPadding*2)){
+                valueTextX = smokePoint.second.x + stripeHeight;
+            }
+            canvas.drawText(text,valueTextX, smokePoint.second.y -stripeHeight, selectionValuePaint);
             canvas.drawCircle(smokePoint.second.x,smokePoint.second.y,stripeHeight / 2, selectionValuePaint);
         }
     }

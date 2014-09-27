@@ -148,7 +148,7 @@
                 android:layout_width="@dimen/views_btn_size"
                 android:layout_height="@dimen/views_btn_size"
                 android:checked="true"
-                android:background="@drawable/chart_option"
+                android:background="@drawable/bars_option"
                 android:button="@android:color/transparent"
                 android:id="@+id/d_histogram_radio"/>
 
