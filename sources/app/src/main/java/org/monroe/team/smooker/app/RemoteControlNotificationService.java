@@ -40,7 +40,7 @@ public class RemoteControlNotificationService extends Service {
                     String text = generateNotificationStringFor(arg);
                     if (state.getTodaySmokeLimit() != null && state.getTodaySmokeLimit() > -1){
                         int delta = state.getTodaySmokeLimit() - state.getTodaySmokeDates().size();
-                        if (delta > 0){
+                        if (delta >= 0){
                             text = delta +" smokes left for today";
                         } else {
                             text = Math.abs(delta) +" smokes over limit today";

@@ -25,6 +25,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 
@@ -267,5 +269,16 @@ public class SmookerApplication extends Application {
             manager.notify(STATISTIC_UPDATE_NOTIFICATION, builder.build());
 
         }
+    }
+
+    public List<Date> recalculateSmokingSchedule(Date scheduleStart, Date scheduleStop, int leftSmokes) {
+        long period = scheduleStop.getTime() - scheduleStart.getTime();
+        if (period < 0 ) return Collections.EMPTY_LIST;
+        int deltaMinutes = (int) ((period / leftSmokes)/60000);
+        List<Date> answer = new ArrayList<Date>();
+        for (int i = 1; i < leftSmokes + 1; i++){
+            answer.add(DateUtils.mathMinutes(scheduleStart, deltaMinutes * i));
+        }
+        return answer;
     }
 }

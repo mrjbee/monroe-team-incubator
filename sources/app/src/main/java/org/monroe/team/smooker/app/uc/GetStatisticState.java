@@ -79,7 +79,6 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                         statisticState.todaySmokeLimit = quitSmokeProgram.getTodaySmokeCount();
                         statisticState.smokeLimitChangedToday = quitSmokeProgram.isChangedToday();
                         statisticState.quitSmokeDifficult = quitSmokeProgram.getLevel();
-
                     } else {
                         statisticState.todaySmokeLimit = -1;
                         statisticState.quitSmokeDifficult = QuitSmokeDifficultLevel.DISABLED;

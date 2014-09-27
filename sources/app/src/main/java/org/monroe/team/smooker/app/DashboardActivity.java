@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
+import android.transition.Visibility;
 import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -35,6 +36,7 @@ import org.monroe.team.smooker.app.uc.common.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
@@ -53,6 +55,7 @@ public class DashboardActivity extends SupportActivity {
     private ArrayAdapter<UpdateQuitSmokeSchedule.QuitSmokeSchedule.DayModel> calendarListAdapter;
     private Timer lastSmokeTimer;
     private long lastTimeSmokeTime = -1;
+    private long timeBeforeNextSmoke = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -283,11 +286,41 @@ public class DashboardActivity extends SupportActivity {
         lastSmokeTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+                if (timeBeforeNextSmoke == -1){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_before_caption_text)).setVisibility(View.GONE);
+                            ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_before_text)).setVisibility(View.GONE);
+                        }
+                    });
+                }else {
+                    long[] dayHrMinSec = DateUtils.splitPeriod(new Date(timeBeforeNextSmoke), DateUtils.now());
+                    long hours = Math.max(0,dayHrMinSec[1]);
+                    long minutes = Math.max(0,dayHrMinSec[2]);
+                    long seconds = Math.max(0,dayHrMinSec[3]);
+                    final String time =  new StringBuilder()
+                            .append((hours<10)?"0"+hours:hours)
+                            .append(":")
+                            .append((minutes<10)?"0"+minutes:minutes)
+                            .append(":")
+                            .append((seconds<10)?"0"+seconds:seconds)
+                            .toString();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_before_caption_text)).setVisibility(View.VISIBLE);
+                            ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_before_text)).setVisibility(View.VISIBLE);
+                            ((TextView) lastTimeSmokeView.findViewById(R.id.lts_time_before_text)).setText(time);
+                        }
+                    });
+                }
+
                 if (lastTimeSmokeTime < 1){
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            ((TextView)lastTimeSmokeView.findViewById(R.id.lts_days_text)).setText("0 day ago");
+                            ((TextView)lastTimeSmokeView.findViewById(R.id.lts_days_text)).setText("0 day");
                             ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_text)).setText("00:00:00");
                         }
                     });
@@ -308,7 +341,7 @@ public class DashboardActivity extends SupportActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            ((TextView) lastTimeSmokeView.findViewById(R.id.lts_days_text)).setText(days + " days ago");
+                            ((TextView) lastTimeSmokeView.findViewById(R.id.lts_days_text)).setText(days + " days");
                             ((TextView) lastTimeSmokeView.findViewById(R.id.lts_time_text)).setText(time);
                         }
                     });
@@ -391,15 +424,46 @@ public class DashboardActivity extends SupportActivity {
             } else {
                 view(R.id.d_calendar_radio).setVisibility(View.VISIBLE);
             }
+
+            int vis = (statistics.getQuitSmokeDifficult() == QuitSmokeDifficultLevel.DISABLED ||
+                       statistics.getQuitSmokeDifficult() != QuitSmokeDifficultLevel.HARDEST)? View.GONE:View.VISIBLE;
+            if (vis == View.GONE) timeBeforeNextSmoke = -1;
+            lastTimeSmokeView.findViewById(R.id.lts_time_before_caption_text).setVisibility(vis);
+            lastTimeSmokeView.findViewById(R.id.lts_time_before_text).setVisibility(vis);
         }
-        if (statistics.isRequested(GetStatisticState.StatisticName.LAST_LOGGED_SMOKE)){
-            if (exists(statistics.getLastSmokeDate())){
+
+        if (exists(statistics.getLastSmokeDate())){
                 lastTimeSmokeTime = statistics.getLastSmokeDate().getTime();
-            } else {
-              //TODO: think if leave blank
+        }
+
+        if (statistics.isRequested(GetStatisticState.StatisticName.QUIT_SMOKE)
+                && statistics.isRequested(GetStatisticState.StatisticName.TOTAL_SMOKES)
+                && statistics.isRequested(GetStatisticState.StatisticName.LAST_LOGGED_SMOKE)){
+            if (statistics.getTodaySmokeLimit() > 1 && statistics.getTodaySmokeDates().size() > 0){
+                int leftSmokes = statistics.getTodaySmokeLimit() - statistics.getTodaySmokeDates().size();
+                if (leftSmokes > 0){
+                   Date scheduleStart = statistics.getLastSmokeDate();
+                   Date scheduleStop = DateUtils.mathDays(DateUtils.dateOnly(DateUtils.now()),1);
+                   List<Date> scheduledSmokesList = application().recalculateSmokingSchedule(scheduleStart, scheduleStop, leftSmokes);
+                   if (!scheduledSmokesList.isEmpty()){
+                      Date date = scheduledSmokesList.get(0);
+                      timeBeforeNextSmoke = date.getTime();
+                   } else {
+                       timeBeforeNextSmoke = -1;
+                   }
+                   chartView.setFutureModel(scheduledSmokesList);
+
+                }else {
+                    chartView.setFutureModel(Collections.EMPTY_LIST);
+                    timeBeforeNextSmoke = -1;
+                }
+            }else {
+                chartView.setFutureModel(Collections.EMPTY_LIST);
+                timeBeforeNextSmoke = -1;
             }
         }
- }
+        chartView.invalidate();
+    }
 
     private boolean exists(Object value) {
         return value != null;

@@ -31,6 +31,7 @@ public class SmokeChartView extends View {
 
 
     Paint valuePaint;
+    Paint futureValuePaint;
     Paint selectionValuePaint;
 
 
@@ -49,6 +50,7 @@ public class SmokeChartView extends View {
 
     String verticalAxisName = "smokes count";
     String horizontalAxisName = "today hours";
+    private List<Integer> futureModel;
 
 
     public SmokeChartView(Context context) {
@@ -89,6 +91,15 @@ public class SmokeChartView extends View {
         valuePaint.setStyle(Paint.Style.STROKE);
         valuePaint.setStrokeWidth(dimen(R.integer.chart_stroke_default_float));
 
+
+        futureValuePaint = new Paint();
+        futureValuePaint.setAntiAlias(true);
+        futureValuePaint.setAlpha(150);
+        futureValuePaint.setColor(Color.RED);
+        futureValuePaint.setStyle(Paint.Style.STROKE);
+        futureValuePaint.setStrokeWidth(dimen(R.integer.chart_stroke_default_float));
+
+
         selectionValuePaint= new Paint();
         selectionValuePaint.setAntiAlias(true);
         selectionValuePaint.setColor(Color.parseColor("#008cec"));
@@ -101,7 +112,7 @@ public class SmokeChartView extends View {
         try {
             Method method = this.getClass().getMethod("setLayerType",int.class,Paint.class);
             if (method!=null){
-                method.invoke(this,LAYER_TYPE_SOFTWARE, selectionValuePaint);
+              //  method.invoke(this,LAYER_TYPE_SOFTWARE, selectionValuePaint);
             }
         } catch (Exception e) {}
 
@@ -161,10 +172,16 @@ public class SmokeChartView extends View {
             drawModel(canvas,valuePoints);
         }
 
+        if (futureModel!=null && !futureModel.isEmpty()){
+            drawFutureModel(canvas, valuePoints);
+        }
+
         if(originalTouch != null){
             drawSelection(canvas, valuePoints);
         }
     }
+
+
 
     private void drawSelection(Canvas canvas, List<PointF> valuePoints) {
         PointF touch = new PointF(originalTouch.x,originalTouch.y);
@@ -227,17 +244,35 @@ public class SmokeChartView extends View {
         canvas.drawCircle(verticalAxisPadding, getHeight() - horizontalAxisPadding,
                 stripeHeight / 4, valuePaint);
         valuePoints.add(new PointF(verticalAxisPadding, getHeight() - horizontalAxisPadding));
-        for (int i = 0,j=1; i < model.size() ; i++,j++) {
-            PointF pointF = new PointF(verticalAxisPadding + model.get(i) * getMinuteWidth(),
-                    getHeight() - horizontalAxisPadding - j * getItemHeight());
-            path.lineTo(pointF.x, pointF.y);
-            canvas.drawCircle(pointF.x,pointF.y,stripeHeight / 4, valuePaint);
-            valuePoints.add(pointF);
-        }
-        valuePaint.setStyle(Paint.Style.STROKE);
-        canvas.drawPath(path,valuePaint);
+
+        List<Integer> contentModel = model;
+        int startFromValue = 0;
+        Paint paint = valuePaint;
+        drawModelUsingPath(canvas, valuePoints, path, startFromValue, contentModel, paint);
     }
 
+    private void drawFutureModel(Canvas canvas, List<PointF> valuePoints) {
+        Path path = new Path();
+        futureValuePaint.setStyle(Paint.Style.FILL);
+        PointF lastRealValuePoint = valuePoints.get(valuePoints.size()-1);
+        path.moveTo(lastRealValuePoint.x,lastRealValuePoint.y);
+        List<Integer> contentModel = futureModel;
+        int startFromValue = valuePoints.size()-1;
+        Paint paint = futureValuePaint;
+        drawModelUsingPath(canvas, valuePoints, path, startFromValue, contentModel, paint);
+    }
+
+    private void drawModelUsingPath(Canvas canvas, List<PointF> valuePoints, Path path, int startFromValue, List<Integer> contentModel, Paint paint) {
+        for (int i = 0,j=1; i < contentModel.size() ; i++,j++) {
+            PointF pointF = new PointF(verticalAxisPadding + contentModel.get(i) * getMinuteWidth(),
+                    getHeight() - horizontalAxisPadding - (startFromValue + j) * getItemHeight());
+            path.lineTo(pointF.x, pointF.y);
+            canvas.drawCircle(pointF.x,pointF.y,stripeHeight / 4, paint);
+            valuePoints.add(pointF);
+        }
+        paint.setStyle(Paint.Style.STROKE);
+        canvas.drawPath(path,paint);
+    }
 
     private void drawLimit(Canvas canvas) {
         float itemHeight = getItemHeight();
@@ -338,15 +373,21 @@ public class SmokeChartView extends View {
     }
 
     public void setModel(List<Date> values) {
-        model = new ArrayList<Integer>(values.size());
+        List<Integer> minutesModel = convertToMinutes(values);
+        model = minutesModel;
+        futureModel = null;
+    }
+
+    private List<Integer> convertToMinutes(List<Date> values) {
+        List<Integer> minutesModel = new ArrayList<Integer>(values.size());
         Calendar calendar = Calendar.getInstance();
         for (Date date : values) {
             calendar.setTime(date);
             int hours = calendar.get(Calendar.HOUR_OF_DAY);
             int minutes = calendar.get(Calendar.MINUTE);
-            model.add(hours*60+minutes);
+            minutesModel.add(hours * 60 + minutes);
         }
-        invalidate();
+        return minutesModel;
     }
 
     public float getMinuteWidth() {
@@ -359,6 +400,9 @@ public class SmokeChartView extends View {
 
     public void setLimit(int limit) {
         this.limit = limit;
-        invalidate();
+    }
+
+    public void setFutureModel(List<Date> futureModelDateList) {
+        futureModel = convertToMinutes(futureModelDateList);
     }
 }
