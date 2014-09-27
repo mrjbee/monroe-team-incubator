@@ -48,6 +48,7 @@ public class SmokeHistogramView extends View {
 
     String verticalAxisName = "smokes count";
     String horizontalAxisName = "today hours";
+    private final DateFormat dateFormater = DateFormat.getDateInstance();
 
 
     public SmokeHistogramView(Context context) {
@@ -208,11 +209,10 @@ public class SmokeHistogramView extends View {
         canvas.drawLine(touch.x, 0, touch.x, getHeight() - horizontalAxisPadding, selectionValuePaintWithoutShadow);
         Rect textBounds = new Rect();
         String timeText = null;
-        DateFormat format = DateFormat.getDateInstance();
         if (modelItem != null){
-            timeText = format.format(modelItem.date);
+            timeText = formatDate(modelItem.date);
         } else {
-            timeText = format.format(getModelDate(touch.x,valuePoints));
+            timeText = formatDate(getModelDate(touch.x,valuePoints));
         }
 
         if (timeText != null) {
@@ -385,6 +385,14 @@ public class SmokeHistogramView extends View {
 
     private float getMaxXValue() {
         return verticalAxisPadding + model.size() * (getBarWidth()+barSpacing);
+    }
+
+
+    private String formatDate(Date dateToFormat){
+        Date today =  DateUtils.dateOnly(DateUtils.now());
+        if (dateToFormat.compareTo(today) == 0) return "Today";
+        if (dateToFormat.compareTo(DateUtils.mathDays(today,-1)) == 0) return "Yesterday";
+        return dateFormater.format(dateToFormat);
     }
 
     private static class TempModelItem{

@@ -99,13 +99,22 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                 case LAST_30_DAYS_COUNT:
                     statisticState.monthSmokeList = new ArrayList<Pair<Date, Integer>>();
                     List<DAO.Result> loggedDates = dao.groupSmokesPerDay();
-                    Date tomorrow = DateUtils.mathDays(DateUtils.dateOnly(DateUtils.now()),+1);
+                    Date today = DateUtils.dateOnly(DateUtils.now());
                     Date itDate = null;
-                    for (int i = 0; i < 32; i++){
-                        itDate = DateUtils.mathDays(tomorrow,-i);
-                        statisticState.monthSmokeList.add(new Pair<Date, Integer>(itDate,getSmokeCountForDate(itDate,loggedDates)));
+                    int itSmokeCount = 0;
+                    boolean wasValuable = false;
+                    for (int i = 31; i > -1; i--){
+                        itDate = DateUtils.mathDays(today,-i);
+                        itSmokeCount = getSmokeCountForDate(itDate, loggedDates);
+                        if (wasValuable || itSmokeCount > 0){
+                            wasValuable = true;
+                            statisticState.monthSmokeList.add(new Pair<Date, Integer>(itDate,itSmokeCount));
+                        }
                     }
-
+                    for (int i=1; statisticState.monthSmokeList.size() < 31;i++){
+                        itDate = DateUtils.mathDays(today,i);
+                        statisticState.monthSmokeList.add(new Pair<Date, Integer>(itDate,0));
+                    }
                     break;
                 }
 
