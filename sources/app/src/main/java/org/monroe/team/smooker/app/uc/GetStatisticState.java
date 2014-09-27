@@ -91,6 +91,8 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                             statisticState.lastSmokeDate = new Date(using(Settings.class).get(Settings.APP_FIRST_TIME_DATE));
                         }
                     break;
+                case TOTAL_SMOKES:
+                      statisticState.totalSmokes =  dao.getSmokesAllPeriod().size();
                 }
         }
         return statisticState;
@@ -101,8 +103,8 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
     }
 
     public static enum StatisticName{
-        SMOKE_TODAY, SMOKE_YESTERDAY, SPEND_MONEY, QUIT_SMOKE, LAST_LOGGED_SMOKE, ALL;
-        private static final StatisticName[] ALL_NAMES = {SMOKE_TODAY, SPEND_MONEY, QUIT_SMOKE, LAST_LOGGED_SMOKE};
+        SMOKE_TODAY, SMOKE_YESTERDAY, SPEND_MONEY, QUIT_SMOKE, LAST_LOGGED_SMOKE, TOTAL_SMOKES, ALL;
+        private static final StatisticName[] ALL_NAMES = {SMOKE_TODAY, SPEND_MONEY, QUIT_SMOKE, TOTAL_SMOKES, LAST_LOGGED_SMOKE};
     }
 
     public static class StatisticRequest {
@@ -139,6 +141,7 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
         QuitSmokeDifficultLevel quitSmokeDifficult;
         Date lastSmokeDate;
         Boolean smokeLimitChangedToday;
+        Integer totalSmokes;
 
 
         public List<Date> getYesterdaySmokeDates() {
@@ -156,6 +159,8 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
         public String getSpendMoney() {
             return spendMoney;
         }
+
+        public Integer getTotalSmokes() {return totalSmokes;}
 
         public Integer getAverageSmoke() {
             return averageSmoke;

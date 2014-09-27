@@ -46,6 +46,8 @@ public class DashboardActivity extends SupportActivity {
     static final int WIZARD_ACTIVITY_REQUEST = 2;
     private PopupMenu settingsMenu;
     private SmokeChartView chartView;
+    private SmokeHistogramView histogramView;
+
     private ListView calendarListView;
     private View lastTimeSmokeView;
     private ArrayAdapter<UpdateQuitSmokeSchedule.QuitSmokeSchedule.DayModel> calendarListAdapter;
@@ -57,6 +59,8 @@ public class DashboardActivity extends SupportActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         chartView = new SmokeChartView(this);
+        histogramView = new SmokeHistogramView(this);
+
         calendarListView = new ListView(this);
         lastTimeSmokeView = getLayoutInflater().inflate(R.layout.last_time_smoke_panel, (ViewGroup) findViewById(R.id.d_content_layout),false);
         application().onDashboardCreate();
@@ -95,6 +99,8 @@ public class DashboardActivity extends SupportActivity {
 
         view(RadioButton.class,R.id.d_chart_radio).setChecked(application().settings().get(Settings.CONTENT_VIEW_CONFIG) == 0);
         view(RadioButton.class,R.id.d_calendar_radio).setChecked(application().settings().get(Settings.CONTENT_VIEW_CONFIG) == 1);
+        view(RadioButton.class,R.id.d_time_radio).setChecked(application().settings().get(Settings.CONTENT_VIEW_CONFIG) == 2);
+        view(RadioButton.class,R.id.d_histogram_radio).setChecked(application().settings().get(Settings.CONTENT_VIEW_CONFIG) == 3);
 
         view(RadioButton.class,R.id.d_chart_radio).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -121,6 +127,16 @@ public class DashboardActivity extends SupportActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
                     application().settings().set(Settings.CONTENT_VIEW_CONFIG,2);
+                }
+                updateContentView();
+            }
+        });
+
+        view(RadioButton.class,R.id.d_histogram_radio).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    application().settings().set(Settings.CONTENT_VIEW_CONFIG,3);
                 }
                 updateContentView();
             }
@@ -192,9 +208,12 @@ public class DashboardActivity extends SupportActivity {
         } else if (application().settings().get(Settings.CONTENT_VIEW_CONFIG) == 1) {
             view(LinearLayout.class, R.id.d_content_layout).setPadding(0,0,0,0);
             view(LinearLayout.class, R.id.d_content_layout).addView(calendarListView);
-        } else {
+        } else  if (application().settings().get(Settings.CONTENT_VIEW_CONFIG) == 2) {
             view(LinearLayout.class, R.id.d_content_layout).setPadding(0, 0, 0, 0);
             view(LinearLayout.class, R.id.d_content_layout).addView(lastTimeSmokeView);
+        } else{
+            view(LinearLayout.class, R.id.d_content_layout).setPadding(10, 0, 0, 0);
+            view(LinearLayout.class, R.id.d_content_layout).addView(histogramView);
         }
     }
 
@@ -348,6 +367,12 @@ public class DashboardActivity extends SupportActivity {
                             Integer.toString(statistics.getAverageSmoke()));
             chartView.setModel(statistics.getTodaySmokeDates());
         }
+
+        if (exists(statistics.getTotalSmokes())){
+            view(TextView.class,R.id.d_total_smokes_counter_text).setText(statistics.getTotalSmokes().toString()   );
+        }
+
+
         if (exists(statistics.getSpendMoney())){
             view(TextView.class,R.id.d_spend_money_counter_text).setText(statistics.getSpendMoney());
         }

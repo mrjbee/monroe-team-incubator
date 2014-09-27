@@ -41,10 +41,32 @@
         android:padding="15dp">
 
         <TextView
+            android:id="@+id/d_total_smokes_counter_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_caption_small"
+            android:paddingTop="15dp"
+            android:text="0"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/d_total_smokes_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_normal_smalles"
+            android:text="Total smokes"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"/>
+
+
+
+        <TextView
             android:id="@+id/d_spend_money_counter_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
+            android:paddingTop="5dp"
             android:text="Price $"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size_caption_small"
@@ -54,7 +76,7 @@
             android:id="@+id/d_spend_money_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="spend money"
+            android:text="Spend money"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size_normal_smalles"
             android:textStyle="bold" />
@@ -64,7 +86,7 @@
             android:id="@+id/d_smoke_today_counter_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:text="10/2"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size_caption_biggest"
@@ -121,6 +143,14 @@
                 android:background="@drawable/chart_option"
                 android:button="@android:color/transparent"
                 android:checked="true" />
+
+            <RadioButton
+                android:layout_width="@dimen/views_btn_size"
+                android:layout_height="@dimen/views_btn_size"
+                android:checked="true"
+                android:background="@drawable/chart_option"
+                android:button="@android:color/transparent"
+                android:id="@+id/d_histogram_radio"/>
 
             <RadioButton
                 android:id="@+id/d_time_radio"

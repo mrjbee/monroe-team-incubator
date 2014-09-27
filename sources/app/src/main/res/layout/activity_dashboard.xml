@@ -54,12 +54,36 @@
                 android:layout_above="@+id/action_layout"
                 android:layout_alignParentRight="true"/>
 
+
+            <TextView
+                android:id="@+id/d_total_smokes_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_normal_smalles"
+                android:text="Total smokes"
+                android:layout_marginLeft="5dp"
+                android:layout_above="@+id/d_total_smokes_counter_text"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/d_total_smokes_counter_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_caption_small"
+                android:text="0"
+                android:textColor="@android:color/white"
+                android:layout_marginLeft="15dp"
+                android:textStyle="bold"
+                android:layout_above="@+id/d_spend_money_text"
+                />
+
             <TextView
                 android:id="@+id/d_spend_money_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_normal_smalles"
-                android:text="spend money"
+                android:text="Spend money"
                 android:layout_marginLeft="5dp"
                 android:layout_above="@+id/d_spend_money_counter_text"
                 android:textColor="@android:color/white"
@@ -107,6 +131,13 @@
                     android:background="@drawable/chart_option"
                     android:button="@android:color/transparent"
                     android:id="@+id/d_chart_radio"/>
+                <RadioButton
+                    android:layout_width="@dimen/views_btn_size"
+                    android:layout_height="@dimen/views_btn_size"
+                    android:checked="true"
+                    android:background="@drawable/chart_option"
+                    android:button="@android:color/transparent"
+                    android:id="@+id/d_histogram_radio"/>
                 <RadioButton
                     android:layout_width="@dimen/views_btn_size"
                     android:layout_height="@dimen/views_btn_size"

@@ -4,42 +4,39 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 
 import java.lang.reflect.Method;
+import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class SmokeChartView extends View {
+public class SmokeHistogramView extends View {
 
+    private final int barSpacing = 2;
     Paint axisPaint;
     Paint axisLabelPaint;
     Paint transparentPaint;
     Paint backgroundStripePaint;
     Paint stripePaint;
 
-    Paint limitPaint;
-    Paint limitLabelPaint;
-
-
     Paint valuePaint;
     Paint selectionValuePaint;
+    Paint selectionValuePaintWithoutShadow;
 
 
     Rect verticalAxisTextBounds = new Rect();
     private float verticalAxisPadding;
     Rect horizontalAxisTextBounds = new Rect();
     private float horizontalAxisPadding;
-    private List<Integer> model = new ArrayList<Integer>();
-    private int limit = -1;
+    private List<Pair<Date,Integer>> model = new ArrayList<Pair<Date, Integer>>();
 
     PointF originalTouch = null;
 
@@ -51,17 +48,17 @@ public class SmokeChartView extends View {
     String horizontalAxisName = "today hours";
 
 
-    public SmokeChartView(Context context) {
+    public SmokeHistogramView(Context context) {
         super(context);
         initialize(context);
     }
 
-    public SmokeChartView(Context context, AttributeSet attrs) {
+    public SmokeHistogramView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initialize(context);
     }
 
-    public SmokeChartView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SmokeHistogramView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initialize(context);
     }
@@ -73,7 +70,7 @@ public class SmokeChartView extends View {
     private void initialize(Context context) {
 
         verticalAxisName = context.getResources().getString(R.string.chart_smokes_axis);
-        horizontalAxisName = context.getResources().getString(R.string.chart_time_axis);
+        horizontalAxisName = context.getResources().getString(R.string.chart_day_axis);
 
 
         backgroundStripeHeight = dimen(R.integer.chart_stripe_background_height_float);
@@ -98,13 +95,19 @@ public class SmokeChartView extends View {
                 dimen(R.integer.chart_shadow_radius_float),
                 dimen(R.integer.chart_shadow_dx_float),
                 dimen(R.integer.chart_shadow_dy_float), Color.LTGRAY);
+
+        selectionValuePaintWithoutShadow = new Paint();
+        selectionValuePaintWithoutShadow.setAntiAlias(true);
+        selectionValuePaintWithoutShadow.setColor(Color.parseColor("#008cec"));
+        selectionValuePaintWithoutShadow.setStrokeWidth(dimen(R.integer.chart_stroke_boldest_float));
+        selectionValuePaintWithoutShadow.setTextSize(axisCaptionTextSize);
+
         try {
             Method method = this.getClass().getMethod("setLayerType",int.class,Paint.class);
             if (method!=null){
                 method.invoke(this,LAYER_TYPE_SOFTWARE, selectionValuePaint);
             }
         } catch (Exception e) {}
-
 
         axisLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.LINEAR_TEXT_FLAG);
         axisLabelPaint.setAntiAlias(true);
@@ -128,13 +131,6 @@ public class SmokeChartView extends View {
         stripePaint.setColor(Color.BLACK);
         stripePaint.setAlpha(30);
 
-        limitPaint = new Paint();
-        limitPaint.setColor(Color.RED);
-        limitPaint.setStrokeWidth(dimen(R.integer.chart_stroke_bolder_float));
-
-        limitLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.LINEAR_TEXT_FLAG);
-        limitLabelPaint.setColor(Color.RED);
-        limitLabelPaint.setTextSize(axisCaptionTextSize);
     }
 
     @Override
@@ -152,104 +148,138 @@ public class SmokeChartView extends View {
     protected void onDraw(Canvas canvas) {
         drawBackgroundStripes(canvas);
         float topPadding = drawStripes(canvas);
-        drawAxis(canvas, topPadding);
-        if (limit > 0) drawLimit(canvas);
 
-        List<PointF> valuePoints = new ArrayList<PointF>();
+        List<TempModelItem> valuePoints = new ArrayList<TempModelItem>();
 
         if(!model.isEmpty()){
             drawModel(canvas,valuePoints);
         }
 
         if(originalTouch != null){
+            drawSelectionShadow(canvas, valuePoints);
+            valuePoints.clear();
+            drawModel(canvas,valuePoints);
+        }
+
+        drawAxis(canvas, topPadding);
+
+        if(originalTouch != null){
             drawSelection(canvas, valuePoints);
         }
     }
 
-    private void drawSelection(Canvas canvas, List<PointF> valuePoints) {
-        PointF touch = new PointF(originalTouch.x,originalTouch.y);
-        if (touch.x < verticalAxisPadding + 5){
-            touch.set(verticalAxisPadding + 5,touch.y);
-        } else if (touch.x > getMaxMinuteWidth()){
-            touch.x = getMaxMinuteWidth();
+
+    private void drawSelectionShadow(Canvas canvas,   List<TempModelItem> valuePoints) {
+
+        PointF touch = new PointF(originalTouch.x, originalTouch.y);
+
+        if (touch.x < verticalAxisPadding + 5) {
+            touch.set(verticalAxisPadding + 5, touch.y);
+        } else if (touch.x > getMaxXValue()) {
+            touch.x = getMaxXValue();
         }
 
-        Pair<Integer,PointF>  smokePoint = findSmoke(touch, valuePoints);
-        if (smokePoint != null) {
-            touch.set(smokePoint.second.x,touch.y);
+        TempModelItem modelItem = findSmoke(touch, valuePoints);
+        if (modelItem != null) {
+            touch.set(modelItem.valueAnchor.x, touch.y);
         }
-
 
         canvas.drawLine(touch.x, 0, touch.x, getHeight() - horizontalAxisPadding, selectionValuePaint);
-        int minutesTotal = Math.round((touch.x - verticalAxisPadding)/getMinuteWidth());
-        int minutes = minutesTotal%60;
-        int hours = minutesTotal/60;
-        String timeText = ((hours == 0)? "00":hours) +":"+((minutes<10)?"0"+minutes:minutes);
-        Rect timeTextBounds = new Rect();
-        Rect timeText2Bounds = new Rect();
-        selectionValuePaint.getTextBounds(timeText,0,timeText.length(),timeTextBounds);
-        selectionValuePaint.getTextBounds("W",0,1,timeText2Bounds);
-        float textXPosition = touch.x - timeTextBounds.width()/2;
-        if (textXPosition < verticalAxisPadding){
-            textXPosition = verticalAxisPadding;
-        } else if (textXPosition + timeTextBounds.width()  > getWidth()){
-            textXPosition = getWidth() - timeTextBounds.width() - 5;
-        }
-        canvas.drawText(timeText,textXPosition, getHeight()-horizontalAxisPadding +timeText2Bounds.height()*1.5f,selectionValuePaint);
 
-
-        if (smokePoint != null){
-            String text = smokePoint.first.toString();
-            selectionValuePaint.getTextBounds(text,0,text.length(),timeTextBounds);
-            canvas.drawText(text,smokePoint.second.x - stripeHeight-timeTextBounds.width(), smokePoint.second.y -stripeHeight, selectionValuePaint);
-            canvas.drawCircle(smokePoint.second.x,smokePoint.second.y,stripeHeight / 2, selectionValuePaint);
+        if (modelItem != null){
+            canvas.drawCircle(modelItem.valueAnchor.x,modelItem.valueAnchor.y,stripeHeight / 2, selectionValuePaint);
         }
     }
 
-    private Pair<Integer, PointF> findSmoke(PointF touch, List<PointF> valuePoints) {
-        for (int i = valuePoints.size()-1; i > 0; i--) {
-            if (valuePoints.get(i).x > touch.x-5 && valuePoints.get(i).x < touch.x+5){
-                return new Pair<Integer, PointF>(i,valuePoints.get(i));
+    private void drawSelection(Canvas canvas,   List<TempModelItem> valuePoints) {
+
+        PointF touch = new PointF(originalTouch.x,originalTouch.y);
+
+        if (touch.x < verticalAxisPadding + 5){
+            touch.set(verticalAxisPadding + 5,touch.y);
+        } else if (touch.x > getMaxXValue()){
+            touch.x = getMaxXValue();
+        }
+
+        TempModelItem  modelItem = findSmoke(touch, valuePoints);
+        if (modelItem != null) {
+            touch.set(modelItem.valueAnchor.x,touch.y);
+        }
+
+        canvas.drawLine(touch.x, 0, touch.x, getHeight() - horizontalAxisPadding, selectionValuePaintWithoutShadow);
+        Rect textBounds = new Rect();
+        String timeText = null;
+        DateFormat format = DateFormat.getDateInstance();
+        if (modelItem != null){
+            timeText = format.format(modelItem.date);
+        } else {
+            timeText = format.format(getModelDate(touch.x,valuePoints));
+        }
+
+        if (timeText != null) {
+            Rect timeText2Bounds = new Rect();
+            selectionValuePaint.getTextBounds(timeText, 0, timeText.length(), textBounds);
+            selectionValuePaint.getTextBounds("W", 0, 1, timeText2Bounds);
+
+            float textXPosition = touch.x - textBounds.width() / 2;
+
+            if (textXPosition < verticalAxisPadding) {
+                textXPosition = verticalAxisPadding;
+            } else if (textXPosition + textBounds.width() > getWidth()) {
+                textXPosition = getWidth() - textBounds.width() - 5;
+            }
+
+            canvas.drawText(timeText, textXPosition, getHeight() - horizontalAxisPadding + timeText2Bounds.height() * 1.5f, selectionValuePaint);
+        }
+
+        if (modelItem != null){
+            String text = modelItem.value.toString();
+            selectionValuePaint.getTextBounds(text,0,text.length(),textBounds);
+            canvas.drawText(text,modelItem.valueAnchor.x - stripeHeight-textBounds.width(), modelItem.valueAnchor.y -stripeHeight, selectionValuePaint);
+            canvas.drawCircle(modelItem.valueAnchor.x,modelItem.valueAnchor.y,stripeHeight / 2, selectionValuePaintWithoutShadow);
+        }
+    }
+
+    private Date getModelDate(float x, List<TempModelItem> items) {
+        for (int i = items.size()-1; i > -1 ; i--) {
+            if (x > (items.get(i).valueAnchor.x - getBarWidth()/2)){
+                return model.get(i).first;
+            }
+        }
+        return items.get(0).date;
+    }
+
+
+    private TempModelItem findSmoke(PointF touch,  List<TempModelItem> valuePoints) {
+        for (int i = valuePoints.size()-1; i > -1; i--) {
+            if (valuePoints.get(i).valueAnchor.x > touch.x-5 && valuePoints.get(i).valueAnchor.x < touch.x+5){
+                return valuePoints.get(i);
             }
         }
         return null;
     }
 
 
-    private void drawModel(Canvas canvas, List<PointF> valuePoints) {
-        Path path = new Path();
+    private void drawModel(Canvas canvas,   List<TempModelItem> valuePoints) {
         valuePaint.setStyle(Paint.Style.FILL);
-        path.moveTo(verticalAxisPadding, getHeight() - horizontalAxisPadding);
-        canvas.drawCircle(verticalAxisPadding, getHeight() - horizontalAxisPadding,
-                stripeHeight / 4, valuePaint);
-        valuePoints.add(new PointF(verticalAxisPadding, getHeight() - horizontalAxisPadding));
-        for (int i = 0,j=1; i < model.size() ; i++,j++) {
-            PointF pointF = new PointF(verticalAxisPadding + model.get(i) * getMinuteWidth(),
-                    getHeight() - horizontalAxisPadding - j * getItemHeight());
-            path.lineTo(pointF.x, pointF.y);
-            canvas.drawCircle(pointF.x,pointF.y,stripeHeight / 4, valuePaint);
-            valuePoints.add(pointF);
+
+        float barWidth = getBarWidth();
+
+        RectF barRect = new RectF();
+        for (int i = 0; i < model.size() ; i++) {
+            barRect.set(verticalAxisPadding + i*barWidth + (i+1)*barSpacing,
+                    getHeight() - horizontalAxisPadding - model.get(i).second * getSmokeHeight(),
+                    verticalAxisPadding + (i+1)*barWidth + (i+1)*barSpacing,
+                    getHeight() - horizontalAxisPadding);
+
+            canvas.drawRect(barRect, valuePaint);
+            valuePoints.add(new TempModelItem(
+                    new PointF(verticalAxisPadding + i*barWidth + (i+1)*barSpacing + barWidth/2,
+                            getHeight() - horizontalAxisPadding - model.get(i).second * getSmokeHeight()),
+                    model.get(i).second,
+                    model.get(i).first
+            ));
         }
-        valuePaint.setStyle(Paint.Style.STROKE);
-        canvas.drawPath(path,valuePaint);
-    }
-
-
-    private void drawLimit(Canvas canvas) {
-        float itemHeight = getItemHeight();
-        float limitYPosition = getHeight()-horizontalAxisPadding-itemHeight* limit;
-
-
-
-        Rect textBounds = new Rect();
-        String limitAsText = Integer.toString(limit);
-        limitLabelPaint.getTextBounds(limitAsText, 0, limitAsText.length(), textBounds);
-            canvas.drawLine(verticalAxisPadding + textBounds.width() + verticalAxisTextBounds.height() * 1.5f,
-                    limitYPosition,
-                    getWidth(),
-                    limitYPosition,
-                    limitPaint);
-            canvas.drawText(limitAsText, verticalAxisPadding + verticalAxisTextBounds.height(), limitYPosition + textBounds.width() * 0.25f, limitLabelPaint);
     }
 
     private float drawStripes(Canvas canvas) {
@@ -292,8 +322,6 @@ public class SmokeChartView extends View {
 
 
     private void drawAxis(Canvas canvas, float topPadding) {
-        //DEBUG
-        //canvas.drawText(verticalAxisTextBounds.width()+":"+verticalAxisTextBounds.height(),200,200,axisPaint);
 
         if (topPadding < verticalAxisTextBounds.width() * 0.5f){
             canvas.drawLine(verticalAxisPadding, topPadding, verticalAxisPadding, verticalAxisTextBounds.width() * 0.5f, axisPaint);
@@ -322,9 +350,9 @@ public class SmokeChartView extends View {
                 axisLabelPaint);
     }
 
-    private float getItemHeight() {
+    private float getSmokeHeight() {
        float max = maxItemsOnABoard();
-       float maxToDraw = Math.max(limit, model.size());
+       float maxToDraw = getMaxSmokeInModel();
        if (max >= maxToDraw){
            //1 stripe : 1 smoke
            return stripeHeight;
@@ -333,28 +361,40 @@ public class SmokeChartView extends View {
        }
     }
 
-    public void setModel(List<Date> values) {
-        model = new ArrayList<Integer>(values.size());
-        Calendar calendar = Calendar.getInstance();
-        for (Date date : values) {
-            calendar.setTime(date);
-            int hours = calendar.get(Calendar.HOUR_OF_DAY);
-            int minutes = calendar.get(Calendar.MINUTE);
-            model.add(hours*60+minutes);
+    private float getMaxSmokeInModel() {
+        //TODO: add cache here
+        float maxToDraw = 0;
+        for (Pair<Date, Integer> dateIntegerPair : model) {
+            if (dateIntegerPair.second > maxToDraw) maxToDraw = dateIntegerPair.second;
         }
+        return maxToDraw;
+    }
+
+    public void setModel(List<Pair<Date, Integer>> model) {
+        this.model = model;
         invalidate();
     }
 
-    public float getMinuteWidth() {
-        return ((float)(getWidth()-verticalAxisPadding)) / (25 * 60);
+    public float getBarWidth() {
+        float freeSpace = (float) (getWidth() - verticalAxisPadding);
+        return freeSpace / (model.size() + 0.5f) - barSpacing;
     }
 
-    private float getMaxMinuteWidth() {
-        return verticalAxisPadding + (24 * 60) * getMinuteWidth();
+    private float getMaxXValue() {
+        return verticalAxisPadding + model.size() * (getBarWidth()+barSpacing);
     }
 
-    public void setLimit(int limit) {
-        this.limit = limit;
-        invalidate();
+    private static class TempModelItem{
+
+        private final PointF valueAnchor;
+        private final Integer value;
+        private final Date date;
+
+        private TempModelItem(PointF valueAnchor, Integer value, Date date) {
+            this.valueAnchor = valueAnchor;
+            this.value = value;
+            this.date = date;
+        }
     }
+
 }
