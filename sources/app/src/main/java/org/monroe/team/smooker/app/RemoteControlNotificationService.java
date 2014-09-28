@@ -113,7 +113,8 @@ public class RemoteControlNotificationService extends Service {
             closeActionIntent.putExtra("CLOSE",true);
             PendingIntent closeBtnIntent = PendingIntent.getBroadcast(getApplicationContext(), 3, closeActionIntent, 0);
 
-           // remoteViews.setOnClickPendingIntent(R.id.cn_add_btn,addBtnIntent);
+            remoteViews.setOnClickPendingIntent(R.id.cn_root_view,pIntent);
+            remoteViews.setOnClickPendingIntent(R.id.cn_add_btn,addBtnIntent);
             remoteViews.setOnClickPendingIntent(R.id.cn_close_btn,closeBtnIntent);
 
             return builder.build();

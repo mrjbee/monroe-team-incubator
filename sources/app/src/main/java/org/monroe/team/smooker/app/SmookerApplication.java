@@ -41,6 +41,7 @@ public class SmookerApplication extends Application {
     private final static int QUIT_SMOKE_PROPOSAL_NOTIFICATION_ID = 333;
     private final static int QUIT_SMOKE_UPDATE_NOTIFICATION = 335;
     private final static int STATISTIC_UPDATE_NOTIFICATION = 336;
+    private boolean isSmokeSuggestNotificationOpened = false;
 
     @Override public void onCreate() {
         super.onCreate();
@@ -321,12 +322,16 @@ public class SmookerApplication extends Application {
     public void cancelNextSmokeNotification(boolean updateDate) {
         NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(NEXT_SCHEDULE_SMOKE_NOTIFICATION_ID);
-        if (updateDate) settings().set(Settings.LAST_SMOKE_SUGGESTED_DATE,DateUtils.now().getTime());
+        if (updateDate) {
+            isSmokeSuggestNotificationOpened = false;
+            settings().set(Settings.LAST_SMOKE_SUGGESTED_DATE,DateUtils.now().getTime());
+        }
     }
 
     public void showNextSmokeNotification() {
 
         NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
         PendingIntent openApp = DashboardActivity.openDashboard(getApplicationContext());
@@ -339,13 +344,15 @@ public class SmookerApplication extends Application {
                 .setSmallIcon(R.drawable.notif_quit_assistance)
                 .setContentIntent(openApp)
                 .setDeleteIntent(SystemAlarmReceiver.createIntent(this, 411, "SKIP_SMOKE"))
-                .setVibrate(new long[]{2000, 2000, 1000, 1000})
                 .addAction(R.drawable.notif_white_small, "Skip this time", SystemAlarmReceiver.createIntent(this, 411, "SKIP_SMOKE"))
                 .addAction(R.drawable.notif_orange_small, "+1 smoke break", addSmoke);
 
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        builder.setSound(alarmSound);
-
+        if (!isSmokeSuggestNotificationOpened) {
+            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            builder.setSound(alarmSound);
+            builder.setVibrate(new long[]{500, 500, 500, 500, 1000, 1000});
+        }
+        isSmokeSuggestNotificationOpened = true;
         manager.notify(NEXT_SCHEDULE_SMOKE_NOTIFICATION_ID, builder.build());
     }
 }

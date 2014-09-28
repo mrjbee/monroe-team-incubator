@@ -2,16 +2,20 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/widget_dark_bkg">
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/widget_dark_bkg">
+
 
     <RelativeLayout
         android:id="@+id/wc_left_content_panel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        >
+        android:layout_marginRight="10dp">
 
         <TextView
             android:id="@+id/wc_left_data_text"
@@ -23,7 +27,6 @@
             android:text="20"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size_widget"
-            android:textStyle="bold"
             android:shadowColor="@android:color/black"
             android:shadowDx="2"
             android:shadowDy="-1"
@@ -35,11 +38,11 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/wc_left_data_text"
+            android:paddingTop="5dp"
             android:text="min"
-            android:layout_marginTop="-3dp"
             android:textSize="@dimen/text_size_widget_details"
             android:textStyle="bold"
-            android:textColor="@android:color/white"
+            android:textColor="@color/background.main"
             />
 
     </RelativeLayout>
@@ -80,6 +83,15 @@
         android:shadowDx="2"
         android:shadowDy="-1"
         android:shadowRadius="1"/>
+    </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/wc_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="25dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/add_cigareta_btn"/>
 
 </RelativeLayout>

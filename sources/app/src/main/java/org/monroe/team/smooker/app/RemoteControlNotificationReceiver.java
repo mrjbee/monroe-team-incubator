@@ -14,6 +14,7 @@ public class RemoteControlNotificationReceiver extends BroadcastReceiver {
         if (intent.getBooleanExtra("CLOSE",false)){
             SmookerApplication.instance.onRemoteControlNotificationCloseRequest();
         } else {
+            SmookerApplication.instance.cancelNextSmokeNotification(true);
             SmookerApplication.instance.onRemoteControlNotificationAddSmokeRequest();
         }
     }
