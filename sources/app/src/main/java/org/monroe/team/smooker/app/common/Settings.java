@@ -2,8 +2,11 @@ package org.monroe.team.smooker.app.common;
 
 import android.content.SharedPreferences;
 
+import java.util.Date;
+
 public class Settings {
 
+    public static final SettingItem<Long> LAST_SMOKE_SUGGESTED_DATE = new SettingItem<Long>("LAST_SMOKE_SUGGESTED_DATE",Long.class, -1L);
 
     public static final SettingItem<Integer> AVERAGE_SMOKE = new SettingItem<Integer>("AVERAGE_SMOKE",Integer.class, null);
 

@@ -94,10 +94,10 @@ public class SmokeChartView extends View {
 
         futureValuePaint = new Paint();
         futureValuePaint.setAntiAlias(true);
-        futureValuePaint.setAlpha(150);
-        futureValuePaint.setColor(Color.RED);
+        futureValuePaint.setColor(Color.parseColor("#008cec"));
+        futureValuePaint.setAlpha(200);
         futureValuePaint.setStyle(Paint.Style.STROKE);
-        futureValuePaint.setStrokeWidth(dimen(R.integer.chart_stroke_default_float));
+        futureValuePaint.setStrokeWidth(dimen(R.integer.chart_stroke_predict_float));
 
 
         selectionValuePaint= new Paint();
@@ -112,7 +112,7 @@ public class SmokeChartView extends View {
         try {
             Method method = this.getClass().getMethod("setLayerType",int.class,Paint.class);
             if (method!=null){
-              //  method.invoke(this,LAYER_TYPE_SOFTWARE, selectionValuePaint);
+               method.invoke(this,LAYER_TYPE_SOFTWARE, selectionValuePaint);
             }
         } catch (Exception e) {}
 

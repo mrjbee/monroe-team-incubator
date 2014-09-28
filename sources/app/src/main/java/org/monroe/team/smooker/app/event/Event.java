@@ -16,9 +16,7 @@ public abstract class Event<DataType>{
     private static final Map<Object, List<BroadcastReceiver>> registerMap = new HashMap<Object, List<BroadcastReceiver>>();
 
     public static <DataT> void  send(Context context, Event<DataT> event, DataT data){
-        Intent intent = new Intent(event.getAction());
-        event.putValue(intent, data);
-        context.sendBroadcast(intent);
+        event.send(context,data);
     }
 
     public static <DataT> void subscribeOnEvent(Context context, Object owner, final Event<DataT> event, final Closure<DataT, Void> onEvent){
@@ -46,6 +44,13 @@ public abstract class Event<DataType>{
             registerMap.put(owner, new ArrayList<BroadcastReceiver>(2));
         }
         registerMap.get(owner).add(receiver);
+    }
+
+
+    public void send(Context context, DataType data){
+        Intent intent = new Intent(getAction());
+        putValue(intent, data);
+        context.sendBroadcast(intent);
     }
 
     protected abstract DataType extractValue(Intent intent);

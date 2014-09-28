@@ -7,6 +7,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Pair;
 import android.widget.Toast;
@@ -35,6 +37,7 @@ public class SmookerApplication extends Application {
     public static SmookerApplication instance;
     private Model model;
 
+    private final static int NEXT_SCHEDULE_SMOKE_NOTIFICATION_ID = 337;
     private final static int QUIT_SMOKE_PROPOSAL_NOTIFICATION_ID = 333;
     private final static int QUIT_SMOKE_UPDATE_NOTIFICATION = 335;
     private final static int STATISTIC_UPDATE_NOTIFICATION = 336;
@@ -82,7 +85,7 @@ public class SmookerApplication extends Application {
     }
 
 
-    private void closeSystemDialogs() {
+    public void closeSystemDialogs() {
         Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
         this.getApplicationContext().sendBroadcast(it);
     }
@@ -151,10 +154,10 @@ public class SmookerApplication extends Application {
 
 
             builder.setAutoCancel(true)
-                    .setContentTitle("Quit Smoking")
+                    .setContentTitle("Quit Smoking Assistance")
                     .setContentText("Choose a way to quit smoking")
                     .setSubText("... which fits to you")
-                    .setSmallIcon(R.drawable.smooker_logo)
+                    .setSmallIcon(R.drawable.notif_quit_assistance)
                     .setDeleteIntent(dropNotificationPendingIntent)
                     .setContentIntent(pendingIntent);
 
@@ -167,41 +170,39 @@ public class SmookerApplication extends Application {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 1);
+        calendar.set(Calendar.MINUTE, 0);
 
-        Intent intent = new Intent(this, SystemAlarmBroadcastReceiver.class);
+        Intent intent = new Intent(this, SystemAlarmReceiver.class);
         intent.putExtra("TIME_TO_UPDATE_STATISTICS",true);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 401, intent, 0);
 
-        // With setInexactRepeating(), you have to use one of the AlarmManager interval
-        // constants--in this case, AlarmManager.INTERVAL_DAY.
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
+        alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, alarmIntent);
 
         calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 11);
+        calendar.set(Calendar.HOUR_OF_DAY, 8);
         calendar.set(Calendar.MINUTE, 0);
 
-        intent = new Intent(this, SystemAlarmBroadcastReceiver.class);
-        intent.putExtra("TIME_TO_NOTIFICATION_STATISTICS",true);
+        intent = new Intent(this, SystemAlarmReceiver.class);
+        intent.putExtra("TIME_TO_NOTIFICATION_STATISTICS", true);
         alarmIntent = PendingIntent.getBroadcast(this, 402, intent, 0);
 
-        alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
+        alarmManager.setInexactRepeating(AlarmManager.RTC,
+                calendar.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, alarmIntent);
 
-        calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 11);
-        calendar.set(Calendar.MINUTE, 0);
 
-        intent = new Intent(this, SystemAlarmBroadcastReceiver.class);
+        intent = new Intent(this, SystemAlarmReceiver.class);
         intent.putExtra("TIME_TO_UPDATE_CALENDAR_WIDGET",true);
         alarmIntent = PendingIntent.getBroadcast(this, 403, intent, 0);
 
-        alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
+        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
+                AlarmManager.INTERVAL_HALF_HOUR,
                 AlarmManager.INTERVAL_HALF_HOUR, alarmIntent);
+
+        scheduleNextSmokeAlarm();
     }
 
     public CalendarWidget.CalendarWidgetUpdate fetchCalendarWidgetContent() {
@@ -250,10 +251,10 @@ public class SmookerApplication extends Application {
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
                 builder.setAutoCancel(true)
                         .setTicker("Smoke limit decreased")
-                        .setContentTitle("Quit Smoking")
+                        .setContentTitle("Quit Smoking Assistant")
                         .setContentText("Smoke limit decreased")
                         .setSubText("New smoke limit "+state.getTodaySmokeLimit()+" smokes per day")
-                        .setSmallIcon(R.drawable.notif_white_small)
+                        .setSmallIcon(R.drawable.notif_quit_assistance)
                         .setContentIntent(DashboardActivity.openDashboard(this));
                 manager.notify(QUIT_SMOKE_UPDATE_NOTIFICATION, builder.build());
             }
@@ -280,5 +281,71 @@ public class SmookerApplication extends Application {
             answer.add(DateUtils.mathMinutes(scheduleStart, deltaMinutes * i));
         }
         return answer;
+    }
+
+    public void scheduleNextSmokeAlarm() {
+
+        cancelNextSmokeNotification(false);
+
+        PendingIntent alarmIntent = SystemAlarmReceiver.createIntent(this, 410, "TIME_TO_NEXT_SMOKE");
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        GetStatisticState.StatisticState statistics = getModel().execute(GetStatisticState.class, new GetStatisticState.StatisticRequest().with(
+                GetStatisticState.StatisticName.QUIT_SMOKE,
+                GetStatisticState.StatisticName.SMOKE_TODAY,
+                GetStatisticState.StatisticName.LAST_LOGGED_SMOKE));
+
+        if (statistics.getTodaySmokeLimit() > 1 && statistics.getTodaySmokeDates().size() > 0){
+            int leftSmokes = statistics.getTodaySmokeLimit() - statistics.getTodaySmokeDates().size();
+            if (leftSmokes > 0){
+                long startMs = Math.max(settings().get(Settings.LAST_SMOKE_SUGGESTED_DATE),statistics.getLastSmokeDate().getTime());
+                Date scheduleStart = new Date(startMs);
+                Date scheduleStop = DateUtils.mathDays(DateUtils.dateOnly(DateUtils.now()),1);
+                List<Date> scheduledSmokesList = recalculateSmokingSchedule(scheduleStart, scheduleStop, leftSmokes);
+                if (!scheduledSmokesList.isEmpty()){
+                    Date date = scheduledSmokesList.get(0);
+                    //schedule alarm
+                    alarmManager.set(AlarmManager.RTC, date.getTime(), alarmIntent);
+                } else {
+                    alarmManager.cancel(alarmIntent);
+                }
+            }else {
+                    alarmManager.cancel(alarmIntent);
+            }
+        }else {
+            alarmManager.cancel(alarmIntent);
+        }
+     }
+
+
+    public void cancelNextSmokeNotification(boolean updateDate) {
+        NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancel(NEXT_SCHEDULE_SMOKE_NOTIFICATION_ID);
+        if (updateDate) settings().set(Settings.LAST_SMOKE_SUGGESTED_DATE,DateUtils.now().getTime());
+    }
+
+    public void showNextSmokeNotification() {
+
+        NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+
+        PendingIntent openApp = DashboardActivity.openDashboard(getApplicationContext());
+        PendingIntent addSmoke = RemoteControlNotificationReceiver.createAddSmokeIntent(getApplicationContext());
+
+        builder.setAutoCancel(true)
+                .setContentTitle("Quit Smoking Assistant")
+                .setContentText("It`s time to get smoke")
+                .setSubText("But its strongly recommended to skip it")
+                .setSmallIcon(R.drawable.notif_quit_assistance)
+                .setContentIntent(openApp)
+                .setDeleteIntent(SystemAlarmReceiver.createIntent(this, 411, "SKIP_SMOKE"))
+                .setVibrate(new long[]{2000, 2000, 1000, 1000})
+                .addAction(R.drawable.notif_white_small, "Skip this time", SystemAlarmReceiver.createIntent(this, 411, "SKIP_SMOKE"))
+                .addAction(R.drawable.notif_orange_small, "+1 smoke break", addSmoke);
+
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        builder.setSound(alarmSound);
+
+        manager.notify(NEXT_SCHEDULE_SMOKE_NOTIFICATION_ID, builder.build());
     }
 }

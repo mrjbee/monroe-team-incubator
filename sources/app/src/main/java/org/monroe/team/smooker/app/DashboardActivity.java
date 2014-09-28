@@ -98,7 +98,19 @@ public class DashboardActivity extends SupportActivity {
             }
         });
 
-
+        subscribeOnEvent(Events.SUGGESTED_SMOKE_SKIPPED,new Closure<Boolean, Void>() {
+            @Override
+            public Void execute(Boolean arg) {
+                updateUiPerStatistic(model().execute(GetStatisticState.class,
+                        GetStatisticState.StatisticRequest.create(
+                                GetStatisticState.StatisticName.SMOKE_TODAY,
+                                GetStatisticState.StatisticName.QUIT_SMOKE,
+                                GetStatisticState.StatisticName.LAST_LOGGED_SMOKE
+                        )
+                ));
+                return null;
+            }
+        });
 
         view(RadioButton.class,R.id.d_chart_radio).setChecked(application().settings().get(Settings.CONTENT_VIEW_CONFIG) == 0);
         view(RadioButton.class,R.id.d_calendar_radio).setChecked(application().settings().get(Settings.CONTENT_VIEW_CONFIG) == 1);
@@ -229,7 +241,7 @@ public class DashboardActivity extends SupportActivity {
         if (intent != null && intent.getExtras() != null && intent.getExtras().get("PAGE_STACK")!=null){
             Intent s = new Intent(this, WizardActivity.class);
             s.putExtras(intent.getExtras());
-            startActivityForResult(s,WIZARD_ACTIVITY_REQUEST);
+            startActivityForResult(s, WIZARD_ACTIVITY_REQUEST);
             return true;
         }
         return false;
@@ -374,7 +386,8 @@ public class DashboardActivity extends SupportActivity {
         updateUiPerStatistic(model().execute(GetStatisticState.class,
                 GetStatisticState.StatisticRequest.create(
                         GetStatisticState.StatisticName.ALL
-                )));
+                )
+        ));
     }
 
     @Override
@@ -437,14 +450,15 @@ public class DashboardActivity extends SupportActivity {
         }
 
         if (statistics.isRequested(GetStatisticState.StatisticName.QUIT_SMOKE)
-                && statistics.isRequested(GetStatisticState.StatisticName.TOTAL_SMOKES)
+                && statistics.isRequested(GetStatisticState.StatisticName.SMOKE_TODAY)
                 && statistics.isRequested(GetStatisticState.StatisticName.LAST_LOGGED_SMOKE)){
             if (statistics.getTodaySmokeLimit() > 1 && statistics.getTodaySmokeDates().size() > 0){
                 int leftSmokes = statistics.getTodaySmokeLimit() - statistics.getTodaySmokeDates().size();
                 if (leftSmokes > 0){
-                   Date scheduleStart = statistics.getLastSmokeDate();
-                   Date scheduleStop = DateUtils.mathDays(DateUtils.dateOnly(DateUtils.now()),1);
-                   List<Date> scheduledSmokesList = application().recalculateSmokingSchedule(scheduleStart, scheduleStop, leftSmokes);
+                    long startMs = Math.max(application().settings().get(Settings.LAST_SMOKE_SUGGESTED_DATE),statistics.getLastSmokeDate().getTime());
+                    Date scheduleStart = new Date(startMs);
+                    Date scheduleStop = DateUtils.mathDays(DateUtils.dateOnly(DateUtils.now()),1);
+                    List<Date> scheduledSmokesList = application().recalculateSmokingSchedule(scheduleStart, scheduleStop, leftSmokes);
                    if (!scheduledSmokesList.isEmpty()){
                       Date date = scheduledSmokesList.get(0);
                       timeBeforeNextSmoke = date.getTime();

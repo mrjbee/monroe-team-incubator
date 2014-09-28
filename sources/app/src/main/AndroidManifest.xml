@@ -3,6 +3,7 @@
     package="org.monroe.team.smooker.app" >
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:name="org.monroe.team.smooker.app.SmookerApplication"
@@ -24,6 +25,8 @@
             android:name="org.monroe.team.smooker.app.WizardActivity"
             android:label="@string/title_activity_wizzard" >
         </activity>
+
+
 
         <service
             android:name="org.monroe.team.smooker.app.RemoteControlNotificationService"
@@ -50,42 +53,53 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="org.monroe.team.smooker.app.SystemAlarmBroadcastReceiver"
+            android:name=".SystemAlarmReceiver"
             android:enabled="true"
             android:exported="true" >
         </receiver>
-        <receiver android:name="org.monroe.team.smooker.app.CalendarWidget"  android:label="Quit smoke calendar" >
+        <receiver
+            android:name="org.monroe.team.smooker.app.CalendarWidget"
+            android:label="Quit smoke calendar" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
-
             <intent-filter>
-                <action android:name="org.monroe.team.smooker.app.event.QUIT_SCHEDULE_UPDATED"/>
+                <action android:name="org.monroe.team.smooker.app.event.QUIT_SCHEDULE_UPDATED" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.monroe.team.smooker.app.event.QUIT_SCHEDULE_REFRESH"/>
+                <action android:name="org.monroe.team.smooker.app.event.QUIT_SCHEDULE_REFRESH" />
             </intent-filter>
-
             <intent-filter>
-                <action android:name="org.monroe.team.smooker.app.event.SMOKE_COUNT_CHANGED"/>
+                <action android:name="org.monroe.team.smooker.app.event.SMOKE_COUNT_CHANGED" />
             </intent-filter>
-
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/calendar_widget_info" />
         </receiver>
-        <receiver android:name="org.monroe.team.smooker.app.SmokeCounterWidget" android:label="Today smokes" >
+        <receiver
+            android:name="org.monroe.team.smooker.app.SmokeCounterWidget"
+            android:label="Today smokes" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
-
             <intent-filter>
-                <action android:name="org.monroe.team.smooker.app.event.SMOKE_COUNT_CHANGED"/>
+                <action android:name="org.monroe.team.smooker.app.event.SMOKE_COUNT_CHANGED" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/smoke_counter_widget_info" />
+        </receiver>
+        <receiver
+            android:name=".SmokeSchedulerReceiver"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="org.monroe.team.smooker.app.event.QUIT_SCHEDULE_UPDATED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="org.monroe.team.smooker.app.event.SMOKE_COUNT_CHANGED" />
+            </intent-filter>
         </receiver>
     </application>
 

@@ -37,6 +37,7 @@
     <integer name="chart_stripe_height_float">2000</integer>
     <integer name="chart_axis_text_size_float">3000</integer>
 
+    <integer name="chart_stroke_predict_float">50</integer>
     <integer name="chart_stroke_default_float">200</integer>
     <integer name="chart_stroke_bolder_float">300</integer>
     <integer name="chart_stroke_boldest_float">400</integer>
