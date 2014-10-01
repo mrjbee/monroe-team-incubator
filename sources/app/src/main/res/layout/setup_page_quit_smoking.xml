@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dip"
-        android:text="Times per day"
+        android:text="@string/quit_page_per_day_title"
         android:textSize="@dimen/text_size_normal"
         />
 
@@ -27,7 +27,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Desire times per day"
+        android:text="@string/quit_page_desire_smokes_title"
         android:layout_marginLeft="10dip"
         android:id="@+id/qs_end_text"
         android:textSize="@dimen/text_size_normal"
@@ -61,7 +61,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Quit program loyalty"
+        android:text="@string/quite_smoke_program_title"
         android:layout_marginLeft="10dip"
         android:id="@+id/qs_level_label"
         android:textSize="@dimen/text_size_normal"

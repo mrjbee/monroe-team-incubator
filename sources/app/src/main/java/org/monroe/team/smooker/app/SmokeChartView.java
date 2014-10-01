@@ -109,13 +109,13 @@ public class SmokeChartView extends View {
                 dimen(R.integer.chart_shadow_radius_float),
                 dimen(R.integer.chart_shadow_dx_float),
                 dimen(R.integer.chart_shadow_dy_float), Color.LTGRAY);
-        try {
+       /* try {
             Method method = this.getClass().getMethod("setLayerType",int.class,Paint.class);
             if (method!=null){
                method.invoke(this,LAYER_TYPE_SOFTWARE, selectionValuePaint);
             }
         } catch (Exception e) {}
-
+        */
 
         axisLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.LINEAR_TEXT_FLAG);
         axisLabelPaint.setAntiAlias(true);
@@ -212,7 +212,7 @@ public class SmokeChartView extends View {
         } else if (textXPosition + timeTextBounds.width()  > getWidth()){
             textXPosition = getWidth() - timeTextBounds.width() - 5;
         }
-        canvas.drawText(timeText,textXPosition, getHeight()-horizontalAxisPadding +timeText2Bounds.height()*1.5f,selectionValuePaint);
+        canvas.drawText(timeText,textXPosition, getHeight()-horizontalAxisPadding +timeText2Bounds.height()*1.2f,selectionValuePaint);
 
 
         if (smokePoint != null){

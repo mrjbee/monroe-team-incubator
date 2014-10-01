@@ -36,9 +36,8 @@ public class CalendarWidget extends AppWidgetProvider {
         remoteViews.setTextViewText(R.id.wc_left_data_det_text, update.digitDetailsText);
         remoteViews.setTextViewText(R.id.wc_right_data_text, update.contentText);
         remoteViews.setTextViewText(R.id.wc_right_data_det_text, update.contentDetailsText);
+        remoteViews.setOnClickPendingIntent(R.id.widget_root, DashboardActivity.openDashboard(context));
 
-        remoteViews.setOnClickPendingIntent(R.id.wc_right_data_text, DashboardActivity.openDashboard(context));
-        remoteViews.setOnClickPendingIntent(R.id.wc_icon, RemoteControlNotificationReceiver.createAddSmokeIntent(context));
         return remoteViews;
     }
 

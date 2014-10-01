@@ -9,11 +9,9 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import org.monroe.team.smooker.app.common.Closure;
 import org.monroe.team.smooker.app.common.Events;
-import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeData;
 import org.monroe.team.smooker.app.event.Event;
 import org.monroe.team.smooker.app.uc.GetStatisticState;
 
@@ -41,9 +39,9 @@ public class RemoteControlNotificationService extends Service {
                     if (state.getTodaySmokeLimit() != null && state.getTodaySmokeLimit() > -1){
                         int delta = state.getTodaySmokeLimit() - state.getTodaySmokeDates().size();
                         if (delta >= 0){
-                            text = delta +" smokes left for today";
+                            text = getString(R.string.pattern_left_for_today_with_value,delta);
                         } else {
-                            text = Math.abs(delta) +" smokes over limit today";
+                            text = getString(R.string.pattern_over_limit_for_today_with_value, Math.abs(delta));
                         }
                     }
                     setText(text);
@@ -55,7 +53,7 @@ public class RemoteControlNotificationService extends Service {
     }
 
     private String generateNotificationStringFor(Integer smokeCount) {
-        return " "+smokeCount +" smoke breaks today";
+        return getString(R.string.pattern_smokes_today_with_value, smokeCount);
     }
 
     private String getNotificationInitialText() {
@@ -102,7 +100,7 @@ public class RemoteControlNotificationService extends Service {
                             // Set PendingIntent into Notification
                     .setContentIntent(addBtnIntent)
                     .setContentText(text)
-                    .setContentTitle("Press for +1 smoke")
+                    .setContentTitle(getString(R.string.hit_for_smoke_log))
                             // Set RemoteViews into Notification
                     .setContent(remoteViews);
 
@@ -113,8 +111,7 @@ public class RemoteControlNotificationService extends Service {
             closeActionIntent.putExtra("CLOSE",true);
             PendingIntent closeBtnIntent = PendingIntent.getBroadcast(getApplicationContext(), 3, closeActionIntent, 0);
 
-            remoteViews.setOnClickPendingIntent(R.id.cn_root_view,pIntent);
-            remoteViews.setOnClickPendingIntent(R.id.cn_add_btn,addBtnIntent);
+            remoteViews.setOnClickPendingIntent(R.id.cn_add_btn,pIntent);
             remoteViews.setOnClickPendingIntent(R.id.cn_close_btn,closeBtnIntent);
 
             return builder.build();

@@ -1,5 +1,6 @@
 package org.monroe.team.smooker.app.uc;
 
+import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.common.Registry;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeData;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgram;
@@ -33,7 +34,7 @@ public class UpdateQuitSmokeSchedule extends TransactionUserCase<Void,UpdateQuit
             QuitSmokeSchedule.DayModel dayModel = new QuitSmokeSchedule.DayModel();
             dayModel.date = stage.date;
             dayModel.dateString = dateFormat.format(stage.date);
-            dayModel.text = stage.smokeLimit +" smokes per day";
+            dayModel.text = stage.smokeLimit +" "+ getString(R.string.smokes_per_day);
             if (stage.result == QuitSmokeData.QuiteStageResult.IN_FUTURE){
                 dayModel.past =false;
             } else if (stage.result == QuitSmokeData.QuiteStageResult.PASS){
@@ -49,6 +50,10 @@ public class UpdateQuitSmokeSchedule extends TransactionUserCase<Void,UpdateQuit
            }
         }
         return smokeSchedule;
+    }
+
+    private String getString(int id) {
+        return usingModel().getString(id);
     }
 
     public static class QuitSmokeSchedule{

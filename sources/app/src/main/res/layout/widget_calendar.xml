@@ -5,6 +5,7 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
+        android:id="@+id/widget_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/widget_dark_bkg">
@@ -84,14 +85,5 @@
         android:shadowDy="-1"
         android:shadowRadius="1"/>
     </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/wc_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="25dp"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/add_cigareta_btn"/>
 
 </RelativeLayout>

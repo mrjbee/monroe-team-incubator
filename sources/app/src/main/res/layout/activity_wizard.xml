@@ -17,13 +17,11 @@
                     android:id="@+id/wizzard_caption_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="About Setup"
+                    android:text="@string/a_wizard_about"
                     android:layout_marginTop="10pt"
                     android:layout_marginLeft="5pt"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_caption_small"
-                    android:layout_alignBottom="@+id/logo_image"
-                    android:layout_toRightOf="@+id/logo_image"
                     android:textStyle="bold"
                     />
                 <TextView

@@ -3,14 +3,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/remove_smoke_item"
-        android:title="Remove Last Smoke"/>
+        android:title="@string/menu_last_smoke"/>
 
     <item android:id="@+id/setting_quit_item"
-        android:title="Smoke Quit Program"/>
+        android:title="@string/menu_quit_program"/>
 
     <item android:id="@+id/setting_ui_item"
-        android:title="Notification Preferences"/>
+        android:title="@string/menu_notifications"/>
     <item android:id="@+id/setting_general_item"
-        android:title="General Preferences"/>
+        android:title="@string/menu_general_settings"/>
 
 </menu>

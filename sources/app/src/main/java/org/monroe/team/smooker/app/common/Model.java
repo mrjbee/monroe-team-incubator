@@ -73,4 +73,7 @@ public class Model {
         return registry.get(serviceClass);
     }
 
+    public String getString(int id) {
+        return context.getResources().getString(id);
+    }
 }

@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="5dp"
-        android:text="Show daily status notification"
+        android:text="@string/ui_page_daily_notif_title"
         android:id="@+id/ui_status_notif_check"
         android:textSize="@dimen/text_size_normal"
         />
@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:text="Show sticky notification"
+        android:text="@string/ui_page_sticky_notif_title"
         android:id="@+id/ui_sticky_notif_check"
         android:textSize="@dimen/text_size_normal"
         />
@@ -34,7 +34,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sticky notification allows you quickly 'add smoke' directly from notification bar without quiting current running application"
+        android:text="@string/ui_page_sticky_notif_about"
         android:layout_marginTop="10dip"
         android:layout_marginLeft="30dip"
         android:layout_marginRight="10dip"

@@ -7,170 +7,181 @@
     tools:context="${packageName}.${activityClass}">
 
 
-    <LinearLayout
-        android:id="@+id/d_content_layout"
+    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:layout_below="@+id/d_logo_layout">
+            <LinearLayout
+                android:id="@+id/d_content_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:animateLayoutChanges="true">
+            </LinearLayout>
+            <LinearLayout
+                android:layout_below="@+id/d_content_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shadow_vertical_lighter"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/d_logo_layout"
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
-        android:layout_below="@+id/d_logo_layout"/>
+        android:layout_height="wrap_content"
+        android:background="@color/background.main2">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/logo_height"
+        android:src="@drawable/smooker_logo_big"
+        android:background="@drawable/background_rects"
+        android:id="@+id/logo_image"/>
 
-        <RelativeLayout
-            android:id="@+id/d_logo_layout"
-            android:layout_width="match_parent"
+
+        <TextView
+            android:id="@+id/d_smoke_today_counter_text"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/background.main2">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/logo_height"
-            android:src="@drawable/smooker_logo_big"
-            android:background="@drawable/background_rects"
-            android:id="@+id/logo_image"/>
-
-
-            <TextView
-                android:id="@+id/d_smoke_today_counter_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_caption_biggest"
-                android:paddingRight="10dp"
-                android:text="10/2"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:layout_above="@+id/d_smoke_today_text"
-                android:layout_alignParentRight="true"
-                android:layout_marginBottom="-5dp"/>
-
-            <TextView
-                android:id="@+id/d_smoke_today_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_normal_smalles"
-                android:paddingRight="10dp"
-                android:layout_marginBottom="2dp"
-                android:text="today/average smokes"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:layout_above="@+id/action_layout"
-                android:layout_alignParentRight="true"/>
-
-
-            <TextView
-                android:id="@+id/d_total_smokes_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_normal_smalles"
-                android:text="Total smokes"
-                android:layout_marginLeft="5dp"
-                android:layout_above="@+id/d_total_smokes_counter_text"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/d_total_smokes_counter_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_caption_small"
-                android:text="0"
-                android:textColor="@android:color/white"
-                android:layout_marginLeft="15dp"
-                android:textStyle="bold"
-                android:layout_above="@+id/d_spend_money_text"
-                />
-
-            <TextView
-                android:id="@+id/d_spend_money_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_normal_smalles"
-                android:text="Spend money"
-                android:layout_marginLeft="5dp"
-                android:layout_above="@+id/d_spend_money_counter_text"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/d_spend_money_counter_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_caption_small"
-                android:text="Price $"
-                android:textColor="@android:color/white"
-                android:layout_marginLeft="15dp"
-                android:textStyle="bold"
-                android:layout_above="@+id/action_layout"
-                />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:padding="5dp"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:background="@color/background.main.highlight"
-            android:layout_below="@id/logo_image"
-            android:gravity="bottom"
-            android:id="@+id/action_layout">
-
-            <RadioGroup
-                android:layout_marginLeft="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_alignParentLeft="true"
-                android:id="@+id/d_content_view_group">
-                <RadioButton
-                    android:layout_width="@dimen/views_btn_size"
-                    android:layout_height="@dimen/views_btn_size"
-                    android:background="@drawable/schedule_option"
-                    android:button="@android:color/transparent"
-                    android:id="@+id/d_calendar_radio"/>
-                <RadioButton
-                    android:layout_width="@dimen/views_btn_size"
-                    android:layout_height="@dimen/views_btn_size"
-                    android:checked="true"
-                    android:background="@drawable/chart_option"
-                    android:button="@android:color/transparent"
-                    android:id="@+id/d_chart_radio"/>
-                <RadioButton
-                    android:layout_width="@dimen/views_btn_size"
-                    android:layout_height="@dimen/views_btn_size"
-                    android:checked="true"
-                    android:background="@drawable/bars_option"
-                    android:button="@android:color/transparent"
-                    android:id="@+id/d_histogram_radio"/>
-                <RadioButton
-                    android:layout_width="@dimen/views_btn_size"
-                    android:layout_height="@dimen/views_btn_size"
-                    android:checked="true"
-                    android:background="@drawable/time_option"
-                    android:button="@android:color/transparent"
-                    android:id="@+id/d_time_radio"
-                    />
-            </RadioGroup>
-
-
-        </RelativeLayout>
-
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_below="@+id/d_logo_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shadow_vertical"/>
-
-        <ImageButton
-            android:id="@+id/add_smoke_btn"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:text="Add"
+            android:textSize="@dimen/text_size_caption_biggest"
+            android:paddingRight="10dp"
+            android:text="10/2"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:layout_above="@+id/d_smoke_today_text"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/d_content_layout"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="-40dp"
-            android:background="@drawable/add_cigareta_btn"
-        />
-        <ImageButton
+            android:layout_marginBottom="-5dp"/>
+
+        <TextView
+            android:id="@+id/d_smoke_today_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_normal_smalles"
+            android:paddingRight="10dp"
+            android:layout_marginBottom="2dp"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:layout_above="@+id/action_layout"
+            android:layout_alignParentRight="true"/>
+
+
+        <TextView
+            android:id="@+id/d_total_smokes_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_normal_smalles"
+            android:text="@string/total_smokes"
+            android:layout_marginLeft="5dp"
+            android:layout_above="@+id/d_total_smokes_counter_text"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/d_total_smokes_counter_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_caption_small"
+            android:text="0"
+            android:textColor="@android:color/white"
+            android:layout_marginLeft="15dp"
+            android:textStyle="bold"
+            android:layout_above="@+id/d_spend_money_text"
+            />
+
+        <TextView
+            android:id="@+id/d_spend_money_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_normal_smalles"
+            android:text="@string/spend_money"
+            android:layout_marginLeft="5dp"
+            android:layout_above="@+id/d_spend_money_counter_text"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/d_spend_money_counter_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_caption_small"
+            android:text="Price $"
+            android:textColor="@android:color/white"
+            android:layout_marginLeft="15dp"
+            android:textStyle="bold"
+            android:layout_above="@+id/action_layout"
+            />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:padding="5dp"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:background="@color/background.main.highlight"
+        android:layout_below="@id/logo_image"
+        android:gravity="bottom"
+        android:id="@+id/action_layout">
+
+        <RadioGroup
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/d_content_view_group">
+            <RadioButton
+                android:layout_width="@dimen/views_btn_size"
+                android:layout_height="@dimen/views_btn_size"
+                android:background="@drawable/schedule_option"
+                android:button="@android:color/transparent"
+                android:id="@+id/d_calendar_radio"/>
+            <RadioButton
+                android:layout_width="@dimen/views_btn_size"
+                android:layout_height="@dimen/views_btn_size"
+                android:checked="true"
+                android:background="@drawable/chart_option"
+                android:button="@android:color/transparent"
+                android:id="@+id/d_chart_radio"/>
+            <RadioButton
+                android:layout_width="@dimen/views_btn_size"
+                android:layout_height="@dimen/views_btn_size"
+                android:checked="true"
+                android:background="@drawable/bars_option"
+                android:button="@android:color/transparent"
+                android:id="@+id/d_histogram_radio"/>
+            <RadioButton
+                android:layout_width="@dimen/views_btn_size"
+                android:layout_height="@dimen/views_btn_size"
+                android:checked="true"
+                android:background="@drawable/time_option"
+                android:button="@android:color/transparent"
+                android:id="@+id/d_time_radio"
+                />
+        </RadioGroup>
+
+
+    </RelativeLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/d_logo_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow_vertical"/>
+
+    <ImageButton
+        android:id="@+id/add_smoke_btn"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:text="Add"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/d_logo_layout"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="-40dp"
+        android:background="@drawable/add_cigareta_btn"
+    />
+    <ImageButton
             android:id="@+id/d_setting_btn"
             android:layout_marginTop="11dp"
             android:background="@drawable/setting_button"
@@ -178,6 +189,7 @@
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"/>
+
 
 
 </RelativeLayout>

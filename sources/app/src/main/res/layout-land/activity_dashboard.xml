@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_normal_smalles"
-            android:text="Total smokes"
+            android:text="@string/total_smokes"
             android:textColor="@android:color/white"
             android:textStyle="bold"/>
 
@@ -76,7 +76,7 @@
             android:id="@+id/d_spend_money_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Spend money"
+            android:text="@string/spend_money"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size_normal_smalles"
             android:textStyle="bold" />
@@ -96,7 +96,7 @@
             android:id="@+id/d_smoke_today_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="today/average smokes"
+            android:text=" "
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size_normal_smalles"
             android:textStyle="bold" />

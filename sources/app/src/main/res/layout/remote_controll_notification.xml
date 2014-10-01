@@ -16,7 +16,7 @@
 
     <TextView
         android:id="@+id/cn_caption_text"
-        android:text="Press for +1 smoke"
+        android:text="@string/hit_for_smoke_log"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
@@ -24,7 +24,7 @@
 
     <TextView
         android:id="@+id/cn_title_text"
-        android:text="Hello"
+        android:text="Welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"

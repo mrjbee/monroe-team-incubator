@@ -171,7 +171,7 @@ public class DashboardActivity extends SupportActivity {
 
                 if (!dayModel.isPast()){
                     if (dayModel.isToday()){
-                        ((TextView)convertView.findViewById(R.id.cal_state_text)).setText("TODAY");
+                        ((TextView)convertView.findViewById(R.id.cal_state_text)).setText(getString(R.string.today).toUpperCase());
                     }
                     if(position % 2 == 0) {
                         convertView.setBackgroundColor(getResources().getColor(R.color.calendar_future_bkg));
@@ -179,7 +179,7 @@ public class DashboardActivity extends SupportActivity {
                         convertView.setBackgroundColor(getResources().getColor(R.color.calendar_future_bkg2));
                     }
                     convertView.findViewById(R.id.cal_date_panel).setBackgroundResource(R.drawable.date_bkg_blue);
-                    ((TextView)convertView.findViewById(R.id.cal_date_comment)).setText("new day limit");
+                    ((TextView)convertView.findViewById(R.id.cal_date_comment)).setText(getString(R.string.new_day_limit));
                     ((TextView) convertView.findViewById(R.id.cal_date_text)).setTextColor(Color.WHITE);
                     ((TextView) convertView.findViewById(R.id.cal_text)).setShadowLayer(0,0,0,Color.BLACK);
                     ((TextView) convertView.findViewById(R.id.cal_text)).setTextColor(getResources().getColor(R.color.calendar_future_text));
@@ -190,11 +190,11 @@ public class DashboardActivity extends SupportActivity {
                     convertView.findViewById(R.id.cal_date_panel).setBackgroundResource(R.drawable.date_bkg_white);
 
                     if (dayModel.isSuccessful()){
-                        ((TextView)convertView.findViewById(R.id.cal_date_comment)).setText("day limit decreased to");
+                        ((TextView)convertView.findViewById(R.id.cal_date_comment)).setText(getString(R.string.new_day_limit_increased));
                         convertView.setBackgroundColor(getResources().getColor(R.color.calendar_past_bkg));
                     }else {
-                        ((TextView)convertView.findViewById(R.id.cal_state_text)).setText("FAILED");
-                        ((TextView)convertView.findViewById(R.id.cal_date_comment)).setText("day limit exceeded");
+                        ((TextView)convertView.findViewById(R.id.cal_state_text)).setText(getString(R.string.limit_failed));
+                        ((TextView)convertView.findViewById(R.id.cal_date_comment)).setText(getString(R.string.day_limit_exceeded));
                         convertView.setBackgroundColor(getResources().getColor(R.color.calendar_past_failed_bkg));
                     }
                 }
@@ -258,9 +258,9 @@ public class DashboardActivity extends SupportActivity {
 
                     if (id == R.id.remove_smoke_item){
                         if (model().execute(RemoveSmoke.class,null)){
-                            Toast.makeText(DashboardActivity.this,"Last logged smoke was removed",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DashboardActivity.this,getString(R.string.removed_last_logged_smoke),Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(DashboardActivity.this,"There were no smoke breaks in last 30 minutes",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DashboardActivity.this,getString(R.string.nothing_to_remove_as_last_loged_smoke),Toast.LENGTH_SHORT).show();
                         }
                         return true;
                     }
@@ -332,7 +332,7 @@ public class DashboardActivity extends SupportActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            ((TextView)lastTimeSmokeView.findViewById(R.id.lts_days_text)).setText("0 day");
+                            ((TextView)lastTimeSmokeView.findViewById(R.id.lts_days_text)).setText("0 "+getString(R.string.single_day));
                             ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_text)).setText("00:00:00");
                         }
                     });
@@ -353,7 +353,7 @@ public class DashboardActivity extends SupportActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            ((TextView) lastTimeSmokeView.findViewById(R.id.lts_days_text)).setText(days + " days");
+                            ((TextView) lastTimeSmokeView.findViewById(R.id.lts_days_text)).setText(days +" "+ getString(R.string.few_days));
                             ((TextView) lastTimeSmokeView.findViewById(R.id.lts_time_text)).setText(time);
                         }
                     });
@@ -409,8 +409,16 @@ public class DashboardActivity extends SupportActivity {
     private void updateUiPerStatistic(GetStatisticState.StatisticState statistics) {
         if (exists(statistics.getTodaySmokeDates())){
             view(TextView.class,R.id.d_smoke_today_counter_text).setText(
-                    Integer.toString(statistics.getTodaySmokeDates().size())+"/"+
-                            Integer.toString(statistics.getAverageSmoke()));
+                            (statistics.getAverageSmoke() < 1) ?
+                                    Integer.toString(statistics.getTodaySmokeDates().size()):
+                                    Integer.toString(statistics.getTodaySmokeDates().size())+"/"+Integer.toString(statistics.getAverageSmoke()));
+
+            view(TextView.class,R.id.d_smoke_today_text).setText(
+                    (statistics.getAverageSmoke() < 1) ?
+                            getString(R.string.today_smokes):
+                            getString(R.string.today_per_average_smokes));
+
+
             chartView.setModel(statistics.getTodaySmokeDates());
         }
 

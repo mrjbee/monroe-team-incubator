@@ -62,7 +62,7 @@ public class SmokeCounterWidget extends AppWidgetProvider {
         views.setTextViewText(R.id.ws_count_text,countText);
         views.setOnClickPendingIntent(R.id.ws_add_btn,
                 RemoteControlNotificationReceiver.createAddSmokeIntent(context));
-        views.setOnClickPendingIntent(R.id.ws_count_text,
+        views.setOnClickPendingIntent(R.id.widget_root,
                 DashboardActivity.openDashboard(context));
         return views;
     }

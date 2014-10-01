@@ -81,7 +81,7 @@ public class SmookerApplication extends Application {
 
     public void onRemoteControlNotificationAddSmokeRequest() {
         getModel().execute(AddSmoke.class, null);
-        Toast.makeText(this.getApplicationContext(), "One smoke break added", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this.getApplicationContext(), getString(R.string.one_smoke_added), Toast.LENGTH_SHORT).show();
         closeSystemDialogs();
     }
 
@@ -155,9 +155,9 @@ public class SmookerApplication extends Application {
 
 
             builder.setAutoCancel(true)
-                    .setContentTitle("Quit Smoking Assistance")
-                    .setContentText("Choose a way to quit smoking")
-                    .setSubText("... which fits to you")
+                    .setContentTitle(getString(R.string.quit_smoke_assistance_title))
+                    .setContentText(getString(R.string.quit_smoking_program_suggestion))
+                    .setSubText(getString(R.string.quit_smoke_program_suggestion_manual))
                     .setSmallIcon(R.drawable.notif_quit_assistance)
                     .setDeleteIntent(dropNotificationPendingIntent)
                     .setContentIntent(pendingIntent);
@@ -213,28 +213,28 @@ public class SmookerApplication extends Application {
             GetStatisticState.StatisticState state = model.execute(GetStatisticState.class, new GetStatisticState.StatisticRequest().with(GetStatisticState.StatisticName.LAST_LOGGED_SMOKE));
             long[] DHMS = DateUtils.splitPeriod(DateUtils.now(), state.getLastSmokeDate());
 
-            String details = "min";
+            String details = getString(R.string.short_min);
             String content = ""+DHMS[2];
             if (DHMS[0] > 0){
-                details = "days";
+                details = getString(R.string.short_days);
                 content =  ""+DHMS[0];
             } else if(DHMS[1] > 0){
-                details = "hours";
+                details = getString(R.string.short_hours);
                 content =  ""+DHMS[1];
             }
             return new CalendarWidget.CalendarWidgetUpdate(
                     content,
                     details,
-                    "Time since last smoking",
+                    getString(R.string.time_since_last_smoke),
                     DateFormat.getDateTimeInstance(DateFormat.LONG,DateFormat.SHORT).format(state.getLastSmokeDate())
             );
         }else {
             UpdateQuitSmokeSchedule.QuitSmokeSchedule.DayModel future = smokeSchedule.getNearestFuture();
             return new CalendarWidget.CalendarWidgetUpdate(
-                    future.isToday()? "Today":new SimpleDateFormat("dd").format(future.getDate()),
+                    future.isToday()? getString(R.string.today):new SimpleDateFormat("dd").format(future.getDate()),
                     future.isToday()? new SimpleDateFormat("dd MMM yyyy").format(future.getDate()):new SimpleDateFormat("MMM yyyy").format(future.getDate()),
                     future.getText(),
-                    "New day limit"
+                    getString(R.string.new_day_limit)
             );
         }
     }
@@ -251,10 +251,10 @@ public class SmookerApplication extends Application {
             if (state.getQuitSmokeDifficult() != QuitSmokeDifficultLevel.DISABLED && state.getSmokeLimitChangedToday()){
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
                 builder.setAutoCancel(true)
-                        .setTicker("Smoke limit decreased")
-                        .setContentTitle("Quit Smoking Assistant")
-                        .setContentText("Smoke limit decreased")
-                        .setSubText("New smoke limit "+state.getTodaySmokeLimit()+" smokes per day")
+                        .setTicker(getString(R.string.smoke_limit_decreased))
+                        .setContentTitle(getString(R.string.quit_smoke_assistance_title))
+                        .setContentText(getString(R.string.smoke_limit_decreased))
+                        .setSubText(getString(R.string.pattern_new_smoke_limit_wit_value, state.getTodaySmokeLimit()))
                         .setSmallIcon(R.drawable.notif_quit_assistance)
                         .setContentIntent(DashboardActivity.openDashboard(this));
                 manager.notify(QUIT_SMOKE_UPDATE_NOTIFICATION, builder.build());
@@ -262,10 +262,11 @@ public class SmookerApplication extends Application {
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
             builder.setAutoCancel(true)
-                    .setTicker("Smoke statistic")
-                    .setContentTitle("Smoke statistic")
-                    .setContentText("Yesterday smokes "+state.getYesterdaySmokeDates().size()+" . Average per day "+ state.getAverageSmoke())
-                    .setSubText((state.getQuitSmokeDifficult() != QuitSmokeDifficultLevel.DISABLED)?"Today smoke limit  "+state.getTodaySmokeLimit():null)
+                    .setTicker(getString(R.string.smoke_statistic))
+                    .setContentTitle(getString(R.string.smoke_statistic))
+                    .setContentText(getString(R.string.pattern_yesterday_and_average_smokes_with_both_values,
+                            state.getYesterdaySmokeDates().size(), state.getAverageSmoke()))
+                    .setSubText((state.getQuitSmokeDifficult() != QuitSmokeDifficultLevel.DISABLED) ? getString(R.string.pattern_today_smoke_limit_with_value, state.getTodaySmokeLimit()) : null)
                     .setSmallIcon(R.drawable.notif_white_small)
                     .setContentIntent(DashboardActivity.openDashboard(this));
             manager.notify(STATISTIC_UPDATE_NOTIFICATION, builder.build());
@@ -276,7 +277,12 @@ public class SmookerApplication extends Application {
     public List<Date> recalculateSmokingSchedule(Date scheduleStart, Date scheduleStop, int leftSmokes) {
         long period = scheduleStop.getTime() - scheduleStart.getTime();
         if (period < 0 ) return Collections.EMPTY_LIST;
-        int deltaMinutes = (int) ((period / leftSmokes)/60000);
+        period = period/60000;
+        int deltaMinutes = (int) period / leftSmokes;
+        if (deltaMinutes < 30){
+            deltaMinutes = 30;
+            leftSmokes = (int) (period/deltaMinutes);
+        }
         List<Date> answer = new ArrayList<Date>();
         for (int i = 1; i < leftSmokes + 1; i++){
             answer.add(DateUtils.mathMinutes(scheduleStart, deltaMinutes * i));
@@ -306,7 +312,7 @@ public class SmookerApplication extends Application {
                 if (!scheduledSmokesList.isEmpty()){
                     Date date = scheduledSmokesList.get(0);
                     //schedule alarm
-                    alarmManager.set(AlarmManager.RTC, date.getTime(), alarmIntent);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, date.getTime(), alarmIntent);
                 } else {
                     alarmManager.cancel(alarmIntent);
                 }
@@ -338,14 +344,14 @@ public class SmookerApplication extends Application {
         PendingIntent addSmoke = RemoteControlNotificationReceiver.createAddSmokeIntent(getApplicationContext());
 
         builder.setAutoCancel(true)
-                .setContentTitle("Quit Smoking Assistant")
-                .setContentText("It`s time to get smoke")
-                .setSubText("But its strongly recommended to skip it")
+                .setContentTitle(getString(R.string.quit_smoke_assistance_title))
+                .setContentText(getString(R.string.time_to_smoke))
+                .setSubText(getString(R.string.not_to_smoke_suggestion))
                 .setSmallIcon(R.drawable.notif_quit_assistance)
                 .setContentIntent(openApp)
                 .setDeleteIntent(SystemAlarmReceiver.createIntent(this, 411, "SKIP_SMOKE"))
-                .addAction(R.drawable.notif_white_small, "Skip this time", SystemAlarmReceiver.createIntent(this, 411, "SKIP_SMOKE"))
-                .addAction(R.drawable.notif_orange_small, "+1 smoke break", addSmoke);
+                .addAction(R.drawable.notif_white_small, getString(R.string.skip_this_time), SystemAlarmReceiver.createIntent(this, 411, "SKIP_SMOKE"))
+                .addAction(R.drawable.notif_orange_small, getString(R.string.add_one_smoke), addSmoke);
 
         if (!isSmokeSuggestNotificationOpened) {
             Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

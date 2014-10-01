@@ -67,7 +67,7 @@ public class WizardActivity extends SupportActivity {
             } else {
                 if (!awareShown){
                     Toast.makeText(this,
-                            "Please pass wizard or click one time more for exit.",
+                            getString(R.string.a_wizard_force_launch_exit),
                             Toast.LENGTH_LONG).show();
                     awareShown = true;
                 } else {
@@ -167,12 +167,11 @@ public class WizardActivity extends SupportActivity {
     }
 
 
-    public static class WelcomePageHandler extends SetupPageHandler {
+    public  class WelcomePageHandler extends SetupPageHandler {
 
         protected WelcomePageHandler() {
-            super("Welcome",
-                   "Please follow setup wizard in order to configure application. Information " +
-                           "will be used in future for calculation and etc.",
+            super(getString(R.string.welcome_page_title),
+                   getString(R.string.welcome_page_about),
                    R.layout.setup_page_welcome
             );
         }
@@ -180,11 +179,11 @@ public class WizardActivity extends SupportActivity {
     }
 
 
-    public static class GeneralSetupHandler extends SetupPageHandler {
+    public class GeneralSetupHandler extends SetupPageHandler {
 
         protected GeneralSetupHandler() {
-            super("General",
-                    "Please specify general settings aka smoke cost",
+            super(getString(R.string.general_page_title),
+                    getString(R.string.general_page_about),
                     R.layout.setup_page_general
             );
         }
@@ -193,7 +192,6 @@ public class WizardActivity extends SupportActivity {
         public void onCreateUI(final WizardActivity wizardActivity) {
 
             final Spinner spinner = wizardActivity.view(Spinner.class, R.id.gs_cur_spinner);
-
             // Create an ArrayAdapter using the string array and a default spinner layout
             ArrayAdapter<Currency> adapter = new ArrayAdapter<Currency>(wizardActivity, android.R.layout.simple_spinner_item,Currency.SUPPORTED_CURRENCIES){
                 @Override
@@ -222,7 +220,7 @@ public class WizardActivity extends SupportActivity {
         public AlertDialog.Builder persistsSetup(WizardActivity wizardActivity) {
             String text = ((TextView)wizardActivity.findViewById(R.id.gs_price_edit)).getText().toString();
             if (text.trim().length() == 0){
-                Toast.makeText(wizardActivity,"Please specify smoke break cost'",Toast.LENGTH_SHORT).show();
+                Toast.makeText(wizardActivity,getString(R.string.general_page_smoke_cost_not_set),Toast.LENGTH_SHORT).show();
                 return wizardActivity.TOAST_WARNING;
             }
 
@@ -239,12 +237,11 @@ public class WizardActivity extends SupportActivity {
     }
 
 
-    public static class QuitSmokingSetupHandler extends SetupPageHandler {
+    public class QuitSmokingSetupHandler extends SetupPageHandler {
 
         protected QuitSmokingSetupHandler() {
-            super("Quit Smoking",
-                  "Please choose quit smoking program loyalty and final target. Please note that you " +
-                  "would be able to change settings latter using setting menu",
+            super(getString(R.string.quit_page_title),
+                  getString(R.string.quit_page_about),
                    R.layout.setup_page_quit_smoking
             );
         }
@@ -281,13 +278,13 @@ public class WizardActivity extends SupportActivity {
 
         private String getProgramDescription(QuitSmokeDifficultLevel difficult) {
             switch (difficult){
-                case DISABLED: return "Disabled - for people who want to get smoke statistic only without quiting smoking";
-                case LOWEST: return "Lowest - most loyal program forcing you to pass up one smoke break per month";
-                case LOW: return "Low - quite loyal program forcing you to pass up one smoke break per week";
-                case SMART: return "Smart - clever program forcing you to pass up one smoke break first day, second in next two day, third in next three days and so on";
-                case SMARTEST: return "Smartest - most clever program forcing you to pass up one smoke break per day at the beginning and ending with one break per month.";
-                case HARD: return "Hard - program which forcing you to pass up one smoke break per day, unless you quit.";
-                case HARDEST: return "Hardest - program which forcing you to quite today and for forever.";
+                case DISABLED: return getString(R.string.quit_page_program_description_disabled);
+                case LOWEST: return getString(R.string.quit_page_program_description_lowest);
+                case LOW: return getString(R.string.quit_page_program_description_low);
+                case SMART: return getString(R.string.quit_page_program_description_smart);
+                case SMARTEST: return getString(R.string.quit_page_program_description_smartest);
+                case HARD: return getString(R.string.quit_page_program_description_hard);
+                case HARDEST: return getString(R.string.quit_page_program_description_hardest);
             }
             throw new IllegalStateException();
         }
@@ -302,7 +299,7 @@ public class WizardActivity extends SupportActivity {
             if (difficult.mayHaveDifferentTargetCount()) {
                 String startText = ((TextView) wizardActivity.findViewById(R.id.qs_start_edit)).getText().toString();
                 if (startText.trim().length() == 0) {
-                    Toast.makeText(wizardActivity, "Please specify your current smokes per day", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(wizardActivity, getString(R.string.quit_page_not_set_per_day), Toast.LENGTH_SHORT).show();
                     return wizardActivity.TOAST_WARNING;
                 }
 
@@ -316,10 +313,15 @@ public class WizardActivity extends SupportActivity {
 
             if (difficult.mayHaveDifferentTargetCount()) {
                 if (text.trim().length() == 0) {
-                    Toast.makeText(wizardActivity, "Please specify desire smoke per day. In case you want quit completely put zero", Toast.LENGTH_LONG).show();
+                    Toast.makeText(wizardActivity, getString(R.string.quit_page_not_set_desire_count), Toast.LENGTH_LONG).show();
                     return wizardActivity.TOAST_WARNING;
                 }
                 desireSmokePerDayCount = Integer.parseInt(text);
+            }
+
+            if (difficult.mayHaveDifferentTargetCount() && desireSmokePerDayCount > smokePerDay){
+                Toast.makeText(wizardActivity, getString(R.string.quit_page_desire_more_then_per_day), Toast.LENGTH_LONG).show();
+                return wizardActivity.TOAST_WARNING;
             }
 
             final Integer finalSmokePerDay = smokePerDay;
@@ -332,15 +334,15 @@ public class WizardActivity extends SupportActivity {
             }
 
             return new AlertDialog.Builder(wizardActivity)
-                    .setTitle("Restarting quit smoke program")
-                    .setMessage("You are going to restart Quit Smoke program which you did choose before. Is that what you are really want?")
-                    .setPositiveButton("Yes, change settings", new DialogInterface.OnClickListener() {
+                    .setTitle(getString(R.string.quit_page_change_program_alert_title))
+                    .setMessage(getString(R.string.quit_page_change_program_alert_content))
+                    .setPositiveButton(getString(R.string.quit_page_change_program_alert_yes), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             doActualUpdate(wizardActivity, difficult, finalSmokePerDay, finalDesireSmokePerDayCount);
                             wizardActivity.performNext(false);
                         }
-                    }).setNegativeButton("No, just exit", new DialogInterface.OnClickListener() {
+                    }).setNegativeButton(getString(R.string.quit_page_change_program_alert_no), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             wizardActivity.performNext(false);
@@ -367,11 +369,11 @@ public class WizardActivity extends SupportActivity {
         }
     }
 
-    public static class UIPageHandler extends SetupPageHandler {
+    public class UIPageHandler extends SetupPageHandler {
 
         protected UIPageHandler() {
-            super("Notification",
-                  "Please specify which of notification you would like to use",
+            super(getString(R.string.ui_page_title),
+                  getString(R.string.ui_page_about),
                    R.layout.setup_page_ui_setting);
         }
 

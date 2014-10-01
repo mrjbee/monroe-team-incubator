@@ -23,10 +23,8 @@
         </activity>
         <activity
             android:name="org.monroe.team.smooker.app.WizardActivity"
-            android:label="@string/title_activity_wizzard" >
+            android:label="@string/a_wizard_title" >
         </activity>
-
-
 
         <service
             android:name="org.monroe.team.smooker.app.RemoteControlNotificationService"

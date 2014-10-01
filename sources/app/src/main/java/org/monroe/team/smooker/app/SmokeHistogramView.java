@@ -14,7 +14,6 @@ import android.view.View;
 
 import org.monroe.team.smooker.app.uc.common.DateUtils;
 
-import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -105,12 +104,14 @@ public class SmokeHistogramView extends View {
         selectionValuePaintWithoutShadow.setStrokeWidth(dimen(R.integer.chart_stroke_boldest_float));
         selectionValuePaintWithoutShadow.setTextSize(axisCaptionTextSize);
 
+        /*
         try {
             Method method = this.getClass().getMethod("setLayerType",int.class,Paint.class);
             if (method!=null){
                 method.invoke(this,LAYER_TYPE_SOFTWARE, selectionValuePaint);
             }
         } catch (Exception e) {}
+        */
 
         axisLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.LINEAR_TEXT_FLAG);
         axisLabelPaint.setAntiAlias(true);
@@ -228,7 +229,7 @@ public class SmokeHistogramView extends View {
                 textXPosition = getWidth() - textBounds.width() - 5;
             }
 
-            canvas.drawText(timeText, textXPosition, getHeight() - horizontalAxisPadding + timeText2Bounds.height() * 1.5f, selectionValuePaint);
+            canvas.drawText(timeText, textXPosition, getHeight() - horizontalAxisPadding + timeText2Bounds.height() * 1.2f, selectionValuePaint);
         }
 
         if (modelItem != null && modelItem.value > 0){
@@ -390,8 +391,8 @@ public class SmokeHistogramView extends View {
 
     private String formatDate(Date dateToFormat){
         Date today =  DateUtils.dateOnly(DateUtils.now());
-        if (dateToFormat.compareTo(today) == 0) return "Today";
-        if (dateToFormat.compareTo(DateUtils.mathDays(today,-1)) == 0) return "Yesterday";
+        if (dateToFormat.compareTo(today) == 0) return getContext().getString(R.string.today);
+        if (dateToFormat.compareTo(DateUtils.mathDays(today,-1)) == 0) return getContext().getString(R.string.yesterday);
         return dateFormater.format(dateToFormat);
     }
 
