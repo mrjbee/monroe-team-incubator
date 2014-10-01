@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">Smooker</string>
+    <string name="app_version">App Version 1.0</string>
 
     <string name="chart_time_axis">hours</string>
     <string name="chart_smokes_axis">smokes</string>
@@ -47,13 +48,21 @@
     <string name="ui_page_daily_notif_title">Show daily status notification (aka. yesterday, average smoke counts and day limit)</string>
     <string name="ui_page_sticky_notif_title">Show sticky notification</string>
     <string name="ui_page_sticky_notif_about">Sticky notification allows you quickly \'add 1 smoke\' directly from notification bar without quiting current running application</string>
+    <string name="ui_page_assistance_notif_title">Show smoke break suggestion</string>
+
+    <string name="pattern_new_smoke_limit_wit_value" formatted="false">New day limit - %d smokes per day</string>
+    <string name="pattern_yesterday_and_average_smokes_with_both_values" formatted="false">Yesterday smokes %d (%d - average smokes per day)</string>
+    <string name="pattern_today_smoke_limit_with_value" formatted="false">Today limit %d smokes </string>
+    <string name="pattern_left_for_today_with_value" formatted="false">%d smokes left for today</string>
+    <string name="pattern_over_limit_for_today_with_value" formatted="false">%d smokes over limit today</string>
+    <string name="pattern_smokes_today_with_value" formatted="false">%d smokes today</string>
 
     <string name="total_smokes">Total smokes</string>
     <string name="spend_money">Spend money</string>
     <string name="menu_last_smoke">Remove Last Smoke</string>
-    <string name="menu_quit_program">Smoke Quit Program</string>
-    <string name="menu_notifications">Notification Preferences</string>
-    <string name="menu_general_settings">General Preferences</string>
+    <string name="menu_quit_program">Smoke Quit Program …</string>
+    <string name="menu_notifications">Notification Preferences …</string>
+    <string name="menu_general_settings">General Preferences …</string>
     <string name="today_smokes">Today smokes</string>
     <string name="today_per_average_smokes">Today/average smokes</string>
     <string name="today">Today</string>
@@ -66,7 +75,7 @@
     <string name="nothing_to_remove_as_last_loged_smoke">There were no smoke breaks in last 30 minutes</string>
     <string name="single_day">day</string>
     <string name="few_days"> days</string>
-    <string name="before_next_recommended_smoke">before next recommended smoke</string>
+    <string name="before_next_recommended_smoke">before next smoke</string>
     <string name="past_after_last_smoke">past after last smoke</string>
     <string name="smokes_per_day"> smokes per day</string>
     <string name="short_min">min</string>
@@ -82,15 +91,7 @@
     <string name="add_one_smoke">+1 smoke break</string>
     <string name="one_smoke_added">One smoke break added</string>
     <string name="quit_smoking_program_suggestion">Choose a way to quit smoking</string>
-    <string name="quit_smoke_program_suggestion_manual">... which fits to you</string>
+    <string name="quit_smoke_program_suggestion_manual">… which fits to you</string>
     <string name="hit_for_smoke_log">Touch for +1 smoke break</string>
-
-
-    <string name="pattern_new_smoke_limit_wit_value" formatted="false">New day limit - %d smokes per day</string>
-    <string name="pattern_yesterday_and_average_smokes_with_both_values" formatted="false">Yesterday smokes %d (%d - average smokes per day)</string>
-    <string name="pattern_today_smoke_limit_with_value" formatted="false">Today limit %d smokes </string>
-    <string name="pattern_left_for_today_with_value" formatted="false">%d smokes left for today</string>
-    <string name="pattern_over_limit_for_today_with_value" formatted="false">%d smokes over limit today</string>
-    <string name="pattern_smokes_today_with_value" formatted="false">%d smokes today</string>
 
 </resources>

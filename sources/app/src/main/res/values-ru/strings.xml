@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">Smooker</string>
+    <string name="app_version">Версия 1.0</string>
 
     <string name="chart_time_axis">время</string>
     <string name="chart_smokes_axis">перекуры</string>
@@ -30,7 +31,7 @@
     <string name="quit_page_program_description_smart">Нарастающая - программа предусматривает снижение на один перекур в первый раз в первый день, 2й - в два следующих дня, 3й - в три следующих дня и т.д.</string>
     <string name="quit_page_program_description_smartest">Умная - предложить начать бросать по сигарете в день и будет увеличивать время так что последнюю сигарету можно будет бросать месяц</string>
     <string name="quit_page_program_description_hard">Тяжелая - предложить бросать каждый день по сигарете</string>
-    <string name="quit_page_program_description_hardest">Суровая - программа предложит бросить завтра и забыть про курение на всегда</string>
+    <string name="quit_page_program_description_hardest">Суровая - программа предложит бросить завтра и забыть про курение навсегда</string>
     <string name="quit_page_not_set_per_day">Пожалуйста, укажите кол-во перекуров в день</string>
     <string name="quit_page_not_set_desire_count">Пожалуйста, укажите желаемое кол-во перекуров в день или 0 если хотите бросить полностью</string>
     <string name="quit_page_desire_more_then_per_day">Ошиблись? Желаемое кол-во не может превышать текущее кол-во перекуров</string>
@@ -42,12 +43,19 @@
     <string name="quit_page_desire_smokes_title">Желаемое кол-во перекуров</string>
     <string name="quite_smoke_program_title">Уровни сложности программы</string>
 
-
     <string name="ui_page_title">Уведомления</string>
     <string name="ui_page_about">Пожалуйста укажите какие уведомления вы хотите получать на протяжении дня</string>
     <string name="ui_page_daily_notif_title">Дневная статистика (кол-во перекуров вчера, средня кол-во перекуров, лимит на сегодня)</string>
     <string name="ui_page_sticky_notif_title">Прилипшее уведомления</string>
     <string name="ui_page_sticky_notif_about">Прилипшее уведомления - позволит Вам добавлять перекуры не отрывая Вас от текушей запущеной программы, используя панель уведомлений</string>
+    <string name="ui_page_assistance_notif_title">Сообщения о перекуре согласно графику</string>
+
+    <string name="pattern_new_smoke_limit_wit_value" formatted="false">Новый дневной лимит - %d перекуров в день</string>
+    <string name="pattern_yesterday_and_average_smokes_with_both_values" formatted="false">Перекуров вчера %d (%d - среднее кол-во перекуров в день)</string>
+    <string name="pattern_today_smoke_limit_with_value" formatted="false">Сегодняшний лимит %d перекуров </string>
+    <string name="pattern_left_for_today_with_value" formatted="false">%d перекуров осталось до лимита</string>
+    <string name="pattern_over_limit_for_today_with_value" formatted="false">%d перекуров сверх лимита</string>
+    <string name="pattern_smokes_today_with_value" formatted="false">%d перекуров сегодня</string>
 
     <string name="total_smokes">Всего перекуров</string>
     <string name="spend_money">Потрачено</string>
@@ -85,14 +93,5 @@
     <string name="quit_smoking_program_suggestion">Выбери программу борьбы с курением</string>
     <string name="quit_smoke_program_suggestion_manual">... которая подойдет тебе</string>
     <string name="hit_for_smoke_log">Прикоснись для добавления перекура</string>
-
-
-    <string name="pattern_new_smoke_limit_wit_value" formatted="false">Новый дневной лимит - %d перекуров в день</string>
-    <string name="pattern_yesterday_and_average_smokes_with_both_values" formatted="false">Перекуров вчера %d (%d - среднее кол-во перекуров в день)</string>
-    <string name="pattern_today_smoke_limit_with_value" formatted="false">Сегодняшний лимит %d перекуров </string>
-    <string name="pattern_left_for_today_with_value" formatted="false">%d перекуров осталось до лимита</string>
-    <string name="pattern_over_limit_for_today_with_value" formatted="false">%d перекуров сверх лимита</string>
-    <string name="pattern_smokes_today_with_value" formatted="false">%d перекуров сегодня</string>
-
 
 </resources>

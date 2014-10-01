@@ -48,8 +48,8 @@ public class SmookerApplication extends Application {
         instance = this;
         if (!settings().has(Settings.APP_FIRST_TIME_DATE)){
             settings().set(Settings.APP_FIRST_TIME_DATE,DateUtils.now().getTime());
+            scheduleAlarms();
         }
-        scheduleAlarms();
     }
 
     public synchronized Model getModel() {
@@ -168,6 +168,10 @@ public class SmookerApplication extends Application {
 
     public void scheduleAlarms() {
 
+        scheduleNextSmokeAlarm();
+
+        //Daily alarms
+
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -203,7 +207,7 @@ public class SmookerApplication extends Application {
                 AlarmManager.INTERVAL_HALF_HOUR,
                 AlarmManager.INTERVAL_HALF_HOUR, alarmIntent);
 
-        scheduleNextSmokeAlarm();
+
     }
 
     public CalendarWidget.CalendarWidgetUpdate fetchCalendarWidgetContent() {
@@ -311,6 +315,7 @@ public class SmookerApplication extends Application {
                 List<Date> scheduledSmokesList = recalculateSmokingSchedule(scheduleStart, scheduleStop, leftSmokes);
                 if (!scheduledSmokesList.isEmpty()){
                     Date date = scheduledSmokesList.get(0);
+                    //TODO: add notification without alarm
                     //schedule alarm
                     alarmManager.set(AlarmManager.RTC_WAKEUP, date.getTime(), alarmIntent);
                 } else {
@@ -336,8 +341,9 @@ public class SmookerApplication extends Application {
 
     public void showNextSmokeNotification() {
 
-        NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (!settings().get(Settings.ENABLED_ASSISTANCE_NOTIFICATION)) return;
 
+        NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
         PendingIntent openApp = DashboardActivity.openDashboard(getApplicationContext());

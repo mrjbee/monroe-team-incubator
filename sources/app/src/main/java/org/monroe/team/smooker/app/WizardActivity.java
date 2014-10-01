@@ -386,6 +386,10 @@ public class WizardActivity extends SupportActivity {
             wizardActivity.view(CheckBox.class,R.id.ui_status_notif_check).setChecked(
                     wizardActivity.application().settings().get(Settings.ENABLED_STATISTIC_NOTIFICATION));
 
+            wizardActivity.view(CheckBox.class,R.id.ui_assistant_naif_check).setChecked(
+                    wizardActivity.application().settings().get(Settings.ENABLED_ASSISTANCE_NOTIFICATION));
+
+
             wizardActivity.view(CheckBox.class,R.id.ui_sticky_notif_check).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -396,6 +400,14 @@ public class WizardActivity extends SupportActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         wizardActivity.setSetting(Settings.ENABLED_STATISTIC_NOTIFICATION,isChecked);
+                }
+            });
+
+
+            wizardActivity.view(CheckBox.class,R.id.ui_assistant_naif_check).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    wizardActivity.setSetting(Settings.ENABLED_ASSISTANCE_NOTIFICATION,isChecked);
                 }
             });
         }

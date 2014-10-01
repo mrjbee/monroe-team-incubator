@@ -13,6 +13,16 @@
         android:textSize="@dimen/text_size_normal"
         />
 
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:text="@string/ui_page_assistance_notif_title"
+        android:id="@+id/ui_assistant_naif_check"
+        android:textSize="@dimen/text_size_normal"
+        />
+
     <LinearLayout
         android:id="@+id/spd_separator_layout"
         android:layout_width="match_parent"
