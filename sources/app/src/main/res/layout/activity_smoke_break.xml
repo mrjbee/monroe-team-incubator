@@ -7,7 +7,7 @@
         android:id="@+id/sb_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background.main">
+        android:background="@color/background.main3">
 
         <ImageButton
             android:id="@+id/sb_back_btn"
@@ -23,7 +23,7 @@
             android:layout_below="@+id/sb_back_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/background.main.highlight"
+            android:textColor="@color/background.main2"
             android:textSize="@dimen/text_size_normal"
             android:paddingLeft="25dp"
             android:textStyle="bold"
@@ -78,6 +78,7 @@
                android:layout_height="wrap_content"
                android:text="No, I`ll skip this time"
                android:textSize="@dimen/text_size_normal"
+               android:textStyle="bold"
                android:textColor="@color/text.dark"/>
 
            <TextView
@@ -113,7 +114,7 @@
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:text="No, I`ll smoke later"
-
+               android:textStyle="bold"
                android:textSize="@dimen/text_size_normal"
                android:textColor="@color/text.dark"/>
            <TextView
@@ -148,6 +149,7 @@
                android:id="@+id/sb_option_smoke_title"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
+               android:textStyle="bold"
                android:text="Yes, I`ll smoke "
                android:textSize="@dimen/text_size_normal"
                android:textColor="@color/text.dark"/>

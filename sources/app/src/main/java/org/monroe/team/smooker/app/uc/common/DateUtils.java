@@ -60,4 +60,7 @@ public class DateUtils {
     }
 
 
+    public static long asMinutes(long ms) {
+        return ms/(60*1000);
+    }
 }

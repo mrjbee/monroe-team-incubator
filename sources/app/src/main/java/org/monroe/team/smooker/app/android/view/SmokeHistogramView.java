@@ -15,6 +15,7 @@ import android.view.View;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
 
+import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -105,14 +106,12 @@ public class SmokeHistogramView extends View {
         selectionValuePaintWithoutShadow.setStrokeWidth(dimen(R.integer.chart_stroke_boldest_float));
         selectionValuePaintWithoutShadow.setTextSize(axisCaptionTextSize);
 
-        /*
         try {
             Method method = this.getClass().getMethod("setLayerType",int.class,Paint.class);
             if (method!=null){
                 method.invoke(this,LAYER_TYPE_SOFTWARE, selectionValuePaint);
             }
         } catch (Exception e) {}
-        */
 
         axisLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.LINEAR_TEXT_FLAG);
         axisLabelPaint.setAntiAlias(true);

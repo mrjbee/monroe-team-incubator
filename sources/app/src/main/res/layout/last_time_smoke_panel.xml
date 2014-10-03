@@ -5,86 +5,78 @@
     android:layout_height="match_parent"
     android:background="@color/last.time.smoke.bkg">
 
-
-    <TextView
-        android:id="@+id/lts_days_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dip"
-        android:layout_marginTop="15dip"
-        android:text="10 days"
-        android:textColor="@color/last.time.smoke.date"
-        android:textSize="@dimen/text_size_caption_big"
-        android:textAlignment="center"
-        android:textStyle="bold"/>
-
-
-    <TextView
-        android:id="@+id/lts_time_text"
-        android:layout_toRightOf="@+id/lts_days_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dip"
-        android:layout_marginTop="15dip"
-        android:text="00:00:12"
-        android:textColor="@color/last.time.smoke.date"
-        android:textSize="@dimen/text_size_caption_big"
-        />
-
-    <TextView
-        android:id="@+id/lts_caption_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/past_after_last_smoke"
-        android:textSize="@dimen/text_size_normal_small"
-        android:layout_marginLeft="5dip"
-        android:layout_below="@+id/lts_days_text"
-        android:layout_alignLeft="@+id/lts_days_text"
-        android:textColor="@color/last.time.smoke.date"
-    />
-
-
-    <LinearLayout
-        android:id="@+id/lts_separator_layout"
+    <view
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="1px"
-        android:background="@android:color/darker_gray"
-        android:layout_below="@+id/lts_caption_text"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="15dp"
-        />
+        android:layout_height="match_parent"
+        class="org.monroe.team.smooker.app.android.view.TimerView"
+        android:id="@+id/lts_timer_view"
+        android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/lts_days_text"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/lts_time_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10 days"
+            android:textColor="@color/text.dark"
+            android:textSize="@dimen/text_size_caption"
+            android:textAlignment="center"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/lts_caption_text"
+            android:layout_above="@+id/lts_days_text"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/past_after_last_smoke"
+            android:textSize="@dimen/text_size_normal_small"
+            android:textColor="@color/text.dark.lighter"
+            />
+
+        <TextView
+            android:id="@+id/lts_time_text"
+            android:layout_above="@+id/lts_center"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00:12"
+            android:textColor="@color/text.dark"
+            android:textSize="@dimen/text_size_caption"
+            />
 
 
+        <LinearLayout
+            android:id="@+id/lts_center"
+            android:layout_centerInParent="true"
+            android:layout_width="0pt"
+            android:layout_height="0pt"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"/>
+
+
+        <TextView
+            android:id="@+id/lts_time_before_caption_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lts_center"
+            android:layout_centerHorizontal="true"
+            android:text="@string/before_next_recommended_smoke"
+            android:textSize="@dimen/text_size_normal_small"
+            android:textColor="@color/text.dark.lighter"
+            android:visibility="invisible"
+            />
 
     <TextView
         android:id="@+id/lts_time_before_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dip"
-        android:layout_marginTop="15dip"
+        android:layout_below="@id/lts_time_before_caption_text"
+        android:layout_centerHorizontal="true"
         android:text="00:00:00"
-        android:textColor="@color/background.main"
-        android:textSize="@dimen/text_size_caption_big"
-        android:layout_below="@+id/lts_separator_layout"
-        android:visibility="gone"
-        android:textStyle="bold"/>
-
-    <TextView
-        android:id="@+id/lts_time_before_caption_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/before_next_recommended_smoke"
-        android:textSize="@dimen/text_size_normal_small"
-        android:layout_marginLeft="5dip"
-        android:layout_below="@+id/lts_time_before_text"
-        android:layout_alignLeft="@+id/lts_days_text"
-        android:textColor="@color/last.time.smoke.date"
-        android:visibility="gone"
-        />
-
+        android:textColor="@color/text.dark"
+        android:textSize="@dimen/text_size_caption"
+        android:visibility="invisible"/>
 
 </RelativeLayout>

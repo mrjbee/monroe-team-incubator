@@ -28,6 +28,7 @@ import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.SmokeBreakActivity;
 import org.monroe.team.smooker.app.android.view.SmokeChartView;
 import org.monroe.team.smooker.app.android.view.SmokeHistogramView;
+import org.monroe.team.smooker.app.android.view.TimerView;
 import org.monroe.team.smooker.app.common.constant.Events;
 import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.SupportActivity;
@@ -307,6 +308,7 @@ public class DashboardActivity extends SupportActivity {
                         public void run() {
                             ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_before_caption_text)).setVisibility(View.GONE);
                             ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_before_text)).setVisibility(View.GONE);
+                            ((TimerView)lastTimeSmokeView.findViewById(R.id.lts_timer_view)).setTimeOutProgress(0f);
                         }
                     });
                 }else {
@@ -314,6 +316,7 @@ public class DashboardActivity extends SupportActivity {
                     long hours = Math.max(0,dayHrMinSec[1]);
                     long minutes = Math.max(0,dayHrMinSec[2]);
                     long seconds = Math.max(0,dayHrMinSec[3]);
+                    final long leftMinutes = DateUtils.asMinutes(timeBeforeNextSmoke-DateUtils.now().getTime());
                     final String time =  new StringBuilder()
                             .append((hours<10)?"0"+hours:hours)
                             .append(":")
@@ -327,6 +330,8 @@ public class DashboardActivity extends SupportActivity {
                             ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_before_caption_text)).setVisibility(View.VISIBLE);
                             ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_before_text)).setVisibility(View.VISIBLE);
                             ((TextView) lastTimeSmokeView.findViewById(R.id.lts_time_before_text)).setText(time);
+                            float val = leftMinutes > 60 ? 1f:(leftMinutes < 0 ? 0.01f : (float)leftMinutes/(float)60);
+                            ((TimerView)lastTimeSmokeView.findViewById(R.id.lts_timer_view)).setTimeOutProgress(val);
                         }
                     });
                 }
@@ -337,6 +342,7 @@ public class DashboardActivity extends SupportActivity {
                         public void run() {
                             ((TextView)lastTimeSmokeView.findViewById(R.id.lts_days_text)).setText("0 "+getString(R.string.single_day));
                             ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_text)).setText("00:00:00");
+                            ((TimerView)lastTimeSmokeView.findViewById(R.id.lts_timer_view)).setTimeProgress(0.5f);
                         }
                     });
                 } else {
@@ -344,8 +350,8 @@ public class DashboardActivity extends SupportActivity {
 
                    final long days = dayHrMinSec[0];
                    long hours = dayHrMinSec[1];
-                   long minutes = dayHrMinSec[2];
-                   long seconds = dayHrMinSec[3];
+                   final long minutes = dayHrMinSec[2];
+                   final long seconds = dayHrMinSec[3];
                    final String time =  new StringBuilder()
                            .append((hours<10)?"0"+hours:hours)
                            .append(":")
@@ -358,11 +364,12 @@ public class DashboardActivity extends SupportActivity {
                         public void run() {
                             ((TextView) lastTimeSmokeView.findViewById(R.id.lts_days_text)).setText(days +" "+ getString(R.string.few_days));
                             ((TextView) lastTimeSmokeView.findViewById(R.id.lts_time_text)).setText(time);
+                            ((TimerView)lastTimeSmokeView.findViewById(R.id.lts_timer_view)).setTimeProgress(seconds/(float)60);
                         }
                     });
                 }
             }
-        }, 0, 1500);
+        }, 0, 1000);
     }
 
     @Override
@@ -446,13 +453,7 @@ public class DashboardActivity extends SupportActivity {
             } else {
                 view(R.id.d_calendar_radio).setVisibility(View.VISIBLE);
             }
-
-            int vis = (statistics.getQuitSmokeDifficult() == QuitSmokeDifficultLevel.DISABLED ||
-                       statistics.getQuitSmokeDifficult() != QuitSmokeDifficultLevel.HARDEST)? View.GONE:View.VISIBLE;
-            if (vis == View.GONE) timeBeforeNextSmoke = -1;
-            lastTimeSmokeView.findViewById(R.id.lts_time_before_caption_text).setVisibility(vis);
-            lastTimeSmokeView.findViewById(R.id.lts_time_before_text).setVisibility(vis);
-        }
+          }
 
         if (exists(statistics.getLastSmokeDate())){
                 lastTimeSmokeTime = statistics.getLastSmokeDate().getTime();

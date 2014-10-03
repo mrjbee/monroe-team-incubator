@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="background.main3">#9a1b1b</color>
     <color name="background.main2">#5c0000</color>
     <color name="background.main">#fe1313</color>
+
     <color name="background.main.highlight">#c31010</color>
     <color name="background.widget">#f63225</color>
     <color name="background.widget2">#fd4e41</color>
@@ -27,5 +29,8 @@
 
     <color name="text.dark">#ff514f50</color>
     <color name="text.dark.lighter">#ff9a9698</color>
+
+    <color name="text.light">#fff7f2f5</color>
+    <color name="text.light.lighter">#fffffbfd</color>
 
 </resources>

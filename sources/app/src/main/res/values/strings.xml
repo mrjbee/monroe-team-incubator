@@ -67,7 +67,7 @@
     <string name="single_day">day</string>
     <string name="few_days"> days</string>
     <string name="before_next_recommended_smoke">before next smoke</string>
-    <string name="past_after_last_smoke">past after last smoke</string>
+    <string name="past_after_last_smoke">after last smoke</string>
     <string name="smokes_per_day"> smokes per day</string>
     <string name="short_min">min</string>
     <string name="short_days">days</string>
