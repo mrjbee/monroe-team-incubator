@@ -18,9 +18,14 @@
     <color name="calendar.future.text">#163246</color>
     <color name="calendar.past.text">#0573bf</color>
 
+    <color name="choice.selection">#830397ff</color>
+
     <color name="calendar.past.bkg">#0397ff</color>
     <color name="calendar.past.failed.bkg">#008cec</color>
     <color name="calendar.past.separator">#2b74a7</color>
     <color name="calendar.future.separator">#555555</color>
+
+    <color name="text.dark">#ff514f50</color>
+    <color name="text.dark.lighter">#ff9a9698</color>
 
 </resources>

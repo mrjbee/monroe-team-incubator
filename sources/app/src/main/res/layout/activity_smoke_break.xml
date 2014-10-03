@@ -1,0 +1,176 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+     tools:context="org.monroe.team.smooker.app.SmokeBreakActivity">
+    <RelativeLayout
+        android:id="@+id/sb_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background.main">
+
+        <ImageButton
+            android:id="@+id/sb_back_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/back_arrow_button"
+            android:layout_marginBottom="@dimen/sb_title_offset"
+            android:onClick="performBackButton"
+            />
+
+        <TextView
+            android:id="@+id/sb_event_text"
+            android:layout_below="@+id/sb_back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/background.main.highlight"
+            android:textSize="@dimen/text_size_normal"
+            android:paddingLeft="25dp"
+            android:textStyle="bold"
+            android:text="Time to smoke, but ..."/>
+
+        <TextView
+            android:id="@+id/sb_question_text"
+            android:layout_below="@+id/sb_event_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="40dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="25dp"
+            android:textSize="@dimen/text_size_caption_big"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:text="Are you sure want to smoke?"/>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_below="@+id/sb_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical"
+       android:gravity="center">
+
+    <RelativeLayout
+           android:id="@+id/sb_option_skip_layout"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:paddingLeft="15dp"
+           android:paddingTop="10dp"
+           android:layout_marginTop="20dp"
+           android:paddingBottom="10dp">
+
+           <ImageView
+               android:id="@+id/sb_option_skip_icon"
+               android:layout_width="30dp"
+               android:layout_height="30dp"
+               android:layout_marginRight="20dp"
+               android:src="@drawable/cancel_logo"/>
+
+           <TextView
+               android:layout_toRightOf="@+id/sb_option_skip_icon"
+               android:id="@+id/sb_option_skip_title"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="No, I`ll skip this time"
+               android:textSize="@dimen/text_size_normal"
+               android:textColor="@color/text.dark"/>
+
+           <TextView
+               android:id="@+id/sb_option_skip_description"
+               android:layout_below="@+id/sb_option_skip_title"
+               android:layout_alignLeft="@id/sb_option_skip_title"
+               android:textSize="@dimen/text_size_normal_small"
+               android:textColor="@color/text.dark.lighter"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Assistant will just mark this smoke as skipped"
+               />
+       </RelativeLayout>
+
+       <RelativeLayout
+           android:id="@+id/sb_option_postpone_layout"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:paddingLeft="15dp"
+           android:paddingTop="10dp"
+           android:paddingBottom="10dp">
+
+           <ImageView
+               android:id="@+id/sb_option_postpone_icon"
+               android:layout_width="30dp"
+               android:layout_height="30dp"
+               android:layout_marginRight="20dp"
+               android:src="@drawable/clock_logo"/>
+
+           <TextView
+               android:layout_toRightOf="@+id/sb_option_postpone_icon"
+               android:id="@+id/sb_option_postpone_title"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="No, I`ll smoke later"
+
+               android:textSize="@dimen/text_size_normal"
+               android:textColor="@color/text.dark"/>
+           <TextView
+               android:id="@+id/sb_option_postpone_description"
+               android:layout_below="@+id/sb_option_postpone_title"
+               android:layout_alignLeft="@+id/sb_option_postpone_title"
+               android:textSize="@dimen/text_size_normal_small"
+               android:textColor="@color/text.dark.lighter"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Assistant will reschedule smoking time with same count of left smokes"
+               />
+       </RelativeLayout>
+
+       <RelativeLayout
+           android:id="@+id/sb_option_smoke_layout"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:paddingLeft="15dp"
+           android:paddingTop="10dp"
+           android:paddingBottom="10dp">
+
+           <ImageView
+               android:id="@+id/sb_option_smoke_icon"
+               android:layout_width="30dp"
+               android:layout_height="30dp"
+               android:layout_marginRight="20dp"
+               android:src="@drawable/smoke_logo"/>
+
+           <TextView
+               android:layout_toRightOf="@+id/sb_option_smoke_icon"
+               android:id="@+id/sb_option_smoke_title"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Yes, I`ll smoke "
+               android:textSize="@dimen/text_size_normal"
+               android:textColor="@color/text.dark"/>
+           <TextView
+               android:id="@+id/sb_option_smoke_description"
+               android:layout_below="@+id/sb_option_smoke_title"
+               android:layout_alignLeft="@+id/sb_option_smoke_title"
+               android:textSize="@dimen/text_size_normal_small"
+               android:textColor="@color/text.dark.lighter"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Assistant will add +1 smoke for yours today statistic"
+               />
+       </RelativeLayout>
+   </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_below="@+id/sb_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow_vertical"/>
+
+
+</RelativeLayout>

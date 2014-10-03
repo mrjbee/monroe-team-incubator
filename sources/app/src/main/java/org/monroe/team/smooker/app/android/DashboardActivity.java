@@ -25,6 +25,7 @@ import android.widget.Toast;
 import org.monroe.team.android.box.Closure;
 import org.monroe.team.android.box.Lists;
 import org.monroe.team.smooker.app.R;
+import org.monroe.team.smooker.app.SmokeBreakActivity;
 import org.monroe.team.smooker.app.android.view.SmokeChartView;
 import org.monroe.team.smooker.app.android.view.SmokeHistogramView;
 import org.monroe.team.smooker.app.common.constant.Events;
@@ -56,6 +57,7 @@ public class DashboardActivity extends SupportActivity {
 
     public static final int WIZARD_ACTIVITY_FORCE_REQUEST = 1;
     public static final int WIZARD_ACTIVITY_REQUEST = 2;
+    public static final int SMOKE_BREAK_ACTIVITY_REQUEST = 3;
     private PopupMenu settingsMenu;
     private SmokeChartView chartView;
     private SmokeHistogramView histogramView;
@@ -223,10 +225,6 @@ public class DashboardActivity extends SupportActivity {
        model().execute(CalculateTodaySmokeSchedule.class,null);
     }
 
-
-
-
-
     @Override
     protected void onNewIntent(Intent intent) {
         checkIfExtraActionRequired(intent);
@@ -245,31 +243,7 @@ public class DashboardActivity extends SupportActivity {
         }
 
         if (ExtraActionName.SMOKE_DECISION.equals(intent.getExtras().get(ExtraActionName.class.getSimpleName()))){
-            //TODO: think about more specific UI
-            AlertDialog.Builder smokeDecisionAlert = new AlertDialog.Builder(this);
-            smokeDecisionAlert.setTitle(R.string.quit_smoke_assistance_title);
-            smokeDecisionAlert.setMessage("Are you sure want to smoke? If you would like I can recalculate schedule with same number of smokes, just press 'Postpone'. Or you could skip smoke which is better for your health, just choose 'Skip'.");
-            smokeDecisionAlert.setPositiveButton(R.string.add_one_smoke, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    updateUiPerStatistic(model().execute(AddSmoke.class, null));
-                }
-            });
-
-            smokeDecisionAlert.setNeutralButton(R.string.later_this_time, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    model().execute(CancelSmoke.class, SmokeCancelReason.POSTPONE);
-                }
-            });
-            smokeDecisionAlert.setNegativeButton(R.string.skip_this_time, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    model().execute(CancelSmoke.class, SmokeCancelReason.SKIP);
-                }
-            });
-
-            smokeDecisionAlert.show();
+            startActivity(new Intent(this, SmokeBreakActivity.class));//,SMOKE_BREAK_ACTIVITY_REQUEST);
             return ExtraActionName.SMOKE_DECISION;
 
         }

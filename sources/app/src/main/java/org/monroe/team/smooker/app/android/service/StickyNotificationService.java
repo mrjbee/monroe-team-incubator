@@ -111,7 +111,7 @@ public class StickyNotificationService extends Service {
             remoteViews.setTextViewText(R.id.cn_title_text,text);
 
 
-            PendingIntent closeBtnIntent = ActorSmoker.CLOSE_STICKY_NOTIFICATION.createIntent(getApplicationContext());
+            PendingIntent closeBtnIntent = ActorSmoker.CLOSE_STICKY_NOTIFICATION.createPendingIntent(getApplicationContext());
 
             remoteViews.setOnClickPendingIntent(R.id.cn_add_btn,pIntent);
             remoteViews.setOnClickPendingIntent(R.id.cn_close_btn,closeBtnIntent);

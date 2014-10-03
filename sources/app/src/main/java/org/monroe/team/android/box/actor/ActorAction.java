@@ -23,17 +23,22 @@ public class ActorAction implements Serializable {
         this.owner = owner;
     }
 
-    public PendingIntent createIntent(Context context) {
-        return createIntent(context, Collections.EMPTY_LIST);
+    public PendingIntent createPendingIntent(Context context) {
+        return createPendingIntent(context, Collections.EMPTY_LIST);
     }
 
-    public PendingIntent createIntent(Context context, List<Pair<String,? extends Serializable>> parameterList) {
+    public PendingIntent createPendingIntent(Context context, List<Pair<String, ? extends Serializable>> parameterList) {
+        Intent intent = createIntent(context, parameterList);
+        return PendingIntent.getBroadcast(context, pendingId, intent, 0);
+    }
+
+    public Intent createIntent(Context context, List<Pair<String, ? extends Serializable>> parameterList) {
         Intent intent = new Intent(context, owner);
         intent.putExtra("NAME", name);
         for (Pair<String,? extends Serializable> stringSerializablePair : parameterList) {
             intent.putExtra(stringSerializablePair.first,stringSerializablePair.second);
         }
-        return PendingIntent.getBroadcast(context, pendingId, intent, 0);
+        return intent;
     }
 
     public boolean isMe(Intent intent){

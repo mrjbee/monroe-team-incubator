@@ -151,7 +151,7 @@ public class SmookerApplication extends Application {
                     PendingIntent.FLAG_UPDATE_CURRENT);
 
 
-            PendingIntent dropNotificationPendingIntent = ActorSmoker.CLOSE_QUIT_SUGGESTION.createIntent(getApplicationContext());
+            PendingIntent dropNotificationPendingIntent = ActorSmoker.CLOSE_QUIT_SUGGESTION.createPendingIntent(getApplicationContext());
 
             builder.setAutoCancel(true)
                     .setContentTitle(getString(R.string.quit_smoke_assistance_title))

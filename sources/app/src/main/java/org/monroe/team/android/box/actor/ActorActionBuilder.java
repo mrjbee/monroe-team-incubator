@@ -27,10 +27,14 @@ public class ActorActionBuilder<EventType extends ActorAction> {
     }
 
     public final PendingIntent  build(){
-        PendingIntent intent = event.createIntent(context, parameterList);
+        PendingIntent intent = event.createPendingIntent(context, parameterList);
         return intent;
     }
 
+    public final Intent  buildIntent(){
+        Intent intent = event.createIntent(context, parameterList);
+        return intent;
+    }
 
     public static boolean requested(String feature, Intent intent) {
         return intent.getBooleanExtra(feature, false);

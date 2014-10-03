@@ -52,14 +52,20 @@ public class SmokeScheduleController {
         this.model = model;
     }
 
-    private void cancelSmokeNotification() {
-        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.cancel(NEXT_SCHEDULE_SMOKE_NOTIFICATION_ID);
-    }
-
     public void onSmokeAlarm() {
         if (!settings().get(Settings.ENABLED_ASSISTANCE_NOTIFICATION)) return;
         showNotification();
+    }
+
+    public void scheduleFallback() {
+        AlarmManager alarmManager = model.usingService(AlarmManager.class);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,
+                DateUtils.mathMinutes(DateUtils.now(),5).getTime(),
+                createAlarmIntent());
+    }
+    private void cancelSmokeNotification() {
+        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancel(NEXT_SCHEDULE_SMOKE_NOTIFICATION_ID);
     }
 
     private void showNotification() {
@@ -99,6 +105,9 @@ public class SmokeScheduleController {
             alarmManager.set(AlarmManager.RTC_WAKEUP, notificationDate.getTime(), createAlarmIntent());
         }
     }
+
+
+
 
     private PendingIntent createAlarmIntent() {
         return ActorSystemAlarm.createIntent(context, ActorSystemAlarm.Alarms.TIME_TO_NEXT_SMOKE);

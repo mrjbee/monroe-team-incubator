@@ -6,13 +6,13 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:name=".android.SmookerApplication"
+        android:name="org.monroe.team.smooker.app.android.SmookerApplication"
         android:allowBackup="true"
         android:icon="@drawable/smooker_logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".android.DashboardActivity"
+            android:name="org.monroe.team.smooker.app.android.DashboardActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask" >
             <intent-filter>
@@ -22,23 +22,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".android.WizardActivity"
+            android:name="org.monroe.team.smooker.app.SmokeBreakActivity"
+            android:label="@string/title_activity_smoke_break"
+            android:launchMode="singleInstance">
+        </activity>
+        <activity
+            android:name="org.monroe.team.smooker.app.android.WizardActivity"
             android:label="@string/a_wizard_title" >
         </activity>
 
         <service
-            android:name=".android.service.StickyNotificationService"
+            android:name="org.monroe.team.smooker.app.android.service.StickyNotificationService"
             android:enabled="true"
             android:exported="false" >
         </service>
 
         <receiver
-            android:name="org.monroe.team.smooker.app.SmokeQuitNotificationClosedReceiver"
-            android:enabled="true"
-            android:exported="false" >
-        </receiver>
-        <receiver
-            android:name=".actors.ActorDevice"
+            android:name="org.monroe.team.smooker.app.actors.ActorDevice"
             android:enabled="true"
             android:exported="false" >
             <intent-filter>
@@ -46,12 +46,12 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".actors.ActorSystemAlarm"
+            android:name="org.monroe.team.smooker.app.actors.ActorSystemAlarm"
             android:enabled="true"
             android:exported="true" >
         </receiver>
         <receiver
-            android:name=".android.widget.CalendarWidget"
+            android:name="org.monroe.team.smooker.app.android.widget.CalendarWidget"
             android:label="Quit smoke calendar" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -71,7 +71,7 @@
                 android:resource="@xml/calendar_widget_info" />
         </receiver>
         <receiver
-            android:name=".android.widget.SmokeCounterWidget"
+            android:name="org.monroe.team.smooker.app.android.widget.SmokeCounterWidget"
             android:label="Today smokes" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -85,10 +85,11 @@
                 android:resource="@xml/smoke_counter_widget_info" />
         </receiver>
         <receiver
-            android:name=".actors.ActorSmoker"
+            android:name="org.monroe.team.smooker.app.actors.ActorSmoker"
             android:enabled="true"
             android:exported="true" >
         </receiver>
+
     </application>
 
 </manifest>
