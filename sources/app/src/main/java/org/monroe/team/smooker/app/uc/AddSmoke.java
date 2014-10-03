@@ -1,20 +1,20 @@
 package org.monroe.team.smooker.app.uc;
 
-import org.monroe.team.smooker.app.common.EventMessenger;
-import org.monroe.team.smooker.app.common.Events;
-import org.monroe.team.smooker.app.common.Registry;
+import org.monroe.team.android.box.manager.EventMessenger;
+import org.monroe.team.smooker.app.common.constant.Events;
+import org.monroe.team.android.box.manager.ServiceRegistry;
 import org.monroe.team.smooker.app.db.DAO;
 import org.monroe.team.smooker.app.uc.common.TransactionUserCase;
 
 public class AddSmoke extends TransactionUserCase<Void,GetStatisticState.StatisticState> {
 
-    public AddSmoke(Registry registry) {
-        super(registry);
+    public AddSmoke(ServiceRegistry serviceRegistry) {
+        super(serviceRegistry);
     }
 
     @Override
     protected GetStatisticState.StatisticState transactionalExecute(Void request, DAO dao) {
-        dao.addOneSmoke();
+        dao.addSmoke();
         GetStatisticState.StatisticState statisticState = usingModel().execute(GetStatisticState.class,
                 GetStatisticState.StatisticRequest.create(
                         GetStatisticState.StatisticName.SMOKE_TODAY));

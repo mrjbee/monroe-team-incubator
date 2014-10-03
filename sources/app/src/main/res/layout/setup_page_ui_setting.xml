@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="1px"
-        android:layout_margin="20dip"
+        android:layout_margin="10dip"
         android:layout_below="@id/gs_cur_spinner"
         android:background="@android:color/darker_gray"/>
 
@@ -49,6 +49,6 @@
         android:layout_marginLeft="30dip"
         android:layout_marginRight="10dip"
         android:id="@+id/qs_level_label_description"
-        android:textSize="@dimen/text_size_normal_small"
+        android:textSize="@dimen/text_size_normal_smalles"
         />
 </LinearLayout>

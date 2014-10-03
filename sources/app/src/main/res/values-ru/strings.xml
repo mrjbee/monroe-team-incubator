@@ -45,10 +45,10 @@
 
     <string name="ui_page_title">Уведомления</string>
     <string name="ui_page_about">Пожалуйста укажите какие уведомления вы хотите получать на протяжении дня</string>
-    <string name="ui_page_daily_notif_title">Дневная статистика (кол-во перекуров вчера, средня кол-во перекуров, лимит на сегодня)</string>
+    <string name="ui_page_daily_notif_title">Дневная статистика</string>
     <string name="ui_page_sticky_notif_title">Прилипшее уведомления</string>
+    <string name="ui_page_assistance_notif_title">Сообщения о перекуре</string>
     <string name="ui_page_sticky_notif_about">Прилипшее уведомления - позволит Вам добавлять перекуры не отрывая Вас от текушей запущеной программы, используя панель уведомлений</string>
-    <string name="ui_page_assistance_notif_title">Сообщения о перекуре согласно графику</string>
 
     <string name="pattern_new_smoke_limit_wit_value" formatted="false">Новый дневной лимит - %d перекуров в день</string>
     <string name="pattern_yesterday_and_average_smokes_with_both_values" formatted="false">Перекуров вчера %d (%d - среднее кол-во перекуров в день)</string>

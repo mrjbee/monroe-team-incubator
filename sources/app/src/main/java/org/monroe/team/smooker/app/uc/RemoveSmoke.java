@@ -1,11 +1,8 @@
 package org.monroe.team.smooker.app.uc;
 
-import org.monroe.team.smooker.app.common.Closure;
-import org.monroe.team.smooker.app.common.EventMessenger;
-import org.monroe.team.smooker.app.common.Events;
-import org.monroe.team.smooker.app.common.Registry;
-import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgram;
-import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
+import org.monroe.team.android.box.manager.EventMessenger;
+import org.monroe.team.smooker.app.common.constant.Events;
+import org.monroe.team.android.box.manager.ServiceRegistry;
 import org.monroe.team.smooker.app.db.DAO;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
 import org.monroe.team.smooker.app.uc.common.TransactionUserCase;
@@ -14,8 +11,8 @@ import java.util.List;
 
 public class RemoveSmoke extends TransactionUserCase<Void,Boolean> {
 
-    public RemoveSmoke(Registry registry) {
-        super(registry);
+    public RemoveSmoke(ServiceRegistry serviceRegistry) {
+        super(serviceRegistry);
     }
 
     @Override

@@ -1,23 +1,23 @@
 package org.monroe.team.smooker.app.uc.common;
 
 import org.monroe.team.smooker.app.common.Model;
-import org.monroe.team.smooker.app.common.Registry;
+import org.monroe.team.android.box.manager.ServiceRegistry;
 
 public abstract class UserCaseSupport<RequestType,ResponseType> implements UserCase <RequestType,ResponseType> {
 
-    private final Registry registry;
+    private final ServiceRegistry serviceRegistry;
 
-    public UserCaseSupport(Registry registry) {
-        this.registry = registry;
+    public UserCaseSupport(ServiceRegistry serviceRegistry) {
+        this.serviceRegistry = serviceRegistry;
     }
 
     protected final <ServiceType> ServiceType using(Class<ServiceType> serviceId){
-        if (!registry.contains(serviceId)) throw new IllegalStateException("Unexpected service = "+serviceId);
-        return registry.get(serviceId);
+        if (!serviceRegistry.contains(serviceId)) throw new IllegalStateException("Unexpected service = "+serviceId);
+        return serviceRegistry.get(serviceId);
     }
 
     protected final Model usingModel(){
-        return registry.get(Model.class);
+        return serviceRegistry.get(Model.class);
     }
 
 }

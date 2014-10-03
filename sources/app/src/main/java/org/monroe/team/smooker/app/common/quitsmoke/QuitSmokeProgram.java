@@ -1,6 +1,6 @@
 package org.monroe.team.smooker.app.common.quitsmoke;
 
-import org.monroe.team.smooker.app.common.Closure;
+import org.monroe.team.android.box.Closure;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
 
 import java.util.Date;
@@ -117,4 +117,8 @@ public abstract class QuitSmokeProgram {
     public boolean isChangedToday() {
         return getStageForDay(DateUtils.dateOnly(DateUtils.now())) != null;
     }
+
+   public void manualUpdate(Closure<QuitSmokeData,Void> updateClosure){
+        dataDriver.updateData(updateClosure);
+   }
 }

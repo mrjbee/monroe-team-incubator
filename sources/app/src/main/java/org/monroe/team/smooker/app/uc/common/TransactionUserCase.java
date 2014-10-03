@@ -1,13 +1,13 @@
 package org.monroe.team.smooker.app.uc.common;
 
-import org.monroe.team.smooker.app.common.Registry;
+import org.monroe.team.android.box.manager.ServiceRegistry;
 import org.monroe.team.smooker.app.db.DAO;
 import org.monroe.team.smooker.app.db.TransactionManager;
 
 public abstract class TransactionUserCase<RequestType,ResponseType> extends UserCaseSupport<RequestType,ResponseType> {
 
-    public TransactionUserCase(Registry registry) {
-        super(registry);
+    public TransactionUserCase(ServiceRegistry serviceRegistry) {
+        super(serviceRegistry);
     }
 
     @Override

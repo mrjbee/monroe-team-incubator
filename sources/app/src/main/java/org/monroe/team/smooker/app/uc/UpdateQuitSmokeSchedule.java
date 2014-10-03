@@ -1,7 +1,7 @@
 package org.monroe.team.smooker.app.uc;
 
 import org.monroe.team.smooker.app.R;
-import org.monroe.team.smooker.app.common.Registry;
+import org.monroe.team.android.box.manager.ServiceRegistry;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeData;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgram;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
@@ -10,15 +10,14 @@ import org.monroe.team.smooker.app.uc.common.DateUtils;
 import org.monroe.team.smooker.app.uc.common.TransactionUserCase;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class UpdateQuitSmokeSchedule extends TransactionUserCase<Void,UpdateQuitSmokeSchedule.QuitSmokeSchedule> {
 
-    public UpdateQuitSmokeSchedule(Registry registry) {
-        super(registry);
+    public UpdateQuitSmokeSchedule(ServiceRegistry serviceRegistry) {
+        super(serviceRegistry);
     }
 
     @Override

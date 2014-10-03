@@ -5,7 +5,7 @@
     android:background="@color/white"
     android:weightSum="2"
     android:orientation="vertical"
-    tools:context="org.monroe.team.smooker.app.WizardActivity">
+    tools:context="org.monroe.team.smooker.app.android.WizardActivity">
 
     <RelativeLayout
             android:id="@+id/description_layout"

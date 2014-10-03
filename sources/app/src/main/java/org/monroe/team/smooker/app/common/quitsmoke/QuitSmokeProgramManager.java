@@ -2,7 +2,7 @@ package org.monroe.team.smooker.app.common.quitsmoke;
 
 import android.content.Context;
 
-import org.monroe.team.smooker.app.common.Closure;
+import org.monroe.team.android.box.Closure;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
 
 import java.util.Date;

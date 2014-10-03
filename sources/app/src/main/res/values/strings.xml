@@ -45,7 +45,7 @@
 
     <string name="ui_page_title">Notification</string>
     <string name="ui_page_about">Please specify which of notification you would like to get during day</string>
-    <string name="ui_page_daily_notif_title">Show daily status notification (aka. yesterday, average smoke counts and day limit)</string>
+    <string name="ui_page_daily_notif_title">Show daily status notification</string>
     <string name="ui_page_sticky_notif_title">Show sticky notification</string>
     <string name="ui_page_sticky_notif_about">Sticky notification allows you quickly \'add 1 smoke\' directly from notification bar without quiting current running application</string>
     <string name="ui_page_assistance_notif_title">Show smoke break suggestion</string>
@@ -85,13 +85,17 @@
     <string name="smoke_limit_decreased">Smoke limit decreased</string>
     <string name="quit_smoke_assistance_title">Quit Smoking Assistant</string>
     <string name="smoke_statistic">Smoke statistic</string>
-    <string name="time_to_smoke">It`s time to get smoke</string>
-    <string name="not_to_smoke_suggestion">But its strongly recommended to skip it</string>
-    <string name="skip_this_time">Not right now</string>
-    <string name="add_one_smoke">+1 smoke break</string>
+    <string name="time_to_smoke">You may want to smoke</string>
+    <string name="not_to_smoke_suggestion">However its strongly recommended to skip</string>
+    <string name="skip_this_time">Skip</string>
+    <string name="later_this_time">Later</string>
+    <string name="add_one_smoke">Smoke</string>
     <string name="one_smoke_added">One smoke break added</string>
     <string name="quit_smoking_program_suggestion">Choose a way to quit smoking</string>
     <string name="quit_smoke_program_suggestion_manual">… which fits to you</string>
     <string name="hit_for_smoke_log">Touch for +1 smoke break</string>
+    <string name="pattern_one_smoke_spend_with_value">You`ve just spend %s</string>
+    <string name="pattern_one_smoke_saved_with_value">You`ve just saved %s</string>
+    <string name="smoke_rescheduled">Smoke rescheduled</string>
 
 </resources>

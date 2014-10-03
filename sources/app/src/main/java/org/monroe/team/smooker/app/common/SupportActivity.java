@@ -3,8 +3,9 @@ package org.monroe.team.smooker.app.common;
 import android.app.Activity;
 import android.view.View;
 
-import org.monroe.team.smooker.app.SmookerApplication;
-import org.monroe.team.smooker.app.event.Event;
+import org.monroe.team.android.box.Closure;
+import org.monroe.team.smooker.app.android.SmookerApplication;
+import org.monroe.team.android.box.event.Event;
 
 public class SupportActivity extends Activity {
 

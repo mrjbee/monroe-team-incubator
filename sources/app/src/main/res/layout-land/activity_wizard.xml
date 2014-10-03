@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context="org.monroe.team.smooker.app.WizardActivity">
+    tools:context="org.monroe.team.smooker.app.android.WizardActivity">
 
         <RelativeLayout
             android:id="@+id/wizzard_separator_layout"

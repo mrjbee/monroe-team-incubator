@@ -2,11 +2,12 @@ package org.monroe.team.smooker.app.uc;
 
 import android.util.Pair;
 
+import org.monroe.team.android.box.manager.SettingManager;
+import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgram;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
-import org.monroe.team.smooker.app.common.Registry;
-import org.monroe.team.smooker.app.common.Settings;
+import org.monroe.team.android.box.manager.ServiceRegistry;
 import org.monroe.team.smooker.app.db.DAO;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
 import org.monroe.team.smooker.app.uc.common.TransactionUserCase;
@@ -22,8 +23,8 @@ import java.util.Set;
 
 public class GetStatisticState extends TransactionUserCase<GetStatisticState.StatisticRequest, GetStatisticState.StatisticState> {
 
-    public GetStatisticState(Registry registry) {
-        super(registry);
+    public GetStatisticState(ServiceRegistry serviceRegistry) {
+        super(serviceRegistry);
     }
 
     @Override
@@ -68,10 +69,10 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                 case SPEND_MONEY:
                     Float money = calculateSpendMoney(dao);
                     DecimalFormat df = new DecimalFormat();
-                    df.setCurrency(using(Settings.class).getAs(Settings.CURRENCY_ID, Settings.CONVERT_CURRENCY).nativeInstance);
+                    df.setCurrency(using(SettingManager.class).getAs(Settings.CURRENCY_ID, Settings.CONVERT_CURRENCY).nativeInstance);
                     df.setMaximumFractionDigits(2);
                     df.setMinimumFractionDigits(2);
-                    statisticState.spendMoney = df.format(money) +" "+using(Settings.class).getAs(Settings.CURRENCY_ID, Settings.CONVERT_CURRENCY).symbol;
+                    statisticState.spendMoney = df.format(money) +" "+using(SettingManager.class).getAs(Settings.CURRENCY_ID, Settings.CONVERT_CURRENCY).symbol;
                     break;
                 case QUIT_SMOKE:
                     QuitSmokeProgram quitSmokeProgram = using(QuitSmokeProgramManager.class).get();
@@ -89,7 +90,7 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                         if (result != null){
                             statisticState.lastSmokeDate = result.get(1,Date.class);
                         } else {
-                            statisticState.lastSmokeDate = new Date(using(Settings.class).get(Settings.APP_FIRST_TIME_DATE));
+                            statisticState.lastSmokeDate = new Date(using(SettingManager.class).get(Settings.APP_FIRST_TIME_DATE));
                         }
                     break;
                 case TOTAL_SMOKES:
@@ -131,7 +132,7 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
     }
 
     private Float calculateSpendMoney(DAO dao) {
-        return using(Settings.class).get(Settings.SMOKE_PRICE) * dao.getSmokesAllPeriod().size();
+        return using(SettingManager.class).get(Settings.SMOKE_PRICE) * dao.getSmokesAllPeriod().size();
     }
 
     public static enum StatisticName{

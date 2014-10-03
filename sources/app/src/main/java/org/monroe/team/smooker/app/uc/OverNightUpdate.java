@@ -1,9 +1,11 @@
 package org.monroe.team.smooker.app.uc;
 
-import org.monroe.team.smooker.app.common.Closure;
-import org.monroe.team.smooker.app.common.EventMessenger;
-import org.monroe.team.smooker.app.common.Events;
-import org.monroe.team.smooker.app.common.Registry;
+import org.monroe.team.android.box.Closure;
+import org.monroe.team.android.box.manager.EventMessenger;
+import org.monroe.team.android.box.manager.SettingManager;
+import org.monroe.team.smooker.app.common.constant.Events;
+import org.monroe.team.android.box.manager.ServiceRegistry;
+import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgram;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
 import org.monroe.team.smooker.app.db.DAO;
@@ -14,12 +16,18 @@ import java.util.Date;
 
 public class OverNightUpdate extends TransactionUserCase<Void,Void> {
 
-    public OverNightUpdate(Registry registry) {
-        super(registry);
+    public OverNightUpdate(ServiceRegistry serviceRegistry) {
+        super(serviceRegistry);
     }
 
     @Override
     protected Void transactionalExecute(Void request, final DAO dao) {
+        Date today = DateUtils.dateOnly(DateUtils.now());
+        Date date = usingModel().usingService(SettingManager.class).getAs(Settings.LAST_OVERNIGHT_UPDATE_DATE, Settings.CONVERT_DATE);
+        if (date != null && date.compareTo(today) == 0){
+            return null;
+        }
+
         GetStatisticState.StatisticState statisticState = usingModel().execute(GetStatisticState.class,
                 GetStatisticState.StatisticRequest.create(
                         GetStatisticState.StatisticName.SMOKE_TODAY));
@@ -51,6 +59,7 @@ public class OverNightUpdate extends TransactionUserCase<Void,Void> {
             }
         });
 
+        using(SettingManager.class).set(Settings.LAST_OVERNIGHT_UPDATE_DATE, today.getTime());
         return null;
     }
 }
