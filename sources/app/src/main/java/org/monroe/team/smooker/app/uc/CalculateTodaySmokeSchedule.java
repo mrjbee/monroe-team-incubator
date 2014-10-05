@@ -76,7 +76,7 @@ public class CalculateTodaySmokeSchedule extends TransactionUserCase<Void, List<
 
     public List<SmokeSuggestion> recalculateSmokingSchedule(Date scheduleStart, Date scheduleStop, int leftSmokes) {
         long period = scheduleStop.getTime() - scheduleStart.getTime();
-        if (period < 30 ) return Collections.EMPTY_LIST;
+        if (period < 30 || leftSmokes <= 0) return Collections.EMPTY_LIST;
         period = period/60000;
         int deltaMinutes = (int) period / leftSmokes;
         if (deltaMinutes < 30){
