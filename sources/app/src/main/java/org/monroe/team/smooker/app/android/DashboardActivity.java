@@ -310,7 +310,7 @@ public class DashboardActivity extends SupportActivity {
                             if (timeBeforeNextSmoke == -1) {
                                 ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_before_caption_text)).setVisibility(View.GONE);
                                 ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_before_text)).setVisibility(View.GONE);
-                                ((TimerView) lastTimeSmokeView.findViewById(R.id.lts_timer_view)).setTimeOutProgress(0f);
+                                ((TimerView) lastTimeSmokeView.findViewById(R.id.lts_timer_view)).setTimeOutProgress(-1f);
                             }
                         }
                     });
@@ -334,7 +334,7 @@ public class DashboardActivity extends SupportActivity {
                             ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_before_text)).setVisibility(View.VISIBLE);
                             ((TextView) lastTimeSmokeView.findViewById(R.id.lts_time_before_text)).setText(time);
                             float val = leftMinutes > 60 ? 1f:(leftMinutes < 0 ? 0f : (float)leftMinutes/(float)60);
-                            ((TimerView)lastTimeSmokeView.findViewById(R.id.lts_timer_view)).setTimeOutProgress(val);
+                            ((TimerView)lastTimeSmokeView.findViewById(R.id.lts_timer_view)).animateTimeOutProgress(val);
                         }
                     });
                 }
@@ -345,7 +345,7 @@ public class DashboardActivity extends SupportActivity {
                         public void run() {
                             ((TextView)lastTimeSmokeView.findViewById(R.id.lts_days_text)).setText("0 "+getString(R.string.single_day));
                             ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_text)).setText("00:00:00");
-                            ((TimerView)lastTimeSmokeView.findViewById(R.id.lts_timer_view)).setTimeProgress(0.5f);
+                            ((TimerView)lastTimeSmokeView.findViewById(R.id.lts_timer_view)).animateTimeProgress(0.5f);
                         }
                     });
                 } else {
@@ -367,7 +367,7 @@ public class DashboardActivity extends SupportActivity {
                         public void run() {
                             ((TextView) lastTimeSmokeView.findViewById(R.id.lts_days_text)).setText(days +" "+ getString(R.string.few_days));
                             ((TextView) lastTimeSmokeView.findViewById(R.id.lts_time_text)).setText(time);
-                            ((TimerView)lastTimeSmokeView.findViewById(R.id.lts_timer_view)).setTimeProgress(seconds/(float)60);
+                            ((TimerView)lastTimeSmokeView.findViewById(R.id.lts_timer_view)).animateTimeProgress(seconds/(float)60);
                         }
                     });
                 }

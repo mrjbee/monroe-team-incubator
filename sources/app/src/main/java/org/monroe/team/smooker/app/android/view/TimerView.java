@@ -22,7 +22,8 @@ public class TimerView extends View{
     private Paint timePaint;
     private Paint timeOutPaint;
     private float timeProgress = 0f;
-    private float timeOutProgress = 0f;
+    private float timeOutProgress = -0.1f;
+    private AnimationSupport support;
 
     public TimerView(Context context) {
         super(context);
@@ -38,8 +39,6 @@ public class TimerView extends View{
         super(context, attrs, defStyleAttr);
         initialize();
     }
-
-
 
     @Override
     protected Parcelable onSaveInstanceState() {
@@ -61,6 +60,13 @@ public class TimerView extends View{
 
 
     private void initialize() {
+
+        if (android.os.Build.VERSION.SDK_INT >= 14){
+            //support animation
+            support = new TimerViewAnimation14APISupport(this);
+        } else {
+            support = new NoAnimationSupport(this);
+        }
         offset = 10;
 
         timeTrackPaint = new Paint();
@@ -107,10 +113,10 @@ public class TimerView extends View{
         canvas.drawOval(asOvalBounds(center, getTimeCircleRadius()), timeTrackPaint);
         canvas.drawArc(asOvalBounds(center, getTimeCircleRadius()), -90, 359 * timeProgress, false, timePaint);
 
-        if (timeOutProgress > 0f){
-            canvas.drawArc(asOvalBounds(center, getTimeOutCircleRadius()), -90, 359 * timeOutProgress, false, timeOutPaint);
-        } else {
+        if (timeOutProgress == 0f){
             canvas.drawCircle(center.x, center.y - getTimeOutCircleRadius(), 10, timeOutPaint);
+        } else  if (timeOutProgress > 0){
+            canvas.drawArc(asOvalBounds(center, getTimeOutCircleRadius()), -90, 359 * timeOutProgress, false, timeOutPaint);
         }
     }
 
@@ -136,15 +142,65 @@ public class TimerView extends View{
         return getBiggestRadius() - timeOutPaint.getStrokeWidth();
     }
 
+    public void animateTimeProgress(float newTimeProgress) {
+        support.animateTimeProgress(timeProgress, newTimeProgress);
+    }
+
+    public void animateTimeOutProgress(float newTimeOutProgress) {
+        support.animateTimeOutProgress(timeOutProgress, newTimeOutProgress);
+    }
+
     public void setTimeProgress(float timeProgress) {
+
         this.timeProgress = timeProgress;
         invalidate();
+    }
+
+    public float getTimeProgress() {
+        return timeProgress;
     }
 
     public void setTimeOutProgress(float timeOutProgress) {
         this.timeOutProgress = timeOutProgress;
         invalidate();
     }
+
+    public float getTimeOutProgress() {
+        return timeOutProgress;
+    }
+
+    public static abstract class AnimationSupport  {
+
+        protected final TimerView owner;
+
+
+        protected AnimationSupport(TimerView owner) {
+            this.owner = owner;
+        }
+
+        public abstract void animateTimeProgress(float fromProgress, float toProgress);
+
+        public abstract void animateTimeOutProgress(float timeOutProgress, float newTimeOutProgress);
+
+    }
+
+    public static class NoAnimationSupport extends AnimationSupport{
+
+        protected NoAnimationSupport(TimerView owner) {
+            super(owner);
+        }
+
+        @Override
+        public void animateTimeProgress(float fromProgress, float toProgress) {
+            owner.setTimeProgress(toProgress);
+        }
+
+        @Override
+        public void animateTimeOutProgress(float timeOutProgress, float newTimeOutProgress) {
+            owner.setTimeOutProgress(newTimeOutProgress);
+        }
+    }
+
 
     protected static class TimerViewSavedState extends BaseSavedState{
 
