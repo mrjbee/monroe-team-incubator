@@ -25,6 +25,10 @@ public class TimerViewAnimation14APISupport extends TimerView.AnimationSupport {
         if (timeAnimator != null){
             timeAnimator.cancel();
         }
+        if (fromProgress < 0 && toProgress >= 0){
+            fromProgress = 0;
+        }
+
         timeAnimator = ObjectAnimator.ofFloat(owner, new Property<TimerView, Float>(Float.class,"TimeProgress") {
             @Override
             public Float get(TimerView object) {

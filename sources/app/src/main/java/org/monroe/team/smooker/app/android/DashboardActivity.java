@@ -333,7 +333,7 @@ public class DashboardActivity extends SupportActivity {
                             ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_before_caption_text)).setVisibility(View.VISIBLE);
                             ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_before_text)).setVisibility(View.VISIBLE);
                             ((TextView) lastTimeSmokeView.findViewById(R.id.lts_time_before_text)).setText(time);
-                            float val = leftMinutes > 60 ? 1f:(leftMinutes < 0 ? 0f : (float)leftMinutes/(float)60);
+                            float val = leftMinutes > 60 ? 1f:(leftMinutes < 5 ? 0f : (float)leftMinutes/(float)60);
                             ((TimerView)lastTimeSmokeView.findViewById(R.id.lts_timer_view)).animateTimeOutProgress(val);
                         }
                     });
