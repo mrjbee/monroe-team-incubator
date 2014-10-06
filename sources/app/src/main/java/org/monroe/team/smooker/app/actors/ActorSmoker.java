@@ -19,12 +19,12 @@ import org.monroe.team.smooker.app.uc.CancelSmoke;
 
 public class ActorSmoker extends Actor {
 
-    public static final SmokerAction POSTPONE_SMOKE = new SmokerAction("POSTPONE_SMOKE",503);
     public static SmokerAction CLOSE_STICKY_NOTIFICATION = new SmokerAction("CLOSE_STICKY_NOTIFICATION",505);
     public static SmokerAction CLOSE_QUIT_SUGGESTION = new SmokerAction("CLOSE_QUIT_SUGGESTION",504);
 
-    public static SmokerAction ADD_SMOKE = new SmokerAction("ADD_SMOKE",501);
-    public static SmokerAction SKIP_SMOKE = new SmokerAction("SKIP_SMOKE",502);
+    public static final SmokerAction ADD_SMOKE = new SmokerAction("ADD_SMOKE",501);
+    public static final SmokerAction SKIP_SMOKE = new SmokerAction("SKIP_SMOKE",502);
+    public static final SmokerAction POSTPONE_SMOKE = new SmokerAction("POSTPONE_SMOKE",503);
 
     public ActorSmoker() {}
 

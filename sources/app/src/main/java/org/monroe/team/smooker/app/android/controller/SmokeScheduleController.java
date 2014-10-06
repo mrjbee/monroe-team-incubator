@@ -76,6 +76,8 @@ public class SmokeScheduleController {
         PendingIntent addSmoke = ActorSmoker.create(context, ActorSmoker.ADD_SMOKE).buildDefault();
         PendingIntent laterSmoke = ActorSmoker.create(context, ActorSmoker.POSTPONE_SMOKE).buildDefault();
 
+
+
         builder.setAutoCancel(true)
                 .setContentTitle(getString(R.string.quit_smoke_assistance_title))
                 .setContentText(getString(R.string.time_to_smoke))

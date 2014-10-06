@@ -68,7 +68,7 @@ public class DashboardActivity extends SupportActivity {
     private ArrayAdapter<UpdateQuitSmokeSchedule.QuitSmokeSchedule.DayModel> calendarListAdapter;
     private Timer lastSmokeTimer;
     private long lastTimeSmokeTime = -1;
-    private long timeBeforeNextSmoke = -1;
+    private long timeBeforeNextSmoke = -2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,7 +195,7 @@ public class DashboardActivity extends SupportActivity {
                     ((TextView) convertView.findViewById(R.id.cal_text)).setShadowLayer(0,0,0,Color.BLACK);
                     ((TextView) convertView.findViewById(R.id.cal_text)).setTextColor(getResources().getColor(R.color.calendar_future_text));
                 } else {
-                    ((TextView) convertView.findViewById(R.id.cal_text)).setShadowLayer(6,2,2,Color.BLACK);
+                    ((TextView) convertView.findViewById(R.id.cal_text)).setShadowLayer(6, 2, 2, Color.BLACK);
                     ((TextView) convertView.findViewById(R.id.cal_text)).setTextColor(Color.WHITE);
                     ((TextView) convertView.findViewById(R.id.cal_date_text)).setTextColor(getResources().getColor(R.color.calendar_past_text));
                     convertView.findViewById(R.id.cal_date_panel).setBackgroundResource(R.drawable.date_bkg_white);
@@ -220,22 +220,23 @@ public class DashboardActivity extends SupportActivity {
         if (ExtraActionName.SETUP != checkIfExtraActionRequired(getIntent())){
             checkSetupRequired();
         }
-
-       model().execute(OverNightUpdate.class,null);
-       //will setup future model
-       model().execute(CalculateTodaySmokeSchedule.class,null);
+        model().execute(OverNightUpdate.class,null);
+        //will setup future model
+        model().execute(CalculateTodaySmokeSchedule.class,null);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         checkIfExtraActionRequired(intent);
+
     }
 
     private ExtraActionName checkIfExtraActionRequired(Intent intent) {
         if (intent == null || intent.getExtras() == null){
             return ExtraActionName.NONE;
         }
-
+        setIntent(new Intent(this,DashboardActivity.class));
         if (intent.getExtras().get("PAGE_STACK") != null){
             Intent s = new Intent(this, WizardActivity.class);
             s.putExtras(intent.getExtras());
@@ -302,13 +303,15 @@ public class DashboardActivity extends SupportActivity {
         lastSmokeTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if (timeBeforeNextSmoke == -1){
+                if (timeBeforeNextSmoke < 0){
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_before_caption_text)).setVisibility(View.GONE);
-                            ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_before_text)).setVisibility(View.GONE);
-                            ((TimerView)lastTimeSmokeView.findViewById(R.id.lts_timer_view)).setTimeOutProgress(0f);
+                            if (timeBeforeNextSmoke == -1) {
+                                ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_before_caption_text)).setVisibility(View.GONE);
+                                ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_before_text)).setVisibility(View.GONE);
+                                ((TimerView) lastTimeSmokeView.findViewById(R.id.lts_timer_view)).setTimeOutProgress(0f);
+                            }
                         }
                     });
                 }else {
@@ -330,7 +333,7 @@ public class DashboardActivity extends SupportActivity {
                             ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_before_caption_text)).setVisibility(View.VISIBLE);
                             ((TextView)lastTimeSmokeView.findViewById(R.id.lts_time_before_text)).setVisibility(View.VISIBLE);
                             ((TextView) lastTimeSmokeView.findViewById(R.id.lts_time_before_text)).setText(time);
-                            float val = leftMinutes > 60 ? 1f:(leftMinutes < 0 ? 0.01f : (float)leftMinutes/(float)60);
+                            float val = leftMinutes > 60 ? 1f:(leftMinutes < 0 ? 0f : (float)leftMinutes/(float)60);
                             ((TimerView)lastTimeSmokeView.findViewById(R.id.lts_timer_view)).setTimeOutProgress(val);
                         }
                     });
