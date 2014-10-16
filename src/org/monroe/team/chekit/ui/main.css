@@ -1,0 +1,53 @@
+.background {
+    -fx-background-color: linear-gradient(to bottom, #ffffff 0%, #ececec 100%);
+}
+
+#commandEditField ,#commandEditField:focused{
+    -fx-background-insets:0 0 0 0;
+}
+
+.text-area, .text-area:focused{
+    -fx-background-insets:0 0 0 0;
+}
+
+.list-cell, .list-cell:hover {
+    -fx-background-color: white;
+    -fx-font-size: 14px;
+}
+
+.list-cell:selected, .list-cell:selected:hover {
+    -fx-background-color: #97D8FC;
+    -fx-font-size: 14px;
+}
+
+.tree-view, .tree-view:focused{
+    -fx-background-color: TRANSPARENT;
+    -fx-background-insets: 0 0 0 0;
+}
+
+.tree-cell {
+    -fx-background-color: TRANSPARENT;
+    -fx-text-fill: #555555;
+    -fx-font-size: 13px;
+}
+
+.tree-cell:focused {
+    -fx-background-color: #97D8FC;
+}
+
+.cell-action{
+    -fx-font-weight:bold;
+    -fx-font-size: 12px;
+}
+.cell-CHECK_PASSED{
+    -fx-text-fill:#555555;
+}
+.cell-CHECK_SKIPPED{
+    -fx-text-fill:#555555;
+}
+.cell-CHECK_AWAITING{
+    -fx-text-fill:#999999;
+}
+.cell-CHECK_FAILED{
+    -fx-text-fill:#555555;
+}

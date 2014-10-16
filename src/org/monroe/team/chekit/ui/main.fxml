@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<StackPane minHeight="100.0" minWidth="100.0" prefHeight="600.0" prefWidth="599.0" styleClass="background" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.monroe.team.chekit.ui.controller.MainScreenController">
+   <children>
+      <BorderPane minHeight="100.0" minWidth="100.0">
+         <center>
+            <BorderPane fx:id="rootContentPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
+      <GridPane fx:id="commandPane" visible="false">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="150.0" minHeight="150.0" prefHeight="150.0" vgrow="NEVER" />
+          <RowConstraints maxHeight="80.0" minHeight="80.0" prefHeight="80.0" vgrow="NEVER" />
+          <RowConstraints maxHeight="451.0" minHeight="10.0" prefHeight="431.0" valignment="TOP" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <ListView fx:id="suggestionsListView" focusTraversable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="190.0" prefWidth="539.0" style="-fx-background-insets: 0 0 0 0; -fx-background-radius: 2px; -fx-effect: dropshadow(three-pass-box, #737373, 5,0,2,2);" visible="false" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" />
+               </GridPane.margin>
+            </ListView>
+            <VBox alignment="CENTER" style="-fx-background-color: linear-gradient(to bottom, #4FC0E3 0%, #4EBCDE 100%); -fx-background-radius: 2px; -fx-effect: dropshadow(three-pass-box, #737373, 15,0,2,5);" GridPane.rowIndex="1">
+               <children>
+                  <TextField fx:id="commandEditField" maxHeight="-Infinity" prefHeight="30.0" promptText="Command ..." style="-fx-background-radius: 0px; -fx-effect: dropshadow(three-pass-box, #737373, 5,0,2,2);" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="10.0" right="10.0" top="10.0" />
+                     </GridPane.margin>
+                  </TextField>
+               </children>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
+         </children>
+      </GridPane>
+      <HBox fx:id="errorPane" fillHeight="false" visible="false" StackPane.alignment="TOP_LEFT">
+         <children>
+            <VBox style="-fx-background-color: BLACK; -fx-opacity: 0.8; -fx-background-radius: 4;" HBox.hgrow="NEVER">
+               <children>
+                  <Label fx:id="errorLabel" style="-fx-text-fill: #FFFFFF; -fx-font-size: 14px;" text="&lt;Information&gt;" wrapText="true" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </HBox.margin>
+            </VBox>
+         </children>
+      </HBox>
+      <BorderPane fx:id="commentPane" style="-fx-background-color: #FEFEFE99;" visible="false">
+         <center>
+            <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" style="-fx-background-color: linear-gradient(to bottom, #4FC0E3 0%, #4EBCDE 100%); -fx-background-radius: 2px; -fx-effect: dropshadow(three-pass-box, #737373, 15,0,2,5);">
+               <children>
+                  <Label fx:id="commentTitleLabel" style="-fx-font-size: 16px; -fx-text-fill: #19646b; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, #99d4dd, 1,1,1,1);" text="Comment Required">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextArea fx:id="commentTextArea" promptText="Add comment and hit &quot;Enter&quot; or &quot;Esc&quot; ..." style="-fx-background-radius: 0px; -fx-effect: dropshadow(three-pass-box, #737373, 5,0,2,2);" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets left="10.0" right="10.0" top="10.0" />
+                     </BorderPane.margin>
+                  </TextArea>
+                  <Label style="-fx-font-size: 12px; -fx-text-fill: #19646b;" text="*Hint: use 'Shift + Enter' to apply comment or 'Esc' - for cancel">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin></Label>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="20.0" right="20.0" top="10.0" />
+               </padding>
+               <BorderPane.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </BorderPane.margin>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
+    <stylesheets>
+        <URL value="@main.css" />
+    </stylesheets>
+</StackPane>

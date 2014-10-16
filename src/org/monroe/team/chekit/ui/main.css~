@@ -1,0 +1,10 @@
+.background {
+    -fx-background-color: linear-gradient(to bottom, #ffffff 0%, #ececec 100%);
+}
+
+.caption {
+    -fx-font-size: 20px;
+    -fx-font-family: "Arial Black";
+    -fx-fill: #FFFFFF;
+    -fx-effect: innershadow( three-pass-box , rgb(0, 0, 0), 1, 0.0 , 0 , 1 );
+}

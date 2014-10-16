@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import java.net.URL?>
+
+<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="200.0" minWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+      <ColumnConstraints hgrow="NEVER" maxWidth="40.0" minWidth="20.0" prefWidth="40.0" />
+    <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="470.0" />
+    <ColumnConstraints hgrow="NEVER" maxWidth="143.0" minWidth="10.0" prefWidth="36.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="200.0" minHeight="200.0" prefHeight="200.0" valignment="TOP" vgrow="NEVER" />
+    <RowConstraints maxHeight="126.0" minHeight="10.0" prefHeight="27.0" vgrow="NEVER" />
+    <RowConstraints maxHeight="192.0" minHeight="10.0" prefHeight="40.0" valignment="BOTTOM" vgrow="NEVER" />
+      <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+      <RowConstraints maxHeight="192.0" minHeight="10.0" prefHeight="117.0" valignment="TOP" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+       
+      <Label style="-fx-font-size: 25px; -fx-text-fill: #777777; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, #FFFFFF, 1,1,1,1);" styleClass="caption" text="Welcome to ChekIt Runner" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      </Label>
+      <Label maxWidth="1.7976931348623157E308" style="-fx-font-size: 12px; -fx-text-fill: #333333;" styleClass="about" text="Runner allows you to quickly go over your check list and create reports based on check list results. Application designed to be used by experiance user so only suitable controll for it is your keayboard you could start typing command any time you want. Smart suggestion will try to help you to speed up typing." wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <Label style="-fx-font-size: 12px; -fx-text-fill: #888888;" styleClass="hint" text="*Hint: Start working by typing command or space to list all commands" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+      <Label style="-fx-font-size: 10px; -fx-text-fill: #555555;" text="v 0.1" GridPane.columnIndex="2" />
+   </children>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+    <stylesheets>
+        <URL value="@main.css" />
+    </stylesheets>
+</GridPane>

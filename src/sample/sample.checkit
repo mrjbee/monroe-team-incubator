@@ -1,0 +1,33 @@
+ [Title] Sample checkIt suit [ver 1.0]
+ 
+	User cases
+		case 1
+		 - step 1 case 1
+		 - step 2 case 1
+		 - step 3 case 1
+#Comments strings skipped by parses
+		case 2
+		 - step 1 case 2: before section - unusual check
+		 - [usual_check]
+		 - step 2 case 2: after section	usual check
+	  - step 1 user action 1 (using tab+space)
+          - step 2 user action 2 (using only spaces)
+		#Comments could be leaved any where
+		- step 3 user action 3 (using too much tabs)
+		User sub-action 1
+		 - step 1 sub-action before [un_usual_check]
+ 		 - [un_usual_check]
+ 		 - step 2 sub-action after un usual check
+ 
+[usual_check]
+- usual check 1
+- usual check 2
+#wrong row as check should start with -
+- [un_usual_check]
+- usual check 3 
+
+#Wrong row
+
+[un_usual_check]
+- un usual check 1
+- un usual check 2
