@@ -1,9 +1,7 @@
 package org.monroe.team.smooker.app.android;
 
-import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,6 +9,7 @@ import android.support.v7.widget.PopupMenu;
 import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -26,6 +25,7 @@ import org.monroe.team.android.box.Closure;
 import org.monroe.team.android.box.Lists;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.SmokeBreakActivity;
+import org.monroe.team.smooker.app.android.view.AddSmokeAnimationView;
 import org.monroe.team.smooker.app.android.view.SmokeChartView;
 import org.monroe.team.smooker.app.android.view.SmokeHistogramView;
 import org.monroe.team.smooker.app.android.view.TimerView;
@@ -33,11 +33,9 @@ import org.monroe.team.smooker.app.common.constant.Events;
 import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.SupportActivity;
 import org.monroe.team.smooker.app.common.constant.SetupPage;
-import org.monroe.team.smooker.app.common.constant.SmokeCancelReason;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
 import org.monroe.team.smooker.app.uc.AddSmoke;
 import org.monroe.team.smooker.app.uc.CalculateTodaySmokeSchedule;
-import org.monroe.team.smooker.app.uc.CancelSmoke;
 import org.monroe.team.smooker.app.uc.CheckDateAndAdjustData;
 import org.monroe.team.smooker.app.uc.GetStatisticState;
 import org.monroe.team.smooker.app.uc.OverNightUpdate;
@@ -73,9 +71,9 @@ public class DashboardActivity extends SupportActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        model().execute(CheckDateAndAdjustData.class,null);
-
+        model().execute(CheckDateAndAdjustData.class, null);
         setContentView(R.layout.activity_dashboard);
+        view(AddSmokeAnimationView.class,R.id.d_add_smoke_animation_view).setSourceButton(view(R.id.add_smoke_btn));
         chartView = new SmokeChartView(this);
         histogramView = new SmokeHistogramView(this);
 
@@ -83,6 +81,13 @@ public class DashboardActivity extends SupportActivity {
         lastTimeSmokeView = getLayoutInflater().inflate(R.layout.last_time_smoke_panel, (ViewGroup) findViewById(R.id.d_content_layout),false);
         application().onDashboardCreate();
 
+        view(ImageButton.class, R.id.add_smoke_btn).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                view(AddSmokeAnimationView.class,R.id.d_add_smoke_animation_view).onAddSmoke(event);
+                return false;
+            }
+        });
         view(ImageButton.class, R.id.add_smoke_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +95,7 @@ public class DashboardActivity extends SupportActivity {
             }
         });
 
-        view(ImageButton.class,R.id.d_setting_btn).setOnClickListener(new View.OnClickListener() {
+        view(ImageButton.class, R.id.d_setting_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showSettingPopup();
@@ -367,7 +372,7 @@ public class DashboardActivity extends SupportActivity {
                         public void run() {
                             ((TextView) lastTimeSmokeView.findViewById(R.id.lts_days_text)).setText(days +" "+ getString(R.string.few_days));
                             ((TextView) lastTimeSmokeView.findViewById(R.id.lts_time_text)).setText(time);
-                            ((TimerView)lastTimeSmokeView.findViewById(R.id.lts_timer_view)).animateTimeProgress(seconds/(float)60);
+                            ((TimerView)lastTimeSmokeView.findViewById(R.id.lts_timer_view)).animateTimeProgress(seconds / (float) 60);
                         }
                     });
                 }

@@ -174,4 +174,9 @@
         android:background="@drawable/add_cigareta_btn"
         android:text="Add" />
 
+
+    <org.monroe.team.smooker.app.android.view.AddSmokeAnimationView
+        android:id="@+id/d_add_smoke_animation_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </RelativeLayout>

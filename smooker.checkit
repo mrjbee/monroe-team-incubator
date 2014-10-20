@@ -1,0 +1,117 @@
+ [Title] Smooker Release Check List [ver 1.0] 
+	User cases
+		User open application
+			... if first time after insalation
+		 	 - welcome screen should appears
+		 	 - back arrow should be not visible
+		 	 - [back_btn_checks]
+ 			 	... then user click next arrow
+ 			 		- [default_general_screen_checks]
+ 			 		... then user click next arrow
+ 			 			- <timer_view> should be activated
+ 			 			- [no_statistic_checks]
+ 			 			- no notification should appears
+ 			 		... then user click on back button
+ 			 			- welcome screen
+ 			 	... then user click twice on back button
+ 			 		- application should exit completelly
+ 			 		- no notification should appears
+			... if next time without applying general settings
+				- general settings screen should appears
+				- [default_general_screen_checks]
+				- [back_btn_checks]
+				...then user click next arrow
+ 			 			- <timer_view> should be activated
+ 			 			- [no_statistic_checks]
+ 			    ...then user double touch back button
+ 			 		- application should exit completelly
+			... if next time
+ 			 	... if no smokes was logged
+	 				- last view or <timer_view> should be activated
+		 			- <timer_view> should not show smoke before timer
+	 				- <quit_schedule_view> should be visible
+	 				- [default_statistic_checks]
+	 				- <day_view> shold show today limit
+			 	... if smokes was logged
+ 			 		... if quit smoke program activated
+ 			 			... if there were logged smokes
+ 			 					... if limit not reached
+ 			 						- last view or <timer_view> should be activated
+ 				 			 		- <quit_schedule_view> should be visible
+ 			 						- [default_statistic_checks]
+ 			 						- <timer_view> should show smoke before timer
+ 			 						- <day_view> shold show today limit
+ 			 					... if over limit
+ 			 						- last view or <timer_view> should be activated
+ 				 			 		- <quit_schedule_view> should be visible
+ 			 						- [default_statistic_checks]
+ 			 						- <timer_view> should not show smoke before timer
+ 			 						- <day_view> shold show today limit
+ 			 			... if there were no logged smokes
+ 			 				- last view or <timer_view> should be activated
+ 				 			- <timer_view> should not show smoke before timer
+ 			 				- <quit_schedule_view> should be visible
+ 			 				- [default_statistic_checks]
+ 			 				- <day_view> shold show today limit
+ 			 		... if quit smoke program not activated
+			 			- <quit_schedule_view> should be not visible
+			 			- <day_view> shold show no today limit 			 		
+ 						- [default_statistic_checks]
+		User change quit schedule
+ 			... if from limited to disable
+ 				- <quit_schedule_view> become invisible
+ 				- <timer_view> before next timer become invisible
+ 				- <day_view> no limit should be shown
+ 			... if from disabled to limited
+ 				 	... if there were logged smokes
+ 			 			... if limit not reached
+ 			 				- <quit_schedule_view> become visible
+ 			 				- last view or <timer_view> should be activated
+ 				 			- <quit_schedule_view> should be visible
+ 			 				- [default_statistic_checks]
+ 			 				- <timer_view> should show smoke before timer
+ 			 			... if over limit
+ 			 				- <quit_schedule_view> become visible
+ 			 				- last view or <timer_view> should be activated
+ 				 			- <quit_schedule_view> should be visible
+ 			 				- [default_statistic_checks]
+ 			 				- <timer_view> should not show smoke before timer
+ 			 		... if there were no logged smokes
+ 			 			- <quit_schedule_view> become visible
+ 			 			- last view or <timer_view> should be activated
+ 				 		- <timer_view> should not show smoke before timer
+ 			 			- <quit_schedule_view> should be visible
+ 			 			- [default_statistic_checks]
+		Next time smoke comes
+		Next day comes
+
+			 		
+		 	
+[default_general_screen_checks]
+- default values should appears
+- user should be able to select currency and price
+
+[default_statistic_checks]
+- <day_view> should contains today smokes
+- <30_day_view> should show last 30 days smokes if any
+- <timer_view> should show show time after last smoke based on last smoke
+- <settings_view> should be accesable and have all options available (except version)
+- [counter_statistic]
+
+[counter_statistic]
+- smokes count should show proper statistic
+- price count should show proper statistic
+
+[no_statistic_checks]
+- <day_view> should show no smokes
+- <30_day_view> should show no smokes
+- <timer_view> should show no next smoke timer_view
+- <timer_view> should show show time after last smoke starting from open date
+- <quit_schedule_view> should be not visible
+- <settings_view> should be accesable and have all options available (except version)
+- smokes count should show only todays smokes (zero)/ no avarage smokes
+- price count should show zero with proper currency
+
+[back_btn_checks]
+- back button should show toast on first touch
+- back button should exit application on second touch
