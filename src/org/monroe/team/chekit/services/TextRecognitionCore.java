@@ -73,6 +73,19 @@ public class TextRecognitionCore {
             )
     );
 
+    public TextCommand command_reload = buildTextCommand(
+            "reload",
+            ptrns(
+                    buildForMatching("[ ]*","reload"),
+                    buildForMatching(" reload"),
+                    buildSimple(" ")
+            ),
+            ptrns(
+                    buildSimple("[ ]*reload[ ]*")
+            )
+    );
+
+
     public TextCommand command_exit = buildTextCommand(
             "exit application",ptrns(
                     buildForMatching("[ ]*","exit application"),

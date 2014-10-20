@@ -40,14 +40,14 @@
     -fx-font-size: 12px;
 }
 .cell-CHECK_PASSED{
-    -fx-text-fill:#555555;
+    -fx-text-fill:#111111;
 }
 .cell-CHECK_SKIPPED{
-    -fx-text-fill:#555555;
+    -fx-text-fill:#111111;
 }
 .cell-CHECK_AWAITING{
-    -fx-text-fill:#999999;
+    -fx-text-fill:#666666;
 }
 .cell-CHECK_FAILED{
-    -fx-text-fill:#555555;
+    -fx-text-fill:#111111;
 }

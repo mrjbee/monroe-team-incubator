@@ -30,6 +30,7 @@ public class Actions {
                 return "action QuitApplication";
             }
         }
+
     }
 
     public static class Toast implements Action{
@@ -107,5 +108,8 @@ public class Actions {
                 this.details= runId;
             }
         }
+
+        public class ReloadRun implements Suite {}
+
     }
 }

@@ -15,8 +15,11 @@ import javafx.util.Callback;
 import org.monroe.team.chekit.services.BackgroundTaskManager;
 import org.monroe.team.chekit.uc.*;
 import org.monroe.team.chekit.uc.presentations.Actions;
+import org.monroe.team.chekit.uc.presentations.Screen;
 import org.monroe.team.chekit.uc.presentations.StepRunRepresentation;
 import org.monroe.team.chekit.ui.Main;
+
+import java.io.File;
 
 public class RunSuiteScreenController extends ScreenControllerSupport{
 
@@ -58,6 +61,8 @@ public class RunSuiteScreenController extends ScreenControllerSupport{
             public void handle(KeyEvent keyEvent) {
                 if (keyEvent.getCode() != KeyCode.LEFT
                     && keyEvent.getCode() != KeyCode.RIGHT
+                        && keyEvent.getCode() != KeyCode.PAGE_DOWN
+                        && keyEvent.getCode() != KeyCode.PAGE_UP
                         && keyEvent.getCode() != KeyCode.UP
                         && keyEvent.getCode() != KeyCode.DOWN
                         && keyEvent.getCode() != KeyCode.ENTER
@@ -83,6 +88,10 @@ public class RunSuiteScreenController extends ScreenControllerSupport{
                     keyEvent.consume();
                     runStepDetailsViewHide();
                 }
+                if(keyEvent.getCode() == KeyCode.E && keyEvent.isShiftDown()) {
+                    keyEvent.consume();
+                    onShiftE();
+                }
             }
 
 
@@ -93,6 +102,23 @@ public class RunSuiteScreenController extends ScreenControllerSupport{
                 runStepDetailsViewUpdate();
             }
         });
+    }
+
+    private void onShiftE() {
+        TreeItem<StepRunRepresentation> selectedItem = suiteRunTreeView.getSelectionModel().getSelectedItem();
+        if (selectedItem == null){
+            using(GlobalController.class).routeAction(new Actions.Toast("Please select item first"));
+        } else {
+            changeExpanding(selectedItem, !selectedItem.isExpanded());
+        }
+    }
+
+    private void changeExpanding(TreeItem<StepRunRepresentation> selectedItem, boolean expanded) {
+        selectedItem.setExpanded(expanded);
+        if (selectedItem.getChildren() == null) return;
+        for (TreeItem<StepRunRepresentation> childItem : selectedItem.getChildren()) {
+            changeExpanding(childItem,expanded);
+        }
     }
 
     private void runStepDetailsViewUpdate() {
@@ -119,6 +145,15 @@ public class RunSuiteScreenController extends ScreenControllerSupport{
 
     @Override
     public void onAction(final Actions.Action action) {
+        if (action instanceof Actions.Suite.ReloadRun){
+            if (!saved) {
+                using(GlobalController.class).routeAction(new Actions.Toast("Save existing run first."));
+            } else {
+                File file = uc().execute(GetSuiteDetailsByCheckRun.class, runDetails.id).suiteFile;
+                using(GlobalController.class).routeAction(new Actions.Application.ChangeScreen(Screen.STARTUP));
+                using(GlobalController.class).routeAction(new Actions.Suite.OpenCheckSuite(file));
+            }
+        }
 
         if (action instanceof Actions.Suite.SaveRun){
             using(BackgroundTaskManager.class).execute(49, new BackgroundTaskManager.BackgroundTask<SaveCheckRun.SaveStatus>() {

@@ -58,6 +58,7 @@ public class TextRecognitionManager {
                             core.command_saveAs,
                             core.command_UpdateRunDetails,
                             core.command_UpdateStepComment,
+                            core.command_reload,
                             core.command_goBack,
                             core.command_markAs,
                             core.command_pass,
@@ -199,6 +200,12 @@ public class TextRecognitionManager {
                         userInput,
                         core.command_goBack)){
                     return new Actions.Application.ChangeScreen(Screen.STARTUP);
+                }
+
+                if (core.checkExactAgainst(
+                        userInput,
+                        core.command_reload)){
+                    return new Actions.Suite.ReloadRun();
                 }
 
                 if (core.checkExactAgainst(
