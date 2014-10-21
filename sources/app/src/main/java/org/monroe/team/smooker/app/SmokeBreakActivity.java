@@ -29,6 +29,10 @@ public class SmokeBreakActivity extends SupportActivity {
                     v.setBackgroundColor(Color.TRANSPARENT);
                     onOption(v.getId());
                 }
+
+                if (event.getAction() == MotionEvent.ACTION_CANCEL){
+                    v.setBackgroundColor(Color.TRANSPARENT);
+                }
                 v.invalidate();
                 return true;
             }

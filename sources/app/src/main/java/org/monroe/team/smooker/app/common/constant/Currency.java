@@ -1,8 +1,7 @@
 package org.monroe.team.smooker.app.common.constant;
 
 public enum Currency {
-
-    RUB (1,"Рубль","RUB","RUB"),
+    RUB (1,"Рубль","Руб","RUB"),
     U_S_DOLLAR (2,"US Dollar","$","USD"),
     EURO(3,"Euro","€","EUR"),
     UAH(4,"Гривня","₴","UAH"),

@@ -12,7 +12,7 @@ public interface Settings {
     SettingManager.SettingItem<Float> SMOKE_PRICE = new SettingManager.SettingItem<Float>("SMOKE_PRICE",Float.class,0.6f);
     SettingManager.SettingItem<Integer> CURRENCY_ID = new SettingManager.SettingItem<Integer>("CURRENCY_INDEX",Integer.class,Currency.RUB.id);
     SettingManager.SettingItem<Integer> QUIT_PROGRAM_INDEX = new SettingManager.SettingItem<Integer>("QUITE_PROGRAM",Integer.class, 0);
-    SettingManager.SettingItem<Integer> CONTENT_VIEW_CONFIG = new SettingManager.SettingItem<Integer>("CONTENT_VIEW",Integer.class, 0);
+    SettingManager.SettingItem<Integer> CONTENT_VIEW_CONFIG = new SettingManager.SettingItem<Integer>("CONTENT_VIEW",Integer.class, 2);
     SettingManager.SettingItem<Long> APP_FIRST_TIME_DATE = new SettingManager.SettingItem<Long>("APP_FIRST_TIME_DATE",Long.class, null);
     SettingManager.SettingItem<Long> QUIT_SMOKE_VALIDATION_DATE = new SettingManager.SettingItem<Long>("QUIT_SMOKE_VALIDATION_DATE",Long.class, null);
     SettingManager.Flag ENABLED_STICKY_NOTIFICATION = new SettingManager.Flag("STICKY_NOTIFICATION",false);

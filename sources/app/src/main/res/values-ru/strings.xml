@@ -94,4 +94,13 @@
     <string name="quit_smoke_program_suggestion_manual">... которая подойдет тебе</string>
     <string name="hit_for_smoke_log">Прикоснись для добавления перекура</string>
 
+    <string name="are_you_want_to_smoke">Вы уверены что хотите курить?</string>
+    <string name="skip_long">Нет, Я наверное пропущу</string>
+    <string name="skip_description">Асистент отметит время и пересчитает график перекуров без этой сигареты</string>
+    <string name="postpone_long">Нет, Я покурю позже</string>
+    <string name="postpone_description">Асистент пересчитает график перекуров учитывая более длиную паузу в этот раз</string>
+    <string name="smoke_long">Да, Я покурю </string>
+    <string name="smoke_description">Асистент отметит эту сигарету как выкуреную</string>
+
+
 </resources>

@@ -76,8 +76,8 @@
     <string name="smoke_limit_decreased">Smoke limit decreased</string>
     <string name="quit_smoke_assistance_title">Quit Smoking Assistant</string>
     <string name="smoke_statistic">Smoke statistic</string>
-    <string name="time_to_smoke">You may want to smoke</string>
-    <string name="not_to_smoke_suggestion">However its strongly recommended to skip</string>
+    <string name="time_to_smoke">Smoke break timer</string>
+    <string name="not_to_smoke_suggestion">Its strongly recommended to skip</string>
     <string name="skip_this_time">Skip</string>
     <string name="later_this_time">Later</string>
     <string name="add_one_smoke">Smoke</string>
@@ -91,5 +91,12 @@
     <string name="title_activity_smoke_break">Smoke Break</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="are_you_want_to_smoke">Are you sure want to smoke?</string>
+    <string name="skip_long">No, I`ll skip this time</string>
+    <string name="skip_description">Assistant will just mark this smoke as skipped</string>
+    <string name="postpone_long">No, I`ll smoke later</string>
+    <string name="postpone_description">Assistant will reschedule smoking time with same count of left smokes</string>
+    <string name="smoke_long">Yes, I`ll smoke </string>
+    <string name="smoke_description">Assistant will add +1 smoke for yours today statistic</string>
 
 </resources>

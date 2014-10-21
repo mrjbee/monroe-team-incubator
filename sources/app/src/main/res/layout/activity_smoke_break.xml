@@ -27,7 +27,7 @@
             android:textSize="@dimen/text_size_normal"
             android:paddingLeft="25dp"
             android:textStyle="bold"
-            android:text="Time to smoke, but ..."/>
+            android:text="@string/time_to_smoke"/>
 
         <TextView
             android:id="@+id/sb_question_text"
@@ -40,7 +40,7 @@
             android:textSize="@dimen/text_size_caption_big"
             android:textColor="@color/white"
             android:textStyle="bold"
-            android:text="Are you sure want to smoke?"/>
+            android:text="@string/are_you_want_to_smoke"/>
 
     </RelativeLayout>
 
@@ -76,7 +76,7 @@
                android:id="@+id/sb_option_skip_title"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="No, I`ll skip this time"
+               android:text="@string/skip_long"
                android:textSize="@dimen/text_size_normal"
                android:textStyle="bold"
                android:textColor="@color/text.dark"/>
@@ -89,7 +89,7 @@
                android:textColor="@color/text.dark.lighter"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="Assistant will just mark this smoke as skipped"
+               android:text="@string/skip_description"
                />
        </RelativeLayout>
 
@@ -113,7 +113,7 @@
                android:id="@+id/sb_option_postpone_title"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="No, I`ll smoke later"
+               android:text="@string/postpone_long"
                android:textStyle="bold"
                android:textSize="@dimen/text_size_normal"
                android:textColor="@color/text.dark"/>
@@ -125,7 +125,7 @@
                android:textColor="@color/text.dark.lighter"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="Assistant will reschedule smoking time with same count of left smokes"
+               android:text="@string/postpone_description"
                />
        </RelativeLayout>
 
@@ -150,7 +150,7 @@
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:textStyle="bold"
-               android:text="Yes, I`ll smoke "
+               android:text="@string/smoke_long"
                android:textSize="@dimen/text_size_normal"
                android:textColor="@color/text.dark"/>
            <TextView
@@ -161,7 +161,7 @@
                android:textColor="@color/text.dark.lighter"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="Assistant will add +1 smoke for yours today statistic"
+               android:text="@string/smoke_description"
                />
        </RelativeLayout>
    </LinearLayout>
