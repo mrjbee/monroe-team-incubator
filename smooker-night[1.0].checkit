@@ -52,32 +52,26 @@
 	 				- [check_group_section_end] 			 
 	 			case: smokes logged today and quit smoke activated and over limit	
 	 				- [check_group_statistic_not_empty]
-	 				- [check_group_quit_smoke_program_deactivated]
+	 				- [check_group_quit_smoke_program_activated_no_today_schedule]
 	 				- [check_group_section_end] 			 
 		event: User change quit schedule
  			case: from limited to disable
  				- [check_group_quit_smoke_program_deactivated]
- 				- [check_group_section_end]
  				- no NotifNextSmoke expected 			 
  				- [check_group_section_end] 			 
  			case: from disabled to limited
  				case: there were logged smokes today and limit not reached
 	 				- [check_group_statistic_not_empty]
  			 		- [check_group_quit_smoke_program_activated_active_schedule]
- 			 		- NotifNextSmoke expected 			 
- 					- [check_group_section_end] 			 
+ 			 		- [check_group_section_end] 			 
 				case: there were logged smokes today and over limit
 	 				- [check_group_statistic_not_empty]
  			 		- [check_group_quit_smoke_program_activated_no_today_schedule]
- 			 		- [check_group_section_end] 			 
- 					- no NotifNextSmoke expected today			 
- 			 		- [check_group_section_end] 			 
+	 				- [check_group_section_end] 			 
 				case: there were no logged smokes today
 	 				- [check_group_statistic_not_empty]
  			 		- [check_group_quit_smoke_program_activated_no_today_schedule]
- 			 		- [check_group_section_end] 			 
-					- no NotifNextSmoke expected today
-					- [check_group_section_end] 			 							 
+ 			 		- [check_group_section_end] 			 							 
 		event: User add smoke using Dashboard btn
  			case: smoke quit program deactivated
  				- [check_group_statistic_not_empty]
@@ -120,19 +114,17 @@
  					- NotifNextSmoke expected
  					- [check_group_section_end] 			 							 
  				case: smoke quit program activated and over limit
- 					- NotifNextSmoke closed
- 					- [check_group_statistic_not_empty]
- 					- [check_group_quit_smoke_program_activated_no_today_schedule]
- 					- no NotifNextSmoke expected
- 					- [check_group_section_end] 			 							 
+ 					- no way to test that as last smoke set to 23:59 			 							 
  			event: user click on skip smoke
  					- NotifNextSmoke closed
+ 					- NotifNextSmoke expected
  					- next smoke should recalculated with same limit but with now date as last smoke
  					- [check_group_quit_smoke_program_activated_active_schedule]
  					- [check_group_statistic_not_empty]						
 		 			- [check_group_section_end] 			 							 
  			event: user click on cancel smoke
  					- NotifNextSmoke closed
+ 					- NotifNextSmoke expected
  					- next smoke should recalculated with decreased by 1 - limit but with now date as last smoke
  					- [check_group_quit_smoke_program_activated_active_schedule]
  					- [check_group_statistic_not_empty]						
@@ -149,13 +141,10 @@
  						- NotifNextSmoke expected
  						- [check_group_section_end] 			 							 
  					case: smoke quit program activated and over limit
- 						- DashboardScreen view should appears
- 						- [check_group_statistic_not_empty]
- 						- [check_group_quit_smoke_program_activated_no_today_schedule]
- 						- no NotifNextSmoke expected
-		 				- [check_group_section_end] 			 							 
+ 						- no way to test it 			 							 
  				event: user click on skip smoke
  					- DashboardScreen view should appears
+ 					- NotifNextSmoke expected
  					- next smoke should recalculated with same limit but with now date as last smoke
  					- [check_group_quit_smoke_program_activated_active_schedule]
  					- [check_group_statistic_not_empty]						
@@ -163,6 +152,7 @@
  					- NotifNextSmoke expected
  				event: user click on cancel smoke
  					- DashboardScreen view should appears
+ 					- NotifNextSmoke expected
  					- next smoke should recalculated with decreased by 1 - limit but with now date as last smoke
  					- [check_group_quit_smoke_program_activated_active_schedule]
  					- [check_group_statistic_not_empty]						
@@ -192,24 +182,32 @@
 				case: quit smoke program deactivated 
 					- NotifDailyStatus should appears
 					- [check_group_section_end]
+				case: no quit settings view was opened before
+					- NotifQuitSetup  appears
+					event: user click on NotifQuitSetup 
+						- quit settings appears 
 		event: User change price
-			-[check_group_statistic_not_empty] 			 							 
+			-[check_group_statistic_not_empty]
+
 		
 [check_group_quit_smoke_program_activated_active_schedule]
 - ViewTimer should show before next smoke timer
 - ViewDay should show limit
+- ViewDay should future smokes
 - ViewQuitSchedule should be available			 		
 - ViewQuitSchedule should have proper values			 		
 
 [check_group_quit_smoke_program_activated_no_today_schedule]
 - ViewTimer should show no before next smoke timer
 - ViewDay should show limit
+- ViewDay should no future smokes
 - ViewQuitSchedule should be available			 		
 - ViewQuitSchedule should have proper values			 		
-		 	
+
 [check_group_quit_smoke_program_deactivated]
 - ViewTimer should show no before next smoke timer
 - ViewDay should show no limit
+- ViewDay should no future smokes
 - ViewQuitSchedule should be no available
 
 [check_group_common_setting_screen_checks]
@@ -217,11 +215,13 @@
 - user should be able to select currency and price
 
 [check_group_statistic_not_empty]
+- NotifSticky updated 			 				
 - last view or ViewTimer should be activated	 				
 - ViewDay should contains proper today smokes (or non if no todays smokes)
 - View30Day should show last 30 days smokes if any
 - ViewTimer should show show time after last smoke based on last logged smoke or first launch date
 - MenuSettings should be accesable and have all options available (except version)
+- NotifSticky should show proper value
 - [counter_statistic]
 
 [counter_statistic]
@@ -233,6 +233,8 @@
 - View30Day should show no smokes
 - ViewTimer should show show time after last smoke starting from open date
 - MenuSettings should be accesable and have all options available (except version)
+- NotifSticky appears
+- NotifSticky should show zero
 - smokes count should show only todays smokes (zero)/ no avarage smokes
 - price count should show zero with proper currency
 
