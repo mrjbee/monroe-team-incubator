@@ -37,8 +37,7 @@
 
         <TextView
             android:id="@+id/lts_time_text"
-            android:layout_above="@+id/lts_center"
-            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="00:00:12"
@@ -47,20 +46,12 @@
             />
 
 
-        <LinearLayout
-            android:id="@+id/lts_center"
-            android:layout_centerInParent="true"
-            android:layout_width="0pt"
-            android:layout_height="0pt"
-            android:layout_margin="10dp"
-            android:orientation="horizontal"/>
-
 
         <TextView
             android:id="@+id/lts_time_before_caption_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/lts_center"
+            android:layout_below="@+id/lts_time_text"
             android:layout_centerHorizontal="true"
             android:text="@string/before_next_recommended_smoke"
             android:textSize="@dimen/text_size_normal_small"

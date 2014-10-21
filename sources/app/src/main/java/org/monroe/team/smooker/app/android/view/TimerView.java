@@ -67,7 +67,7 @@ public class TimerView extends View{
         } else {
             support = new NoAnimationSupport(this);
         }
-        offset = 10;
+        offset = 2;
 
         timeTrackPaint = new Paint();
         timeTrackPaint.setAntiAlias(true);
@@ -79,14 +79,16 @@ public class TimerView extends View{
         timePaint = new Paint();
         timePaint.setAntiAlias(true);
         timePaint.setColor(Color.parseColor("#9e0000"));
-        timePaint.setStrokeWidth(6);
+        //6
+        timePaint.setStrokeWidth(2);
         timePaint.setStrokeCap(Paint.Cap.ROUND);
         timePaint.setStyle(Paint.Style.STROKE);
 
         timeOutPaint = new Paint();
         timeOutPaint.setAntiAlias(true);
         timeOutPaint.setColor(Color.parseColor("#f63225"));
-        timeOutPaint.setStrokeWidth(20);
+        //20
+        timeOutPaint.setStrokeWidth(6);
         timeOutPaint.setStrokeCap(Paint.Cap.SQUARE);
         timeOutPaint.setStyle(Paint.Style.STROKE);
 
@@ -113,9 +115,7 @@ public class TimerView extends View{
         canvas.drawOval(asOvalBounds(center, getTimeCircleRadius()), timeTrackPaint);
         canvas.drawArc(asOvalBounds(center, getTimeCircleRadius()), -90, 359 * timeProgress, false, timePaint);
 
-        if (timeOutProgress == 0f){
-            canvas.drawCircle(center.x, center.y - getTimeOutCircleRadius(), 10, timeOutPaint);
-        } else  if (timeOutProgress > 0){
+        if (timeOutProgress > 0){
             canvas.drawArc(asOvalBounds(center, getTimeOutCircleRadius()), -90, 359 * timeOutProgress, false, timeOutPaint);
         }
     }
