@@ -19,6 +19,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_widget_big"/>
         <TextView
+            android:id="@+id/ws_count_description_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ws_count_text"

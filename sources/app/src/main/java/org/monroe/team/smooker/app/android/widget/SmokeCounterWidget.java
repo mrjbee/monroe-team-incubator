@@ -10,9 +10,12 @@ import android.widget.RemoteViews;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.actors.ActorSmoker;
 import org.monroe.team.smooker.app.common.constant.Events;
+import org.monroe.team.smooker.app.uc.CalculateTodaySmokeSchedule;
 import org.monroe.team.smooker.app.uc.GetStatisticState;
 import org.monroe.team.smooker.app.android.DashboardActivity;
 import org.monroe.team.smooker.app.android.SmookerApplication;
+
+import java.util.List;
 
 
 /**
@@ -22,9 +25,9 @@ public class SmokeCounterWidget extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (Events.SMOKE_COUNT_CHANGED.getAction().equals(intent.getAction())) {
-            int smokeCount = Events.SMOKE_COUNT_CHANGED.extractValue(intent);
-            RemoteViews views = createRemoteView(context,smokeCount);
+        if (Events.SMOKE_COUNT_CHANGED.getAction().equals(intent.getAction()) ||
+            Events.QUIT_SCHEDULE_UPDATED.getAction().equals(intent.getAction()) ) {
+            RemoteViews views = createRemoteView(context);
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             appWidgetManager.updateAppWidget(new ComponentName(context,SmokeCounterWidget.class),views);
         }
@@ -50,17 +53,34 @@ public class SmokeCounterWidget extends AppWidgetProvider {
 
         GetStatisticState.StatisticState statisticState = SmookerApplication.instance.getModel().execute(GetStatisticState.class,new GetStatisticState.StatisticRequest().with(GetStatisticState.StatisticName.SMOKE_TODAY));
         int count = statisticState.getTodaySmokeDates().size();
-        RemoteViews views = createRemoteView(context, count);
+        RemoteViews views = createRemoteView(context);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
-    private static RemoteViews createRemoteView(Context context, int count) {
+    private static RemoteViews createRemoteView(Context context) {
         // Construct the RemoteViews object
+        GetStatisticState.StatisticState state = SmookerApplication.instance.getModel().execute(GetStatisticState.class,new GetStatisticState.StatisticRequest().with(GetStatisticState.StatisticName.SMOKE_TODAY, GetStatisticState.StatisticName.QUIT_SMOKE));
+        String countText;
+        String descriptionText;
+        if (state.getTodaySmokeLimit() != null && state.getTodaySmokeLimit() > -1){
+            int delta = state.getTodaySmokeLimit() - state.getTodaySmokeDates().size();
+            if (delta >= 0){
+                countText = ""+delta;
+                descriptionText = context.getString(R.string.left_for_today);
+            } else {
+                countText = ""+Math.abs(delta);
+                descriptionText = context.getString(R.string.over_limit);
+            }
+        } else {
+            countText = ""+state.getTodaySmokeDates().size();
+            descriptionText = context.getString(R.string.today_smokes);
+        }
+
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_smoke_counter);
-        String countText = ""+count;
-        views.setTextViewText(R.id.ws_count_text,countText);
+        views.setTextViewText(R.id.ws_count_text, countText);
+        views.setTextViewText(R.id.ws_count_description_text, descriptionText);
         views.setOnClickPendingIntent(R.id.ws_add_btn,
                 ActorSmoker.create(context, ActorSmoker.ADD_SMOKE).buildDefault());
         views.setOnClickPendingIntent(R.id.widget_root,

@@ -102,5 +102,8 @@
     <string name="smoke_long">Да, Я покурю </string>
     <string name="smoke_description">Асистент отметит эту сигарету как выкуреную</string>
 
+    <string name="left_for_today">Осталось на сегодня</string>
+    <string name="over_limit">Сверх лимита</string>
+
 
 </resources>

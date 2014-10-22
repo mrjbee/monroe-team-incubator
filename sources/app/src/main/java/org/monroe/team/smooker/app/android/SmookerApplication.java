@@ -174,12 +174,13 @@ public class SmookerApplication extends Application {
         PendingIntent alarmIntent = ActorSystemAlarm.createIntent(this, ActorSystemAlarm.Alarms.TIME_TO_UPDATE_STATISTICS);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, alarmIntent);
 
         calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 8);
+        calendar.set(Calendar.HOUR, 8);
         calendar.set(Calendar.MINUTE, 0);
 
         alarmIntent = ActorSystemAlarm.createIntent(this, ActorSystemAlarm.Alarms.TIME_TO_NOTIFICATION_STATISTICS);

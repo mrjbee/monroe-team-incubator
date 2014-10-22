@@ -60,6 +60,9 @@
                 <action android:name="org.monroe.team.android.box.event.SMOKE_COUNT_CHANGED" />
             </intent-filter>
 
+            <intent-filter>
+                <action android:name="org.monroe.team.android.box.event.QUIT_SCHEDULE_UPDATED" />
+            </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/smoke_counter_widget_info" />

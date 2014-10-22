@@ -98,5 +98,7 @@
     <string name="postpone_description">Assistant will reschedule smoking time with same count of left smokes</string>
     <string name="smoke_long">Yes, I`ll smoke </string>
     <string name="smoke_description">Assistant will add +1 smoke for yours today statistic</string>
+    <string name="left_for_today">Left for today</string>
+    <string name="over_limit">Over today limit</string>
 
 </resources>
