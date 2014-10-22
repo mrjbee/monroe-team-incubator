@@ -175,20 +175,31 @@
 				case: quit smoke program activated and limit decreased
 					- NotifDailyStatus should appears
 					- NotifQuitSmokeLimit should appears
+					- Widgets updated
+					- NotifSticky updated
 					- [check_group_section_end] 			 							 
 				case: quit smoke program activated and limit same
 					- NotifDailyStatus should appears
+					- Widgets updated
+					- NotifSticky updated
 					- [check_group_section_end] 			 							 
 				case: quit smoke program deactivated 
 					- NotifDailyStatus should appears
+					- Widgets updated
+					- NotifSticky updated
 					- [check_group_section_end]
-				case: no quit settings view was opened before
-					- NotifQuitSetup  appears
-					event: user click on NotifQuitSetup 
-						- quit settings appears 
+				event: User open application
+					- [check_group_statistic_not_empty]
+					- [check_group_section_end]
 		event: User change price
 			-[check_group_statistic_not_empty]
-
+		Special cases
+			case: NextDay comes and user didnt see quit program settings
+					- NotifQuitSetup appears
+					event: user click on NotifQuitSetup 
+						- quit settings appears 	
+			case: NextDay comes and last day smoke count was eqals to limit
+					- ViewQuitSchedule should show yesturday as passed								
 		
 [check_group_quit_smoke_program_activated_active_schedule]
 - ViewTimer should show before next smoke timer
@@ -215,6 +226,7 @@
 - user should be able to select currency and price
 
 [check_group_statistic_not_empty]
+- WidgetCounter shows proper value
 - NotifSticky updated 			 				
 - last view or ViewTimer should be activated	 				
 - ViewDay should contains proper today smokes (or non if no todays smokes)

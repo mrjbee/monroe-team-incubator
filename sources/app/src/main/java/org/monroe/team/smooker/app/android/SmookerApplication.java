@@ -134,7 +134,13 @@ public class SmookerApplication extends Application {
         if (settings().get(Settings.ENABLED_STICKY_NOTIFICATION)){
             updateStickyNotification(true);
         }
-        if (!settings().get(Settings.FIRST_TIME_AFTER_SETUP) && settings().get(Settings.FIRST_TIME_QUIT_SMOKE_PAGE)){
+        if (!settings().get(Settings.FIRST_TIME_AFTER_SETUP)){
+            doQuitSmokeSuggestionNotification();
+        }
+    }
+
+    private void doQuitSmokeSuggestionNotification() {
+        if (settings().get(Settings.FIRST_TIME_QUIT_SMOKE_PAGE)) {
             NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
@@ -231,6 +237,7 @@ public class SmookerApplication extends Application {
             manager.notify(STATISTIC_UPDATE_NOTIFICATION, builder.build());
 
         }
+        doQuitSmokeSuggestionNotification();
     }
 
     public String getSmokePriceString() {

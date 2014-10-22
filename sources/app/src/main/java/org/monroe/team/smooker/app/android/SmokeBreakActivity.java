@@ -1,10 +1,12 @@
-package org.monroe.team.smooker.app;
+package org.monroe.team.smooker.app.android;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+
+import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.actors.ActorSmoker;
 import org.monroe.team.smooker.app.common.SupportActivity;
 

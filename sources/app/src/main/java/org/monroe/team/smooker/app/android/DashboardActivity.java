@@ -24,7 +24,6 @@ import android.widget.Toast;
 import org.monroe.team.android.box.Closure;
 import org.monroe.team.android.box.Lists;
 import org.monroe.team.smooker.app.R;
-import org.monroe.team.smooker.app.SmokeBreakActivity;
 import org.monroe.team.smooker.app.android.view.AddSmokeAnimationView;
 import org.monroe.team.smooker.app.android.view.SmokeChartView;
 import org.monroe.team.smooker.app.android.view.SmokeHistogramView;

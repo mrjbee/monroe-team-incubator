@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.monroe.team.smooker.app.SmokeBreakActivity"
+            android:name=".android.SmokeBreakActivity"
             android:label="@string/title_activity_smoke_break"
             android:launchMode="singleInstance">
         </activity>
