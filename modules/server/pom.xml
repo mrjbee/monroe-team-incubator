@@ -5,18 +5,18 @@
 
 
     <parent>
-        <groupId>org.monroe.team.template</groupId>
+        <groupId>org.monroe.team.socks</groupId>
         <artifactId>suite</artifactId>
         <version>1.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <groupId>org.monroe.team.template</groupId>
-    <artifactId>core</artifactId>
+    <groupId>org.monroe.team.socks</groupId>
+    <artifactId>server</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>apk</packaging>
+    <packaging>jar</packaging>
     
-    <name>Core Module</name>
+    <name>Server Module</name>
 
     <dependencies>
        <dependency>
