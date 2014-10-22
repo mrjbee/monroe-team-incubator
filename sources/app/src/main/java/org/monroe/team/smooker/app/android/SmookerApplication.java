@@ -13,7 +13,6 @@ import android.util.Pair;
 import org.monroe.team.android.box.manager.SettingManager;
 import org.monroe.team.smooker.app.actors.ActorSmoker;
 import org.monroe.team.smooker.app.android.controller.SmokeScheduleController;
-import org.monroe.team.smooker.app.android.widget.CalendarWidget;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.actors.ActorSystemAlarm;
 import org.monroe.team.smooker.app.common.Model;
@@ -196,39 +195,6 @@ public class SmookerApplication extends Application {
                 AlarmManager.INTERVAL_HALF_HOUR, alarmIntent);
 
 
-    }
-
-    public CalendarWidget.CalendarWidgetUpdate fetchCalendarWidgetContent() {
-        UpdateQuitSmokeSchedule.QuitSmokeSchedule smokeSchedule = getModel().execute(UpdateQuitSmokeSchedule.class, null);
-        if (smokeSchedule == null || smokeSchedule.getNearestFuture() == null){
-            //construct non smoking time schedule
-            GetStatisticState.StatisticState state = model.execute(GetStatisticState.class, new GetStatisticState.StatisticRequest().with(GetStatisticState.StatisticName.LAST_LOGGED_SMOKE));
-            long[] DHMS = DateUtils.splitPeriod(DateUtils.now(), state.getLastSmokeDate());
-
-            String details = getString(R.string.short_min);
-            String content = ""+DHMS[2];
-            if (DHMS[0] > 0){
-                details = getString(R.string.short_days);
-                content =  ""+DHMS[0];
-            } else if(DHMS[1] > 0){
-                details = getString(R.string.short_hours);
-                content =  ""+DHMS[1];
-            }
-            return new CalendarWidget.CalendarWidgetUpdate(
-                    content,
-                    details,
-                    getString(R.string.time_since_last_smoke),
-                    DateFormat.getDateTimeInstance(DateFormat.LONG,DateFormat.SHORT).format(state.getLastSmokeDate())
-            );
-        }else {
-            UpdateQuitSmokeSchedule.QuitSmokeSchedule.DayModel future = smokeSchedule.getNearestFuture();
-            return new CalendarWidget.CalendarWidgetUpdate(
-                    future.isToday()? getString(R.string.today):new SimpleDateFormat("dd").format(future.getDate()),
-                    future.isToday()? new SimpleDateFormat("dd MMM yyyy").format(future.getDate()):new SimpleDateFormat("MMM yyyy").format(future.getDate()),
-                    future.getText(),
-                    getString(R.string.new_day_limit)
-            );
-        }
     }
 
     public void doMorningNotification() {

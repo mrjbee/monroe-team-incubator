@@ -51,33 +51,13 @@
             android:exported="true" >
         </receiver>
         <receiver
-            android:name="org.monroe.team.smooker.app.android.widget.CalendarWidget"
-            android:label="Quit smoke calendar" >
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="org.monroe.team.smooker.app.event.QUIT_SCHEDULE_UPDATED" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="org.monroe.team.smooker.app.event.QUIT_SCHEDULE_REFRESH" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="org.monroe.team.smooker.app.event.SMOKE_COUNT_CHANGED" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/calendar_widget_info" />
-        </receiver>
-        <receiver
             android:name="org.monroe.team.smooker.app.android.widget.SmokeCounterWidget"
             android:label="Today smokes" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <intent-filter>
-                <action android:name="org.monroe.team.smooker.app.event.SMOKE_COUNT_CHANGED" />
+                <action android:name="org.monroe.team.android.box.event.SMOKE_COUNT_CHANGED" />
             </intent-filter>
 
             <meta-data
@@ -86,8 +66,7 @@
         </receiver>
         <receiver
             android:name="org.monroe.team.smooker.app.actors.ActorSmoker"
-            android:enabled="true"
-            android:exported="true" >
+            android:enabled="true" android:exported="true" >
         </receiver>
 
     </application>
