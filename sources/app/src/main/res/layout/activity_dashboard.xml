@@ -195,5 +195,11 @@
         android:id="@+id/d_add_smoke_animation_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
+<!-- dpi debug only
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="@string/dpi_name"/>
+-->
 </RelativeLayout>

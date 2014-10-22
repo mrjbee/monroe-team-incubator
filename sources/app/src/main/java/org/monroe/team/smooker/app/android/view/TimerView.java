@@ -67,7 +67,7 @@ public class TimerView extends View{
         } else {
             support = new NoAnimationSupport(this);
         }
-        offset = 2;
+        offset = dimen(R.integer.timer_offset);
 
         timeTrackPaint = new Paint();
         timeTrackPaint.setAntiAlias(true);
@@ -79,16 +79,16 @@ public class TimerView extends View{
         timePaint = new Paint();
         timePaint.setAntiAlias(true);
         timePaint.setColor(Color.parseColor("#9e0000"));
-        //6
-        timePaint.setStrokeWidth(2);
+
+        timePaint.setStrokeWidth(dimen(R.integer.timer_after_stroke));
         timePaint.setStrokeCap(Paint.Cap.ROUND);
         timePaint.setStyle(Paint.Style.STROKE);
 
         timeOutPaint = new Paint();
         timeOutPaint.setAntiAlias(true);
         timeOutPaint.setColor(Color.parseColor("#f63225"));
-        //20
-        timeOutPaint.setStrokeWidth(6);
+
+        timeOutPaint.setStrokeWidth(dimen(R.integer.timer_before_stroke));
         timeOutPaint.setStrokeCap(Paint.Cap.SQUARE);
         timeOutPaint.setStyle(Paint.Style.STROKE);
 
