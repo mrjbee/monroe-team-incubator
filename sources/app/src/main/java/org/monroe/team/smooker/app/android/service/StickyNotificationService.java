@@ -37,23 +37,37 @@ public class StickyNotificationService extends Service {
                     notification.createNotification(getNotificationInitialText()));
             Event.subscribeOnEvent(getApplicationContext(),this, Events.SMOKE_COUNT_CHANGED,new Closure<Integer, Void>() {
                 @Override
-                public Void execute(Integer arg) {
-                    GetStatisticState.StatisticState state = SmookerApplication.instance.getModel().execute(GetStatisticState.class,new GetStatisticState.StatisticRequest().with(GetStatisticState.StatisticName.SMOKE_TODAY, GetStatisticState.StatisticName.QUIT_SMOKE));
-                    String text = generateNotificationStringFor(arg);
-                    if (state.getTodaySmokeLimit() != null && state.getTodaySmokeLimit() > -1){
-                        int delta = state.getTodaySmokeLimit() - state.getTodaySmokeDates().size();
-                        if (delta >= 0){
-                            text = getString(R.string.pattern_left_for_today_with_value,delta);
-                        } else {
-                            text = getString(R.string.pattern_over_limit_for_today_with_value, Math.abs(delta));
-                        }
-                    }
-                    setText(text);
+                public Void execute(Integer smokeCount) {
+                    updateText();
+                    return null;
+                }
+            });
+
+            Event.subscribeOnEvent(getApplicationContext(), this, Events.QUIT_SCHEDULE_UPDATED, new Closure<Boolean, Void>() {
+                @Override
+                public Void execute(Boolean arg) {
+                    updateText();
                     return null;
                 }
             });
         }
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void updateText() {
+        GetStatisticState.StatisticState state = SmookerApplication.instance.getModel().execute(GetStatisticState.class,new GetStatisticState.StatisticRequest().with(
+                GetStatisticState.StatisticName.SMOKE_TODAY,
+                GetStatisticState.StatisticName.QUIT_SMOKE));
+        String text = generateNotificationStringFor(state.getTodaySmokeDates().size());
+        if (state.getTodaySmokeLimit() != null && state.getTodaySmokeLimit() > -1){
+            int delta = state.getTodaySmokeLimit() - state.getTodaySmokeDates().size();
+            if (delta >= 0){
+                text = getString(R.string.pattern_left_for_today_with_value,delta);
+            } else {
+                text = getString(R.string.pattern_over_limit_for_today_with_value, Math.abs(delta));
+            }
+        }
+        setText(text);
     }
 
     private String generateNotificationStringFor(Integer smokeCount) {
