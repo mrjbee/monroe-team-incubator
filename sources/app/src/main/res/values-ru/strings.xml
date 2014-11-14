@@ -2,6 +2,9 @@
 
 <resources>
 
+    <string name="dpi_name">Default (MDPI)</string>
+
+
     <string name="app_name">Smooker</string>
     <string name="app_version">Версия 1.0</string>
 
@@ -101,6 +104,7 @@
     <string name="smoke_rescheduled">Перекур перенесен</string>
     <string name="title_activity_smoke_break">Перекур</string>
 
+    <string name="action_settings">Настройки</string>
     <string name="are_you_want_to_smoke">Вы уверены что хотите курить?</string>
     <string name="skip_long">Нет, Я наверное пропущу</string>
     <string name="skip_description">Ассистент отметит время и пересчитает график перекуров без этой сигареты</string>

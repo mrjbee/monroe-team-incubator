@@ -89,7 +89,6 @@
     <string name="pattern_one_smoke_saved_with_value">You`ve just saved %s</string>
     <string name="smoke_rescheduled">Smoke rescheduled</string>
     <string name="title_activity_smoke_break">Smoke Break</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="are_you_want_to_smoke">Are you sure want to smoke?</string>
     <string name="skip_long">No, I`ll skip this time</string>
