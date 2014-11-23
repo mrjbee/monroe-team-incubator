@@ -6,7 +6,7 @@
 
 
     <string name="app_name">Smooker</string>
-    <string name="app_version">Версия 1.0</string>
+    <string name="app_version">Версия 1.1</string>
 
     <string name="chart_time_axis">время</string>
     <string name="chart_smokes_axis">перекуры</string>

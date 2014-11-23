@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Smooker</string>
-    <string name="app_version">App Version 1.0</string>
+    <string name="app_version">App Version 1.1</string>
     <string name="chart_time_axis">hours</string>
     <string name="chart_smokes_axis">smokes</string>
     <string name="chart_day_axis">dates</string>
