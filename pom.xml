@@ -15,6 +15,7 @@
 
     <modules>
         <module>modules/server</module>
+	<module>modules/examples/server-echo</module>
     </modules>
 
 
