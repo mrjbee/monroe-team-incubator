@@ -36,11 +36,10 @@ public class SocksClient {
             connection.destroy();
             throw new ConnectionException("Fail to init connection",e);
         }
-
         connection.setObserver(observer);
 
         try {
-            connection.open(protocol, true);
+            connection.open(protocol, false);
         } catch (HandshakeException e) {
             connection.destroy();
             throw new ConnectionException("Handshake fails", e);

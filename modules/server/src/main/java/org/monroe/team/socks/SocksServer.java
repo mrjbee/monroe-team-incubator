@@ -3,6 +3,7 @@ package org.monroe.team.socks;
 
 import org.monroe.team.socks.exception.InvalidProtocolException;
 import org.monroe.team.socks.exception.ProtocolInitializationException;
+import org.monroe.team.socks.protocol.StringExchangeProtocol;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -71,13 +72,6 @@ public class SocksServer {
             e.printStackTrace();
         }
 
-        try {
-            connection.accept();
-        } catch (InvalidProtocolException e) {
-            e.printStackTrace();
-        } catch (ProtocolInitializationException e) {
-            e.printStackTrace();
-        }
         connection.setObserver(new SocksConnection.ConnectionObserver() {
             @Override
             public void onData(Object data) {
@@ -89,6 +83,15 @@ public class SocksServer {
                 e.printStackTrace();
             }
         });
+
+        try {
+            connection.open(StringExchangeProtocol.class,false);
+        } catch (InvalidProtocolException e) {
+            e.printStackTrace();
+        } catch (ProtocolInitializationException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void onCriticalError(Exception e) {
