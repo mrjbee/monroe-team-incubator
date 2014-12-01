@@ -14,8 +14,8 @@ public class SocksConnection implements ReaderTask.DataObserver{
     private Protocol protocol;
     private Thread readThread;
     private ReaderTask task;
-    private InputStream in;
-    private OutputStream out;
+    private DataInputStream in;
+    private DataOutputStream out;
     private ConnectionObserver observer;
 
     public SocksConnection(Socket socket) {
@@ -23,15 +23,15 @@ public class SocksConnection implements ReaderTask.DataObserver{
     }
 
     void init() throws IOException {
-        in = socket.getInputStream();
-        out = socket.getOutputStream();
+        in = new DataInputStream(socket.getInputStream());
+        out = new DataOutputStream(socket.getOutputStream());
     }
 
     public void send(Object msg){
         try {
             protocol.send(msg);
         } catch (Exception e) {
-            throw new SenderException("Couldnt send", e);
+            throw new SenderException("Couldn`t send", e);
         }
     }
 
@@ -60,11 +60,9 @@ public class SocksConnection implements ReaderTask.DataObserver{
     }
 
     void accept() throws InvalidProtocolException, ProtocolInitializationException {
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         String protocolName = null;
         try {
-            protocolName = reader.readLine();
+            protocolName = in.readUTF();
         } catch (IOException e) {
             throw new HandshakeException("Couldn`t read class",e);
         }
@@ -72,18 +70,17 @@ public class SocksConnection implements ReaderTask.DataObserver{
         try {
            protocolClass = (Class<? extends Protocol>) Class.forName(protocolName);
         } catch (ClassNotFoundException e) {
-            sendHandshakeRespond(writer,"INVALID_PROTOCOL");
+            sendHandshakeRespond(out,"INVALID_PROTOCOL");
             throw new InvalidProtocolException("Protocol class not found",e);
         }
 
-        sendHandshakeRespond(writer, "OK");
+        sendHandshakeRespond(out, "OK");
         open(protocolClass, false);
     }
 
-    private void sendHandshakeRespond(BufferedWriter writer, String handShakeRespond) {
+    private void sendHandshakeRespond(DataOutputStream writer, String handShakeRespond) {
         try {
-            writer.write(handShakeRespond);
-            writer.newLine();
+            writer.writeUTF(handShakeRespond);
             writer.flush();
         } catch (IOException e) {
             throw new HandshakeException("Could`n send "+handShakeRespond+" ",e);
@@ -93,13 +90,10 @@ public class SocksConnection implements ReaderTask.DataObserver{
     private boolean handshake(Class<? extends Protocol> protocolType) throws InvalidProtocolException {
         String response;
         try {
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-            writer.write(protocolType.getName());
-            writer.newLine();
-            writer.flush();
+            out.writeUTF(protocolType.getName());
+            out.flush();
             //TODO: implement timeout here
-            response = reader.readLine();
+            response = in.readUTF();
         } catch (IOException ex){
             throw new HandshakeException("Handshake fail",ex);
         }
@@ -167,9 +161,8 @@ public class SocksConnection implements ReaderTask.DataObserver{
         destroy();
     }
 
-
     public static interface Protocol{
-        void create(InputStream inputStream, OutputStream outputStream) throws Exception;
+        void create(DataInputStream inputStream, DataOutputStream outputStream) throws Exception;
         void send(Object message) throws Exception;
         void sendShutdownSignal() throws Exception;
         ReaderTask<Object> createReaderTask(ReaderTask.DataObserver observer);

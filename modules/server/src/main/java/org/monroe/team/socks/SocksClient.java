@@ -39,7 +39,7 @@ public class SocksClient {
         connection.setObserver(observer);
 
         try {
-            connection.open(protocol, false);
+            connection.open(protocol, true);
         } catch (HandshakeException e) {
             connection.destroy();
             throw new ConnectionException("Handshake fails", e);

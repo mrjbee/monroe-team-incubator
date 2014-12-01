@@ -8,13 +8,13 @@ import java.io.*;
 public class StringExchangeProtocol implements SocksConnection.Protocol{
 
     private static final String KILL_SIGNAL = "KILL_SIGNAL_asdasbnqwkejbwqe_FROM_CLIENT";
-    private ObjectInputStream reader;
-    private ObjectOutputStream writer;
+    private DataInputStream reader;
+    private DataOutputStream writer;
 
     @Override
-    public void create(InputStream inputStream, OutputStream outputStream) throws Exception {
-        writer = new ObjectOutputStream(outputStream);
-        reader = new ObjectInputStream(inputStream);
+    public void create(DataInputStream inputStream, DataOutputStream outputStream) throws Exception {
+        reader = inputStream;
+        writer = outputStream;
     }
 
     @Override

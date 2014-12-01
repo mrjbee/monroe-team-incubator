@@ -85,7 +85,7 @@ public class SocksServer {
         });
 
         try {
-            connection.open(StringExchangeProtocol.class,false);
+            connection.accept();
         } catch (InvalidProtocolException e) {
             e.printStackTrace();
         } catch (ProtocolInitializationException e) {
