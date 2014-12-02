@@ -21,7 +21,7 @@ public class EchoServerTest {
     private List<SocksConnection> autoDisconnectList = new ArrayList<SocksConnection>();
     private SocksClient client;
 
-    @BeforeClass
+   // @BeforeClass
     public static void startServer(){
         testInstance = EchoServer.createServer(7777);
     }
@@ -47,7 +47,6 @@ public class EchoServerTest {
         SocksConnection<String> connection = client.getConnection(StringExchangeProtocol.class, new SocksTransport.ConnectionObserver<String>() {
             @Override
             public void onData(String data) {
-                System.out.println(data);
                 answer.add(data);
             }
 
@@ -124,7 +123,7 @@ public class EchoServerTest {
                 answer2.add(e);
             }
         });
-
+        autoDisconnectList.add(connection);
         autoDisconnectList.add(connection2);
 
         connection.send("Hello, I`m client");
@@ -155,7 +154,7 @@ public class EchoServerTest {
         }
     }
 
-    @AfterClass
+   // @AfterClass
     public static void stopServer(){
         testInstance.shutdown();
     }

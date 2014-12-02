@@ -10,7 +10,10 @@ import java.net.UnknownHostException;
 
 public class EchoServer {
 
+
+
     public static void main(String[] args) throws UnknownHostException, InterruptedException {
+        System.out.println("Socks Echo Server "+Version.get());
         if (args == null || args.length == 0){
             System.out.println("Specify port as first argument");
             return;
