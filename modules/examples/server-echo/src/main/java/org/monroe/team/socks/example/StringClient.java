@@ -11,6 +11,7 @@ import org.monroe.team.socks.protocol.StringExchangeProtocol;
 import java.io.Console;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Date;
 
 public class StringClient {
 
@@ -45,22 +46,19 @@ public class StringClient {
         client = new SocksClient(port, InetAddress.getByName(host));
         socksConnection = client.getConnection(StringExchangeProtocol.class, new SocksTransport.ConnectionObserver<String>() {
 
-            int errorCount = 0;
-
             @Override
             public void onData(String data) {
-                System.out.println("[Server response] "+data);
-                errorCount = 0;
+                System.out.println(new Date().toString()+": [Server response] "+data);
             }
 
             @Override
             public void onReadError(Exception e) {
-                System.out.println("Client: [error] "+e.getMessage());
-                e.printStackTrace();
-                errorCount++;
-                if(errorCount > 5){
-                    shutdown();
-                }
+                System.out.println(new Date().toString()+": Client: [error] " + e.getMessage());
+            }
+
+            @Override
+            public void onDisconnected(boolean requestByPartner) {
+                shutdown(true);
             }
         });
 
@@ -68,7 +66,7 @@ public class StringClient {
         Runtime.getRuntime().addShutdownHook(new Thread(){
             @Override
             public void run() {
-                shutdown();
+                shutdown(false);
             }
         });
 
@@ -81,12 +79,13 @@ public class StringClient {
         }
     }
 
-    private static void shutdown() {
+    private static void shutdown(boolean andExit) {
         if (client!=null && socksConnection!=null) {
-            System.out.println("Client: shutdown ");
+            System.out.println("Client: shutdown");
             active = false;
             client.closeConnection(socksConnection);
             client = null;
+            if (andExit) System.exit(0);
         }
     }
 }

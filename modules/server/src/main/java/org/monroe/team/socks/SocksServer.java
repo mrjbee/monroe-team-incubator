@@ -83,6 +83,11 @@ public class SocksServer {
             public void onReadError(Exception e) {
                 transportServlet.onError(e, socksTransport);
             }
+
+            @Override
+            public void onDisconnected(boolean requestByPartner) {
+                System.out.println("Client disconnected [error = "+!requestByPartner+"]");
+            }
         });
 
         try {

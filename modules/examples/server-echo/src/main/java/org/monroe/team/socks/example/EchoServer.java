@@ -60,6 +60,7 @@ public class EchoServer {
         });
         try {
             instance.start(port, InetAddress.getByName("0.0.0.0"));
+            System.out.println("Server started at port:"+instance.getListenPort());
         } catch (IOException e) {
             throw new RuntimeException("Couldn`t start server", e);
         }

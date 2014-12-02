@@ -4,7 +4,6 @@ import com.sun.xml.internal.ws.client.SenderException;
 import org.monroe.team.socks.exception.HandshakeException;
 import org.monroe.team.socks.exception.InvalidProtocolException;
 import org.monroe.team.socks.exception.ProtocolInitializationException;
-import org.monroe.team.socks.protocol.StringExchangeProtocol;
 
 import java.io.*;
 import java.net.Socket;
@@ -119,6 +118,7 @@ public class SocksTransport implements ReaderTask.DataObserver{
                 protocol.sendShutdownSignal();
                 protocol.clearResources();
             } catch (Exception e) {
+                //TODO: log it
                 e.printStackTrace();
             }
         }
@@ -154,12 +154,13 @@ public class SocksTransport implements ReaderTask.DataObserver{
     }
 
     @Override
-    public void onShutdownRequested() {
+    public void onShutdownRequested(boolean normal) {
         if(protocol != null){
             protocol.clearResources();
             protocol = null;
         }
         destroy();
+        observer.onDisconnected(normal);
     }
 
     public Protocol getProtocol() {
@@ -185,6 +186,7 @@ public class SocksTransport implements ReaderTask.DataObserver{
     public static interface ConnectionObserver<DataType>{
         public void onData(DataType data);
         public void onReadError(Exception e);
+        void onDisconnected(boolean requestByPartner);
     }
 
 }

@@ -21,9 +21,13 @@ public class EchoServerTest {
     private List<SocksConnection> autoDisconnectList = new ArrayList<SocksConnection>();
     private SocksClient client;
 
-   // @BeforeClass
+    @BeforeClass
     public static void startServer(){
         testInstance = EchoServer.createServer(7777);
+    }
+    @AfterClass
+    public static void stopServer(){
+        testInstance.shutdown();
     }
 
     @Before
@@ -54,6 +58,11 @@ public class EchoServerTest {
             public void onReadError(Exception e) {
                 answer.add(e);
             }
+
+            @Override
+            public void onDisconnected(boolean requestByPartner) {
+                answer.add(new RuntimeException("Disconected error = "+!requestByPartner));
+            }
         });
 
         autoDisconnectList.add(connection);
@@ -80,6 +89,11 @@ public class EchoServerTest {
             @Override
             public void onReadError(Exception e) {
                 answer.add(e);
+            }
+
+            @Override
+            public void onDisconnected(boolean requestByPartner) {
+                answer.add(new RuntimeException("Disconected error = "+!requestByPartner));
             }
         });
 
@@ -111,6 +125,10 @@ public class EchoServerTest {
             public void onReadError(Exception e) {
                 answer.add(e);
             }
+            @Override
+            public void onDisconnected(boolean requestByPartner) {
+                answer.add(new RuntimeException("Disconected error = "+!requestByPartner));
+            }
         });
         SocksConnection<String> connection2 = client.getConnection(StringExchangeProtocol.class, new SocksTransport.ConnectionObserver<String>() {
             @Override
@@ -121,6 +139,10 @@ public class EchoServerTest {
             @Override
             public void onReadError(Exception e) {
                 answer2.add(e);
+            }
+            @Override
+            public void onDisconnected(boolean requestByPartner) {
+                answer.add(new RuntimeException("Disconected error = "+!requestByPartner));
             }
         });
         autoDisconnectList.add(connection);
@@ -154,9 +176,6 @@ public class EchoServerTest {
         }
     }
 
-   // @AfterClass
-    public static void stopServer(){
-        testInstance.shutdown();
-    }
+
 
 }
