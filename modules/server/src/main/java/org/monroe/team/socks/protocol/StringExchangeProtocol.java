@@ -1,11 +1,11 @@
 package org.monroe.team.socks.protocol;
 
 import org.monroe.team.socks.ReaderTask;
-import org.monroe.team.socks.SocksConnection;
+import org.monroe.team.socks.SocksTransport;
 
 import java.io.*;
 
-public class StringExchangeProtocol implements SocksConnection.Protocol{
+public class StringExchangeProtocol implements SocksTransport.Protocol<String>{
 
     private static final String KILL_SIGNAL = "KILL_SIGNAL_asdasbnqwkejbwqe_FROM_CLIENT";
     private DataInputStream reader;
@@ -18,7 +18,7 @@ public class StringExchangeProtocol implements SocksConnection.Protocol{
     }
 
     @Override
-    public void send(Object message) throws Exception {
+    public void send(String message) throws Exception {
         writer.writeUTF((String) message);
         writer.flush();
     }
@@ -29,10 +29,10 @@ public class StringExchangeProtocol implements SocksConnection.Protocol{
     }
 
     @Override
-    public ReaderTask<Object> createReaderTask(ReaderTask.DataObserver observer) {
-        return new ReaderTask<Object>(observer) {
+    public ReaderTask<String> createReaderTask(ReaderTask.DataObserver observer) {
+        return new ReaderTask<String>(observer) {
             @Override
-            protected Object readForResult() throws IOException, ShutdownSignalException {
+            protected String readForResult() throws IOException, ShutdownSignalException {
                 String text =  reader.readUTF();
                 if (KILL_SIGNAL.equals(text)) throw new ShutdownSignalException();
                 return text;
@@ -40,9 +40,16 @@ public class StringExchangeProtocol implements SocksConnection.Protocol{
         };
     }
 
+
     @Override
     public void clearResources() {
 
     }
 
+    @Override
+    public String toString() {
+        return "Protocol{" +
+                "type" + String.class +
+                '}';
+    }
 }

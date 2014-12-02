@@ -1,10 +1,6 @@
 package org.monroe.team.socks;
 
 
-import org.monroe.team.socks.exception.InvalidProtocolException;
-import org.monroe.team.socks.exception.ProtocolInitializationException;
-import org.monroe.team.socks.protocol.StringExchangeProtocol;
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -15,16 +11,23 @@ public class SocksServer {
     public static final int PORT_ANY = 0;
     private final Object controlMonitor = new Object();
     private ServerThread serverThread;
-    private ErrorHandler errorHandler;
+    private ErrorHandlingStrategy errorHandlingStrategy = new DefaultErrorHandlingStrategy();
+    private Servlet transportServlet = new NoOpServlet();
 
-    private int readBuffer = 3000;
-
-    public ErrorHandler getErrorHandler() {
-        return errorHandler;
+    public ErrorHandlingStrategy getErrorHandlingStrategy() {
+        return errorHandlingStrategy;
     }
 
-    public void setErrorHandler(ErrorHandler errorHandler) {
-        this.errorHandler = errorHandler;
+    public void setErrorHandlingStrategy(ErrorHandlingStrategy errorHandlingStrategy) {
+        this.errorHandlingStrategy = errorHandlingStrategy;
+    }
+
+    public Servlet getTransportServlet() {
+        return transportServlet;
+    }
+
+    public void setTransportServlet(Servlet transportServlet) {
+        this.transportServlet = transportServlet;
     }
 
     public void start(int port, InetAddress address) throws IOException {
@@ -62,48 +65,44 @@ public class SocksServer {
     }
 
     private void onClient(Socket clientSocket){
-
         //TODO: more here
-        SocksConnection connection = new SocksConnection(clientSocket);
-
+        final SocksTransport socksTransport = new SocksTransport(clientSocket);
         try {
-            connection.init();
+            socksTransport.init();
         } catch (IOException e) {
-            e.printStackTrace();
+            onClientError(socksTransport, e);
         }
 
-        connection.setObserver(new SocksConnection.ConnectionObserver() {
+        socksTransport.setObserver(new SocksTransport.ConnectionObserver() {
             @Override
             public void onData(Object data) {
-                System.out.println("Server reads: "+data);
+                transportServlet.onData(data, socksTransport);
             }
 
             @Override
             public void onReadError(Exception e) {
-                e.printStackTrace();
+                transportServlet.onError(e, socksTransport);
             }
         });
 
         try {
-            connection.accept();
-        } catch (InvalidProtocolException e) {
-            e.printStackTrace();
-        } catch (ProtocolInitializationException e) {
-            e.printStackTrace();
+            socksTransport.accept();
+        } catch (Exception e) {
+            onClientError(socksTransport, e);
         }
 
     }
 
     private void onCriticalError(Exception e) {
-        if (errorHandler != null && !errorHandler.processCriticalError(e)) {
-            shutdown();
-        }
+        errorHandlingStrategy.processCriticalError(e);
     }
 
     private void onError(IOException e) {
-        if (errorHandler != null){
-            errorHandler.onException(e);
-        }
+        errorHandlingStrategy.onException(e);
+    }
+
+    private void onClientError(SocksTransport transport, Exception e) {
+        errorHandlingStrategy.onClientInitializationError(transport, e);
     }
 
     private final class ServerThread extends Thread {
@@ -136,7 +135,7 @@ public class SocksServer {
                     if (!isActive) return;
                     errorChecker ++;
                     if (errorChecker > 20) {
-                     throw new IllegalStateException("Too much errors without success connections.");
+                        throw new IllegalStateException("Too much errors without success connections.");
                     }else {
                         SocksServer.this.onError(e);
                     }
@@ -163,10 +162,53 @@ public class SocksServer {
     }
 
 
-    public interface ErrorHandler {
-        boolean processCriticalError(Exception e);
+    public interface ErrorHandlingStrategy {
+        void processCriticalError(Exception e);
         void onException(IOException e);
+        void onClientInitializationError(SocksTransport transport, Exception e);
     }
 
+    public interface Servlet {
+        public void onData(Object data, SocksTransport transport);
+        public void onError(Exception e, SocksTransport transport);
+    }
+
+    //TODO Enhance with logging
+    private class DefaultErrorHandlingStrategy implements ErrorHandlingStrategy {
+
+        @Override
+        public void processCriticalError(Exception e) {
+            System.out.println("Server going to shutdown");
+            e.printStackTrace();
+            shutdown();
+        }
+
+        @Override
+        public void onException(IOException e) {
+            System.out.println("Server error");
+            e.printStackTrace();
+        }
+
+        @Override
+        public void onClientInitializationError(SocksTransport transport, Exception e) {
+            System.out.println("Client connection rejected");
+            e.printStackTrace();
+            transport.destroy();
+        }
+    }
+
+    private final class NoOpServlet implements Servlet {
+
+        @Override
+        public void onData(Object data, SocksTransport transport) {
+            System.out.println("Obtain data:"+data +" "+transport);
+        }
+
+        @Override
+        public void onError(Exception e, SocksTransport transport) {
+            System.out.println("Error:"+e.getMessage() +" "+transport);
+            e.printStackTrace();
+        }
+    }
 
 }

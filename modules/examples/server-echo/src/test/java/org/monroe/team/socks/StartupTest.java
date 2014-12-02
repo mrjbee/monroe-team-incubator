@@ -30,11 +30,12 @@ public class StartupTest {
 
     }
 
+
     @Test
     public void clientConnect() throws UnknownHostException, ConnectionException, InvalidProtocolException, InterruptedException {
         Thread.sleep(20);
         SocksClient client = new SocksClient(7777, InetAddress.getLocalHost());
-        SocksConnection connection = pingServerWithNewConnection(client);
+        SocksConnection<String> connection = pingServerWithNewConnection(client);
         client.closeConnection(connection);
         Thread.sleep(20);
         System.out.println("Run second");
@@ -42,10 +43,10 @@ public class StartupTest {
         client.closeConnection(connection);
     }
 
-    private SocksConnection pingServerWithNewConnection(SocksClient client) throws ConnectionException, InvalidProtocolException, InterruptedException {
-        SocksConnection connection = client.getConnection(StringExchangeProtocol.class, new SocksConnection.ConnectionObserver() {
+    private SocksConnection<String> pingServerWithNewConnection(SocksClient client) throws ConnectionException, InvalidProtocolException, InterruptedException {
+        SocksConnection<String> connection = client.getConnection(StringExchangeProtocol.class, new SocksTransport.ConnectionObserver<String>() {
             @Override
-            public void onData(Object data) {
+            public void onData(String data) {
                 System.out.println("Readed:"+data);
             }
 

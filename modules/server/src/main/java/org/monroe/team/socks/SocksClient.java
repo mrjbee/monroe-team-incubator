@@ -19,7 +19,9 @@ public class SocksClient {
         this.serverAddress = serverAddress;
     }
 
-    public SocksConnection getConnection(Class<? extends SocksConnection.Protocol> protocol, SocksConnection.ConnectionObserver observer)
+    public <DataType> SocksConnection<DataType> getConnection(
+                                         Class<? extends SocksTransport.Protocol<DataType>> protocol,
+                                         SocksTransport.ConnectionObserver<DataType> observer)
             throws ConnectionException, InvalidProtocolException {
         Socket socket = null;
         try {
@@ -28,7 +30,7 @@ public class SocksClient {
             throw new ConnectionException("Couldnt open socket",e);
         }
 
-        SocksConnection connection = new SocksConnection(socket);
+        SocksTransport connection = new SocksTransport(socket);
 
         try {
             connection.init();
@@ -44,17 +46,33 @@ public class SocksClient {
             connection.destroy();
             throw new ConnectionException("Handshake fails", e);
         } catch (InvalidProtocolException e){
-            //everithing good with a sockets so could be reused in future
+            //TODO: everything good with a sockets so could be reused in future
             connection.destroy();
             throw e;
         } catch (ProtocolInitializationException e) {
             connection.destroy();
             throw new ConnectionException("Protocol initialization fails", e);
         }
-        return connection;
+        return new DefaultSockClient<DataType>(connection);
     }
 
-    public void closeConnection(SocksConnection connection) {
-        connection.destroy();
+    public void closeConnection(SocksConnection<?> connection) {
+        DefaultSockClient<?> sockClient = (DefaultSockClient<?>) connection;
+        sockClient.socksTransport.destroy();
     }
+
+    private class DefaultSockClient<DataType> implements SocksConnection<DataType>{
+
+        private final SocksTransport socksTransport;
+
+        public DefaultSockClient(SocksTransport socksTransport) {
+            this.socksTransport = socksTransport;
+        }
+
+        @Override
+        public void send(DataType dataType) {
+            socksTransport.send(dataType);
+        }
+    }
+
 }
