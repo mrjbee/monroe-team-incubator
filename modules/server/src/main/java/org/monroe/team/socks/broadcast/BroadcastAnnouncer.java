@@ -10,13 +10,12 @@ import java.net.*;
 import java.util.Enumeration;
 import java.util.List;
 
-public class BroadcastAnnouncer <MessageType,
-        Transport extends BroadcastMessageTransport<? super MessageType>> {
+public class BroadcastAnnouncer <MessageType> {
 
     private final DatagramSocket socket;
-    private final Transport transport;
+    private final BroadcastMessageTransport<? super MessageType> transport;
 
-    public BroadcastAnnouncer(Transport transport) throws ConnectionException {
+    public BroadcastAnnouncer(BroadcastMessageTransport<? super MessageType> transport) throws ConnectionException {
         try {
             socket = new DatagramSocket();
             socket.setBroadcast(true);

@@ -5,9 +5,7 @@ import org.monroe.team.socks.exception.InvalidProtocolException;
 
 import java.net.*;
 
-public class BroadcastReceiver<MessageType,
-        Transport extends BroadcastMessageTransport<? extends MessageType>,
-        Observer extends BroadcastReceiver.BroadcastMessageObserver<? super MessageType>> {
+public class BroadcastReceiver<MessageType> {
 
     final int MAX_PACKET_SIZE = 15000;
 
@@ -15,14 +13,14 @@ public class BroadcastReceiver<MessageType,
     private ErrorHandlingStrategy errorHandlingStrategy = new DefaultErrorHandlingStrategy(5);
     private int errorIndex = 0;
 
-    private final Transport transport;
-    private final Observer observer;
+    private final BroadcastMessageTransport<? extends MessageType> transport;
+    private final BroadcastMessageObserver<? super MessageType> observer;
 
-
-    public BroadcastReceiver(Transport transport, Observer observer) {
+    public BroadcastReceiver(BroadcastMessageTransport<? extends MessageType> transport, BroadcastMessageObserver<? super MessageType> observer) {
         this.transport = transport;
         this.observer = observer;
     }
+
 
     public synchronized ErrorHandlingStrategy getErrorHandlingStrategy() {
         return errorHandlingStrategy;
@@ -73,7 +71,7 @@ public class BroadcastReceiver<MessageType,
         errorIndex = 0;
         try {
             MessageType message = transport.fromString(plainMessage);
-            observer.onMessage(message);
+            observer.onMessage(message, address);
 
         } catch (InvalidProtocolException e) {
             errorHandlingStrategy.handleParseError(e, plainMessage, address);
@@ -169,6 +167,6 @@ public class BroadcastReceiver<MessageType,
     }
 
     public static interface BroadcastMessageObserver<MessageType>{
-        public void onMessage(MessageType messageType);
+        public void onMessage(MessageType messageType, InetAddress address);
     }
 }
