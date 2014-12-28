@@ -6,6 +6,7 @@ import org.monroe.team.socks.SocksServer;
 import org.monroe.team.socks.SocksTransport;
 import org.monroe.team.socks.exception.ConnectionException;
 import org.monroe.team.socks.exception.InvalidProtocolException;
+import org.monroe.team.socks.exception.SendFailException;
 import org.monroe.team.socks.protocol.StringExchangeProtocol;
 
 import java.io.Console;
@@ -74,7 +75,12 @@ public class StringClient {
         while (active){
             String line = console.readLine();
             if (active) {
-                socksConnection.send(line);
+                try {
+                    socksConnection.send(line);
+                } catch (SendFailException e) {
+                    e.printStackTrace();
+                    System.out.println("\n\nTry Again \n");
+                }
             }
         }
     }

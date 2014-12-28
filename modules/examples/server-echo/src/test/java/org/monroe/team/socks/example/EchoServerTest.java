@@ -7,6 +7,7 @@ import org.monroe.team.socks.SocksServer;
 import org.monroe.team.socks.SocksTransport;
 import org.monroe.team.socks.exception.ConnectionException;
 import org.monroe.team.socks.exception.InvalidProtocolException;
+import org.monroe.team.socks.exception.SendFailException;
 import org.monroe.team.socks.protocol.StringExchangeProtocol;
 
 import java.net.InetAddress;
@@ -45,7 +46,7 @@ public class EchoServerTest {
     }
 
     @Test
-    public void shouldResponseOnSingleMessages() throws ConnectionException, InvalidProtocolException, InterruptedException {
+    public void shouldResponseOnSingleMessages() throws ConnectionException, InvalidProtocolException, InterruptedException, SendFailException {
         final List<Object> answer = new ArrayList<Object>(3);
 
         SocksConnection<String> connection = client.getConnection(StringExchangeProtocol.class, new SocksTransport.ConnectionObserver<String>() {
@@ -76,7 +77,7 @@ public class EchoServerTest {
     }
 
     @Test
-    public void shouldResponseOnFewMessagesWithSameClient() throws ConnectionException, InvalidProtocolException, InterruptedException {
+    public void shouldResponseOnFewMessagesWithSameClient() throws ConnectionException, InvalidProtocolException, InterruptedException, SendFailException {
         final List<Object> answer = new ArrayList<Object>(3);
 
         SocksConnection<String> connection = client.getConnection(StringExchangeProtocol.class, new SocksTransport.ConnectionObserver<String>() {
@@ -111,7 +112,7 @@ public class EchoServerTest {
 
 
     @Test
-    public void shouldResponseOnFewMessagesWithDifferentClients() throws ConnectionException, InvalidProtocolException, InterruptedException {
+    public void shouldResponseOnFewMessagesWithDifferentClients() throws ConnectionException, InvalidProtocolException, InterruptedException, SendFailException {
         final List<Object> answer = new ArrayList<Object>(3);
         final List<Object> answer2 = new ArrayList<Object>(3);
 

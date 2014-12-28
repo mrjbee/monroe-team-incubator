@@ -1,6 +1,6 @@
 package org.monroe.team.socks;
 
-import com.sun.xml.internal.ws.client.SenderException;
+import org.monroe.team.socks.exception.SendFailException;
 import org.monroe.team.socks.exception.HandshakeException;
 import org.monroe.team.socks.exception.InvalidProtocolException;
 import org.monroe.team.socks.exception.ProtocolInitializationException;
@@ -27,11 +27,11 @@ public class SocksTransport implements ReaderTask.DataObserver{
         out = new DataOutputStream(socket.getOutputStream());
     }
 
-    public void send(Object msg){
+    public void send(Object msg) throws SendFailException {
         try {
             protocol.send(msg);
         } catch (Exception e) {
-            throw new SenderException("Couldn`t send", e);
+            throw new SendFailException("Couldn`t send", e);
         }
     }
 

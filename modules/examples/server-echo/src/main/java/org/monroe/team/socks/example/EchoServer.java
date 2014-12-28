@@ -2,6 +2,7 @@ package org.monroe.team.socks.example;
 
 import org.monroe.team.socks.SocksServer;
 import org.monroe.team.socks.SocksTransport;
+import org.monroe.team.socks.exception.SendFailException;
 import org.monroe.team.socks.protocol.StringExchangeProtocol;
 
 import java.io.IOException;
@@ -48,7 +49,11 @@ public class EchoServer {
                     transport.destroy();
                 } else {
                     System.out.println("Server get: " + data + " " + transport);
-                    transport.send(prepareEchoString((String) data));
+                    try {
+                        transport.send(prepareEchoString((String) data));
+                    } catch (SendFailException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 

@@ -1,9 +1,6 @@
 package org.monroe.team.socks;
 
-import org.monroe.team.socks.exception.ConnectionException;
-import org.monroe.team.socks.exception.HandshakeException;
-import org.monroe.team.socks.exception.InvalidProtocolException;
-import org.monroe.team.socks.exception.ProtocolInitializationException;
+import org.monroe.team.socks.exception.*;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -70,7 +67,7 @@ public class SocksClient {
         }
 
         @Override
-        public void send(DataType dataType) {
+        public void send(DataType dataType) throws SendFailException {
             socksTransport.send(dataType);
         }
     }
