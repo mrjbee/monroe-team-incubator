@@ -2,17 +2,26 @@ package org.monroe.team.socks.example;
 
 import junit.framework.Assert;
 import org.junit.*;
+import org.monroe.team.socks.broadcast.BroadcastAnnouncer;
 import org.monroe.team.socks.broadcast.BroadcastReceiver;
 import org.monroe.team.socks.broadcast.MapBroadcastMessageTransport;
 import org.monroe.team.socks.exception.ConnectionException;
+import org.monroe.team.socks.exception.InvalidProtocolException;
+import org.monroe.team.socks.exception.SendFailException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class BroadcastTest {
+public class BroadcastTest extends TestSupport {
 
     private static BroadcastReceiver<Map<String,String>,
             MapBroadcastMessageTransport,
             BroadcastReceiver.BroadcastMessageObserver<Map<String,String>>> receiver;
+
+    private BroadcastAnnouncer<Map<String,String>, MapBroadcastMessageTransport> announcer;
+    private static List<Map<String,String>> messagesList = new ArrayList<Map<String, String>>();
 
     @BeforeClass
     public static void init() throws ConnectionException {
@@ -24,8 +33,16 @@ public class BroadcastTest {
     }
 
     @Before
-    public void prepare(){
+    public void prepare() throws ConnectionException {
         Assert.assertEquals(receiver.isAlive(), true);
+        messagesList.clear();
+        announcer = new BroadcastAnnouncer<Map<String, String>, MapBroadcastMessageTransport>(new MapBroadcastMessageTransport());
+    }
+
+    @After
+    public void cleanup(){
+        messagesList.clear();
+        announcer.destroy();
     }
 
     @AfterClass
@@ -33,18 +50,24 @@ public class BroadcastTest {
         receiver.shutdown();
     }
 
+
     @Test
-    public void shouldReceive(){
+    public void shouldReceive() throws InvalidProtocolException, SendFailException, InterruptedException {
         //nothing here yet
-        System.out.println(receiver.getPort());
+        Map<String,String> msg= new HashMap<String, String>();
+        msg.put("test", "value");
+        announcer.sendMessage(receiver.getPort(), msg);
+        waitUnless(messagesList, 1);
+        Assert.assertEquals(1, messagesList.size());
+        Assert.assertEquals("value",messagesList.get(0).get("test"));
     }
 
 
     private static BroadcastReceiver.BroadcastMessageObserver<Map<String, String>> createObserver() {
         return new BroadcastReceiver.BroadcastMessageObserver<Map<String, String>>() {
             @Override
-            public void onMessage(Map<String, String> stringStringMap) {
-
+            public void onMessage(Map<String, String> msg) {
+                messagesList.add(msg);
             }
         };
     }

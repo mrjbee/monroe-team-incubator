@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class EchoServerTest {
+public class EchoServerTest extends TestSupport {
 
     private static SocksServer testInstance;
     private List<SocksConnection> autoDisconnectList = new ArrayList<SocksConnection>();
@@ -161,21 +161,6 @@ public class EchoServerTest {
         Assert.assertEquals(EchoServer.prepareEchoString("How do you do?"),answer2.get(0));
     }
 
-
-    private void waitUnless(Collection<?> awaitList,int waitForCount) throws InterruptedException {
-        waitUnless(awaitList,waitForCount,10,500);
-    }
-
-    private void waitUnless(Collection<?> awaitList,int waitForCount, int tryCount, int tryTimeout) throws InterruptedException {
-        int tries = 0;
-        while (awaitList.size() < waitForCount && tries<tryCount){
-            Thread.sleep(tryTimeout);
-            tries++;
-        }
-        if (awaitList.size() != waitForCount){
-            throw new AssertionError("Expected answer count "+waitForCount+" , but get "+awaitList);
-        }
-    }
 
 
 
