@@ -20,7 +20,8 @@ public class EchoServer {
 
     private static Thread announceThread;
 
-    public static void main(String[] args) throws UnknownHostException, InterruptedException, ConnectionException {
+    public static void main(String[] args) throws IOException, InterruptedException, ConnectionException {
+        System.out.print("\033[H\033[2J");
         System.out.println("Socks Echo Server "+Version.get());
         if (args == null || args.length == 0){
             System.out.println("Specify port as first argument");
@@ -64,7 +65,7 @@ public class EchoServer {
             @Override
             public void onMessage(final Map<String, String> msg, final InetAddress address) {
                 System.out.println("Server get announce message from:"+address);
-                if (announceThread != null) {
+                if (announceThread == null) {
                     System.out.println("Server start announcing port:"+serverPort);
                     announceThread = new Thread(){
                         @Override
