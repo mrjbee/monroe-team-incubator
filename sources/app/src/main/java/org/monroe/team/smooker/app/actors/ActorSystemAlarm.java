@@ -17,7 +17,7 @@ public class ActorSystemAlarm extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         if (Alarms.TIME_TO_UPDATE_STATISTICS.isAbout(intent)){
-            SmookerApplication.instance.getModel().execute(OverNightUpdate.class,null);
+            SmookerApplication.instance.model().execute(OverNightUpdate.class,null);
         }
 
         if (Alarms.TIME_TO_NOTIFICATION_STATISTICS.isAbout(intent)){

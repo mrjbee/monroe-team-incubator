@@ -55,7 +55,7 @@ public class StickyNotificationService extends Service {
     }
 
     private void updateText() {
-        GetStatisticState.StatisticState state = SmookerApplication.instance.getModel().execute(GetStatisticState.class,new GetStatisticState.StatisticRequest().with(
+        GetStatisticState.StatisticState state = SmookerApplication.instance.model().execute(GetStatisticState.class,new GetStatisticState.StatisticRequest().with(
                 GetStatisticState.StatisticName.SMOKE_TODAY,
                 GetStatisticState.StatisticName.QUIT_SMOKE));
         String text = generateNotificationStringFor(state.getTodaySmokeDates().size());
@@ -75,7 +75,7 @@ public class StickyNotificationService extends Service {
     }
 
     private String getNotificationInitialText() {
-        GetStatisticState.StatisticState statisticState = ((SmookerApplication) getApplication()).getModel().execute(GetStatisticState.class,
+        GetStatisticState.StatisticState statisticState = ((SmookerApplication) getApplication()).model().execute(GetStatisticState.class,
                 GetStatisticState.StatisticRequest.create(GetStatisticState.StatisticName.SMOKE_TODAY));
         return generateNotificationStringFor(statisticState.getTodaySmokeDates().size());
     }

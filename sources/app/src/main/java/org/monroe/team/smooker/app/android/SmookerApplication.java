@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Pair;
 
+import org.monroe.team.android.box.app.ApplicationSupport;
 import org.monroe.team.android.box.services.SettingManager;
 import org.monroe.team.smooker.app.actors.ActorSmoker;
 import org.monroe.team.smooker.app.android.controller.SmokeScheduleController;
@@ -28,7 +29,7 @@ import java.util.Calendar;
 import java.util.List;
 
 
-public class SmookerApplication extends Application {
+public class SmookerApplication extends ApplicationSupport<Model> {
 
     public static SmookerApplication instance;
 
@@ -43,6 +44,7 @@ public class SmookerApplication extends Application {
     @Override public void onCreate() {
         super.onCreate();
         instance = this;
+        model().onCreate();
         if (!settings().has(Settings.APP_FIRST_TIME_DATE)){
             settings().set(Settings.APP_FIRST_TIME_DATE,DateUtils.now().getTime());
             scheduleAlarms();
@@ -52,22 +54,20 @@ public class SmookerApplication extends Application {
 
     public synchronized SmokeScheduleController getSuggestionsController(){
         if (suggestionsController == null){
-            suggestionsController = new SmokeScheduleController(this,getModel());
+            suggestionsController = new SmokeScheduleController(this,model());
             suggestionsController.initialize();
         }
         return suggestionsController;
     }
 
-    public synchronized Model getModel() {
-        if (model == null){
-            model = new Model(getApplicationContext());
-            model.onCreate();
-        }
+    @Override
+    protected Model createModel() {
+        Model model = new Model(getApplicationContext());
         return model;
     }
 
     public void onRemoteControlNotificationCloseRequest() {
-        getModel().stopNotificationControlService();
+        model().stopNotificationControlService();
         updateStickyNotification(false);
         if (settings().getAndSet(Settings.FIRST_TIME_CLOSE_STICKY_NOTIFICATION, false)){
             Intent intent = new Intent(this, WizardActivity.class);
@@ -81,7 +81,7 @@ public class SmookerApplication extends Application {
     }
 
     final public SettingManager settings() {
-        return getModel().usingService(SettingManager.class);
+        return model().usingService(SettingManager.class);
     }
 
     public void closeSystemDialogs() {
@@ -91,9 +91,9 @@ public class SmookerApplication extends Application {
 
     public void updateStickyNotification(boolean enabled) {
         if (enabled){
-            getModel().startNotificationControlService();
+            model().startNotificationControlService();
         } else {
-            getModel().stopNotificationControlService();
+            model().stopNotificationControlService();
         }
         settings().set(Settings.ENABLED_STICKY_NOTIFICATION, enabled);
     }
@@ -204,7 +204,7 @@ public class SmookerApplication extends Application {
 
     public void doMorningNotification() {
         if (settings().get(Settings.ENABLED_STATISTIC_NOTIFICATION)){
-            GetStatisticState.StatisticState state =  getModel().execute(GetStatisticState.class, new GetStatisticState.StatisticRequest().with(
+            GetStatisticState.StatisticState state =  model().execute(GetStatisticState.class, new GetStatisticState.StatisticRequest().with(
                     GetStatisticState.StatisticName.QUIT_SMOKE,
                     GetStatisticState.StatisticName.SMOKE_YESTERDAY,
                     GetStatisticState.StatisticName.SMOKE_TODAY));

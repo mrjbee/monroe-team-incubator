@@ -10,7 +10,7 @@ import org.monroe.team.android.box.event.Event;
 public class SupportActivity extends Activity {
 
     final protected Model model(){
-       return ((SmookerApplication)getApplication()).getModel();
+       return ((SmookerApplication)getApplication()).model();
     }
 
     final protected <ViewType extends View> ViewType view(Class<ViewType> viewClass, int resourceId){

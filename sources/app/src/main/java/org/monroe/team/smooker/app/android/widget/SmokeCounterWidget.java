@@ -51,7 +51,7 @@ public class SmokeCounterWidget extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
 
-        GetStatisticState.StatisticState statisticState = SmookerApplication.instance.getModel().execute(GetStatisticState.class,new GetStatisticState.StatisticRequest().with(GetStatisticState.StatisticName.SMOKE_TODAY));
+        GetStatisticState.StatisticState statisticState = SmookerApplication.instance.model().execute(GetStatisticState.class,new GetStatisticState.StatisticRequest().with(GetStatisticState.StatisticName.SMOKE_TODAY));
         int count = statisticState.getTodaySmokeDates().size();
         RemoteViews views = createRemoteView(context);
 
@@ -61,7 +61,7 @@ public class SmokeCounterWidget extends AppWidgetProvider {
 
     private static RemoteViews createRemoteView(Context context) {
         // Construct the RemoteViews object
-        GetStatisticState.StatisticState state = SmookerApplication.instance.getModel().execute(GetStatisticState.class,new GetStatisticState.StatisticRequest().with(GetStatisticState.StatisticName.SMOKE_TODAY, GetStatisticState.StatisticName.QUIT_SMOKE));
+        GetStatisticState.StatisticState state = SmookerApplication.instance.model().execute(GetStatisticState.class,new GetStatisticState.StatisticRequest().with(GetStatisticState.StatisticName.SMOKE_TODAY, GetStatisticState.StatisticName.QUIT_SMOKE));
         String countText;
         String descriptionText;
         if (state.getTodaySmokeLimit() != null && state.getTodaySmokeLimit() > -1){

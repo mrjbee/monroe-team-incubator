@@ -43,7 +43,7 @@ public class ActorSmoker extends Actor {
         toastText = reactOn(ADD_SMOKE, intent, toastText, new Reaction<String>() {
             @Override
             public String react(Intent intent) {
-                SmookerApplication.instance.getModel().execute(AddSmoke.class, null);
+                SmookerApplication.instance.model().execute(AddSmoke.class, null);
                 return context.getString(R.string.pattern_one_smoke_spend_with_value,
                         SmookerApplication.instance.getSmokePriceString());
             }
@@ -52,7 +52,7 @@ public class ActorSmoker extends Actor {
         toastText = reactOn(SKIP_SMOKE, intent, toastText, new Reaction<String>(){
             @Override
             public String react(Intent intent) {
-                SmookerApplication.instance.getModel().execute(CancelSmoke.class, SmokeCancelReason.SKIP);
+                SmookerApplication.instance.model().execute(CancelSmoke.class, SmokeCancelReason.SKIP);
                 return context.getString(R.string.pattern_one_smoke_saved_with_value,
                         SmookerApplication.instance.getSmokePriceString());
             }
@@ -61,7 +61,7 @@ public class ActorSmoker extends Actor {
         toastText = reactOn(POSTPONE_SMOKE, intent, toastText, new Reaction<String>(){
             @Override
             public String react(Intent intent) {
-                SmookerApplication.instance.getModel().execute(CancelSmoke.class, SmokeCancelReason.POSTPONE);
+                SmookerApplication.instance.model().execute(CancelSmoke.class, SmokeCancelReason.POSTPONE);
                 return context.getString(R.string.smoke_rescheduled);
             }
         });
