@@ -1,10 +1,11 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '19.0.3'
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
+	applicationId "org.monroe.team.smooker.app"
         minSdkVersion 8
         targetSdkVersion 18
         versionCode 2
@@ -22,7 +23,7 @@ android {
 
     buildTypes {
         release {
-            runProguard false
+	    minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
             signingConfig signingConfigs.release
         }
@@ -34,7 +35,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:support-v4:19.0.1'
     compile 'com.android.support:appcompat-v7:19.+'
-    compile 'com.google.android.gms:play-services:4.4.52'
 }
 
 
@@ -44,20 +44,3 @@ buildscript {
     }
 }
 
-android.applicationVariants.all{ variant ->
-// This is an annoying hack to get around the fact that the Gradle plugin does not support
-// having libraries with different minSdkVersions. Play Services has a min version of 9 (Gingerbread)
-// but Android Maps Utils supports 8 (Froyo) still
-    variant.processManifest.doFirst {
-        File manifestFile = file("${buildDir}/exploded-aar/com.google.android.gms/play-services/4.4.52/AndroidManifest.xml")
-        if (manifestFile.exists()) {
-            println("Replacing minSdkVersion in Android Maps Utils")
-            String content = manifestFile.getText('UTF-8')
-            content = content.replaceAll(/minSdkVersion="9"/, 'minSdkVersion=\"8\"')
-            manifestFile.write(content, 'UTF-8')
-            println(content)
-        } else {
-            println("File not found: "+ manifestFile.getAbsolutePath())
-        }
-    }
-}

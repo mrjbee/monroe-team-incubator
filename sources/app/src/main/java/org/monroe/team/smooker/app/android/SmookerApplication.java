@@ -10,9 +10,6 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Pair;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.Tracker;
-
 import org.monroe.team.android.box.manager.SettingManager;
 import org.monroe.team.smooker.app.actors.ActorSmoker;
 import org.monroe.team.smooker.app.android.controller.SmokeScheduleController;
@@ -35,7 +32,7 @@ public class SmookerApplication extends Application {
 
     public static SmookerApplication instance;
 
-    private Tracker appTracker;
+
     private Model model;
     private SmokeScheduleController suggestionsController;
 
@@ -46,7 +43,6 @@ public class SmookerApplication extends Application {
     @Override public void onCreate() {
         super.onCreate();
         instance = this;
-        getAppTracker();
         if (!settings().has(Settings.APP_FIRST_TIME_DATE)){
             settings().set(Settings.APP_FIRST_TIME_DATE,DateUtils.now().getTime());
             scheduleAlarms();
@@ -245,13 +241,5 @@ public class SmookerApplication extends Application {
     public String getSmokePriceString() {
         return settings().get(Settings.SMOKE_PRICE).toString() + " "
                 + settings().getAs(Settings.CURRENCY_ID, Settings.CONVERT_CURRENCY).symbol;
-    }
-
-    public synchronized Tracker getAppTracker(){
-        if (appTracker == null){
-            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            appTracker = analytics.newTracker(R.xml.app_tracker);
-        }
-        return appTracker;
     }
 }
