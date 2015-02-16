@@ -21,8 +21,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.monroe.team.android.box.Closure;
-import org.monroe.team.android.box.Lists;
+import org.monroe.team.corebox.utils.Closure;
+import org.monroe.team.corebox.utils.Lists;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.android.view.AddSmokeAnimationView;
 import org.monroe.team.smooker.app.android.view.SmokeChartView;
@@ -506,7 +506,7 @@ public class DashboardActivity extends SupportActivity {
             timeBeforeNextSmoke = -1;
         }
 
-        chartView.setFutureModel(Lists.collect(scheduledSmokesList,new Closure<CalculateTodaySmokeSchedule.SmokeSuggestion, Date>() {
+        chartView.setFutureModel(Lists.collect(scheduledSmokesList, new Closure<CalculateTodaySmokeSchedule.SmokeSuggestion, Date>() {
             @Override
             public Date execute(CalculateTodaySmokeSchedule.SmokeSuggestion arg) {
                 return arg.date;

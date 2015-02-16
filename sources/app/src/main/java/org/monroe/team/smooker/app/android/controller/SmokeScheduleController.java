@@ -8,11 +8,11 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
-import org.monroe.team.android.box.manager.SettingManager;
+import org.monroe.team.android.box.services.SettingManager;
+import org.monroe.team.corebox.utils.Closure;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.actors.ActorSmoker;
 import org.monroe.team.smooker.app.actors.ActorSystemAlarm;
-import org.monroe.team.android.box.Closure;
 import org.monroe.team.smooker.app.common.constant.Events;
 import org.monroe.team.smooker.app.common.Model;
 import org.monroe.team.android.box.event.Event;

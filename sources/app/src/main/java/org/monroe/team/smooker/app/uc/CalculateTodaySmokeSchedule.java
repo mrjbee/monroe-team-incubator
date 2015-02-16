@@ -1,7 +1,7 @@
 package org.monroe.team.smooker.app.uc;
 
-import org.monroe.team.android.box.manager.EventMessenger;
-import org.monroe.team.android.box.manager.ServiceRegistry;
+import org.monroe.team.android.box.services.EventMessenger;
+import org.monroe.team.corebox.services.ServiceRegistry;
 import org.monroe.team.smooker.app.common.constant.Events;
 import org.monroe.team.smooker.app.common.constant.SmokeCancelReason;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgram;

@@ -1,6 +1,7 @@
 package org.monroe.team.smooker.app.common.quitsmoke;
 
-import org.monroe.team.android.box.Closure;
+
+import org.monroe.team.corebox.utils.Closure;
 
 public class QuitSmokeDataDriver {
 

@@ -4,9 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import org.monroe.team.android.box.manager.EventMessenger;
-import org.monroe.team.android.box.manager.ServiceRegistry;
-import org.monroe.team.android.box.manager.SettingManager;
+import org.monroe.team.android.box.services.AndroidServiceRegistry;
+import org.monroe.team.android.box.services.EventMessenger;
+import org.monroe.team.android.box.services.SettingManager;
+import org.monroe.team.corebox.services.ServiceRegistry;
 import org.monroe.team.smooker.app.android.service.StickyNotificationService;
 import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
@@ -22,7 +23,7 @@ public class Model {
 
     public Model(Context context) {
         this.context = context;
-        serviceRegistry = new ServiceRegistry(context);
+        serviceRegistry = new AndroidServiceRegistry(context);
         serviceRegistry.registrate(Model.class, this);
         DBHelper dbHelper = new DBHelper(context);
         TransactionManager transactionManager = new TransactionManager(dbHelper);

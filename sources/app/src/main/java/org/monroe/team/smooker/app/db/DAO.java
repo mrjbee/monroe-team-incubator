@@ -4,7 +4,7 @@ package org.monroe.team.smooker.app.db;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import org.monroe.team.android.box.Closure;
+import org.monroe.team.corebox.utils.Closure;
 import org.monroe.team.smooker.app.common.constant.SmokeCancelReason;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
 

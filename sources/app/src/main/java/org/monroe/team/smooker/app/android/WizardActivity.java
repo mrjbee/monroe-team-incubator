@@ -14,7 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.monroe.team.android.box.manager.SettingManager;
+import org.monroe.team.android.box.services.SettingManager;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.common.constant.Currency;
 import org.monroe.team.smooker.app.common.constant.Settings;

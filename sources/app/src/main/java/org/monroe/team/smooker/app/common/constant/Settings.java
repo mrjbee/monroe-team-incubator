@@ -1,7 +1,8 @@
 package org.monroe.team.smooker.app.common.constant;
 
-import org.monroe.team.android.box.Closure;
-import org.monroe.team.android.box.manager.SettingManager;
+
+import org.monroe.team.android.box.services.SettingManager;
+import org.monroe.team.corebox.utils.Closure;
 
 import java.util.Date;
 

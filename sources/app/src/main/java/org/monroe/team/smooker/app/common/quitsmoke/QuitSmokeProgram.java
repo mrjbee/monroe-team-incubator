@@ -1,6 +1,6 @@
 package org.monroe.team.smooker.app.common.quitsmoke;
 
-import org.monroe.team.android.box.Closure;
+import org.monroe.team.corebox.utils.Closure;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
 
 import java.util.Date;
@@ -15,7 +15,7 @@ public abstract class QuitSmokeProgram {
     }
 
     final public void initialize(final int startSmokeCount, final int endSmokeCount){
-        dataDriver.updateData(new Closure<QuitSmokeData,Void> (){
+        dataDriver.updateData(new Closure<QuitSmokeData,Void>(){
             @Override
             public Void execute(QuitSmokeData smokeData) {
                 doInitialize(smokeData, startSmokeCount, endSmokeCount);

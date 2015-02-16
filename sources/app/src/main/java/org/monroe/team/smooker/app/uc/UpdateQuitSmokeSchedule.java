@@ -1,7 +1,7 @@
 package org.monroe.team.smooker.app.uc;
 
+import org.monroe.team.corebox.services.ServiceRegistry;
 import org.monroe.team.smooker.app.R;
-import org.monroe.team.android.box.manager.ServiceRegistry;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeData;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgram;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;

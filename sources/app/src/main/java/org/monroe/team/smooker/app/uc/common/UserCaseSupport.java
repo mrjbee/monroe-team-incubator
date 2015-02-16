@@ -1,7 +1,7 @@
 package org.monroe.team.smooker.app.uc.common;
 
+import org.monroe.team.corebox.services.ServiceRegistry;
 import org.monroe.team.smooker.app.common.Model;
-import org.monroe.team.android.box.manager.ServiceRegistry;
 
 public abstract class UserCaseSupport<RequestType,ResponseType> implements UserCase <RequestType,ResponseType> {
 

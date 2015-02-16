@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Pair;
 
-import org.monroe.team.android.box.manager.SettingManager;
+import org.monroe.team.android.box.services.SettingManager;
 import org.monroe.team.smooker.app.actors.ActorSmoker;
 import org.monroe.team.smooker.app.android.controller.SmokeScheduleController;
 import org.monroe.team.smooker.app.R;

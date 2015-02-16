@@ -2,12 +2,12 @@ package org.monroe.team.smooker.app.uc;
 
 import android.util.Pair;
 
-import org.monroe.team.android.box.manager.SettingManager;
+import org.monroe.team.android.box.services.SettingManager;
+import org.monroe.team.corebox.services.ServiceRegistry;
 import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgram;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
-import org.monroe.team.android.box.manager.ServiceRegistry;
 import org.monroe.team.smooker.app.db.DAO;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
 import org.monroe.team.smooker.app.uc.common.TransactionUserCase;

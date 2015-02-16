@@ -1,6 +1,6 @@
 package org.monroe.team.smooker.app.uc.common;
 
-import org.monroe.team.android.box.manager.ServiceRegistry;
+import org.monroe.team.corebox.services.ServiceRegistry;
 import org.monroe.team.smooker.app.db.DAO;
 import org.monroe.team.smooker.app.db.TransactionManager;
 
