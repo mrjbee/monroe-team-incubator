@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="font.white">#fff6f6f6</color>
+    <color name="font.dark.shadow">#ff2b2b2b</color>
+
+
     <color name="background.main3">#9a1b1b</color>
-    <color name="background.main2">#5c0000</color>
-    <color name="background.main">#fe1313</color>
+    <color name="background.main2">#d71326</color>
+    <color name="background.main">#d02636</color>
 
     <color name="background.main.highlight">#c31010</color>
     <color name="background.widget">#f63225</color>

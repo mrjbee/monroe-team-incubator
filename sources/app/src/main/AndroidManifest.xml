@@ -6,31 +6,55 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <compatible-screens>
-        <!-- all small size screens -->
-        <screen android:screenSize="small" android:screenDensity="ldpi" />
-        <screen android:screenSize="small" android:screenDensity="mdpi" />
-        <screen android:screenSize="small" android:screenDensity="hdpi" />
-        <screen android:screenSize="small" android:screenDensity="xhdpi" />
-        <screen android:screenSize="small" android:screenDensity="480" />
-        <screen android:screenSize="small" android:screenDensity="640" />
-        <!-- all normal size screens -->
-        <screen android:screenSize="normal" android:screenDensity="ldpi" />
-        <screen android:screenSize="normal" android:screenDensity="mdpi" />
-        <screen android:screenSize="normal" android:screenDensity="hdpi" />
-        <screen android:screenSize="normal" android:screenDensity="xhdpi" />
-        <screen android:screenSize="normal" android:screenDensity="480" />
-        <screen android:screenSize="normal" android:screenDensity="640" />
 
+        <!-- all small size screens -->
+        <screen
+            android:screenDensity="ldpi"
+            android:screenSize="small" />
+        <screen
+            android:screenDensity="mdpi"
+            android:screenSize="small" />
+        <screen
+            android:screenDensity="hdpi"
+            android:screenSize="small" />
+        <screen
+            android:screenDensity="xhdpi"
+            android:screenSize="small" />
+        <screen
+            android:screenDensity="480"
+            android:screenSize="small" />
+        <screen
+            android:screenDensity="640"
+            android:screenSize="small" />
+        <!-- all normal size screens -->
+        <screen
+            android:screenDensity="ldpi"
+            android:screenSize="normal" />
+        <screen
+            android:screenDensity="mdpi"
+            android:screenSize="normal" />
+        <screen
+            android:screenDensity="hdpi"
+            android:screenSize="normal" />
+        <screen
+            android:screenDensity="xhdpi"
+            android:screenSize="normal" />
+        <screen
+            android:screenDensity="480"
+            android:screenSize="normal" />
+        <screen
+            android:screenDensity="640"
+            android:screenSize="normal" />
     </compatible-screens>
 
     <application
-        android:name="org.monroe.team.smooker.app.android.SmookerApplication"
+        android:name=".android.SmookerApplication"
         android:allowBackup="true"
         android:icon="@drawable/smooker_logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="org.monroe.team.smooker.app.android.DashboardActivity"
+            android:name=".StartActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask" >
             <intent-filter>
@@ -42,21 +66,21 @@
         <activity
             android:name=".android.SmokeBreakActivity"
             android:label="@string/title_activity_smoke_break"
-            android:launchMode="singleInstance">
+            android:launchMode="singleInstance" >
         </activity>
         <activity
-            android:name="org.monroe.team.smooker.app.android.WizardActivity"
+            android:name=".android.WizardActivity"
             android:label="@string/a_wizard_title" >
         </activity>
 
         <service
-            android:name="org.monroe.team.smooker.app.android.service.StickyNotificationService"
+            android:name=".android.service.StickyNotificationService"
             android:enabled="true"
             android:exported="false" >
         </service>
 
         <receiver
-            android:name="org.monroe.team.smooker.app.actors.ActorDevice"
+            android:name=".actors.ActorDevice"
             android:enabled="true"
             android:exported="false" >
             <intent-filter>
@@ -64,12 +88,12 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="org.monroe.team.smooker.app.actors.ActorSystemAlarm"
+            android:name=".actors.ActorSystemAlarm"
             android:enabled="true"
             android:exported="true" >
         </receiver>
         <receiver
-            android:name="org.monroe.team.smooker.app.android.widget.SmokeCounterWidget"
+            android:name=".android.widget.SmokeCounterWidget"
             android:label="Today smokes" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -77,19 +101,19 @@
             <intent-filter>
                 <action android:name="org.monroe.team.android.box.event.SMOKE_COUNT_CHANGED" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="org.monroe.team.android.box.event.QUIT_SCHEDULE_UPDATED" />
             </intent-filter>
+
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/smoke_counter_widget_info" />
         </receiver>
         <receiver
-            android:name="org.monroe.team.smooker.app.actors.ActorSmoker"
-            android:enabled="true" android:exported="true" >
+            android:name=".actors.ActorSmoker"
+            android:enabled="true"
+            android:exported="true" >
         </receiver>
-
 
     </application>
 
