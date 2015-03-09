@@ -1,13 +1,7 @@
 package org.monroe.team.smooker.app;
 
 import android.animation.Animator;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.TypedValue;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import org.monroe.team.android.box.app.ActivitySupport;
@@ -15,10 +9,7 @@ import static org.monroe.team.android.box.app.ui.animation.apperrance.Appearance
 
 import org.monroe.team.android.box.app.ui.AppearanceControllerOld;
 import org.monroe.team.android.box.app.ui.SlideTouchGesture;
-import org.monroe.team.android.box.app.ui.animation.ViewAnimatorFactorySupport;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceController;
-import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder;
-import org.monroe.team.android.box.app.ui.animation.apperrance.DefaultAppearanceController;
 import org.monroe.team.android.box.utils.DisplayUtils;
 import org.monroe.team.smooker.app.android.SmookerApplication;
 
@@ -30,6 +21,9 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
     AppearanceController pickerRotationAC;
     AppearanceController tileBigDataSpaceAC;
     AppearanceController tileBigDataAC;
+    AppearanceController tileShowFromLeftAC;
+    AppearanceController tileShowFromRightAC;
+    AppearanceController tileShowAC;
 
     float dashDelta;
     float titleSmallSize;
@@ -69,12 +63,69 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
                 .hideAnimation(duration_constant(300), interpreter_decelerate(0.5f))
                 .hideAndGone().build();
 
+        tileShowFromLeftAC = animateAppearance(view(R.id.start_tile_content),
+                    xSlide(0,-DisplayUtils.screenWidth(getResources()))
+                )
+                .showAnimation(duration_constant(200), interpreter_decelerate(0.5f))
+                .hideAnimation(duration_constant(200), interpreter_decelerate(0.5f))
+                .hideAndGone().build();
+
+        tileShowFromRightAC = animateAppearance(view(R.id.start_tile_content),
+                   xSlide(0, DisplayUtils.screenWidth(getResources()))
+                )
+                .showAnimation(duration_constant(200), interpreter_decelerate(0.5f))
+                .hideAnimation(duration_constant(100), interpreter_accelerate(0.2f))
+                .hideAndGone().build();
+
+        tileShowAC = animateAppearance(view(R.id.start_tile_content),
+                xSlide(0,-DisplayUtils.screenWidth(getResources()))
+        )
+                .showAnimation(duration_constant(200), interpreter_overshot())
+                .hideAnimation(duration_constant(200), interpreter_decelerate(0.5f))
+                .hideAndGone().build();
+
+
+        tileShowFromLeftAC.showWithoutAnimation();
+        tileShowFromRightAC.showWithoutAnimation();
         tileBigDataAC.hide();
         tileBigDataSpaceAC.hide();
         pickerRotationAC.show();
         bottomLayerAC.hideWithoutAnimation();
         titleTextAC.hideWithoutAnimation();
         setupDashCloseState();
+
+        view(R.id.start_tile_content).setOnTouchListener(new SlideTouchGesture(DisplayUtils.dpToPx(400,getResources()), SlideTouchGesture.Axis.X) {
+            @Override
+            protected void onProgress(float x, float y, float slideValue, float fraction) {
+                view(R.id.start_tile_content).setTranslationX(-slideValue);
+            }
+
+            @Override
+            protected void onCancel(float x, float y, float slideValue, float fraction) {
+                //AppearanceController ac = (slideValue >0)? tileShowFromLeftAC:tileShowFromRightAC;
+                AppearanceController ac = tileShowAC;
+                ac.show();
+            }
+
+            @Override
+            protected void onApply(float x, float y, float slideValue, float fraction) {
+                AppearanceController hideAC = (slideValue >0)? tileShowFromLeftAC:tileShowFromRightAC;
+                final AppearanceController showAC = (slideValue <0)? tileShowFromLeftAC:tileShowFromRightAC;
+                hideAC.hideAndCustomize(new AppearanceController.AnimatorCustomization() {
+                    @Override
+                    public void customize(Animator animator) {
+                        animator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                showAC.hideWithoutAnimation();
+                                showAC.show();
+                            }
+
+                        });
+                    }
+                });
+            }
+        });
     }
 
 
