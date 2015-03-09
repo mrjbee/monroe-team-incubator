@@ -51,9 +51,10 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
         holeControllerList = Lists.collect(tileControllerList, new Closure<TileController, HoleController>() {
             @Override
             public HoleController execute(TileController arg) {
+                ViewGroup parent = (android.view.ViewGroup) view(R.id.start_tile_hole_place);
                 View root_view  = getLayoutInflater().inflate(R.layout.item_hole,
-                        (android.view.ViewGroup) view(R.id.start_tile_hole_place),false);
-                ((ViewGroup)view(R.id.start_tile_hole_place)).addView(root_view);
+                        parent,false);
+                parent.addView(root_view, parent.getChildCount());
                 return new HoleController(root_view);
             }
         });
