@@ -9,6 +9,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@drawable/main_background">
+
         <RelativeLayout
             android:id="@+id/start_header_panel"
             android:layout_width="fill_parent"
@@ -151,7 +152,8 @@
                     android:id="@+id/start_tile_small_content"
                     android:padding="10dp"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="80dp"
+                    android:gravity="center_vertical">
                     <GridLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

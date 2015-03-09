@@ -86,11 +86,10 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
                 (int) DisplayUtils.dpToPx(420, getResources())))
                 .showAnimation(duration_constant(200), interpreter_accelerate(0.3f))
                 .hideAnimation(duration_auto_int(0.5f), interpreter_decelerate(0.3f)).build();
-
-        tileBigDataAC = animateAppearance(view(R.id.start_tile_big_content), heightSlide(
-                (int) DisplayUtils.dpToPx(300, getResources()), 0))
+        float tileBigDataHeight = DisplayUtils.screenHeight(getResources()) - DisplayUtils.dpToPx(23+80+80+17+20+40, getResources());
+        tileBigDataAC = animateAppearance(view(R.id.start_tile_big_content), heightSlide((int) tileBigDataHeight, 0))
                 .showAnimation(duration_constant(200), interpreter_overshot())
-                .hideAnimation(duration_constant(300), interpreter_decelerate(0.5f))
+                .hideAnimation(duration_constant(150), interpreter_decelerate(0.5f))
                 .hideAndGone().build();
 
         tileShowFromLeftAC = animateAppearance(view(R.id.start_tile_content),
@@ -342,6 +341,7 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
                     .hideAnimation(duration_constant(200))
                     .hideAndInvisible()
                     .build();
+            selectionAC.hideWithoutAnimation();
         }
 
 
