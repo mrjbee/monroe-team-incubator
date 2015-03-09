@@ -17,7 +17,7 @@ import org.monroe.team.smooker.app.android.SmookerApplication;
 public class StartActivity extends ActivitySupport<SmookerApplication> {
 
     AppearanceController bottomLayerAC;
-    AppearanceController titleTextAC;
+    AppearanceController tileCaptionTextAC;
     AppearanceController pickerRotationAC;
     AppearanceController tileBigDataSpaceAC;
     AppearanceController tileBigDataAC;
@@ -28,6 +28,7 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
     float dashDelta;
     float titleSmallSize;
     float titleBigSize;
+    private AppearanceController tileCaptionTextChangeAC;
 
 
     @Override
@@ -41,10 +42,15 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
                 .showAnimation(duration_constant(400), interpreter_overshot())
                 .hideAnimation(duration_auto_fint(), interpreter_decelerate(0.3f))
                 .build();
-        titleTextAC = animateAppearance(view(R.id.start_title_text),
+        tileCaptionTextAC = animateAppearance(view(R.id.start_tile_caption_text),
                 scale(1.3f, 0.9f))
                 .showAnimation(duration_constant(300), interpreter_overshot())
                 .hideAnimation(duration_auto_fint(), interpreter_decelerate(0.3f))
+                .build();
+        tileCaptionTextChangeAC = animateAppearance(view(R.id.start_tile_caption_text),
+                rotate(0f,90f))
+                .showAnimation(duration_constant(200), interpreter_overshot())
+                .hideAnimation(duration_constant(100), interpreter_accelerate(0.3f))
                 .build();
         pickerRotationAC = animateAppearance(view(R.id.start_open_picker_arrow_image), rotate(0f, 180f))
                 .showAnimation(duration_constant(300), interpreter_accelerate(0.3f))
@@ -52,13 +58,13 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
                 .build();
 
         tileBigDataSpaceAC = animateAppearance(view(R.id.start_tile_space_wrap_panel), heightSlide(
-                (int) DisplayUtils.dpToPx(23+60,getResources()),
-                (int) DisplayUtils.dpToPx(420,getResources())))
+                (int) DisplayUtils.dpToPx(23 + 60, getResources()),
+                (int) DisplayUtils.dpToPx(420, getResources())))
                 .showAnimation(duration_constant(200), interpreter_accelerate(0.3f))
                 .hideAnimation(duration_auto_int(), interpreter_decelerate(0.3f)).build();
 
         tileBigDataAC = animateAppearance(view(R.id.start_tile_big_content), heightSlide(
-                (int) DisplayUtils.dpToPx(300,getResources()),0))
+                (int) DisplayUtils.dpToPx(300, getResources()), 0))
                 .showAnimation(duration_constant(200), interpreter_overshot())
                 .hideAnimation(duration_constant(300), interpreter_decelerate(0.5f))
                 .hideAndGone().build();
@@ -91,7 +97,8 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
         tileBigDataSpaceAC.hide();
         pickerRotationAC.show();
         bottomLayerAC.hideWithoutAnimation();
-        titleTextAC.hideWithoutAnimation();
+        tileCaptionTextAC.hideWithoutAnimation();
+        tileCaptionTextChangeAC.show();
         setupDashCloseState();
 
         view(R.id.start_tile_content).setOnTouchListener(new SlideTouchGesture(DisplayUtils.dpToPx(400,getResources()), SlideTouchGesture.Axis.X) {
@@ -116,9 +123,26 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
                     public void customize(Animator animator) {
                         animator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter() {
                             @Override
-                            public void onAnimationEnd(Animator animation) {
+                            public void onAnimationEnd(final Animator animation) {
                                 showAC.hideWithoutAnimation();
                                 showAC.show();
+                                tileCaptionTextChangeAC.hideAndCustomize(new AppearanceController.AnimatorCustomization() {
+                                    @Override
+                                    public void customize(Animator changeAnimator) {
+                                        changeAnimator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter(){
+                                            @Override
+                                            public void onAnimationEnd(Animator animation) {
+                                                String text = view_text(R.id.start_tile_caption_text).getText().toString();
+                                                if (text.equals("Motivation")){
+                                                   view_text(R.id.start_tile_caption_text).setText("Statistics");
+                                                }else{
+                                                    view_text(R.id.start_tile_caption_text).setText("Motivation");
+                                                }
+                                                tileCaptionTextChangeAC.show();
+                                            }
+                                        });
+                                    }
+                                });
                             }
 
                         });
@@ -153,7 +177,7 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
                         });
                     }
                 });
-                titleTextAC.show();
+                tileCaptionTextAC.show();
                 pickerRotationAC.hide();
                 tileBigDataSpaceAC.show();
             }
@@ -175,8 +199,8 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
             protected void onProgress(float x, float y, float slideValue, float fraction) {
                 view(R.id.start_bottom_layer).setTranslationY((float) (startTranslation + dashDelta * fraction));
                 float scaleFactor = 1.3f - 0.5f *fraction;
-                view(R.id.start_title_text,TextView.class).setScaleX(scaleFactor);
-                view(R.id.start_title_text,TextView.class).setScaleY(scaleFactor);
+                view(R.id.start_tile_caption_text,TextView.class).setScaleX(scaleFactor);
+                view(R.id.start_tile_caption_text,TextView.class).setScaleY(scaleFactor);
                 view(R.id.start_tile_space_wrap_panel).getLayoutParams().height = (int) (startHeight + dashDelta * fraction);
                 view(R.id.start_tile_space_wrap_panel).requestLayout();
             }
@@ -195,14 +219,14 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
                         });
                     }
                 });
-                titleTextAC.hide();
+                tileCaptionTextAC.hide();
                 pickerRotationAC.show();
             }
 
             @Override
             protected void onCancel(float x, float y, float slideValue, float fraction) {
                 bottomLayerAC.show();
-                titleTextAC.show();
+                tileCaptionTextAC.show();
                 tileBigDataSpaceAC.showAndCustomize(new AppearanceController.AnimatorCustomization() {
                     @Override
                     public void customize(Animator animator) {

@@ -98,7 +98,7 @@
                 android:paddingTop="20dp"
                 android:paddingLeft="20dp"
                 android:text="Statistics"
-                android:id="@+id/start_title_text"
+                android:id="@+id/start_tile_caption_text"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:textStyle="bold"
