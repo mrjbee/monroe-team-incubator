@@ -45,7 +45,7 @@
     <dimen name="text_size_caption">20sp</dimen>
     <dimen name="text_size_caption_small">20sp</dimen>
     <dimen name="text_size_normal">18sp</dimen>
-    <dimen name="text_size_normal_small">16sp</dimen>
+    <dimen name="text_size_normal_small">15sp</dimen>
     <dimen name="text_size_normal_smalles">12sp</dimen>
 
     <dimen name="text_size_widget_big">50sp</dimen>
