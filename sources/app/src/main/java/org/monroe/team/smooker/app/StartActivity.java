@@ -3,6 +3,7 @@ package org.monroe.team.smooker.app;
 import android.animation.Animator;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.monroe.team.android.box.app.ActivitySupport;
@@ -12,6 +13,7 @@ import org.monroe.team.android.box.app.ui.AppearanceControllerOld;
 import org.monroe.team.android.box.app.ui.SlideTouchGesture;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceController;
 import org.monroe.team.android.box.utils.DisplayUtils;
+import org.monroe.team.corebox.utils.Closure;
 import org.monroe.team.corebox.utils.Lists;
 import org.monroe.team.smooker.app.android.SmookerApplication;
 
@@ -36,18 +38,29 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
     float titleBigSize;
 
     List<TileController> tileControllerList = new ArrayList<>(3);
+    List<HoleController> holeControllerList;
     private int currentTileIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_start);
         tileControllerList.add(new StatisticTile());
         tileControllerList.add(new QuitSmokeTile());
         tileControllerList.add(new MotivationTile());
+        holeControllerList = Lists.collect(tileControllerList, new Closure<TileController, HoleController>() {
+            @Override
+            public HoleController execute(TileController arg) {
+                View root_view  = getLayoutInflater().inflate(R.layout.item_hole,
+                        (android.view.ViewGroup) view(R.id.start_tile_hole_place),false);
+                ((ViewGroup)view(R.id.start_tile_hole_place)).addView(root_view);
+                return new HoleController(root_view);
+            }
+        });
         titleSmallSize =  DisplayUtils.spToPx(20,getResources());
         titleBigSize = DisplayUtils.spToPx(30, getResources());
         dashDelta = DisplayUtils.dpToPx(100 + 250, getResources());
-        setContentView(R.layout.activity_start);
+
         bottomLayerAC = animateAppearance(view(R.id.start_bottom_layer),ySlide(-dashDelta,0))
                 .showAnimation(duration_constant(400), interpreter_overshot())
                 .hideAnimation(duration_auto_fint(0.5f), interpreter_decelerate(0.3f))
@@ -113,6 +126,7 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
 
         setupTileBoard();
         applyTileContentUsing(0);
+        setupTileCaption();
     }
 
     private void setupTileBoard() {
@@ -149,8 +163,7 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
                                         changeAnimator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter(){
                                             @Override
                                             public void onAnimationEnd(Animator animation) {
-                                                String text = provideTileCaption();
-                                                view_text(R.id.start_tile_caption_text).setText(text);
+                                                setupTileCaption();
                                                 tileCaptionTextChangeAC.show();
                                             }
                                         });
@@ -297,7 +310,7 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
     }
 
     private void destroyTileContentUsing(int tileControllerIndex) {
-
+        holeControllerList.get(tileControllerIndex).unselect();
     }
 
     private void applyTileContentUsing(int tileControllerIndex) {
@@ -305,9 +318,41 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
         //TODO: place data to panels
     }
 
-    private String provideTileCaption() {
-        return tileControllerList.get(currentTileIndex).caption();
+    private void setupTileCaption() {
+        holeControllerList.get(currentTileIndex).select();
+        String title =  tileControllerList.get(currentTileIndex).caption();
+        view_text(R.id.start_tile_caption_text).setText(title);
     }
+
+
+    class HoleController{
+
+        private final View panel;
+        private final View upLayer;
+        private final View downLayer;
+        final AppearanceController selectionAC;
+
+        HoleController(View root) {
+            this.panel = root;
+            this.upLayer = root.findViewById(R.id.hole_up);
+            this.downLayer = root.findViewById(R.id.hole_bottom);
+            selectionAC = animateAppearance(upLayer, scale(1f,0.2f))
+                    .showAnimation(duration_constant(400),interpreter_overshot())
+                    .hideAnimation(duration_constant(200))
+                    .hideAndInvisible()
+                    .build();
+        }
+
+
+        public void select() {
+            selectionAC.show();
+        }
+
+        public void unselect() {
+            selectionAC.hide();
+        }
+    }
+
 
     private static interface TileController{
         String caption();
