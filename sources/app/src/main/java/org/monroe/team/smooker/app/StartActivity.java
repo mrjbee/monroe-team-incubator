@@ -12,7 +12,11 @@ import org.monroe.team.android.box.app.ui.AppearanceControllerOld;
 import org.monroe.team.android.box.app.ui.SlideTouchGesture;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceController;
 import org.monroe.team.android.box.utils.DisplayUtils;
+import org.monroe.team.corebox.utils.Lists;
 import org.monroe.team.smooker.app.android.SmookerApplication;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class StartActivity extends ActivitySupport<SmookerApplication> {
@@ -25,16 +29,21 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
     AppearanceController tileShowFromLeftAC;
     AppearanceController tileShowFromRightAC;
     AppearanceController tileShowAC;
+    AppearanceController tileCaptionTextChangeAC;
 
     float dashDelta;
     float titleSmallSize;
     float titleBigSize;
-    private AppearanceController tileCaptionTextChangeAC;
 
+    List<TileController> tileControllerList = new ArrayList<>(3);
+    private int currentTileIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        tileControllerList.add(new StatisticTile());
+        tileControllerList.add(new QuitSmokeTile());
+        tileControllerList.add(new MotivationTile());
         titleSmallSize =  DisplayUtils.spToPx(20,getResources());
         titleBigSize = DisplayUtils.spToPx(30, getResources());
         dashDelta = DisplayUtils.dpToPx(100 + 250, getResources());
@@ -102,7 +111,12 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
         tileCaptionTextChangeAC.show();
         setupDashCloseState();
 
-        view(R.id.start_tile_content).setOnTouchListener(new SlideTouchGesture(DisplayUtils.dpToPx(400,getResources()), SlideTouchGesture.Axis.X) {
+        setupTileBoard();
+        applyTileContentUsing(0);
+    }
+
+    private void setupTileBoard() {
+        view(R.id.start_tile_content).setOnTouchListener(new SlideTouchGesture(DisplayUtils.dpToPx(400, getResources()), SlideTouchGesture.Axis.X) {
             @Override
             protected void onProgress(float x, float y, float slideValue, float fraction) {
                 view(R.id.start_tile_content).setTranslationX(-slideValue);
@@ -119,12 +133,14 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
             protected void onApply(float x, float y, float slideValue, float fraction) {
                 AppearanceController hideAC = (slideValue >0)? tileShowFromLeftAC:tileShowFromRightAC;
                 final AppearanceController showAC = (slideValue <0)? tileShowFromLeftAC:tileShowFromRightAC;
+                final int nextTileIndex = calculateTileIndex((slideValue >0)?1:-1);
                 hideAC.hideAndCustomize(new AppearanceController.AnimatorCustomization() {
                     @Override
                     public void customize(Animator animator) {
                         animator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(final Animator animation) {
+                                changeTileContentUsing(nextTileIndex);
                                 showAC.hideWithoutAnimation();
                                 showAC.show();
                                 tileCaptionTextChangeAC.hideAndCustomize(new AppearanceController.AnimatorCustomization() {
@@ -133,12 +149,8 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
                                         changeAnimator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter(){
                                             @Override
                                             public void onAnimationEnd(Animator animation) {
-                                                String text = view_text(R.id.start_tile_caption_text).getText().toString();
-                                                if (text.equals("Motivation")){
-                                                   view_text(R.id.start_tile_caption_text).setText("Statistics");
-                                                }else{
-                                                    view_text(R.id.start_tile_caption_text).setText("Motivation");
-                                                }
+                                                String text = provideTileCaption();
+                                                view_text(R.id.start_tile_caption_text).setText(text);
                                                 tileCaptionTextChangeAC.show();
                                             }
                                         });
@@ -152,6 +164,7 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
             }
         });
     }
+
 
 
     //when picker is down
@@ -263,6 +276,64 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
             closeDash();
         }else{
             super.onBackPressed();
+        }
+    }
+
+    private int calculateTileIndex(int step) {
+        int answer = currentTileIndex + step;
+        if (answer < 0){
+            answer = Lists.getLastIndex(tileControllerList);
+        }
+        if (answer > Lists.getLastIndex(tileControllerList)){
+            answer = 0;
+        }
+        return answer;
+    }
+
+
+    private void changeTileContentUsing(int tileControllerIndex) {
+        destroyTileContentUsing(currentTileIndex);
+        applyTileContentUsing(tileControllerIndex);
+    }
+
+    private void destroyTileContentUsing(int tileControllerIndex) {
+
+    }
+
+    private void applyTileContentUsing(int tileControllerIndex) {
+        currentTileIndex = tileControllerIndex;
+        //TODO: place data to panels
+    }
+
+    private String provideTileCaption() {
+        return tileControllerList.get(currentTileIndex).caption();
+    }
+
+    private static interface TileController{
+        String caption();
+    }
+
+    class StatisticTile implements TileController{
+
+        @Override
+        public String caption() {
+            return "Statistics";
+        }
+    }
+
+    class MotivationTile implements TileController{
+
+        @Override
+        public String caption() {
+            return "Motivation";
+        }
+    }
+
+    class QuitSmokeTile implements TileController{
+
+        @Override
+        public String caption() {
+            return "Quitting";
         }
     }
 }
