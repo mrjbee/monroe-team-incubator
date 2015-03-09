@@ -2,6 +2,7 @@ package org.monroe.team.smooker.app;
 
 import android.animation.Animator;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import org.monroe.team.android.box.app.ActivitySupport;
@@ -40,7 +41,7 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
         setContentView(R.layout.activity_start);
         bottomLayerAC = animateAppearance(view(R.id.start_bottom_layer),ySlide(-dashDelta,0))
                 .showAnimation(duration_constant(400), interpreter_overshot())
-                .hideAnimation(duration_auto_fint(), interpreter_decelerate(0.3f))
+                .hideAnimation(duration_auto_fint(0.5f), interpreter_decelerate(0.3f))
                 .build();
         tileCaptionTextAC = animateAppearance(view(R.id.start_tile_caption_text),
                 scale(1.3f, 0.9f))
@@ -61,7 +62,7 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
                 (int) DisplayUtils.dpToPx(23 + 60, getResources()),
                 (int) DisplayUtils.dpToPx(420, getResources())))
                 .showAnimation(duration_constant(200), interpreter_accelerate(0.3f))
-                .hideAnimation(duration_auto_int(), interpreter_decelerate(0.3f)).build();
+                .hideAnimation(duration_auto_int(0.5f), interpreter_decelerate(0.3f)).build();
 
         tileBigDataAC = animateAppearance(view(R.id.start_tile_big_content), heightSlide(
                 (int) DisplayUtils.dpToPx(300, getResources()), 0))
@@ -207,20 +208,7 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
 
             @Override
             protected void onApply(float x, float y, float slideValue, float fraction) {
-                tileBigDataSpaceAC.hide();
-                bottomLayerAC.hideAndCustomize(new AppearanceController.AnimatorCustomization() {
-                    @Override
-                    public void customize(Animator animator) {
-                        animator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter(){
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                setupDashCloseState();
-                            }
-                        });
-                    }
-                });
-                tileCaptionTextAC.hide();
-                pickerRotationAC.show();
+                closeDash();
             }
 
             @Override
@@ -242,10 +230,39 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
 
             @Override
             protected void onStart(float x, float y) {
-                tileBigDataAC.hide();
+                onStartingCloseDash();
             }
         });
     }
 
+    private void onStartingCloseDash() {
+        tileBigDataAC.hide();
+    }
 
+    private void closeDash() {
+        tileBigDataSpaceAC.hide();
+        bottomLayerAC.hideAndCustomize(new AppearanceController.AnimatorCustomization() {
+            @Override
+            public void customize(Animator animator) {
+                animator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter(){
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        setupDashCloseState();
+                    }
+                });
+            }
+        });
+        tileCaptionTextAC.hide();
+        pickerRotationAC.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (view(R.id.start_tile_big_content).getVisibility() == View.VISIBLE){
+            onStartingCloseDash();
+            closeDash();
+        }else{
+            super.onBackPressed();
+        }
+    }
 }
