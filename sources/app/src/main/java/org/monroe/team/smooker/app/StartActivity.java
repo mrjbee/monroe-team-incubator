@@ -26,12 +26,13 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
     AppearanceController bottomLayerAC;
     AppearanceController tileCaptionTextAC;
     AppearanceController pickerRotationAC;
-    AppearanceController tileBigDataSpaceAC;
-    AppearanceController tileBigDataAC;
+    AppearanceController tileSpaceWraperAC;
+    AppearanceController tileBigContentAC;
     AppearanceController tileShowFromLeftAC;
     AppearanceController tileShowFromRightAC;
     AppearanceController tileShowAC;
     AppearanceController tileCaptionTextChangeAC;
+    AppearanceController settingAlternativeBtnAC;
 
     float height_px_close_dash;
     float height_px_tile;
@@ -80,7 +81,7 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
                 .build();
 
         height_px_tile = activityHeight - dpToPx(height_dp_background_bottom() - height_dp_tile_title());
-        tileBigDataSpaceAC = animateAppearance(view(R.id.start_tile_space_wrap_panel),
+        tileSpaceWraperAC = animateAppearance(view(R.id.start_tile_space_wrap_panel),
                 heightSlide(
                         (int) dpToPx(height_dp_open_picker(), height_dp_tile_title()),
                         (int) height_px_tile
@@ -88,14 +89,14 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
                 .showAnimation(duration_constant(200), interpreter_accelerate(0.3f))
                 .hideAnimation(duration_auto_int(0.5f), interpreter_decelerate(0.3f)).build();
 
-        float tileBigDataHeight = activityHeight - dpToPx(height_dp_open_picker() + height_dp_tile_title()*1.3f + height_dp_tile_small_content() + height_dp_holes());
-        tileBigDataAC = animateAppearance(view(R.id.start_tile_big_content), heightSlide((int) tileBigDataHeight, 0))
+        float tileBigDataHeight = activityHeight - dpToPx(height_dp_open_picker() + height_dp_tile_title() * 1.3f + height_dp_tile_small_content() + height_dp_holes());
+        tileBigContentAC = animateAppearance(view(R.id.start_tile_big_content), heightSlide((int) tileBigDataHeight, 0))
                 .showAnimation(duration_constant(200), interpreter_overshot())
                 .hideAnimation(duration_constant(150), interpreter_decelerate(0.5f))
                 .hideAndGone().build();
 
         tileShowFromLeftAC = animateAppearance(view(R.id.start_tile_content),
-                xSlide(0,-DisplayUtils.screenWidth(getResources()))
+                xSlide(0, -DisplayUtils.screenWidth(getResources()))
         )
                 .showAnimation(duration_constant(200), interpreter_decelerate(0.5f))
                 .hideAnimation(duration_constant(200), interpreter_decelerate(0.5f))
@@ -115,14 +116,25 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
                 .hideAnimation(duration_constant(200), interpreter_decelerate(0.5f))
                 .hideAndGone().build();
 
+        settingAlternativeBtnAC = combine(
+                animateAppearance(view(R.id.start_setting_dublicate_btn), scale(1f,0f))
+                .showAnimation(duration_constant(400), interpreter_overshot())
+                .hideAnimation(duration_constant(400), interpreter_accelerate(0.4f))
+                .hideAndInvisible(),
+                animateAppearance(view(R.id.start_setting_dublicate_btn), rotate(180+90,0))
+                .showAnimation(duration_constant(300), interpreter_overshot())
+                .hideAnimation(duration_constant(300), interpreter_accelerate(0.4f))
+                );
+
         tileShowFromLeftAC.showWithoutAnimation();
         tileShowFromRightAC.showWithoutAnimation();
-        tileBigDataAC.hideWithoutAnimation();
-        tileBigDataSpaceAC.hideWithoutAnimation();
+        tileBigContentAC.hideWithoutAnimation();
+        tileSpaceWraperAC.hideWithoutAnimation();
         pickerRotationAC.showWithoutAnimation();
         bottomLayerAC.hideWithoutAnimation();
         tileCaptionTextAC.hideWithoutAnimation();
         tileCaptionTextChangeAC.showWithoutAnimation();
+        settingAlternativeBtnAC.hideWithoutAnimation();
         setupDashCloseState();
 
         setupTileBoard();
@@ -244,20 +256,30 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
                             @Override
                             public void onAnimationEnd(Animator animation) {
                                 setupDashOpenState();
-                                tileBigDataAC.show();
+                                tileBigContentAC.showAndCustomize(new AppearanceController.AnimatorCustomization() {
+                                    @Override
+                                    public void customize(Animator animator) {
+                                        animator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter() {
+                                            @Override
+                                            public void onAnimationEnd(Animator animation) {
+                                                settingAlternativeBtnAC.show();
+                                            }
+                                        });
+                                    }
+                                });
                             }
                         });
                     }
                 });
                 tileCaptionTextAC.show();
                 pickerRotationAC.hide();
-                tileBigDataSpaceAC.show();
+                tileSpaceWraperAC.show();
             }
 
             @Override
             protected void onCancel(float x, float y, float slideValue, float fraction) {
                 bottomLayerAC.hide();
-                tileBigDataSpaceAC.hide();
+                tileSpaceWraperAC.hide();
             }
 
         });
@@ -286,13 +308,14 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
             protected void onCancel(float x, float y, float slideValue, float fraction) {
                 bottomLayerAC.show();
                 tileCaptionTextAC.show();
-                tileBigDataSpaceAC.showAndCustomize(new AppearanceController.AnimatorCustomization() {
+                settingAlternativeBtnAC.show();
+                tileSpaceWraperAC.showAndCustomize(new AppearanceController.AnimatorCustomization() {
                     @Override
                     public void customize(Animator animator) {
-                        animator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter(){
+                        animator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
-                                tileBigDataAC.show();
+                                tileBigContentAC.show();
                             }
                         });
                     }
@@ -307,11 +330,12 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
     }
 
     private void onStartingCloseDash() {
-        tileBigDataAC.hide();
+        tileBigContentAC.hide();
+        settingAlternativeBtnAC.hide();
     }
 
     private void closeDash() {
-        tileBigDataSpaceAC.hide();
+        tileSpaceWraperAC.hide();
         bottomLayerAC.hideAndCustomize(new AppearanceController.AnimatorCustomization() {
             @Override
             public void customize(Animator animator) {

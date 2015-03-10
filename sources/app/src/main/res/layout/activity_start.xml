@@ -89,7 +89,7 @@
                 android:src="@drawable/open_picker_up_arrow"/>
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/start_bottom_panel"
             android:layout_below="@+id/start_open_picker_panel"
             android:layout_width="fill_parent"
@@ -100,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:gravity="center"
-                android:paddingLeft="20dp"
+                android:layout_marginLeft="40dp"
                 android:text="Statistics"
                 android:id="@+id/start_tile_caption_text"
                 android:layout_alignParentTop="true"
@@ -112,7 +112,17 @@
                 android:shadowRadius="1"
                 android:shadowDy="1"
                 />
-      </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/start_setting_dublicate_btn"
+                android:background="@drawable/setting_dark_btn_push"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="20dp"
+                android:layout_alignBottom="@+id/start_tile_caption_text"
+                android:layout_alignParentRight="true"
+                />
+      </RelativeLayout>
 
     </LinearLayout>
     <LinearLayout
