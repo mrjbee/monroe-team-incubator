@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:background="@color/background.main.light"
     tools:context="org.monroe.team.smooker.app.StartActivity">
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:id="@+id/start_bottom_layer"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -57,24 +58,26 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/start_clock_background_panel"
-            android:layout_below="@+id/start_header_panel"
-            android:layout_centerHorizontal="true"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:background="@drawable/clock_background">
-
-        </RelativeLayout>
+        <LinearLayout
+            android:layout_weight="2"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/start_clock_background_panel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/clock_background"/>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_marginTop="10dp"
-            android:id="@+id/start_open_picker_panel"
-            android:layout_below="@+id/start_clock_background_panel"
-            android:layout_width="53dp"
             android:layout_height="23dp"
+            android:id="@+id/start_open_picker_panel"
+            android:layout_width="53dp"
             android:background="@drawable/open_picker_background"
-            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
             android:orientation="vertical"
             >
             <ImageView
@@ -90,13 +93,13 @@
             android:id="@+id/start_bottom_panel"
             android:layout_below="@+id/start_open_picker_panel"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="200dp"
             android:background="@color/background.main.light">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
-                android:paddingTop="20dp"
+                android:gravity="center"
                 android:paddingLeft="20dp"
                 android:text="Statistics"
                 android:id="@+id/start_tile_caption_text"
@@ -111,7 +114,7 @@
                 />
       </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/start_tile_layer_panel"
         android:layout_width="fill_parent"
@@ -122,7 +125,7 @@
             android:orientation="vertical"
             android:id="@+id/start_tile_space_wrap_panel"
             android:layout_width="fill_parent"
-            android:layout_height="420dp">
+            android:layout_height="100dp">
         </LinearLayout>
         <RelativeLayout
             android:layout_weight="1"
@@ -132,10 +135,8 @@
                 android:id="@+id/start_tile_content"
                 android:layout_alignParentTop="true"
                 android:orientation="vertical"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/panel_round_whitest_2">
@@ -150,11 +151,11 @@
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/start_tile_small_content"
-                    android:padding="10dp"
                     android:layout_width="fill_parent"
-                    android:layout_height="80dp"
+                    android:layout_height="100dp"
                     android:gravity="center_vertical">
                     <GridLayout
+                        android:layout_margin="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:columnCount="2"
@@ -220,17 +221,15 @@
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
+                android:layout_marginTop="3dp"
+                android:layout_height="17dp"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/start_tile_hole_place"
                 android:layout_below="@+id/start_tile_content"
                 android:layout_weight="0"
                 android:layout_width="wrap_content"
                 android:minWidth="100dp"
-                android:layout_height="17dp"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_marginBottom="10dp"/>
+                android:orientation="horizontal"/>
         </RelativeLayout>
 
     </LinearLayout>

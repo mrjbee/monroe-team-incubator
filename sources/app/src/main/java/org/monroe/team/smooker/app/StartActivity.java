@@ -33,7 +33,8 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
     AppearanceController tileShowAC;
     AppearanceController tileCaptionTextChangeAC;
 
-    float dashDelta;
+    float height_px_close_dash;
+    float height_px_tile;
     float titleSmallSize;
     float titleBigSize;
 
@@ -45,63 +46,64 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-        tileControllerList.add(new StatisticTile());
-        tileControllerList.add(new QuitSmokeTile());
-        tileControllerList.add(new MotivationTile());
-        holeControllerList = Lists.collect(tileControllerList, new Closure<TileController, HoleController>() {
-            @Override
-            public HoleController execute(TileController arg) {
-                ViewGroup parent = (android.view.ViewGroup) view(R.id.start_tile_hole_place);
-                View root_view  = getLayoutInflater().inflate(R.layout.item_hole,
-                        parent,false);
-                parent.addView(root_view, parent.getChildCount());
-                return new HoleController(root_view);
-            }
-        });
+        setupTilesControllers();
+    }
+
+    @Override
+    protected void onActivitySize(int activityWidth, int activityHeight) {
+
+        height_px_close_dash = activityHeight - dpToPx(height_dp_background_bottom(),height_dp_open_picker());
+
         titleSmallSize =  DisplayUtils.spToPx(20,getResources());
         titleBigSize = DisplayUtils.spToPx(30, getResources());
-        dashDelta = DisplayUtils.dpToPx(100 + 250, getResources());
 
-        bottomLayerAC = animateAppearance(view(R.id.start_bottom_layer),ySlide(-dashDelta,0))
+        bottomLayerAC = animateAppearance(view(R.id.start_bottom_layer),ySlide(- height_px_close_dash, 0))
                 .showAnimation(duration_constant(400), interpreter_overshot())
                 .hideAnimation(duration_auto_fint(0.5f), interpreter_decelerate(0.3f))
                 .build();
+
         tileCaptionTextAC = animateAppearance(view(R.id.start_tile_caption_text),
-                scale(1.3f, 0.9f))
+                scale(1.3f, 1f))
                 .showAnimation(duration_constant(300), interpreter_overshot())
                 .hideAnimation(duration_auto_fint(), interpreter_decelerate(0.3f))
                 .build();
+
         tileCaptionTextChangeAC = animateAppearance(view(R.id.start_tile_caption_text),
                 rotate(0f,90f))
                 .showAnimation(duration_constant(200), interpreter_overshot())
                 .hideAnimation(duration_constant(100), interpreter_accelerate(0.3f))
                 .build();
+
         pickerRotationAC = animateAppearance(view(R.id.start_open_picker_arrow_image), rotate(0f, 180f))
                 .showAnimation(duration_constant(300), interpreter_accelerate(0.3f))
                 .hideAnimation(duration_constant(300), interpreter_decelerate(0.3f))
                 .build();
 
-        tileBigDataSpaceAC = animateAppearance(view(R.id.start_tile_space_wrap_panel), heightSlide(
-                (int) DisplayUtils.dpToPx(23 + 60, getResources()),
-                (int) DisplayUtils.dpToPx(420, getResources())))
+        height_px_tile = activityHeight - dpToPx(height_dp_background_bottom() - height_dp_tile_title());
+        tileBigDataSpaceAC = animateAppearance(view(R.id.start_tile_space_wrap_panel),
+                heightSlide(
+                        (int) dpToPx(height_dp_open_picker(), height_dp_tile_title()),
+                        (int) height_px_tile
+                ))
                 .showAnimation(duration_constant(200), interpreter_accelerate(0.3f))
                 .hideAnimation(duration_auto_int(0.5f), interpreter_decelerate(0.3f)).build();
-        float tileBigDataHeight = DisplayUtils.screenHeight(getResources()) - DisplayUtils.dpToPx(23+80+80+17+20+40, getResources());
+
+        float tileBigDataHeight = activityHeight - dpToPx(height_dp_open_picker() + height_dp_tile_title()*1.3f + height_dp_tile_small_content() + height_dp_holes());
         tileBigDataAC = animateAppearance(view(R.id.start_tile_big_content), heightSlide((int) tileBigDataHeight, 0))
                 .showAnimation(duration_constant(200), interpreter_overshot())
                 .hideAnimation(duration_constant(150), interpreter_decelerate(0.5f))
                 .hideAndGone().build();
 
         tileShowFromLeftAC = animateAppearance(view(R.id.start_tile_content),
-                    xSlide(0,-DisplayUtils.screenWidth(getResources()))
-                )
+                xSlide(0,-DisplayUtils.screenWidth(getResources()))
+        )
                 .showAnimation(duration_constant(200), interpreter_decelerate(0.5f))
                 .hideAnimation(duration_constant(200), interpreter_decelerate(0.5f))
                 .hideAndGone().build();
 
         tileShowFromRightAC = animateAppearance(view(R.id.start_tile_content),
-                   xSlide(0, DisplayUtils.screenWidth(getResources()))
-                )
+                xSlide(0, DisplayUtils.screenWidth(getResources()))
+        )
                 .showAnimation(duration_constant(200), interpreter_decelerate(0.5f))
                 .hideAnimation(duration_constant(100), interpreter_accelerate(0.2f))
                 .hideAndGone().build();
@@ -113,20 +115,63 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
                 .hideAnimation(duration_constant(200), interpreter_decelerate(0.5f))
                 .hideAndGone().build();
 
-
         tileShowFromLeftAC.showWithoutAnimation();
         tileShowFromRightAC.showWithoutAnimation();
-        tileBigDataAC.hide();
-        tileBigDataSpaceAC.hide();
-        pickerRotationAC.show();
+        tileBigDataAC.hideWithoutAnimation();
+        tileBigDataSpaceAC.hideWithoutAnimation();
+        pickerRotationAC.showWithoutAnimation();
         bottomLayerAC.hideWithoutAnimation();
         tileCaptionTextAC.hideWithoutAnimation();
-        tileCaptionTextChangeAC.show();
+        tileCaptionTextChangeAC.showWithoutAnimation();
         setupDashCloseState();
 
         setupTileBoard();
         applyTileContentUsing(0);
         setupTileCaption();
+    }
+
+    private float dpToPx(float ... values){
+        int value = 0 ;
+        for (float v : values) {
+            value += v;
+        }
+        return DisplayUtils.dpToPx(value, getResources());
+    }
+
+    private int height_dp_open_picker(){
+        return 33;
+    }
+
+    private int height_dp_tile_small_content(){
+        return 100;
+    }
+
+    private int height_dp_holes(){
+        return 20;
+    }
+
+    private int height_dp_tile_title(){
+        return 60;
+    }
+
+    private int height_dp_background_bottom(){
+        return 200;
+    }
+
+    private void setupTilesControllers() {
+        tileControllerList.add(new StatisticTile());
+        tileControllerList.add(new QuitSmokeTile());
+        tileControllerList.add(new MotivationTile());
+        holeControllerList = Lists.collect(tileControllerList, new Closure<TileController, HoleController>() {
+            @Override
+            public HoleController execute(TileController arg) {
+                ViewGroup parent = (ViewGroup) view(R.id.start_tile_hole_place);
+                View root_view = getLayoutInflater().inflate(R.layout.item_hole,
+                        parent, false);
+                parent.addView(root_view, parent.getChildCount());
+                return new HoleController(root_view);
+            }
+        });
     }
 
     private void setupTileBoard() {
@@ -186,7 +231,7 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
             @Override
             protected void onProgress(float x, float y, float slideValue, float fraction) {
                view(R.id.start_bottom_layer).setTranslationY((float) (-400 *(fraction)));
-               view(R.id.start_tile_space_wrap_panel).getLayoutParams().height = (int) (DisplayUtils.dpToPx(420,getResources())-400*fraction);
+               view(R.id.start_tile_space_wrap_panel).getLayoutParams().height = (int) (height_px_tile - 400*fraction);
                view(R.id.start_tile_space_wrap_panel).requestLayout();
             }
 
@@ -221,14 +266,14 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
     private void setupDashOpenState() {
         final float startTranslation = view(R.id.start_bottom_layer).getTranslationY();
         final int startHeight = view(R.id.start_tile_space_wrap_panel).getLayoutParams().height;
-        view(R.id.start_open_picker_panel).setOnTouchListener(new SlideTouchGesture(dashDelta, SlideTouchGesture.Axis.Y_DOWN) {
+        view(R.id.start_open_picker_panel).setOnTouchListener(new SlideTouchGesture(height_px_close_dash, SlideTouchGesture.Axis.Y_DOWN) {
             @Override
             protected void onProgress(float x, float y, float slideValue, float fraction) {
-                view(R.id.start_bottom_layer).setTranslationY((float) (startTranslation + dashDelta * fraction));
+                view(R.id.start_bottom_layer).setTranslationY((float) (startTranslation + height_px_close_dash * fraction));
                 float scaleFactor = 1.3f - 0.5f *fraction;
                 view(R.id.start_tile_caption_text,TextView.class).setScaleX(scaleFactor);
                 view(R.id.start_tile_caption_text,TextView.class).setScaleY(scaleFactor);
-                view(R.id.start_tile_space_wrap_panel).getLayoutParams().height = (int) (startHeight + dashDelta * fraction);
+                view(R.id.start_tile_space_wrap_panel).getLayoutParams().height = (int) (startHeight + height_px_close_dash * fraction);
                 view(R.id.start_tile_space_wrap_panel).requestLayout();
             }
 
