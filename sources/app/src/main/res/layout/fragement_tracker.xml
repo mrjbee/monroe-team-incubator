@@ -1,0 +1,72 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background.main.light"
+    tools:context="org.monroe.team.smooker.app.StartActivity">
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/start_bottom_layer"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/main_background">
+
+        <RelativeLayout
+            android:id="@+id/start_header_panel"
+            android:layout_width="fill_parent"
+            android:layout_height="80dp">
+
+            <TextView
+                android:id="@+id/start_caption_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Today"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="@dimen/text_size_caption_biggest"
+                android:textColor="@color/font.white"
+                android:shadowColor="@color/font.dark.shadow"
+                android:shadowRadius="1"
+                android:shadowDy="1"
+                />
+
+            <ImageButton
+                android:id="@+id/start_setting_btn"
+                android:background="@drawable/setting_button"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginRight="20dp"
+                android:layout_alignBottom="@+id/start_caption_text"
+                android:layout_alignParentRight="true"
+                />
+
+
+            <TextView
+                android:id="@+id/start_about_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6 smokes today"
+                android:textSize="@dimen/text_size_caption_small"
+                android:textColor="@color/font.white"
+                android:shadowColor="@color/font.dark.shadow"
+                android:shadowRadius="1"
+                android:shadowDy="1"
+                android:layout_alignBottom="@+id/start_caption_text"
+                android:layout_toRightOf="@+id/start_caption_text"
+                android:layout_toEndOf="@+id/start_caption_text" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/start_bottom_panel"
+            android:layout_below="@+id/start_open_picker_panel"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/background.main.light">
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

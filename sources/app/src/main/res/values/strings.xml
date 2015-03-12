@@ -99,4 +99,7 @@
     <string name="smoke_description">Assistant will add +1 smoke for yours today statistic</string>
     <string name="left_for_today">Left for today</string>
     <string name="over_limit">Over today limit</string>
+    <string name="title_activity_front_page">Smooker</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>

@@ -1,14 +1,13 @@
 package org.monroe.team.smooker.app;
 
+
 import android.animation.Animator;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.monroe.team.android.box.app.ActivitySupport;
-import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.*;
-
+import org.monroe.team.android.box.app.FragmentSupport;
 import org.monroe.team.android.box.app.ui.AppearanceControllerOld;
 import org.monroe.team.android.box.app.ui.SlideTouchGesture;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceController;
@@ -20,8 +19,21 @@ import org.monroe.team.smooker.app.android.SmookerApplication;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.animateAppearance;
+import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.combine;
+import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.duration_auto_fint;
+import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.duration_auto_int;
+import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.duration_constant;
+import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.heightSlide;
+import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.interpreter_accelerate;
+import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.interpreter_decelerate;
+import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.interpreter_overshot;
+import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.rotate;
+import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.scale;
+import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.xSlide;
+import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.ySlide;
 
-public class StartActivity extends ActivitySupport<SmookerApplication> {
+public class TilesFragment extends FragmentSupport<SmookerApplication> {
 
     AppearanceController bottomLayerAC;
     AppearanceController tileCaptionTextAC;
@@ -44,18 +56,22 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
     private int currentTileIndex;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start);
+    protected int getLayoutId() {
+        return R.layout.fragment_tiles;
+    }
+
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         setupTilesControllers();
     }
 
-    @Override
-    protected void onActivitySize(int activityWidth, int activityHeight) {
+    public void onScreenSizeCalculated(int activityWidth, int activityHeight) {
 
         height_px_close_dash = activityHeight - dpToPx(height_dp_background_bottom(),height_dp_open_picker());
 
-        titleSmallSize =  DisplayUtils.spToPx(20,getResources());
+        titleSmallSize =  DisplayUtils.spToPx(20, getResources());
         titleBigSize = DisplayUtils.spToPx(30, getResources());
 
         bottomLayerAC = animateAppearance(view(R.id.start_bottom_layer),ySlide(- height_px_close_dash, 0))
@@ -118,13 +134,13 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
 
         settingAlternativeBtnAC = combine(
                 animateAppearance(view(R.id.start_setting_dublicate_btn), scale(1f,0f))
-                .showAnimation(duration_constant(400), interpreter_overshot())
-                .hideAnimation(duration_constant(400), interpreter_accelerate(0.4f))
-                .hideAndInvisible(),
+                        .showAnimation(duration_constant(400), interpreter_overshot())
+                        .hideAnimation(duration_constant(400), interpreter_accelerate(0.4f))
+                        .hideAndInvisible(),
                 animateAppearance(view(R.id.start_setting_dublicate_btn), rotate(180+90,0))
-                .showAnimation(duration_constant(300), interpreter_overshot())
-                .hideAnimation(duration_constant(300), interpreter_accelerate(0.4f))
-                );
+                        .showAnimation(duration_constant(300), interpreter_overshot())
+                        .hideAnimation(duration_constant(300), interpreter_accelerate(0.4f))
+        );
 
         tileShowFromLeftAC.showWithoutAnimation();
         tileShowFromRightAC.showWithoutAnimation();
@@ -178,7 +194,7 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
             @Override
             public HoleController execute(TileController arg) {
                 ViewGroup parent = (ViewGroup) view(R.id.start_tile_hole_place);
-                View root_view = getLayoutInflater().inflate(R.layout.item_hole,
+                View root_view = getActivity().getLayoutInflater().inflate(R.layout.item_hole,
                         parent, false);
                 parent.addView(root_view, parent.getChildCount());
                 return new HoleController(root_view);
@@ -242,9 +258,9 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
         view(R.id.start_open_picker_panel).setOnTouchListener(new SlideTouchGesture(400, SlideTouchGesture.Axis.Y_UP) {
             @Override
             protected void onProgress(float x, float y, float slideValue, float fraction) {
-               view(R.id.start_bottom_layer).setTranslationY((float) (-400 *(fraction)));
-               view(R.id.start_tile_space_wrap_panel).getLayoutParams().height = (int) (height_px_tile - 400*fraction);
-               view(R.id.start_tile_space_wrap_panel).requestLayout();
+                view(R.id.start_bottom_layer).setTranslationY((float) (-400 *(fraction)));
+                view(R.id.start_tile_space_wrap_panel).getLayoutParams().height = (int) (height_px_tile - 400*fraction);
+                view(R.id.start_tile_space_wrap_panel).requestLayout();
             }
 
             @Override
@@ -351,13 +367,13 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
         pickerRotationAC.show();
     }
 
-    @Override
-    public void onBackPressed() {
+    public boolean onBackPressed() {
         if (view(R.id.start_tile_big_content).getVisibility() == View.VISIBLE){
             onStartingCloseDash();
             closeDash();
+            return true;
         }else{
-            super.onBackPressed();
+            return false;
         }
     }
 
@@ -392,6 +408,8 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
         String title =  tileControllerList.get(currentTileIndex).caption();
         view_text(R.id.start_tile_caption_text).setText(title);
     }
+
+
 
 
     class HoleController{
@@ -451,4 +469,5 @@ public class StartActivity extends ActivitySupport<SmookerApplication> {
             return "Quitting";
         }
     }
+
 }
