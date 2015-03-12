@@ -56,13 +56,6 @@
                 android:layout_alignBottom="@+id/tracker_today_text"
                 android:layout_toRightOf="@+id/tracker_today_text"
                 android:layout_toEndOf="@+id/tracker_today_text" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="15dp"
-                android:src="@drawable/tracker_arrow_up"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="20dp"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -112,6 +105,7 @@
                 android:src="@drawable/tracker_date_picker"/>
 
             <org.monroe.team.smooker.app.android.view.DayTrackChartView
+                android:id="@+id/tracker_day_chart_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginRight="60dp"
@@ -119,6 +113,18 @@
                 android:layout_marginBottom="30dp"
                 android:layout_below="@+id/tracker_title_caption_text"
                 />
+
+            <Button
+                android:id="@+id/tracker_add_btn"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginBottom="40dp"
+                android:layout_marginRight="40dp"
+                android:background="@drawable/add_smoke_btn"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
            </RelativeLayout>
 
     </LinearLayout>

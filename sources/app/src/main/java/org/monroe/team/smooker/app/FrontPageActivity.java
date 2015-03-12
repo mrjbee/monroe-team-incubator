@@ -28,6 +28,7 @@ public class FrontPageActivity extends ActivitySupport<SmookerApplication> {
     protected void onActivitySize(int width, int height) {
         super.onActivitySize(width, height);
         getTilesFragment().onScreenSizeCalculated(width, height);
+        getTrackerFragment().onScreenSizeCalculated(width, height);
     }
 
     private TilesFragment getTilesFragment() {
@@ -35,8 +36,8 @@ public class FrontPageActivity extends ActivitySupport<SmookerApplication> {
         return tilesFragment;
     }
 
-    private TilesFragment getTrackerFragment() {
-        TilesFragment tilesFragment = (TilesFragment) getFragmentManager().findFragmentByTag("tracker_fragment");
+    private TrackerFragment getTrackerFragment() {
+        TrackerFragment tilesFragment = (TrackerFragment) getFragmentManager().findFragmentByTag("tracker_fragment");
         return tilesFragment;
     }
 

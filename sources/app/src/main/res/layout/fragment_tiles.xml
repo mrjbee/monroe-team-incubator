@@ -72,12 +72,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_height="23dp"
+            android:layout_height="28dp"
+            android:layout_width="63dp"
+            android:layout_marginLeft="40dp"
             android:id="@+id/start_open_picker_panel"
-            android:layout_width="53dp"
             android:background="@drawable/open_picker_background"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="left"
             android:orientation="vertical"
             >
             <ImageView
@@ -112,6 +112,8 @@
                 android:shadowRadius="1"
                 android:shadowDy="1"
                 />
+
+
 
             <ImageButton
                 android:id="@+id/start_setting_dublicate_btn"
@@ -163,10 +165,12 @@
                     android:id="@+id/start_tile_small_content"
                     android:layout_width="fill_parent"
                     android:layout_height="100dp"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
                     <GridLayout
+                        android:layout_weight="1"
                         android:layout_margin="10dp"
-                        android:layout_width="wrap_content"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:columnCount="2"
                         android:rowCount="3">
@@ -243,5 +247,16 @@
         </RelativeLayout>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/start_add_btn"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="165dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/add_smoke_btn"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

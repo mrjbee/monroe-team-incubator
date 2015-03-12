@@ -168,8 +168,19 @@ public class DayTrackChartView extends View {
         }
     }
 
+    private OnTouchListener touch_listener;
+
+    @Override
+    public void setOnTouchListener(OnTouchListener listener) {
+        this.touch_listener = listener;
+    }
+
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
+        if (touch_listener != null) touch_listener.onTouch(this, event);
+
         if (event.getAction() == MotionEvent.ACTION_UP) {
             originalTouch = null;
         } else {

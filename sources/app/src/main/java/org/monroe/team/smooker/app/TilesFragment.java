@@ -45,6 +45,7 @@ public class TilesFragment extends FragmentSupport<SmookerApplication> {
     AppearanceController tileShowAC;
     AppearanceController tileCaptionTextChangeAC;
     AppearanceController settingAlternativeBtnAC;
+    AppearanceController addSmokeBtnAC;
 
     float height_px_close_dash;
     float height_px_tile;
@@ -141,6 +142,11 @@ public class TilesFragment extends FragmentSupport<SmookerApplication> {
                         .showAnimation(duration_constant(300), interpreter_overshot())
                         .hideAnimation(duration_constant(300), interpreter_accelerate(0.4f))
         );
+
+        addSmokeBtnAC =  animateAppearance(view(R.id.start_add_btn), scale(1f,0f))
+                        .showAnimation(duration_constant(300), interpreter_overshot())
+                        .hideAnimation(duration_constant(300), interpreter_accelerate(0.4f))
+                        .hideAndInvisible().build();
 
         tileShowFromLeftAC.showWithoutAnimation();
         tileShowFromRightAC.showWithoutAnimation();
@@ -296,8 +302,13 @@ public class TilesFragment extends FragmentSupport<SmookerApplication> {
             protected void onCancel(float x, float y, float slideValue, float fraction) {
                 bottomLayerAC.hide();
                 tileSpaceWraperAC.hide();
+                addSmokeBtnAC.show();
             }
 
+            @Override
+            protected void onStart(float x, float y) {
+                addSmokeBtnAC.hide();
+            }
         });
     }
 
@@ -357,8 +368,14 @@ public class TilesFragment extends FragmentSupport<SmookerApplication> {
             public void customize(Animator animator) {
                 animator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter(){
                     @Override
-                    public void onAnimationEnd(Animator animation) {
+                    public void onAnimationEnd(final Animator animation) {
                         setupDashCloseState();
+                        addSmokeBtnAC.showAndCustomize(new AppearanceController.AnimatorCustomization() {
+                            @Override
+                            public void customize(Animator addSmokeAnimator) {
+                                addSmokeAnimator.setStartDelay(200);
+                            }
+                        });
                     }
                 });
             }
