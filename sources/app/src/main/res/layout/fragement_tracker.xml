@@ -73,14 +73,14 @@
             android:background="@color/background.main.light">
 
             <TextView
+                android:id="@+id/tracker_title_caption_text"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:gravity="center"
                 android:layout_marginLeft="20dp"
-                android:text="Day Tracker"
-                android:id="@+id/start_tile_caption_text"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
+                android:gravity="center"
+                android:text="Day Tracker"
                 android:textStyle="bold"
                 android:textSize="@dimen/text_size_caption"
                 android:textColor="@color/font.dark.light"
@@ -88,7 +88,38 @@
                 android:shadowRadius="1"
                 android:shadowDy="1"
                 />
-        </RelativeLayout>
+
+            <TextView
+                android:id="@+id/start_tile_caption_text"
+                android:layout_width="100dp"
+                android:layout_marginRight="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:text="3 Mar, 2015"
+                android:textSize="@dimen/text_size_normal_small"
+                android:textColor="@color/font.dark"
+                android:shadowColor="@color/font.white.shadow"
+                android:shadowRadius="1"
+                android:shadowDy="1"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="70dp"
+                android:src="@drawable/tracker_date_picker"/>
+
+            <org.monroe.team.smooker.app.android.view.DayTrackChartView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="60dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="30dp"
+                android:layout_below="@+id/tracker_title_caption_text"
+                />
+           </RelativeLayout>
 
     </LinearLayout>
 
