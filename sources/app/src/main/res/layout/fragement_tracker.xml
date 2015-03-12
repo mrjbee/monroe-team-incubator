@@ -14,16 +14,16 @@
         <RelativeLayout
             android:id="@+id/start_header_panel"
             android:layout_width="fill_parent"
-            android:layout_height="80dp">
+            android:layout_height="70dp">
 
             <TextView
-                android:id="@+id/start_caption_text"
+                android:id="@+id/tracker_today_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Today"
                 android:textStyle="bold"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="30dp"
                 android:textSize="@dimen/text_size_caption_biggest"
                 android:textColor="@color/font.white"
                 android:shadowColor="@color/font.dark.shadow"
@@ -32,30 +32,37 @@
                 />
 
             <ImageButton
-                android:id="@+id/start_setting_btn"
+                android:id="@+id/tracker_setting_btn"
                 android:background="@drawable/setting_button"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginRight="20dp"
-                android:layout_alignBottom="@+id/start_caption_text"
+                android:layout_alignBottom="@+id/tracker_today_text"
                 android:layout_alignParentRight="true"
                 />
 
 
             <TextView
-                android:id="@+id/start_about_text"
+                android:id="@+id/tracker_today_value_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="6 smokes today"
                 android:textSize="@dimen/text_size_caption_small"
+                android:layout_marginLeft="5dp"
                 android:textColor="@color/font.white"
                 android:shadowColor="@color/font.dark.shadow"
                 android:shadowRadius="1"
                 android:shadowDy="1"
-                android:layout_alignBottom="@+id/start_caption_text"
-                android:layout_toRightOf="@+id/start_caption_text"
-                android:layout_toEndOf="@+id/start_caption_text" />
+                android:layout_alignBottom="@+id/tracker_today_text"
+                android:layout_toRightOf="@+id/tracker_today_text"
+                android:layout_toEndOf="@+id/tracker_today_text" />
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="15dp"
+                android:src="@drawable/tracker_arrow_up"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="20dp"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -65,6 +72,22 @@
             android:layout_height="fill_parent"
             android:background="@color/background.main.light">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:layout_marginLeft="20dp"
+                android:text="Day Tracker"
+                android:id="@+id/start_tile_caption_text"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_caption"
+                android:textColor="@color/font.dark.light"
+                android:shadowColor="@color/font.white.shadow"
+                android:shadowRadius="1"
+                android:shadowDy="1"
+                />
         </RelativeLayout>
 
     </LinearLayout>
