@@ -21,7 +21,7 @@ import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
 import org.monroe.team.smooker.app.common.SupportActivity;
 import org.monroe.team.smooker.app.common.constant.SetupPage;
-import org.monroe.team.smooker.app.uc.SetupQuitSmokeProgram;
+import org.monroe.team.smooker.app.uc.underreview.SetupQuitSmokeProgram;
 
 import java.util.List;
 

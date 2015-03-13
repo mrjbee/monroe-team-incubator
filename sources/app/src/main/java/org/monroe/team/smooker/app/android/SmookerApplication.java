@@ -2,7 +2,6 @@ package org.monroe.team.smooker.app.android;
 
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.Application;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -11,43 +10,50 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Pair;
 
 import org.monroe.team.android.box.app.ApplicationSupport;
+import org.monroe.team.android.box.data.DataManger;
+import org.monroe.team.android.box.data.DataProvider;
+import org.monroe.team.android.box.event.Event;
 import org.monroe.team.android.box.services.SettingManager;
+import org.monroe.team.corebox.utils.DateUtils;
 import org.monroe.team.smooker.app.actors.ActorSmoker;
 import org.monroe.team.smooker.app.android.controller.SmokeScheduleController;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.actors.ActorSystemAlarm;
-import org.monroe.team.smooker.app.common.Model;
+import org.monroe.team.smooker.app.common.SmookerModel;
+import org.monroe.team.smooker.app.common.constant.Events;
 import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.constant.SetupPage;
-import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
 import org.monroe.team.smooker.app.uc.AddSmoke;
-import org.monroe.team.smooker.app.uc.GetStatisticState;
-import org.monroe.team.smooker.app.uc.common.DateUtils;
+import org.monroe.team.smooker.app.uc.GetSmokeStatistic;
+import org.monroe.team.smooker.app.uc.GetTodaySmokeDetails;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-
-public class SmookerApplication extends ApplicationSupport<Model> {
+public class SmookerApplication extends ApplicationSupport<SmookerModel> {
 
     public static SmookerApplication instance;
 
-
-    private Model model;
     private SmokeScheduleController suggestionsController;
 
     private final static int QUIT_SMOKE_PROPOSAL_NOTIFICATION_ID = 333;
     private final static int QUIT_SMOKE_UPDATE_NOTIFICATION = 335;
     private final static int STATISTIC_UPDATE_NOTIFICATION = 336;
 
-    @Override public void onCreate() {
+    @Override
+    public void onCreate() {
         super.onCreate();
         instance = this;
         model().onCreate();
+    }
+
+    @Override
+    protected void onPostCreate() {
         if (!settings().has(Settings.APP_FIRST_TIME_DATE)){
-            settings().set(Settings.APP_FIRST_TIME_DATE,DateUtils.now().getTime());
+            settings().set(Settings.APP_FIRST_TIME_DATE, DateUtils.now().getTime());
             scheduleAlarms();
         }
         getSuggestionsController();
@@ -62,9 +68,9 @@ public class SmookerApplication extends ApplicationSupport<Model> {
     }
 
     @Override
-    protected Model createModel() {
-        Model model = new Model(getApplicationContext());
-        return model;
+    protected SmookerModel createModel() {
+        SmookerModel smookerModel = new SmookerModel(getApplicationContext());
+        return smookerModel;
     }
 
     public void onRemoteControlNotificationCloseRequest() {
@@ -247,6 +253,30 @@ public class SmookerApplication extends ApplicationSupport<Model> {
     }
 
     public void addSmoke() {
+        model().execute(AddSmoke.class,null, new org.monroe.team.corebox.app.Model.BackgroundResultCallback<Boolean>() {
+            @Override
+            public void onResult(Boolean response) {
+                if (response){
+                    model().getTodaySmokeDetailsDataProvider().invalidate();
+                    model().usingService(DataManger.class).invalidate(GetSmokeStatistic.SmokeStatistic.class);
+                }else {
+                    warn(AddSmoke.class);
+                }
+            }
 
+            @Override
+            public void onFails(Throwable e) {
+                warn(AddSmoke.class);
+                debug_exception(e);
+            }
+        });
+    }
+
+    private void warn(Serializable warnData) {
+        Event.send(getApplicationContext(), Events.WARNING, warnData);
+    }
+
+    public DataProvider<GetTodaySmokeDetails.TodaySmokeDetails> data_smokeDetails() {
+        return model().getTodaySmokeDetailsDataProvider();
     }
 }

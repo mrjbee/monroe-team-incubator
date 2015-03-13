@@ -9,13 +9,12 @@ import org.monroe.team.android.box.actor.Actor;
 import org.monroe.team.android.box.actor.ActorAction;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.android.SmookerApplication;
-import org.monroe.team.smooker.app.common.constant.Events;
 import org.monroe.team.android.box.actor.ActorActionBuilder;
 import static org.monroe.team.android.box.actor.ActorActionBuilder.requested;
 
 import org.monroe.team.smooker.app.common.constant.SmokeCancelReason;
-import org.monroe.team.smooker.app.uc.AddSmoke;
-import org.monroe.team.smooker.app.uc.CancelSmoke;
+import org.monroe.team.smooker.app.uc.underreview.AddSmoke;
+import org.monroe.team.smooker.app.uc.underreview.CancelSmoke;
 
 public class ActorSmoker extends Actor {
 

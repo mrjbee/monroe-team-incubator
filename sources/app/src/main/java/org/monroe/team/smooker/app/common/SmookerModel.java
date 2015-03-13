@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 
 import org.monroe.team.android.box.app.AndroidModel;
+import org.monroe.team.android.box.data.DataManger;
+import org.monroe.team.android.box.data.DataProvider;
+import org.monroe.team.android.box.data.UcDataProvider;
 import org.monroe.team.android.box.db.DAOFactory;
 import org.monroe.team.android.box.db.DAOSupport;
 import org.monroe.team.android.box.db.DBHelper;
@@ -16,19 +19,25 @@ import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
 import org.monroe.team.smooker.app.db.Dao;
 import org.monroe.team.smooker.app.db.SmookerSchema;
+import org.monroe.team.smooker.app.uc.GetBasicSmokeQuitDetails;
+import org.monroe.team.smooker.app.uc.GetSmokeStatistic;
+import org.monroe.team.smooker.app.uc.GetTodaySmokeDetails;
 
-public class Model extends AndroidModel{
+import java.io.Serializable;
+
+public class SmookerModel extends AndroidModel{
 
     private Context context;
+    private DataProvider<GetTodaySmokeDetails.TodaySmokeDetails> todaySmokeDetailsDataProvider;
 
-    public Model(Context context) {
+    public SmookerModel(Context context) {
         super("SMOOKER", context);
     }
 
     @Override
-    protected void constructor(String appName, Context context, ServiceRegistry serviceRegistry) {
+    protected void constructor(String appName, final Context context, ServiceRegistry serviceRegistry) {
         this.context = context;
-        serviceRegistry.registrate(Model.class, this);
+        serviceRegistry.registrate(SmookerModel.class, this);
 
         final SmookerSchema schema = new SmookerSchema();
         DBHelper helper = new DBHelper(context, schema);
@@ -40,10 +49,36 @@ public class Model extends AndroidModel{
         });
         serviceRegistry.registrate(TransactionManager.class, transactionManager);
         serviceRegistry.registrate(QuitSmokeProgramManager.class, new QuitSmokeProgramManager(this.context));
+        serviceRegistry.registrate(DataManger.class, new DataManger() {
+            @Override
+            protected void construct() {
+                put(GetSmokeStatistic.SmokeStatistic.class,
+                        new UcDataProvider<GetSmokeStatistic.SmokeStatistic>(
+                                SmookerModel.this,
+                                context,
+                                GetSmokeStatistic.SmokeStatistic.class,
+                                GetSmokeStatistic.class)
+                );
+                put(GetBasicSmokeQuitDetails.BasicSmokeQuitDetails.class,
+                        new UcDataProvider<GetBasicSmokeQuitDetails.BasicSmokeQuitDetails>(
+                                SmookerModel.this,
+                                context,
+                                GetBasicSmokeQuitDetails.BasicSmokeQuitDetails.class,
+                                GetBasicSmokeQuitDetails.class)
+                );
+            }
+        });
+
+
+        todaySmokeDetailsDataProvider = new UcDataProvider<GetTodaySmokeDetails.TodaySmokeDetails>(this, context,
+                GetTodaySmokeDetails.TodaySmokeDetails.class,
+                GetTodaySmokeDetails.class);
     }
 
 
-
+    public DataProvider<GetTodaySmokeDetails.TodaySmokeDetails> getTodaySmokeDetailsDataProvider() {
+        return todaySmokeDetailsDataProvider;
+    }
 
     public void stopNotificationControlService() {
         context.stopService(new Intent(context,StickyNotificationService.class));

@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.SimpleFormatter;
 
+@Deprecated
 public class DateUtils {
 
     public static Date now(){

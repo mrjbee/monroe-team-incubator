@@ -10,12 +10,9 @@ import android.widget.RemoteViews;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.actors.ActorSmoker;
 import org.monroe.team.smooker.app.common.constant.Events;
-import org.monroe.team.smooker.app.uc.CalculateTodaySmokeSchedule;
-import org.monroe.team.smooker.app.uc.GetStatisticState;
+import org.monroe.team.smooker.app.uc.underreview.GetStatisticState;
 import org.monroe.team.smooker.app.android.DashboardActivity;
 import org.monroe.team.smooker.app.android.SmookerApplication;
-
-import java.util.List;
 
 
 /**

@@ -1,4 +1,4 @@
-package org.monroe.team.smooker.app.uc;
+package org.monroe.team.smooker.app.uc.underreview;
 
 import org.monroe.team.android.box.db.DAOSupport;
 import org.monroe.team.android.box.db.TransactionUserCase;

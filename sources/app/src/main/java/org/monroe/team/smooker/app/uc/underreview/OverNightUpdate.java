@@ -1,11 +1,11 @@
-package org.monroe.team.smooker.app.uc;
+package org.monroe.team.smooker.app.uc.underreview;
 
 import org.monroe.team.android.box.db.TransactionUserCase;
 import org.monroe.team.android.box.services.EventMessenger;
 import org.monroe.team.android.box.services.SettingManager;
 import org.monroe.team.corebox.services.ServiceRegistry;
 import org.monroe.team.corebox.utils.Closure;
-import org.monroe.team.smooker.app.common.Model;
+import org.monroe.team.smooker.app.common.SmookerModel;
 import org.monroe.team.smooker.app.common.constant.Events;
 import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgram;
@@ -25,12 +25,12 @@ public class OverNightUpdate extends TransactionUserCase<Void,Void,Dao> {
     protected Void transactionalExecute(Void request, final Dao dao) {
 
         Date today = DateUtils.dateOnly(DateUtils.now());
-        Date date = using(Model.class).usingService(SettingManager.class).getAs(Settings.LAST_OVERNIGHT_UPDATE_DATE, Settings.CONVERT_DATE);
+        Date date = using(SmookerModel.class).usingService(SettingManager.class).getAs(Settings.LAST_OVERNIGHT_UPDATE_DATE, Settings.CONVERT_DATE);
         if (date != null && date.compareTo(today) == 0){
             return null;
         }
 
-        GetStatisticState.StatisticState statisticState = using(Model.class).execute(GetStatisticState.class,
+        GetStatisticState.StatisticState statisticState = using(SmookerModel.class).execute(GetStatisticState.class,
                 GetStatisticState.StatisticRequest.create(
                         GetStatisticState.StatisticName.SMOKE_TODAY));
         using(EventMessenger.class).send(Events.SMOKE_COUNT_CHANGED, statisticState.getTodaySmokeDates().size());

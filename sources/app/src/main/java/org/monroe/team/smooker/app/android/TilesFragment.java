@@ -6,16 +6,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.monroe.team.android.box.app.FragmentSupport;
 import org.monroe.team.android.box.app.ui.AppearanceControllerOld;
 import org.monroe.team.android.box.app.ui.SlideTouchGesture;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceController;
+import org.monroe.team.android.box.data.DataProvider;
+import org.monroe.team.android.box.event.Event;
 import org.monroe.team.android.box.utils.DisplayUtils;
 import org.monroe.team.corebox.utils.Closure;
 import org.monroe.team.corebox.utils.Lists;
 import org.monroe.team.smooker.app.R;
-import org.monroe.team.smooker.app.android.SmookerApplication;
+import org.monroe.team.smooker.app.uc.GetTodaySmokeDetails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +51,9 @@ public class TilesFragment extends FragmentSupport<SmookerApplication> {
     AppearanceController settingAlternativeBtnAC;
     AppearanceController addSmokeBtnAC;
 
+    AppearanceController changeCountAC;
+    AppearanceController changeCountDescriptionAC;
+
     float height_px_close_dash;
     float height_px_tile;
     float titleSmallSize;
@@ -73,7 +79,75 @@ public class TilesFragment extends FragmentSupport<SmookerApplication> {
                 application().addSmoke();
             }
         });
+
+        changeCountAC = animateAppearance(view(R.id.today_value_text), scale(1f,2f))
+                .showAnimation(duration_constant(200), interpreter_decelerate(0.4f))
+                .hideAnimation(duration_constant(300), interpreter_overshot())
+                .build();
+        changeCountAC.showWithoutAnimation();
+        fetchSmokeDetails(false,false);
     }
+
+    private void fetchSmokeDetails(boolean requestUpdate, final boolean animate) {
+        application().data_smokeDetails().fetch(requestUpdate, new DataProvider.FetchObserver<GetTodaySmokeDetails.TodaySmokeDetails>() {
+            @Override
+            public void onFetch(GetTodaySmokeDetails.TodaySmokeDetails smokeStatistic) {
+                updateSmokeStatistic(animate, smokeStatistic);
+            }
+
+            @Override
+            public void onError(DataProvider.FetchError fetchError) {
+                activity().forceCloseWithErrorCode(100);
+            }
+        });
+    }
+
+    private void updateSmokeStatistic(boolean animate, GetTodaySmokeDetails.TodaySmokeDetails smokeStatistic) {
+        final String newValue = Integer.toString(smokeStatistic.specialCount);
+        if (!animate){
+            view_text(R.id.today_value_text).setText(newValue);
+        } else {
+            changeCountAC.hideAndCustomize(new AppearanceController.AnimatorCustomization() {
+                @Override
+                public void customize(Animator animator) {
+                    animator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            view_text(R.id.today_value_text).setText(newValue);
+                            changeCountAC.show();
+                        }
+                    });
+                }
+            });
+        }
+
+        if (smokeStatistic.type != GetTodaySmokeDetails.TodaySmokeDetails.SpecialType.NO_LIMIT){
+            throw new UnsupportedOperationException();
+        }
+        //TODO: add animation too
+        view_text(R.id.today_value_description_text).setText(getString(R.string.today_smokes));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Event.subscribeOnEvent(activity(), this, DataProvider.INVALID_DATA, new Closure<Class, Void>() {
+            @Override
+            public Void execute(Class invalidDataClass) {
+                if (GetTodaySmokeDetails.TodaySmokeDetails.class == invalidDataClass){
+                    fetchSmokeDetails(true, true);
+                }
+                return null;
+            }
+        });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Event.unSubscribeFromEvents(activity(), this);
+    }
+
 
     public void onScreenSizeCalculated(int activityWidth, int activityHeight) {
 

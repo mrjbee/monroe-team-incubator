@@ -9,7 +9,7 @@ import org.monroe.team.android.box.event.Event;
 
 public class SupportActivity extends Activity {
 
-    final protected Model model(){
+    final protected SmookerModel model(){
        return ((SmookerApplication)getApplication()).model();
     }
 

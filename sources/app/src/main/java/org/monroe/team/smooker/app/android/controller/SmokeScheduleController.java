@@ -14,10 +14,10 @@ import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.actors.ActorSmoker;
 import org.monroe.team.smooker.app.actors.ActorSystemAlarm;
 import org.monroe.team.smooker.app.common.constant.Events;
-import org.monroe.team.smooker.app.common.Model;
+import org.monroe.team.smooker.app.common.SmookerModel;
 import org.monroe.team.android.box.event.Event;
 import org.monroe.team.smooker.app.common.constant.Settings;
-import org.monroe.team.smooker.app.uc.CalculateTodaySmokeSchedule;
+import org.monroe.team.smooker.app.uc.underreview.CalculateTodaySmokeSchedule;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
 import org.monroe.team.smooker.app.android.DashboardActivity;
 
@@ -42,14 +42,14 @@ import java.util.List;
 public class SmokeScheduleController {
 
     private final Context context;
-    private final Model model;
+    private final SmookerModel smookerModel;
 
     private final static int NEXT_SCHEDULE_SMOKE_NOTIFICATION_ID = 337;
 
 
-    public SmokeScheduleController(Context context, Model model) {
+    public SmokeScheduleController(Context context, SmookerModel smookerModel) {
         this.context = context;
-        this.model = model;
+        this.smookerModel = smookerModel;
     }
 
     public void onSmokeAlarm() {
@@ -58,7 +58,7 @@ public class SmokeScheduleController {
     }
 
     public void scheduleFallback() {
-        AlarmManager alarmManager = model.usingService(AlarmManager.class);
+        AlarmManager alarmManager = smookerModel.usingService(AlarmManager.class);
         alarmManager.set(AlarmManager.RTC_WAKEUP,
                 DateUtils.mathMinutes(DateUtils.now(),5).getTime(),
                 createAlarmIntent());
@@ -69,7 +69,7 @@ public class SmokeScheduleController {
     }
 
     private void showNotification() {
-        NotificationManager manager = model.usingService(NotificationManager.class);
+        NotificationManager manager = smookerModel.usingService(NotificationManager.class);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
         PendingIntent skipSmoke = ActorSmoker.create(context, ActorSmoker.SKIP_SMOKE).buildDefault();
@@ -96,14 +96,14 @@ public class SmokeScheduleController {
     }
 
     private void scheduleNextSmokeAlarm() {
-        List<CalculateTodaySmokeSchedule.SmokeSuggestion> smokeSuggestionList = model.execute(CalculateTodaySmokeSchedule.class,null);
+        List<CalculateTodaySmokeSchedule.SmokeSuggestion> smokeSuggestionList = smookerModel.execute(CalculateTodaySmokeSchedule.class,null);
         if (smokeSuggestionList.isEmpty()) return;
         Date notificationDate = smokeSuggestionList.get(0).date;
         if (notificationDate.compareTo(DateUtils.now()) <= 0){
             //PAST or NOW
             onSmokeAlarm();
         } else {
-            AlarmManager alarmManager = model.usingService(AlarmManager.class);
+            AlarmManager alarmManager = smookerModel.usingService(AlarmManager.class);
             alarmManager.set(AlarmManager.RTC_WAKEUP, notificationDate.getTime(), createAlarmIntent());
         }
     }
@@ -130,15 +130,15 @@ public class SmokeScheduleController {
     }
 
     private void cancelAlarmIfAny() {
-        model.usingService(AlarmManager.class).cancel(createAlarmIntent());
+        smookerModel.usingService(AlarmManager.class).cancel(createAlarmIntent());
     }
 
     private CharSequence getString(int id) {
-        return model.getString(id);
+        return smookerModel.getString(id);
     }
 
     private SettingManager settings() {
-        return model.usingService(SettingManager.class);
+        return smookerModel.usingService(SettingManager.class);
     }
 
 }

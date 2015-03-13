@@ -1,9 +1,9 @@
-package org.monroe.team.smooker.app.uc;
+package org.monroe.team.smooker.app.uc.underreview;
 
 import org.monroe.team.android.box.db.TransactionUserCase;
 import org.monroe.team.corebox.services.ServiceRegistry;
 import org.monroe.team.smooker.app.R;
-import org.monroe.team.smooker.app.common.Model;
+import org.monroe.team.smooker.app.common.SmookerModel;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeData;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgram;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
@@ -52,7 +52,7 @@ public class UpdateQuitSmokeSchedule extends TransactionUserCase<Void,UpdateQuit
     }
 
     private String getString(int id) {
-        return using(Model.class).getString(id);
+        return using(SmookerModel.class).getString(id);
     }
 
     public static class QuitSmokeSchedule{

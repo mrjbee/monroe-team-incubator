@@ -7,7 +7,7 @@ import android.content.Intent;
 
 import org.monroe.team.smooker.app.android.SmookerApplication;
 import org.monroe.team.smooker.app.common.constant.Events;
-import org.monroe.team.smooker.app.uc.OverNightUpdate;
+import org.monroe.team.smooker.app.uc.underreview.OverNightUpdate;
 
 public class ActorSystemAlarm extends BroadcastReceiver {
 

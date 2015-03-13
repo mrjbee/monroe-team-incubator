@@ -66,7 +66,7 @@
     <string name="menu_quit_program">Ассистент перекурів …</string>
     <string name="menu_notifications">Повідомлення …</string>
     <string name="menu_general_settings">Загальні налаштування …</string>
-    <string name="today_smokes">Перекурів сьогодні</string>
+    <string name="today_smokes">перекурів сьогодні</string>
     <string name="today_per_average_smokes">Перекурів сьогодні/середнє</string>
     <string name="today">Сьогодні</string>
     <string name="yesterday">Вчора</string>
@@ -114,5 +114,6 @@
 
     <string name="left_for_today">Залишилося на сьогодні</string>
     <string name="over_limit">Понад ліміт</string>
+    <string name="smokes_today">перекурів сьогодні</string>
 
 </resources>
