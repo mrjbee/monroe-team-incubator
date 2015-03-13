@@ -1,4 +1,4 @@
-package org.monroe.team.smooker.app;
+package org.monroe.team.smooker.app.android;
 
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -7,6 +7,7 @@ import android.view.View;
 import org.monroe.team.android.box.app.FragmentSupport;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceController;
 import org.monroe.team.android.box.utils.DisplayUtils;
+import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.android.SmookerApplication;
 
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.animateAppearance;

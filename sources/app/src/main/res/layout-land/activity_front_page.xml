@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/holo_blue_bright"
-    tools:context="org.monroe.team.smooker.app.FrontPageActivity">
+    tools:context="org.monroe.team.smooker.app.android.FrontPageActivity">
 
     <FrameLayout
         android:id="@+id/fp_tiles_fragment_panel"

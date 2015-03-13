@@ -7,6 +7,7 @@ import org.monroe.team.smooker.app.common.constant.SmokeCancelReason;
 
 import java.util.Date;
 
+@Deprecated
 public final class DB {
 
     // If you change the database schema, you must increment the database version.

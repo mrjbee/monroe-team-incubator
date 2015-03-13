@@ -2,15 +2,16 @@ package org.monroe.team.smooker.app.uc;
 
 import android.util.Pair;
 
+import org.monroe.team.android.box.db.DAOSupport;
+import org.monroe.team.android.box.db.TransactionUserCase;
 import org.monroe.team.android.box.services.SettingManager;
 import org.monroe.team.corebox.services.ServiceRegistry;
 import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgram;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
-import org.monroe.team.smooker.app.db.DAO;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
-import org.monroe.team.smooker.app.uc.common.TransactionUserCase;
+import org.monroe.team.smooker.app.db.Dao;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -21,14 +22,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class GetStatisticState extends TransactionUserCase<GetStatisticState.StatisticRequest, GetStatisticState.StatisticState> {
+public class GetStatisticState extends TransactionUserCase<GetStatisticState.StatisticRequest, GetStatisticState.StatisticState, Dao> {
 
     public GetStatisticState(ServiceRegistry serviceRegistry) {
         super(serviceRegistry);
     }
 
     @Override
-    protected StatisticState transactionalExecute(StatisticRequest request, DAO dao) {
+    protected StatisticState transactionalExecute(StatisticRequest request, Dao dao) {
         StatisticState statisticState = new StatisticState();
         statisticState.requested = request.nameSet;
 
@@ -36,7 +37,7 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
             switch (statisticName){
                 case SMOKE_YESTERDAY:
 
-                    List<DAO.Result> smokeDaoList = dao.getSmokesForPeriod(
+                    List<DAOSupport.Result> smokeDaoList = dao.getSmokesForPeriod(
                                     DateUtils.dateOnly(DateUtils.mathDays(DateUtils.now(), -1)),
                                     DateUtils.dateOnly(DateUtils.now())
                                     );
@@ -47,7 +48,7 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                     statisticState.yesterdaySmokeDates = Collections.unmodifiableList(statisticState.yesterdaySmokeDates);
                 break;
                 case SMOKE_TODAY:
-                    List<DAO.Result> todaySmokeDaoList = dao.getSmokesForPeriod(DateUtils.dateOnly(DateUtils.now()),
+                    List<DAOSupport.Result> todaySmokeDaoList = dao.getSmokesForPeriod(DateUtils.dateOnly(DateUtils.now()),
                             DateUtils.dateOnly(DateUtils.mathDays(DateUtils.now(), 1)));
                     statisticState.todaySmokeDates = new ArrayList<Date>(todaySmokeDaoList.size());
                     for (int i = 0; i < todaySmokeDaoList.size() ; i++) {
@@ -55,7 +56,7 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                     }
                     statisticState.todaySmokeDates = Collections.unmodifiableList(statisticState.todaySmokeDates);
 
-                    List<DAO.Result> results = dao.groupSmokesPerDay();
+                    List<DAOSupport.Result> results = dao.groupSmokesPerDay();
                     Integer average = 0;
                     if (results.size() > 1){
                         int answer = 0;
@@ -86,7 +87,7 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                     }
                     break;
                 case LAST_LOGGED_SMOKE:
-                        DAO.Result result = dao.getLastLoggedSmoke();
+                        DAOSupport.Result result = dao.getLastLoggedSmoke();
                         if (result != null){
                             statisticState.lastSmokeDate = result.get(1,Date.class);
                         } else {
@@ -98,7 +99,7 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
                     break;
                 case LAST_30_DAYS_COUNT:
                     statisticState.monthSmokeList = new ArrayList<Pair<Date, Integer>>();
-                    List<DAO.Result> loggedDates = dao.groupSmokesPerDay();
+                    List<DAOSupport.Result> loggedDates = dao.groupSmokesPerDay();
                     Date today = DateUtils.dateOnly(DateUtils.now());
                     Date itDate = null;
                     int itSmokeCount = 0;
@@ -122,8 +123,8 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
         return statisticState;
     }
 
-    private int getSmokeCountForDate(Date itDate, List<DAO.Result> loggedDates) {
-        for (DAO.Result loggedDate : loggedDates) {
+    private int getSmokeCountForDate(Date itDate, List<DAOSupport.Result> loggedDates) {
+        for (DAOSupport.Result loggedDate : loggedDates) {
             if (loggedDate.get(0,Date.class).compareTo(itDate) == 0){
                 return (int)loggedDate.get(1,Long.class).longValue();
             }
@@ -131,9 +132,10 @@ public class GetStatisticState extends TransactionUserCase<GetStatisticState.Sta
         return 0;
     }
 
-    private Float calculateSpendMoney(DAO dao) {
+    private Float calculateSpendMoney(Dao dao) {
         return using(SettingManager.class).get(Settings.SMOKE_PRICE) * dao.getSmokesAllPeriod().size();
     }
+
 
     public static enum StatisticName{
         SMOKE_TODAY, SMOKE_YESTERDAY, SPEND_MONEY, QUIT_SMOKE, LAST_LOGGED_SMOKE, TOTAL_SMOKES, LAST_30_DAYS_COUNT, ALL;

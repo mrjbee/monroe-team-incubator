@@ -1,4 +1,4 @@
-package org.monroe.team.smooker.app;
+package org.monroe.team.smooker.app.android;
 
 
 import android.animation.Animator;
@@ -14,6 +14,7 @@ import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControl
 import org.monroe.team.android.box.utils.DisplayUtils;
 import org.monroe.team.corebox.utils.Closure;
 import org.monroe.team.corebox.utils.Lists;
+import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.android.SmookerApplication;
 
 import java.util.ArrayList;
@@ -66,6 +67,12 @@ public class TilesFragment extends FragmentSupport<SmookerApplication> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setupTilesControllers();
+        view_button(R.id.start_add_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                application().addSmoke();
+            }
+        });
     }
 
     public void onScreenSizeCalculated(int activityWidth, int activityHeight) {

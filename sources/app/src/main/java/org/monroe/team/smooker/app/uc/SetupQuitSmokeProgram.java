@@ -2,13 +2,13 @@ package org.monroe.team.smooker.app.uc;
 
 import org.monroe.team.android.box.services.EventMessenger;
 import org.monroe.team.corebox.services.ServiceRegistry;
+import org.monroe.team.corebox.uc.UserCaseSupport;
 import org.monroe.team.smooker.app.common.constant.Events;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgram;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
-import org.monroe.team.smooker.app.uc.common.UserCaseSupport;
 
-public class SetupQuitSmokeProgram extends UserCaseSupport<SetupQuitSmokeProgram.QuitSmokeProgramRequest,Void>{
+public class SetupQuitSmokeProgram extends UserCaseSupport<SetupQuitSmokeProgram.QuitSmokeProgramRequest,Void> {
 
     public SetupQuitSmokeProgram(ServiceRegistry serviceRegistry) {
         super(serviceRegistry);

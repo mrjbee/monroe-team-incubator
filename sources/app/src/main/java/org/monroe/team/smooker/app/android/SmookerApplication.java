@@ -20,6 +20,7 @@ import org.monroe.team.smooker.app.common.Model;
 import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.constant.SetupPage;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
+import org.monroe.team.smooker.app.uc.AddSmoke;
 import org.monroe.team.smooker.app.uc.GetStatisticState;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
 
@@ -203,11 +204,13 @@ public class SmookerApplication extends ApplicationSupport<Model> {
     }
 
     public void doMorningNotification() {
-        if (settings().get(Settings.ENABLED_STATISTIC_NOTIFICATION)){
-            GetStatisticState.StatisticState state =  model().execute(GetStatisticState.class, new GetStatisticState.StatisticRequest().with(
-                    GetStatisticState.StatisticName.QUIT_SMOKE,
-                    GetStatisticState.StatisticName.SMOKE_YESTERDAY,
-                    GetStatisticState.StatisticName.SMOKE_TODAY));
+     /*   if (settings().get(Settings.ENABLED_STATISTIC_NOTIFICATION)){
+            GetStatisticState.StatisticState state =  model().execute(
+                    GetStatisticState.class,
+                    new GetStatisticState.StatisticRequest().with(
+                        GetStatisticState.StatisticName.QUIT_SMOKE,
+                        GetStatisticState.StatisticName.SMOKE_YESTERDAY,
+                        GetStatisticState.StatisticName.SMOKE_TODAY));
 
             NotificationManager manager = (NotificationManager) getSystemService(Activity.NOTIFICATION_SERVICE);
 
@@ -235,11 +238,15 @@ public class SmookerApplication extends ApplicationSupport<Model> {
             manager.notify(STATISTIC_UPDATE_NOTIFICATION, builder.build());
 
         }
-        doQuitSmokeSuggestionNotification();
+        doQuitSmokeSuggestionNotification();*/
     }
 
     public String getSmokePriceString() {
         return settings().get(Settings.SMOKE_PRICE).toString() + " "
                 + settings().getAs(Settings.CURRENCY_ID, Settings.CONVERT_CURRENCY).symbol;
+    }
+
+    public void addSmoke() {
+
     }
 }

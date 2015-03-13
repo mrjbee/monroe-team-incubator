@@ -2,64 +2,48 @@ package org.monroe.team.smooker.app.common;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 
-import org.monroe.team.android.box.services.AndroidServiceRegistry;
-import org.monroe.team.android.box.services.EventMessenger;
+import org.monroe.team.android.box.app.AndroidModel;
+import org.monroe.team.android.box.db.DAOFactory;
+import org.monroe.team.android.box.db.DAOSupport;
+import org.monroe.team.android.box.db.DBHelper;
+import org.monroe.team.android.box.db.TransactionManager;
 import org.monroe.team.android.box.services.SettingManager;
 import org.monroe.team.corebox.services.ServiceRegistry;
 import org.monroe.team.smooker.app.android.service.StickyNotificationService;
 import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
-import org.monroe.team.smooker.app.db.DBHelper;
-import org.monroe.team.smooker.app.db.TransactionManager;
-import org.monroe.team.smooker.app.uc.common.UserCase;
-import org.monroe.team.smooker.app.uc.common.UserCaseSupport;
+import org.monroe.team.smooker.app.db.Dao;
+import org.monroe.team.smooker.app.db.SmookerSchema;
 
-public class Model {
+public class Model extends AndroidModel{
 
-    private final ServiceRegistry serviceRegistry;
-    private final Context context;
+    private Context context;
 
     public Model(Context context) {
+        super("SMOOKER", context);
+    }
+
+    @Override
+    protected void constructor(String appName, Context context, ServiceRegistry serviceRegistry) {
         this.context = context;
-        serviceRegistry = new AndroidServiceRegistry(context);
         serviceRegistry.registrate(Model.class, this);
-        DBHelper dbHelper = new DBHelper(context);
-        TransactionManager transactionManager = new TransactionManager(dbHelper);
-        SharedPreferences sharedPreferences = context.getSharedPreferences("SMOOKER_Preferences", Context.MODE_PRIVATE);
-        SettingManager settingManager = new SettingManager(sharedPreferences);
-        EventMessenger messenger = new EventMessenger(context);
+
+        final SmookerSchema schema = new SmookerSchema();
+        DBHelper helper = new DBHelper(context, schema);
+        TransactionManager transactionManager = new TransactionManager(helper, new DAOFactory() {
+            @Override
+            public DAOSupport createInstanceFor(SQLiteDatabase database) {
+                return new Dao(database, schema);
+            }
+        });
         serviceRegistry.registrate(TransactionManager.class, transactionManager);
-        serviceRegistry.registrate(SettingManager.class, settingManager);
-        serviceRegistry.registrate(EventMessenger.class, messenger);
         serviceRegistry.registrate(QuitSmokeProgramManager.class, new QuitSmokeProgramManager(this.context));
     }
 
 
-    public <RequestType,ResponseType> ResponseType execute(
-            Class<? extends UserCase<RequestType,ResponseType>> ucId,
-            RequestType request){
-        UserCase<RequestType,ResponseType> uc = getUserCase(ucId);
-        return uc.execute(request);
-    }
 
-    private <RequestType,ResponseType> UserCase<RequestType, ResponseType> getUserCase(Class<? extends UserCase<RequestType, ResponseType>> ucId) {
-        if (!serviceRegistry.contains(ucId)){
-            UserCase<RequestType, ResponseType> ucInstance;
-            try {
-                if (UserCaseSupport.class.isAssignableFrom(ucId)) {
-                    ucInstance = ucId.getConstructor(ServiceRegistry.class).newInstance(serviceRegistry);
-                } else {
-                    ucInstance = ucId.newInstance();
-                }
-                serviceRegistry.registrate((Class<UserCase<RequestType, ResponseType>>) ucId,ucInstance);
-            } catch (Exception e) {
-                throw new RuntimeException("Error during creating uc = "+ucId, e);
-            }
-        }
-        return serviceRegistry.get(ucId);
-    }
 
     public void stopNotificationControlService() {
         context.stopService(new Intent(context,StickyNotificationService.class));

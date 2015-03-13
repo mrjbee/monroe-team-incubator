@@ -1,28 +1,28 @@
 package org.monroe.team.smooker.app.uc;
 
+import org.monroe.team.android.box.db.TransactionUserCase;
 import org.monroe.team.corebox.services.ServiceRegistry;
 import org.monroe.team.smooker.app.R;
+import org.monroe.team.smooker.app.common.Model;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeData;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgram;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
-import org.monroe.team.smooker.app.db.DAO;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
-import org.monroe.team.smooker.app.uc.common.TransactionUserCase;
+import org.monroe.team.smooker.app.db.Dao;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class UpdateQuitSmokeSchedule extends TransactionUserCase<Void,UpdateQuitSmokeSchedule.QuitSmokeSchedule> {
+public class UpdateQuitSmokeSchedule extends TransactionUserCase<Void,UpdateQuitSmokeSchedule.QuitSmokeSchedule, Dao> {
 
     public UpdateQuitSmokeSchedule(ServiceRegistry serviceRegistry) {
         super(serviceRegistry);
     }
 
     @Override
-    protected QuitSmokeSchedule transactionalExecute(Void request, DAO dao) {
-
+    protected QuitSmokeSchedule transactionalExecute(Void request, Dao dao) {
         QuitSmokeProgram program = using(QuitSmokeProgramManager.class).get();
         if (program == null) return null;
 
@@ -52,7 +52,7 @@ public class UpdateQuitSmokeSchedule extends TransactionUserCase<Void,UpdateQuit
     }
 
     private String getString(int id) {
-        return usingModel().getString(id);
+        return using(Model.class).getString(id);
     }
 
     public static class QuitSmokeSchedule{

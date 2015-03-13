@@ -1,6 +1,7 @@
 package org.monroe.team.smooker.app.uc;
 
 
+import org.monroe.team.android.box.db.TransactionUserCase;
 import org.monroe.team.android.box.services.SettingManager;
 import org.monroe.team.corebox.services.ServiceRegistry;
 import org.monroe.team.corebox.utils.Closure;
@@ -8,20 +9,19 @@ import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeData;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgram;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
-import org.monroe.team.smooker.app.db.DAO;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
-import org.monroe.team.smooker.app.uc.common.TransactionUserCase;
+import org.monroe.team.smooker.app.db.Dao;
 
 import java.util.Date;
 
-public class CheckDateAndAdjustData extends TransactionUserCase<Void,Void>{
+public class CheckDateAndAdjustData extends TransactionUserCase<Void,Void, Dao> {
 
     public CheckDateAndAdjustData(ServiceRegistry serviceRegistry) {
         super(serviceRegistry);
     }
 
     @Override
-    protected Void transactionalExecute(Void request, DAO dao) {
+    protected Void transactionalExecute(Void request, Dao dao) {
         final Date now = DateUtils.now();
         final Date today = DateUtils.dateOnly(now);
         //check startup date

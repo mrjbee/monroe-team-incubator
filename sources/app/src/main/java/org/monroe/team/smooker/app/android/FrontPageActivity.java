@@ -1,9 +1,9 @@
-package org.monroe.team.smooker.app;
+package org.monroe.team.smooker.app.android;
 
 import android.os.Bundle;
 
 import org.monroe.team.android.box.app.ActivitySupport;
-import org.monroe.team.smooker.app.android.SmookerApplication;
+import org.monroe.team.smooker.app.R;
 
 
 public class FrontPageActivity extends ActivitySupport<SmookerApplication> {

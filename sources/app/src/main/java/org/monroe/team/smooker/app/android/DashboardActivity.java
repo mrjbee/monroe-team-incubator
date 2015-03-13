@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+@Deprecated
 public class DashboardActivity extends SupportActivity {
 
     public static final int WIZARD_ACTIVITY_FORCE_REQUEST = 1;

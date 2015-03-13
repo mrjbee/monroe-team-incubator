@@ -54,7 +54,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".FrontPageActivity"
+            android:name=".android.FrontPageActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask" >
             <intent-filter>

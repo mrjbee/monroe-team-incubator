@@ -1,12 +1,11 @@
 package org.monroe.team.smooker.app.db;
-
-
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
+import org.monroe.team.android.box.db.DAOSupport;
+import org.monroe.team.android.box.db.Schema;
 import org.monroe.team.corebox.utils.Closure;
+import org.monroe.team.corebox.utils.DateUtils;
 import org.monroe.team.smooker.app.common.constant.SmokeCancelReason;
-import org.monroe.team.smooker.app.uc.common.DateUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,28 +13,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Deprecated
-public class DAO {
+public class Dao extends DAOSupport {
 
-    private final SQLiteDatabase db;
-
-    public DAO(SQLiteDatabase db) {
-        this.db = db;
-    }
-
-    private String[] strs(Object... vals) {
-        String[] strings = new String[vals.length];
-        for (int i = 0; i < vals.length; i++) {
-            strings[i]=String.valueOf(vals[i]);
-        }
-        return strings;
+    public Dao(SQLiteDatabase db, Schema schema) {
+        super(db, schema);
     }
 
     public long addSmoke() {
         long id = db.insertOrThrow(
-                DB.SmokeEntry.TABLE_NAME,
+                smokeTable().TABLE_NAME,
                 null,
-                DB.SmokeEntry.asRow(DateUtils.now()));
+                content()
+                        .value(smokeTable()._DATE,DateUtils.now().getTime())
+                        .get());
         return id;
     }
 
@@ -50,19 +40,19 @@ public class DAO {
 
         if (startDate != null || endDate != null){
             if (startDate != null && endDate != null){
-                whereStatement = "? <= " + DB.SmokeEntry._DATE + " AND ? > " + DB.SmokeEntry._DATE;
+                whereStatement = "? <= " + smokeTable()._DATE.name() + " AND ? > " + smokeTable()._DATE.name();
                 whereArgs = strs(Long.toString(startDate.getTime()), Long.toString(endDate.getTime()));
             } else if (endDate != null){
-                whereStatement = "? > " + DB.SmokeEntry._DATE;
+                whereStatement = "? > " + smokeTable()._DATE.name();
                 whereArgs = strs(Long.toString(endDate.getTime()));
             } else {
-                whereStatement = "? <= " + DB.SmokeEntry._DATE;
+                whereStatement = "? <= " + smokeTable()._DATE.name();
                 whereArgs = strs(Long.toString(startDate.getTime()));
             }
         }
 
-        Cursor cursor = db.query(DB.SmokeEntry.TABLE_NAME,
-                strs(DB.SmokeEntry._ID, DB.SmokeEntry._DATE),
+        Cursor cursor = db.query(smokeTable().TABLE_NAME,
+                strs(smokeTable()._ID.name(),smokeTable()._DATE.name()),
                 whereStatement,
                 whereArgs,
                 null,
@@ -71,7 +61,7 @@ public class DAO {
         return collect(cursor, new Closure<Cursor, Result>() {
             @Override
             public Result execute(Cursor arg) {
-                return Result.answer().with(arg.getLong(0),arg.getLong(1));
+                return result().with(arg.getLong(0),arg.getLong(1));
             }
         });
     }
@@ -88,21 +78,21 @@ public class DAO {
 
         if (startDate != null || endDate != null){
             if (startDate != null && endDate != null){
-                whereStatement = "? <= " + DB.SmokeEntry._DATE + " AND ? > " + DB.SmokeEntry._DATE;
+                whereStatement = "? <= " + smokeTable()._DATE.name() + " AND ? > " + smokeTable()._DATE.name();
                 whereArgs = strs(Long.toString(startDate.getTime()), Long.toString(endDate.getTime()));
             } else if (endDate != null){
-                whereStatement = "? > " + DB.SmokeEntry._DATE;
+                whereStatement = "? > " + smokeTable()._DATE.name();
                 whereArgs = strs(Long.toString(endDate.getTime()));
             } else {
-                whereStatement = "? <= " + DB.SmokeEntry._DATE;
+                whereStatement = "? <= " + smokeTable()._DATE.name();
                 whereArgs = strs(Long.toString(startDate.getTime()));
             }
         }
 
-        Cursor cursor = db.query(DB.SmokeCancelEntry.TABLE_NAME,
-                strs(DB.SmokeCancelEntry._ID,
-                     DB.SmokeCancelEntry._DATE,
-                     DB.SmokeCancelEntry._REASON),
+        Cursor cursor = db.query(smokeCancelTable().TABLE_NAME,
+                strs(smokeCancelTable()._ID.name(),
+                        smokeCancelTable()._DATE.name(),
+                        smokeCancelTable()._REASON.name()),
                 whereStatement,
                 whereArgs,
                 null,
@@ -111,7 +101,7 @@ public class DAO {
         return collect(cursor, new Closure<Cursor, Result>() {
             @Override
             public Result execute(Cursor arg) {
-                return Result.answer().with(
+                return result().with(
                         arg.getLong(0),
                         arg.getLong(1),
                         arg.getInt(2));
@@ -129,11 +119,11 @@ public class DAO {
 
         //SELECT strftime('%Y-%m-%d', date / 1000, 'unixepoch'), count(*) FROM smoke GROUP BY strftime('%Y-%m-%d', date / 1000, 'unixepoch');
 
-        Cursor cursor = db.query(DB.SmokeEntry.TABLE_NAME,
-                strs("strftime('%Y-%m-%d', "+DB.SmokeEntry._DATE+" / 1000, 'unixepoch','localtime'), count(*)"),
+        Cursor cursor = db.query(smokeTable().TABLE_NAME,
+                strs("strftime('%Y-%m-%d', "+smokeTable()._DATE.name()+" / 1000, 'unixepoch','localtime'), count(*)"),
                 null,
                 null,
-                "strftime('%Y-%m-%d', "+DB.SmokeEntry._DATE+" / 1000, 'unixepoch','localtime')",
+                "strftime('%Y-%m-%d', "+smokeTable()._DATE.name()+" / 1000, 'unixepoch','localtime')",
                 null,
                 null);
         final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -142,7 +132,7 @@ public class DAO {
             @Override
             public Result execute(Cursor arg) {
                 try {
-                    return Result.answer().with(dateFormat.parse(arg.getString(0)).getTime(),arg.getLong(1));
+                    return result().with(dateFormat.parse(arg.getString(0)).getTime(),arg.getLong(1));
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }
@@ -167,8 +157,8 @@ public class DAO {
     }
 
     public void removeSmokeById(Long id) {
-        int i = db.delete(DB.SmokeEntry.TABLE_NAME,
-                "? == "+DB.SmokeEntry._ID,
+        int i = db.delete(smokeTable().TABLE_NAME,
+                "? == "+smokeTable()._ID.name(),
                 strs(id));
         if (i != 1){
             throw new IllegalStateException("Supposed to remove single instance but was "+i);
@@ -176,13 +166,13 @@ public class DAO {
     }
 
     public Result getLastLoggedSmoke() {
-        Cursor cursor = db.query(DB.SmokeEntry.TABLE_NAME,
-                strs(DB.SmokeEntry._ID, DB.SmokeEntry._DATE),
+        Cursor cursor = db.query(smokeTable().TABLE_NAME,
+                strs(smokeTable()._ID.name(), smokeTable()._DATE.name()),
                 null,
                 null,
                 null,
                 null,
-                DB.SmokeEntry._DATE + " DESC",
+                smokeTable()._DATE.name() + " DESC",
                 "1");
         if (!cursor.moveToFirst()){
             return null;
@@ -193,59 +183,38 @@ public class DAO {
     }
 
     public void removeSmokesAfter(Date now) {
-        db.delete(DB.SmokeEntry.TABLE_NAME,
-                "? < " + DB.SmokeEntry._DATE,
+        db.delete(smokeTable().TABLE_NAME,
+                "? < " + smokeTable()._DATE.name(),
                 strs(Long.toString(now.getTime()))
         );
     }
 
 
     public void removeSmokesCancellationAfter(Date now) {
-        db.delete(DB.SmokeCancelEntry.TABLE_NAME,
-                "? < " + DB.SmokeEntry._DATE,
+        db.delete(smokeCancelTable().TABLE_NAME,
+                "? < " + smokeTable()._DATE.name(),
                 strs(Long.toString(now.getTime()))
         );
     }
 
     public long addSmokeCancellation(SmokeCancelReason reason) {
         long id = db.insertOrThrow(
-                DB.SmokeCancelEntry.TABLE_NAME,
+                smokeCancelTable().TABLE_NAME,
                 null,
-                DB.SmokeCancelEntry.asRow(DateUtils.now(),reason));
+                content()
+                        .value(smokeCancelTable()._DATE, DateUtils.now().getTime())
+                        .value(smokeCancelTable()._REASON, reason.id)
+                        .get());
         return id;
     }
 
 
-
-    public static class Result {
-
-        private List<Object> fetchedFiledList = new ArrayList<Object>(4);
-
-        static Result answer(){
-            return new Result();
-        }
-
-        Result with(Object ... withValues) {
-            for (Object withValue : withValues) {
-                fetchedFiledList.add(withValue);
-            }
-
-            return this;
-        }
-
-        @Override
-        public String toString() {
-            return "Result {" + fetchedFiledList + '}';
-        }
-
-
-        public <Type> Type get(int index, Class<Type> asClass) {
-            if (asClass.equals(Date.class)){
-                return (Type) new Date(get(index,Long.class));
-            }
-            return (Type) fetchedFiledList.get(index);
-        }
+    private SmookerSchema.SmokeEntry smokeTable() {
+        return table(SmookerSchema.SmokeEntry.class);
     }
 
+    private SmookerSchema.SmokeCancelEntry smokeCancelTable() {
+        return table(SmookerSchema.SmokeCancelEntry.class);
+    }
 
 }
