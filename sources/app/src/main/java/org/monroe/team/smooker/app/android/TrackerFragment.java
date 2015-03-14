@@ -38,6 +38,7 @@ public class TrackerFragment extends FrontPageFragment{
                 .hideAnimation(duration_constant(200), interpreter_decelerate(0.4f))
                 .hideAndInvisible()
                 .build();
+        fetchSchedule(false);
     }
 
     private void fetchSchedule(boolean updateRequired) {
@@ -46,6 +47,7 @@ public class TrackerFragment extends FrontPageFragment{
             public void onFetch(PrepareTodaySmokeSchedule.TodaySmokeSchedule todaySmokeSchedule) {
                 updateChart(todaySmokeSchedule);
             }
+
             @Override
             public void onError(DataProvider.FetchError fetchError) {
                 activity().forceCloseWithErrorCode(301);
@@ -99,7 +101,7 @@ public class TrackerFragment extends FrontPageFragment{
     }
 
     @Override
-    protected void onPauseSafe() {
-        Event.unSubscribeFromEvents(activity(), this);
+    protected void onResumeSafe() {
+        fetchSchedule(true);
     }
 }
