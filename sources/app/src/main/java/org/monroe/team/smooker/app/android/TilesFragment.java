@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.monroe.team.android.box.app.FragmentSupport;
 import org.monroe.team.android.box.app.ui.AppearanceControllerOld;
 import org.monroe.team.android.box.app.ui.SlideTouchGesture;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceController;
@@ -69,54 +67,18 @@ public class TilesFragment extends FrontPageFragment {
     @Override
     public void onActivityCreatedSafe(Bundle savedInstanceState) {
         setupTilesControllers();
-        view_button(R.id.start_add_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                application().addSmoke();
-            }
-        });
-        fetchSmokeDetails(false, false);
     }
 
-    private void fetchSmokeDetails(boolean requestUpdate, final boolean animate) {
-        application().data_smokeDetails().fetch(requestUpdate, new DataProvider.FetchObserver<GetTodaySmokeDetails.TodaySmokeDetails>() {
-            @Override
-            public void onFetch(GetTodaySmokeDetails.TodaySmokeDetails smokeStatistic) {
-                updateSmokeStatistic(animate, smokeStatistic);
-            }
 
-            @Override
-            public void onError(DataProvider.FetchError fetchError) {
-                activity().forceCloseWithErrorCode(100);
-            }
-        });
-    }
-
-    private void updateSmokeStatistic(boolean animate, GetTodaySmokeDetails.TodaySmokeDetails smokeStatistic) {
-        updateSmokeCount(smokeStatistic.specialCount, animate);
-        if (smokeStatistic.type != GetTodaySmokeDetails.TodaySmokeDetails.SpecialType.NO_LIMIT){
-            throw new UnsupportedOperationException();
-        }
-        //TODO: add animation too
-        view_text(R.id.today_value_description_text).setText(getString(R.string.today_smokes));
-    }
 
     @Override
     public void onResumeSafe() {
-        Event.subscribeOnEvent(activity(), this, DataProvider.INVALID_DATA, new Closure<Class, Void>() {
-            @Override
-            public Void execute(Class invalidDataClass) {
-                if (GetTodaySmokeDetails.TodaySmokeDetails.class == invalidDataClass){
-                    fetchSmokeDetails(true, true);
-                }
-                return null;
-            }
-        });
+
     }
 
     @Override
     public void onPauseSafe() {
-        Event.unSubscribeFromEvents(activity(), this);
+
     }
 
 
@@ -196,7 +158,7 @@ public class TilesFragment extends FrontPageFragment {
                         .hideAnimation(duration_constant(300), interpreter_accelerate(0.4f))
         );
 
-        addSmokeBtnAC =  animateAppearance(view(R.id.start_add_btn), scale(1f,0f))
+        addSmokeBtnAC =  animateAppearance(view(R.id.add_btn), scale(1f,0f))
                         .showAnimation(duration_constant(300), interpreter_overshot())
                         .hideAnimation(duration_constant(300), interpreter_accelerate(0.4f))
                         .hideAndInvisible().build();

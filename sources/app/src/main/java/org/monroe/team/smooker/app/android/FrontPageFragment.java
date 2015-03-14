@@ -2,11 +2,16 @@ package org.monroe.team.smooker.app.android;
 
 import android.animation.Animator;
 import android.os.Bundle;
+import android.view.View;
 
 import org.monroe.team.android.box.app.FragmentSupport;
 import org.monroe.team.android.box.app.ui.AppearanceControllerOld;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceController;
+import org.monroe.team.android.box.data.DataProvider;
+import org.monroe.team.android.box.event.Event;
+import org.monroe.team.corebox.utils.Closure;
 import org.monroe.team.smooker.app.R;
+import org.monroe.team.smooker.app.uc.GetTodaySmokeDetails;
 
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.animateAppearance;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.duration_constant;
@@ -30,41 +35,43 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
     final public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (isActive()) {
-            check_view(R.id.today_value_text);
+
+            require_view(R.id.today_value_text);
+            require_view(R.id.add_btn);
+            require_view(R.id.today_value_description_text);
+
             changeCountAC = animateAppearance(view(R.id.today_value_text), scale(1f, 2f))
                     .showAnimation(duration_constant(200), interpreter_decelerate(0.4f))
                     .hideAnimation(duration_constant(300), interpreter_overshot())
                     .build();
             changeCountAC.showWithoutAnimation();
             onActivityCreatedSafe(savedInstanceState);
+            view_button(R.id.add_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    application().addSmoke();
+                }
+            });
+            fetchSmokeDetails(false, false);
         }
     }
 
-    @Override
-    final public void onResume() {
-        super.onResume();
-        if (isActive()){
-            onResumeSafe();
-        }
+    private void fetchSmokeDetails(boolean requestUpdate, final boolean animate) {
+        application().data_smokeDetails().fetch(requestUpdate, new DataProvider.FetchObserver<GetTodaySmokeDetails.TodaySmokeDetails>() {
+            @Override
+            public void onFetch(GetTodaySmokeDetails.TodaySmokeDetails smokeStatistic) {
+                updateSmokeStatistic(animate, smokeStatistic);
+            }
+
+            @Override
+            public void onError(DataProvider.FetchError fetchError) {
+                activity().forceCloseWithErrorCode(100);
+            }
+        });
     }
 
-
-    @Override
-    final public void onPause() {
-        super.onPause();
-        if (isActive()){
-            onPauseSafe();
-        }
-    }
-
-    protected void onActivityCreatedSafe(Bundle savedInstanceState){}
-    protected void onResumeSafe(){}
-    protected void onPauseSafe(){}
-    protected void onScreenSizeCalculatedSafe(int activityWidth, int activityHeight) {}
-    protected boolean onBackPressedSafe(){return false;}
-
-    final protected void updateSmokeCount(int count, boolean animate) {
-        final String newValue = Integer.toString(count);
+    private void updateSmokeStatistic(boolean animate, GetTodaySmokeDetails.TodaySmokeDetails smokeStatistic) {
+        final String newValue = Integer.toString(smokeStatistic.specialCount);
         if (!animate) {
             view_text(R.id.today_value_text).setText(newValue);
         } else {
@@ -81,9 +88,49 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
                 }
             });
         }
+        if (smokeStatistic.type != GetTodaySmokeDetails.TodaySmokeDetails.SpecialType.NO_LIMIT){
+            throw new UnsupportedOperationException();
+        }
+        //TODO: add animation too
+        view_text(R.id.today_value_description_text).setText(getString(R.string.today_smokes));
     }
 
-    final private void check_view(int view_id){
+    @Override
+    final public void onResume() {
+        super.onResume();
+        if (isActive()){
+            Event.subscribeOnEvent(activity(), this, DataProvider.INVALID_DATA, new Closure<Class, Void>() {
+                @Override
+                public Void execute(Class invalidDataClass) {
+                    if (GetTodaySmokeDetails.TodaySmokeDetails.class == invalidDataClass) {
+                        fetchSmokeDetails(true, true);
+                    }
+                    return null;
+                }
+            });
+            onResumeSafe();
+        }
+    }
+
+
+    @Override
+    final public void onPause() {
+        super.onPause();
+        if (isActive()){
+            Event.unSubscribeFromEvents(activity(), this);
+            onPauseSafe();
+        }
+    }
+
+    protected void onActivityCreatedSafe(Bundle savedInstanceState){}
+    protected void onResumeSafe(){}
+    protected void onPauseSafe(){}
+    protected void onScreenSizeCalculatedSafe(int activityWidth, int activityHeight) {}
+    protected boolean onBackPressedSafe(){return false;}
+
+
+
+    final private void require_view(int view_id){
         if (null == view(view_id)){
             throw new IllegalStateException("View not found");
         }

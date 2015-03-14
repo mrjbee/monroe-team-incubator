@@ -258,7 +258,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/start_add_btn"
+        android:id="@+id/add_btn"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginBottom="165dp"
