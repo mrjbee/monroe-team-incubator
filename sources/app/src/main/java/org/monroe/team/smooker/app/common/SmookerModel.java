@@ -19,16 +19,17 @@ import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
 import org.monroe.team.smooker.app.db.Dao;
 import org.monroe.team.smooker.app.db.SmookerSchema;
+import org.monroe.team.smooker.app.uc.CalculateSchedule;
 import org.monroe.team.smooker.app.uc.GetBasicSmokeQuitDetails;
 import org.monroe.team.smooker.app.uc.GetSmokeStatistic;
-import org.monroe.team.smooker.app.uc.GetTodaySmokeDetails;
-
-import java.io.Serializable;
+import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
+import org.monroe.team.smooker.app.uc.PrepareTodaySmokeSchedule;
 
 public class SmookerModel extends AndroidModel{
 
     private Context context;
-    private DataProvider<GetTodaySmokeDetails.TodaySmokeDetails> todaySmokeDetailsDataProvider;
+    private DataProvider<PrepareTodaySmokeDetails.TodaySmokeDetails> todaySmokeDetailsDataProvider;
+    private UcDataProvider<PrepareTodaySmokeSchedule.TodaySmokeSchedule> todaySmokeScheduleDataProvider;
 
     public SmookerModel(Context context) {
         super("SMOOKER", context);
@@ -66,18 +67,35 @@ public class SmookerModel extends AndroidModel{
                                 GetBasicSmokeQuitDetails.BasicSmokeQuitDetails.class,
                                 GetBasicSmokeQuitDetails.class)
                 );
+                put(CalculateSchedule.SmokeSuggestion.class,
+                        new UcDataProvider<CalculateSchedule.SmokeSuggestion>(
+                                SmookerModel.this,
+                                context,
+                                CalculateSchedule.SmokeSuggestion.class,
+                                CalculateSchedule.class
+                        ));
             }
         });
 
 
-        todaySmokeDetailsDataProvider = new UcDataProvider<GetTodaySmokeDetails.TodaySmokeDetails>(this, context,
-                GetTodaySmokeDetails.TodaySmokeDetails.class,
-                GetTodaySmokeDetails.class);
+        todaySmokeDetailsDataProvider = new UcDataProvider<PrepareTodaySmokeDetails.TodaySmokeDetails>(this, context,
+                PrepareTodaySmokeDetails.TodaySmokeDetails.class,
+                PrepareTodaySmokeDetails.class);
+
+        todaySmokeScheduleDataProvider = new UcDataProvider<PrepareTodaySmokeSchedule.TodaySmokeSchedule>(this,
+                context,
+                PrepareTodaySmokeSchedule.TodaySmokeSchedule.class,
+                PrepareTodaySmokeSchedule.class);
+
     }
 
 
-    public DataProvider<GetTodaySmokeDetails.TodaySmokeDetails> getTodaySmokeDetailsDataProvider() {
+    public DataProvider<PrepareTodaySmokeDetails.TodaySmokeDetails> getTodaySmokeDetailsDataProvider() {
         return todaySmokeDetailsDataProvider;
+    }
+
+    public UcDataProvider<PrepareTodaySmokeSchedule.TodaySmokeSchedule> getTodaySmokeScheduleDataProvider() {
+        return todaySmokeScheduleDataProvider;
     }
 
     public void stopNotificationControlService() {

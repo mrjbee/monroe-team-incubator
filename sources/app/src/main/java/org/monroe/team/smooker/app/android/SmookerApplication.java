@@ -14,6 +14,8 @@ import org.monroe.team.android.box.data.DataManger;
 import org.monroe.team.android.box.data.DataProvider;
 import org.monroe.team.android.box.event.Event;
 import org.monroe.team.android.box.services.SettingManager;
+import org.monroe.team.android.box.utils.AndroidLogImplementation;
+import org.monroe.team.corebox.log.L;
 import org.monroe.team.corebox.utils.DateUtils;
 import org.monroe.team.smooker.app.actors.ActorSmoker;
 import org.monroe.team.smooker.app.android.controller.SmokeScheduleController;
@@ -24,8 +26,11 @@ import org.monroe.team.smooker.app.common.constant.Events;
 import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.constant.SetupPage;
 import org.monroe.team.smooker.app.uc.AddSmoke;
+import org.monroe.team.smooker.app.uc.CalculateSchedule;
+import org.monroe.team.smooker.app.uc.GetBasicSmokeQuitDetails;
 import org.monroe.team.smooker.app.uc.GetSmokeStatistic;
-import org.monroe.team.smooker.app.uc.GetTodaySmokeDetails;
+import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
+import org.monroe.team.smooker.app.uc.PrepareTodaySmokeSchedule;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -42,6 +47,10 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
     private final static int QUIT_SMOKE_PROPOSAL_NOTIFICATION_ID = 333;
     private final static int QUIT_SMOKE_UPDATE_NOTIFICATION = 335;
     private final static int STATISTIC_UPDATE_NOTIFICATION = 336;
+
+    static {
+        L.setup(new AndroidLogImplementation());
+    }
 
     @Override
     public void onCreate() {
@@ -257,9 +266,15 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
             @Override
             public void onResult(Boolean response) {
                 if (response){
-                    model().getTodaySmokeDetailsDataProvider().invalidate();
+
                     model().usingService(DataManger.class).invalidate(GetSmokeStatistic.SmokeStatistic.class);
-                }else {
+                    model().usingService(DataManger.class).invalidate(CalculateSchedule.SmokeSuggestion.class);
+                    model().usingService(DataManger.class).invalidate(GetBasicSmokeQuitDetails.BasicSmokeQuitDetails.class);
+
+                    model().getTodaySmokeDetailsDataProvider().invalidate();
+                    model().getTodaySmokeScheduleDataProvider().invalidate();
+
+                } else {
                     warn(AddSmoke.class);
                 }
             }
@@ -276,7 +291,11 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
         Event.send(getApplicationContext(), Events.WARNING, warnData);
     }
 
-    public DataProvider<GetTodaySmokeDetails.TodaySmokeDetails> data_smokeDetails() {
+    public DataProvider<PrepareTodaySmokeDetails.TodaySmokeDetails> data_smokeDetails() {
         return model().getTodaySmokeDetailsDataProvider();
+    }
+
+    public DataProvider<PrepareTodaySmokeSchedule.TodaySmokeSchedule> data_smokeSchedule() {
+        return model().getTodaySmokeScheduleDataProvider();
     }
 }

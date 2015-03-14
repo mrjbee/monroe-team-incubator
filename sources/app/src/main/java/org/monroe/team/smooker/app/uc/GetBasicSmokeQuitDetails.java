@@ -18,7 +18,7 @@ public class GetBasicSmokeQuitDetails extends UserCaseSupport<Void,GetBasicSmoke
     }
 
     @Override
-    public BasicSmokeQuitDetails execute(Void request) {
+    protected BasicSmokeQuitDetails executeImpl(Void request) {
 
         QuitSmokeProgram quitSmokeProgram = using(QuitSmokeProgramManager.class).get();
         if (quitSmokeProgram != null) {

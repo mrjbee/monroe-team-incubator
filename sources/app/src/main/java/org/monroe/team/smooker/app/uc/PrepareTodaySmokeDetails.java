@@ -9,14 +9,14 @@ import org.monroe.team.smooker.app.uc.common.FetchFailedException;
 
 import java.io.Serializable;
 
-public class GetTodaySmokeDetails extends UserCaseSupport<Void, GetTodaySmokeDetails.TodaySmokeDetails> {
+public class PrepareTodaySmokeDetails extends UserCaseSupport<Void, PrepareTodaySmokeDetails.TodaySmokeDetails> {
 
-    public GetTodaySmokeDetails(ServiceRegistry serviceRegistry) {
+    public PrepareTodaySmokeDetails(ServiceRegistry serviceRegistry) {
         super(serviceRegistry);
     }
 
     @Override
-    public TodaySmokeDetails execute(Void request) {
+    public TodaySmokeDetails executeImpl(Void request) {
         GetSmokeStatistic.SmokeStatistic smokeStatistic = null;
         try {
            smokeStatistic = using(DataManger.class).fetch(GetSmokeStatistic.SmokeStatistic.class);

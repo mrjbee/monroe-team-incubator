@@ -11,7 +11,7 @@ import org.monroe.team.android.box.data.DataProvider;
 import org.monroe.team.android.box.event.Event;
 import org.monroe.team.corebox.utils.Closure;
 import org.monroe.team.smooker.app.R;
-import org.monroe.team.smooker.app.uc.GetTodaySmokeDetails;
+import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.animateAppearance;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.duration_constant;
@@ -52,14 +52,13 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
                     application().addSmoke();
                 }
             });
-            fetchSmokeDetails(false, false);
         }
     }
 
     private void fetchSmokeDetails(boolean requestUpdate, final boolean animate) {
-        application().data_smokeDetails().fetch(requestUpdate, new DataProvider.FetchObserver<GetTodaySmokeDetails.TodaySmokeDetails>() {
+        application().data_smokeDetails().fetch(requestUpdate, new DataProvider.FetchObserver<PrepareTodaySmokeDetails.TodaySmokeDetails>() {
             @Override
-            public void onFetch(GetTodaySmokeDetails.TodaySmokeDetails smokeStatistic) {
+            public void onFetch(PrepareTodaySmokeDetails.TodaySmokeDetails smokeStatistic) {
                 updateSmokeStatistic(animate, smokeStatistic);
             }
 
@@ -70,7 +69,7 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
         });
     }
 
-    private void updateSmokeStatistic(boolean animate, GetTodaySmokeDetails.TodaySmokeDetails smokeStatistic) {
+    private void updateSmokeStatistic(boolean animate, PrepareTodaySmokeDetails.TodaySmokeDetails smokeStatistic) {
         final String newValue = Integer.toString(smokeStatistic.specialCount);
         if (!animate) {
             view_text(R.id.today_value_text).setText(newValue);
@@ -88,7 +87,7 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
                 }
             });
         }
-        if (smokeStatistic.type != GetTodaySmokeDetails.TodaySmokeDetails.SpecialType.NO_LIMIT){
+        if (smokeStatistic.type != PrepareTodaySmokeDetails.TodaySmokeDetails.SpecialType.NO_LIMIT){
             throw new UnsupportedOperationException();
         }
         //TODO: add animation too
@@ -102,15 +101,19 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
             Event.subscribeOnEvent(activity(), this, DataProvider.INVALID_DATA, new Closure<Class, Void>() {
                 @Override
                 public Void execute(Class invalidDataClass) {
-                    if (GetTodaySmokeDetails.TodaySmokeDetails.class == invalidDataClass) {
+                    if (PrepareTodaySmokeDetails.TodaySmokeDetails.class == invalidDataClass) {
                         fetchSmokeDetails(true, true);
                     }
+                    onInvalidData(invalidDataClass);
                     return null;
                 }
             });
+            fetchSmokeDetails(false, false);
             onResumeSafe();
         }
     }
+
+    protected void onInvalidData(Class invalidDataClass) {}
 
 
     @Override

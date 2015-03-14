@@ -10,13 +10,10 @@ import android.widget.TextView;
 import org.monroe.team.android.box.app.ui.AppearanceControllerOld;
 import org.monroe.team.android.box.app.ui.SlideTouchGesture;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceController;
-import org.monroe.team.android.box.data.DataProvider;
-import org.monroe.team.android.box.event.Event;
 import org.monroe.team.android.box.utils.DisplayUtils;
 import org.monroe.team.corebox.utils.Closure;
 import org.monroe.team.corebox.utils.Lists;
 import org.monroe.team.smooker.app.R;
-import org.monroe.team.smooker.app.uc.GetTodaySmokeDetails;
 
 import java.util.ArrayList;
 import java.util.List;

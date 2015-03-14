@@ -15,7 +15,7 @@ public class SetupQuitSmokeProgram extends UserCaseSupport<SetupQuitSmokeProgram
     }
 
     @Override
-    public Void execute(QuitSmokeProgramRequest request) {
+    public Void executeImpl(QuitSmokeProgramRequest request) {
         if (request.level == QuitSmokeDifficultLevel.DISABLED){
             using(QuitSmokeProgramManager.class).disable();
         } else {

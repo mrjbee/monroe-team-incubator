@@ -148,7 +148,7 @@ public class DayTrackChartView extends View {
         limitLabelPaint.setTextSize(axisCaptionTextSize);
         limitLabelPaint.setStrokeWidth(3);
         //DEBUG
-        if (true){
+        if (false){
            List<Date> model = new ArrayList<>(9);
            List<Date> futureModel = new ArrayList<>(4);
            Date itDate = DateUtils.dateOnly(DateUtils.now());
@@ -406,6 +406,10 @@ public class DayTrackChartView extends View {
     }
 
     public void setFutureModel(List<Date> futureModelDateList) {
+        if (futureModelDateList == null){
+            futureModel = null;
+            return;
+        }
         futureModel = convertToMinutes(futureModelDateList);
     }
 }
