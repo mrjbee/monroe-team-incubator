@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="dpi_name">Default (MDPI)</string>
+    <bool name="is_landscape">false</bool>
 
     <!-- Timer View  -->
     <integer name="timer_offset">200</integer>

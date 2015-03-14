@@ -37,7 +37,7 @@ import static org.monroe.team.android.box.app.ui.animation.apperrance.Appearance
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.xSlide;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.ySlide;
 
-public class TilesFragment extends FragmentSupport<SmookerApplication> {
+public class TilesFragment extends FrontPageFragment {
 
     AppearanceController bottomLayerAC;
     AppearanceController tileCaptionTextAC;
@@ -50,9 +50,6 @@ public class TilesFragment extends FragmentSupport<SmookerApplication> {
     AppearanceController tileCaptionTextChangeAC;
     AppearanceController settingAlternativeBtnAC;
     AppearanceController addSmokeBtnAC;
-
-    AppearanceController changeCountAC;
-    AppearanceController changeCountDescriptionAC;
 
     float height_px_close_dash;
     float height_px_tile;
@@ -70,8 +67,7 @@ public class TilesFragment extends FragmentSupport<SmookerApplication> {
 
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onActivityCreatedSafe(Bundle savedInstanceState) {
         setupTilesControllers();
         view_button(R.id.start_add_btn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,13 +75,7 @@ public class TilesFragment extends FragmentSupport<SmookerApplication> {
                 application().addSmoke();
             }
         });
-
-        changeCountAC = animateAppearance(view(R.id.today_value_text), scale(1f,2f))
-                .showAnimation(duration_constant(200), interpreter_decelerate(0.4f))
-                .hideAnimation(duration_constant(300), interpreter_overshot())
-                .build();
-        changeCountAC.showWithoutAnimation();
-        fetchSmokeDetails(false,false);
+        fetchSmokeDetails(false, false);
     }
 
     private void fetchSmokeDetails(boolean requestUpdate, final boolean animate) {
@@ -103,24 +93,7 @@ public class TilesFragment extends FragmentSupport<SmookerApplication> {
     }
 
     private void updateSmokeStatistic(boolean animate, GetTodaySmokeDetails.TodaySmokeDetails smokeStatistic) {
-        final String newValue = Integer.toString(smokeStatistic.specialCount);
-        if (!animate){
-            view_text(R.id.today_value_text).setText(newValue);
-        } else {
-            changeCountAC.hideAndCustomize(new AppearanceController.AnimatorCustomization() {
-                @Override
-                public void customize(Animator animator) {
-                    animator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            view_text(R.id.today_value_text).setText(newValue);
-                            changeCountAC.show();
-                        }
-                    });
-                }
-            });
-        }
-
+        updateSmokeCount(smokeStatistic.specialCount, animate);
         if (smokeStatistic.type != GetTodaySmokeDetails.TodaySmokeDetails.SpecialType.NO_LIMIT){
             throw new UnsupportedOperationException();
         }
@@ -129,8 +102,7 @@ public class TilesFragment extends FragmentSupport<SmookerApplication> {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onResumeSafe() {
         Event.subscribeOnEvent(activity(), this, DataProvider.INVALID_DATA, new Closure<Class, Void>() {
             @Override
             public Void execute(Class invalidDataClass) {
@@ -143,13 +115,13 @@ public class TilesFragment extends FragmentSupport<SmookerApplication> {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onPauseSafe() {
         Event.unSubscribeFromEvents(activity(), this);
     }
 
 
-    public void onScreenSizeCalculated(int activityWidth, int activityHeight) {
+    @Override
+    public void onScreenSizeCalculatedSafe(int activityWidth, int activityHeight) {
 
         height_px_close_dash = activityHeight - dpToPx(height_dp_background_bottom(),height_dp_open_picker());
 
@@ -305,9 +277,9 @@ public class TilesFragment extends FragmentSupport<SmookerApplication> {
 
             @Override
             protected void onApply(float x, float y, float slideValue, float fraction) {
-                AppearanceController hideAC = (slideValue >0)? tileShowFromLeftAC:tileShowFromRightAC;
-                final AppearanceController showAC = (slideValue <0)? tileShowFromLeftAC:tileShowFromRightAC;
-                final int nextTileIndex = calculateTileIndex((slideValue >0)?1:-1);
+                AppearanceController hideAC = (slideValue > 0) ? tileShowFromLeftAC : tileShowFromRightAC;
+                final AppearanceController showAC = (slideValue < 0) ? tileShowFromLeftAC : tileShowFromRightAC;
+                final int nextTileIndex = calculateTileIndex((slideValue > 0) ? 1 : -1);
                 hideAC.hideAndCustomize(new AppearanceController.AnimatorCustomization() {
                     @Override
                     public void customize(Animator animator) {
@@ -320,7 +292,7 @@ public class TilesFragment extends FragmentSupport<SmookerApplication> {
                                 tileCaptionTextChangeAC.hideAndCustomize(new AppearanceController.AnimatorCustomization() {
                                     @Override
                                     public void customize(Animator changeAnimator) {
-                                        changeAnimator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter(){
+                                        changeAnimator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter() {
                                             @Override
                                             public void onAnimationEnd(Animator animation) {
                                                 setupTileCaption();
@@ -345,8 +317,8 @@ public class TilesFragment extends FragmentSupport<SmookerApplication> {
         view(R.id.start_open_picker_panel).setOnTouchListener(new SlideTouchGesture(400, SlideTouchGesture.Axis.Y_UP) {
             @Override
             protected void onProgress(float x, float y, float slideValue, float fraction) {
-                view(R.id.start_bottom_layer).setTranslationY((float) (-400 *(fraction)));
-                view(R.id.start_tile_space_wrap_panel).getLayoutParams().height = (int) (height_px_tile - 400*fraction);
+                view(R.id.start_bottom_layer).setTranslationY((float) (-400 * (fraction)));
+                view(R.id.start_tile_space_wrap_panel).getLayoutParams().height = (int) (height_px_tile - 400 * fraction);
                 view(R.id.start_tile_space_wrap_panel).requestLayout();
             }
 
@@ -355,7 +327,7 @@ public class TilesFragment extends FragmentSupport<SmookerApplication> {
                 bottomLayerAC.showAndCustomize(new AppearanceController.AnimatorCustomization() {
                     @Override
                     public void customize(Animator animator) {
-                        animator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter(){
+                        animator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
                                 setupDashOpenState();
@@ -465,7 +437,7 @@ public class TilesFragment extends FragmentSupport<SmookerApplication> {
         pickerRotationAC.show();
     }
 
-    public boolean onBackPressed() {
+    public boolean onBackPressedSafe() {
         if (view(R.id.start_tile_big_content).getVisibility() == View.VISIBLE){
             onStartingCloseDash();
             closeDash();

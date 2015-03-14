@@ -12,14 +12,21 @@ public class FrontPageActivity extends ActivitySupport<SmookerApplication> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_front_page);
+        FrontPageFragment mainFragment;
+        if (isLandscape(R.bool.class)){
+            mainFragment = new TrackerFragment();
+        }else {
+            mainFragment = new TilesFragment();
+        }
+        mainFragment.setArguments(getIntent().getExtras());
+
         if (isFirstRun(savedInstanceState)){
-            TilesFragment tilesFragment = new TilesFragment();
-            TrackerFragment trackerFragment = new TrackerFragment();
-            trackerFragment.setArguments(getIntent().getExtras());
-            tilesFragment.setArguments(getIntent().getExtras());
             getFragmentManager().beginTransaction()
-                    .add(R.id.fp_tiles_fragment_panel, tilesFragment,"tiles_fragment")
-                    .add(R.id.fp_tracker_fragment_panel, trackerFragment, "tracker_fragment" )
+                    .add(R.id.fp_fragment_panel, mainFragment,"main_fragment")
+            .commit();
+        } else {
+            getFragmentManager().beginTransaction()
+                .replace(R.id.fp_fragment_panel, mainFragment, "main_fragment")
             .commit();
         }
     }
@@ -27,24 +34,23 @@ public class FrontPageActivity extends ActivitySupport<SmookerApplication> {
     @Override
     protected void onActivitySize(int width, int height) {
         super.onActivitySize(width, height);
-        getTilesFragment().onScreenSizeCalculated(width, height);
-        getTrackerFragment().onScreenSizeCalculated(width, height);
+        getMainFragment().onScreenSizeCalculated(width, height);
     }
 
-    private TilesFragment getTilesFragment() {
-        TilesFragment tilesFragment = (TilesFragment) getFragmentManager().findFragmentByTag("tiles_fragment");
-        return tilesFragment;
+    private FrontPageFragment getMainFragment() {
+        return (FrontPageFragment) getFragmentManager().findFragmentByTag("main_fragment");
     }
 
-    private TrackerFragment getTrackerFragment() {
-        TrackerFragment tilesFragment = (TrackerFragment) getFragmentManager().findFragmentByTag("tracker_fragment");
-        return tilesFragment;
-    }
 
     @Override
     public void onBackPressed() {
-        if (!getTilesFragment().onBackPressed()){
+        if (!getMainFragment().onBackPressed()){
             super.onBackPressed();
         }
+    }
+
+    public boolean isFragmentActive(Class<? extends FrontPageFragment> fragmentClass) {
+        return  (isLandscape(R.bool.class) &&  TrackerFragment.class == fragmentClass)
+                || (!isLandscape(R.bool.class) &&  TilesFragment.class == fragmentClass);
     }
 }

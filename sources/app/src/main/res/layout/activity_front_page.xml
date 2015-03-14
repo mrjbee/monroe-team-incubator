@@ -6,14 +6,8 @@
     tools:context="org.monroe.team.smooker.app.android.FrontPageActivity">
 
     <FrameLayout
-        android:id="@+id/fp_tiles_fragment_panel"
+        android:id="@+id/fp_fragment_panel"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <FrameLayout
-        android:id="@+id/fp_tracker_fragment_panel"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"/>
 
 </RelativeLayout>

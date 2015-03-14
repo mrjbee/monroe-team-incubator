@@ -17,7 +17,7 @@ import static org.monroe.team.android.box.app.ui.animation.apperrance.Appearance
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.interpreter_overshot;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.scale;
 
-public class TrackerFragment extends FragmentSupport<SmookerApplication>{
+public class TrackerFragment extends FrontPageFragment{
 
     private AppearanceController addSmokeBtnAC;
 
@@ -27,17 +27,16 @@ public class TrackerFragment extends FragmentSupport<SmookerApplication>{
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    protected void onActivityCreatedSafe(Bundle savedInstanceState) {
         addSmokeBtnAC =  animateAppearance(view(R.id.tracker_add_btn), scale(1f,0f))
                 .showAnimation(duration_constant(300), interpreter_overshot())
                 .hideAnimation(duration_constant(200), interpreter_decelerate(0.4f))
                 .hideAndInvisible()
                 .build();
-
     }
 
-    public void onScreenSizeCalculated(int width, int height) {
+    @Override
+    public void onScreenSizeCalculatedSafe(int width, int height) {
         final float show_edge = width/2;
         final float hide_edge = width - DisplayUtils.dpToPx(50+70+40, getResources());
         view(R.id.tracker_day_chart_view).setOnTouchListener(new View.OnTouchListener() {
@@ -55,5 +54,10 @@ public class TrackerFragment extends FragmentSupport<SmookerApplication>{
                 return false;
             }
         });
+    }
+
+    @Override
+    public boolean onBackPressedSafe() {
+        return false;
     }
 }
