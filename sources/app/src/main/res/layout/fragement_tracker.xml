@@ -55,7 +55,8 @@
                 android:shadowDy="1"
                 android:layout_alignBottom="@+id/tracker_today_text"
                 android:layout_toRightOf="@+id/tracker_today_text"
-                android:layout_toEndOf="@+id/tracker_today_text" />
+                android:layout_toEndOf="@+id/tracker_today_text"
+                android:background="@drawable/background_smoke_count"/>
 
             <TextView
                 android:id="@+id/today_value_description_text"

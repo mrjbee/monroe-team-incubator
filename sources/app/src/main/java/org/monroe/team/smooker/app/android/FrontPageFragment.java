@@ -40,7 +40,7 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
             require_view(R.id.add_btn);
             require_view(R.id.today_value_description_text);
 
-            changeCountAC = animateAppearance(view(R.id.today_value_text), scale(1f, 2f))
+            changeCountAC = animateAppearance(view(R.id.today_value_text), scale(1f, 1.5f))
                     .showAnimation(duration_constant(200), interpreter_decelerate(0.4f))
                     .hideAnimation(duration_constant(300), interpreter_overshot())
                     .build();

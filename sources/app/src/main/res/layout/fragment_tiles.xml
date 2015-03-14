@@ -62,7 +62,8 @@
                 android:textSize="@dimen/text_size_caption_small"
                 android:layout_below="@+id/start_caption_text"
                 android:layout_alignLeft="@+id/start_caption_text"
-                android:textColor="@color/font.white"/>
+                android:textColor="@color/font.white"
+                android:background="@drawable/background_smoke_count"/>
 
 
         </RelativeLayout>
