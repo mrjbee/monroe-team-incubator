@@ -18,6 +18,7 @@ import org.monroe.team.smooker.app.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.alpha;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.animateAppearance;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.combine;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.duration_auto_fint;
@@ -45,11 +46,10 @@ public class TilesFragment extends FrontPageFragment {
     AppearanceController tileCaptionTextChangeAC;
     AppearanceController settingAlternativeBtnAC;
     AppearanceController addSmokeBtnAC;
+    AppearanceController timePanelAC;
 
     float height_px_close_dash;
     float height_px_tile;
-    float titleSmallSize;
-    float titleBigSize;
 
     List<TileController> tileControllerList = new ArrayList<>(3);
     List<HoleController> holeControllerList;
@@ -82,10 +82,7 @@ public class TilesFragment extends FrontPageFragment {
     @Override
     public void onScreenSizeCalculatedSafe(int activityWidth, int activityHeight) {
 
-        height_px_close_dash = activityHeight - dpToPx(height_dp_background_bottom(),height_dp_open_picker());
-
-        titleSmallSize =  DisplayUtils.spToPx(20, getResources());
-        titleBigSize = DisplayUtils.spToPx(30, getResources());
+        height_px_close_dash = activityHeight - dpToPx(height_dp_background_bottom(),height_dp_open_picker(), height_dp_action_bar());
 
         bottomLayerAC = animateAppearance(view(R.id.start_bottom_layer),ySlide(- height_px_close_dash, 0))
                 .showAnimation(duration_constant(400), interpreter_overshot())
@@ -93,15 +90,15 @@ public class TilesFragment extends FrontPageFragment {
                 .build();
 
         tileCaptionTextAC = animateAppearance(view(R.id.start_tile_caption_text),
-                scale(1.3f, 1f))
+                scale(1.2f, 1f))
                 .showAnimation(duration_constant(300), interpreter_overshot())
                 .hideAnimation(duration_auto_fint(), interpreter_decelerate(0.3f))
                 .build();
 
         tileCaptionTextChangeAC = animateAppearance(view(R.id.start_tile_caption_text),
-                rotate(0f,90f))
-                .showAnimation(duration_constant(200), interpreter_overshot())
-                .hideAnimation(duration_constant(100), interpreter_accelerate(0.3f))
+                alpha(1f,0.2f))
+                .showAnimation(duration_constant(400), interpreter_decelerate(null))
+                .hideAnimation(duration_constant(200), interpreter_accelerate(0.3f))
                 .build();
 
         pickerRotationAC = animateAppearance(view(R.id.start_open_picker_arrow_image), rotate(0f, 180f))
@@ -112,13 +109,14 @@ public class TilesFragment extends FrontPageFragment {
         height_px_tile = activityHeight - dpToPx(height_dp_background_bottom() - height_dp_tile_title());
         tileSpaceWraperAC = animateAppearance(view(R.id.start_tile_space_wrap_panel),
                 heightSlide(
-                        (int) dpToPx(height_dp_open_picker(), height_dp_tile_title()),
+                        (int) dpToPx(height_dp_open_picker(), height_dp_tile_title(), height_dp_action_bar()),
                         (int) height_px_tile
                 ))
                 .showAnimation(duration_constant(200), interpreter_accelerate(0.3f))
                 .hideAnimation(duration_auto_int(0.5f), interpreter_decelerate(0.3f)).build();
 
-        float tileBigDataHeight = activityHeight - dpToPx(height_dp_open_picker() + height_dp_tile_title() * 1.3f + height_dp_tile_small_content() + height_dp_holes());
+        float tileBigDataHeight =
+                activityHeight - dpToPx(height_dp_open_picker() + height_dp_tile_title() * 1.2f + height_dp_action_bar() + height_dp_tile_small_content() + height_dp_holes());
         tileBigContentAC = animateAppearance(view(R.id.start_tile_big_content), heightSlide((int) tileBigDataHeight, 0))
                 .showAnimation(duration_constant(200), interpreter_overshot())
                 .hideAnimation(duration_constant(150), interpreter_decelerate(0.5f))
@@ -160,6 +158,12 @@ public class TilesFragment extends FrontPageFragment {
                         .hideAnimation(duration_constant(300), interpreter_accelerate(0.4f))
                         .hideAndInvisible().build();
 
+
+        timePanelAC =  animateAppearance(view(R.id.start_time_panel), alpha(1f, 0f))
+                .showAnimation(duration_constant(200), interpreter_accelerate(null))
+                .hideAnimation(duration_constant(200), interpreter_accelerate(0.4f))
+                .build();
+
         tileShowFromLeftAC.showWithoutAnimation();
         tileShowFromRightAC.showWithoutAnimation();
         tileBigContentAC.hideWithoutAnimation();
@@ -169,6 +173,7 @@ public class TilesFragment extends FrontPageFragment {
         tileCaptionTextAC.hideWithoutAnimation();
         tileCaptionTextChangeAC.showWithoutAnimation();
         settingAlternativeBtnAC.hideWithoutAnimation();
+        timePanelAC.showWithoutAnimation();
         setupDashCloseState();
 
         setupTileBoard();
@@ -182,6 +187,10 @@ public class TilesFragment extends FrontPageFragment {
             value += v;
         }
         return DisplayUtils.dpToPx(value, getResources());
+    }
+
+    private int height_dp_action_bar(){
+        return 60;
     }
 
     private int height_dp_open_picker(){
@@ -279,10 +288,12 @@ public class TilesFragment extends FrontPageFragment {
                 view(R.id.start_bottom_layer).setTranslationY((float) (-400 * (fraction)));
                 view(R.id.start_tile_space_wrap_panel).getLayoutParams().height = (int) (height_px_tile - 400 * fraction);
                 view(R.id.start_tile_space_wrap_panel).requestLayout();
+                view(R.id.start_time_panel).setAlpha(1f - 0.6f * fraction);
             }
 
             @Override
             protected void onApply(float x, float y, float slideValue, float fraction) {
+                timePanelAC.hide();
                 bottomLayerAC.showAndCustomize(new AppearanceController.AnimatorCustomization() {
                     @Override
                     public void customize(Animator animator) {
@@ -312,6 +323,7 @@ public class TilesFragment extends FrontPageFragment {
 
             @Override
             protected void onCancel(float x, float y, float slideValue, float fraction) {
+                timePanelAC.show();
                 bottomLayerAC.hide();
                 tileSpaceWraperAC.hide();
                 addSmokeBtnAC.show();
@@ -331,11 +343,12 @@ public class TilesFragment extends FrontPageFragment {
             @Override
             protected void onProgress(float x, float y, float slideValue, float fraction) {
                 view(R.id.start_bottom_layer).setTranslationY((float) (startTranslation + height_px_close_dash * fraction));
-                float scaleFactor = 1.3f - 0.5f *fraction;
+                float scaleFactor = 1.2f - 0.5f *fraction;
                 view(R.id.start_tile_caption_text,TextView.class).setScaleX(scaleFactor);
                 view(R.id.start_tile_caption_text,TextView.class).setScaleY(scaleFactor);
                 view(R.id.start_tile_space_wrap_panel).getLayoutParams().height = (int) (startHeight + height_px_close_dash * fraction);
                 view(R.id.start_tile_space_wrap_panel).requestLayout();
+                view(R.id.start_time_panel).setAlpha(1f*fraction);
             }
 
             @Override
@@ -345,6 +358,7 @@ public class TilesFragment extends FrontPageFragment {
 
             @Override
             protected void onCancel(float x, float y, float slideValue, float fraction) {
+                timePanelAC.hide();
                 bottomLayerAC.show();
                 tileCaptionTextAC.show();
                 settingAlternativeBtnAC.show();
@@ -374,6 +388,7 @@ public class TilesFragment extends FrontPageFragment {
     }
 
     private void closeDash() {
+        timePanelAC.show();
         tileSpaceWraperAC.hide();
         bottomLayerAC.hideAndCustomize(new AppearanceController.AnimatorCustomization() {
             @Override

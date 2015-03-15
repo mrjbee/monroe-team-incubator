@@ -10,65 +10,12 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@drawable/main_background">
-
-        <RelativeLayout
-            android:id="@+id/start_header_panel"
+        <Space
             android:layout_width="fill_parent"
-            android:layout_height="100dp">
-
-            <TextView
-                android:id="@+id/start_caption_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Today"
-                android:textStyle="bold"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"
-                android:textSize="@dimen/text_size_caption_biggest"
-                android:textColor="@color/font.white"
-                android:shadowColor="@color/font.dark.shadow"
-                android:shadowRadius="1"
-                android:shadowDy="1"
-                />
-
-            <ImageButton
-                android:id="@+id/start_setting_btn"
-                android:background="@drawable/setting_button"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginRight="20dp"
-                android:layout_alignBottom="@+id/start_caption_text"
-                android:layout_alignParentRight="true"
-                />
-
-            <TextView
-                android:id="@+id/today_value_description_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="description"
-                android:textStyle="bold"
-                android:textSize="@dimen/text_size_caption_small"
-                android:layout_below="@+id/start_caption_text"
-                android:layout_toRightOf="@+id/today_value_text"
-                android:textColor="@color/font.white"
-                />
-
-            <TextView
-                android:id="@+id/today_value_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="6"
-                android:textSize="@dimen/text_size_caption_small"
-                android:layout_below="@+id/start_caption_text"
-                android:layout_alignLeft="@+id/start_caption_text"
-                android:textColor="@color/font.white"
-                android:background="@drawable/background_smoke_count"/>
-
-
-        </RelativeLayout>
+            android:layout_height="80dp" />
 
         <LinearLayout
+            android:id="@+id/start_time_panel"
             android:layout_weight="2"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -78,7 +25,8 @@
                 android:id="@+id/start_clock_background_panel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/clock_background"/>
+                android:src="@drawable/clock_background"
+                android:visibility="visible"/>
         </LinearLayout>
 
         <LinearLayout
@@ -128,8 +76,8 @@
             <ImageButton
                 android:id="@+id/start_setting_dublicate_btn"
                 android:background="@drawable/setting_dark_btn_push"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_alignBottom="@+id/start_tile_caption_text"
                 android:layout_alignParentRight="true"
@@ -257,6 +205,66 @@
         </RelativeLayout>
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/start_header_panel"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="20dp">
+        <TextView
+            android:id="@+id/start_caption_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/today"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:textSize="@dimen/text_size_caption"
+            android:textColor="@color/font.white"
+            android:shadowColor="@color/font.dark.shadow"
+            android:shadowRadius="1"
+            android:shadowDy="1"
+            />
+
+        <ImageButton
+            android:id="@+id/start_setting_btn"
+            android:background="@drawable/setting_button"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignBottom="@+id/start_caption_text"
+            android:layout_alignParentRight="true"
+            />
+
+        <TextView
+            android:id="@+id/today_value_description_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="14dp"
+            android:text="description"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_normal_smalles"
+            android:textColor="@color/font.white"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/start_setting_btn"
+            android:layout_toStartOf="@+id/start_setting_btn"
+            android:layout_marginEnd="14dp" />
+
+        <TextView
+            android:id="@+id/today_value_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="6"
+            android:textSize="@dimen/text_size_normal_smalles"
+            android:textColor="@color/font.white"
+            android:background="@drawable/background_smoke_count"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/today_value_description_text"
+            android:layout_toStartOf="@+id/today_value_description_text"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp" />
+
+    </RelativeLayout>
 
     <Button
         android:id="@+id/add_btn"

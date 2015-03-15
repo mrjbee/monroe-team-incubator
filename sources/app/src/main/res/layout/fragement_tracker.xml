@@ -14,17 +14,18 @@
         <RelativeLayout
             android:id="@+id/start_header_panel"
             android:layout_width="fill_parent"
-            android:layout_height="70dp">
+            android:layout_height="60dp">
 
             <TextView
                 android:id="@+id/tracker_today_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Today"
+                android:layout_marginRight="10dp"
+                android:text="@string/today"
                 android:textStyle="bold"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="30dp"
-                android:textSize="@dimen/text_size_caption_biggest"
+                android:layout_marginLeft="20dp"
+                android:textSize="@dimen/text_size_caption"
                 android:textColor="@color/font.white"
                 android:shadowColor="@color/font.dark.shadow"
                 android:shadowRadius="1"
@@ -34,8 +35,8 @@
             <ImageButton
                 android:id="@+id/tracker_setting_btn"
                 android:background="@drawable/setting_button"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_alignBottom="@+id/tracker_today_text"
                 android:layout_alignParentRight="true"
@@ -47,29 +48,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="6"
-                android:textSize="@dimen/text_size_caption_small"
-                android:layout_marginLeft="5dp"
+                android:textSize="@dimen/text_size_normal_smalles"
                 android:textColor="@color/font.white"
                 android:shadowColor="@color/font.dark.shadow"
                 android:shadowRadius="1"
                 android:shadowDy="1"
-                android:layout_alignBottom="@+id/tracker_today_text"
-                android:layout_toRightOf="@+id/tracker_today_text"
-                android:layout_toEndOf="@+id/tracker_today_text"
-                android:background="@drawable/background_smoke_count"/>
+                android:background="@drawable/background_smoke_count"
+                android:layout_marginRight="5dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/today_value_description_text"
+                android:layout_toStartOf="@+id/today_value_description_text" />
 
             <TextView
                 android:id="@+id/today_value_description_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
                 android:text="description"
                 android:textStyle="bold"
-                android:textSize="@dimen/text_size_caption_small"
-                android:layout_toRightOf="@+id/today_value_text"
-                android:layout_alignBottom="@+id/today_value_text"
+                android:textSize="@dimen/text_size_normal_smalles"
                 android:textColor="@color/font.white"
-                />
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/tracker_setting_btn"
+                android:layout_toStartOf="@+id/tracker_setting_btn"
+                android:layout_marginRight="20dp"/>
 
         </RelativeLayout>
 
