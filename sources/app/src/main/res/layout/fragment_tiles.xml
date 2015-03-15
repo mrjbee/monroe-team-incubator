@@ -4,92 +4,105 @@
     android:layout_height="match_parent"
     android:background="@color/background.main.light"
     tools:context="org.monroe.team.smooker.app.StartActivity">
-    <LinearLayout
-        android:orientation="vertical"
+    <org.monroe.team.smooker.app.android.view.RelativeLayoutExt
         android:id="@+id/start_bottom_layer"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@drawable/main_background">
-        <Space
-            android:layout_width="fill_parent"
-            android:layout_height="80dp" />
-
+        android:background="@drawable/background_main_no_ornament">
         <LinearLayout
-            android:id="@+id/start_time_panel"
-            android:layout_weight="2"
+            android:id="@+id/start_ornament_panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:gravity="center">
-            <ImageView
-                android:id="@+id/start_clock_background_panel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/clock_background"
-                android:visibility="visible"/>
+            android:background="@drawable/background_main"
+            android:orientation="vertical">
         </LinearLayout>
-
         <LinearLayout
-            android:layout_height="28dp"
-            android:layout_width="63dp"
-            android:layout_marginLeft="40dp"
-            android:id="@+id/start_open_picker_panel"
-            android:background="@drawable/open_picker_background"
-            android:layout_gravity="left"
             android:orientation="vertical"
-            >
-            <ImageView
-                android:id="@+id/start_open_picker_arrow_image"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_width="25dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/open_picker_up_arrow"/>
-        </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/start_bottom_panel"
-            android:layout_below="@+id/start_open_picker_panel"
             android:layout_width="fill_parent"
-            android:layout_height="200dp"
-            android:background="@color/background.main.light">
+            android:layout_height="fill_parent">
+            <Space
+                android:layout_width="fill_parent"
+                android:layout_height="80dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:gravity="center"
+            <LinearLayout
+                android:id="@+id/start_time_panel"
+                android:layout_weight="2"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageView
+                    android:id="@+id/start_clock_background_panel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/clock_background"
+                    android:visibility="visible"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="28dp"
+                android:layout_width="63dp"
                 android:layout_marginLeft="40dp"
-                android:text="Statistics"
-                android:id="@+id/start_tile_caption_text"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:textStyle="bold"
-                android:textSize="@dimen/text_size_caption"
-                android:textColor="@color/font.dark.light"
-                android:shadowColor="@color/font.white.shadow"
-                android:shadowRadius="1"
-                android:shadowDy="1"
-                />
+                android:id="@+id/start_open_picker_panel"
+                android:background="@drawable/open_picker_background"
+                android:layout_gravity="left"
+                android:orientation="vertical"
+                >
+                <ImageView
+                    android:id="@+id/start_open_picker_arrow_image"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/open_picker_up_arrow"/>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/start_bottom_panel"
+                android:layout_below="@+id/start_open_picker_panel"
+                android:layout_width="fill_parent"
+                android:layout_height="200dp"
+                android:background="@color/background.main.light">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:gravity="center"
+                    android:layout_marginLeft="40dp"
+                    android:text="Statistics"
+                    android:id="@+id/start_tile_caption_text"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_size_caption"
+                    android:textColor="@color/font.dark.light"
+                    android:shadowColor="@color/font.white.shadow"
+                    android:shadowRadius="1"
+                    android:shadowDy="1"
+                    />
 
 
 
-            <ImageButton
-                android:id="@+id/start_setting_dublicate_btn"
-                android:background="@drawable/setting_dark_btn_push"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_alignBottom="@+id/start_tile_caption_text"
-                android:layout_alignParentRight="true"
-                />
-      </RelativeLayout>
+                <ImageButton
+                    android:id="@+id/start_setting_dublicate_btn"
+                    android:background="@drawable/setting_dark_btn_push"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_alignBottom="@+id/start_tile_caption_text"
+                    android:layout_alignParentRight="true"
+                    />
+          </RelativeLayout>
 
-    </LinearLayout>
+        </LinearLayout>
+    </org.monroe.team.smooker.app.android.view.RelativeLayoutExt>
+
     <LinearLayout
         android:id="@+id/start_tile_layer_panel"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
         <LinearLayout
             android:layout_weight="0"
             android:orientation="vertical"
@@ -215,27 +228,29 @@
             android:id="@+id/start_caption_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/today"
+            android:text="@string/title_activity_front_page"
             android:textStyle="bold"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="21dp"
             android:textSize="@dimen/text_size_caption"
             android:textColor="@color/font.white"
             android:shadowColor="@color/font.dark.shadow"
             android:shadowRadius="1"
             android:shadowDy="1"
-            />
+            android:layout_marginStart="21dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <ImageButton
             android:id="@+id/start_setting_btn"
             android:background="@drawable/setting_button"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginRight="20dp"
-            android:layout_centerVertical="true"
+            android:layout_marginRight="17dp"
+            android:layout_marginEnd="17dp"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="20dp" />
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:id="@+id/today_value_description_text"

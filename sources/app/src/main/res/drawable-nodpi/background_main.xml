@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <gradient
+                android:angle="-90"
+                android:centerColor="@color/background.main2"
+                android:endColor="@color/background.main2"
+                android:startColor="@color/background.main"
+                android:type="linear" />
+        </shape>
+    </item>
+
+    <item>
+        <bitmap
+            android:src="@drawable/background_small"
+            android:tileMode="repeat"/>
+    </item>
+</layer-list>

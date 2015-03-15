@@ -11,9 +11,4 @@
                 android:type="linear" />
         </shape>
     </item>
-    <item>
-        <bitmap
-            android:src="@drawable/background_small"
-            android:tileMode="repeat"/>
-    </item>
 </layer-list>

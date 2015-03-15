@@ -14,6 +14,7 @@ import org.monroe.team.android.box.utils.DisplayUtils;
 import org.monroe.team.corebox.utils.Closure;
 import org.monroe.team.corebox.utils.Lists;
 import org.monroe.team.smooker.app.R;
+import org.monroe.team.smooker.app.android.view.RelativeLayoutExt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,10 +160,26 @@ public class TilesFragment extends FrontPageFragment {
                         .hideAndInvisible().build();
 
 
-        timePanelAC =  animateAppearance(view(R.id.start_time_panel), alpha(1f, 0f))
-                .showAnimation(duration_constant(200), interpreter_accelerate(null))
-                .hideAnimation(duration_constant(200), interpreter_accelerate(0.4f))
-                .build();
+        timePanelAC =  combine(
+
+                animateAppearance(view(R.id.start_time_panel), alpha(1f, 0f))
+                    .showAnimation(duration_constant(200), interpreter_accelerate(null))
+                    .hideAnimation(duration_constant(200), interpreter_accelerate(0.4f)),
+
+                animateAppearance(view(R.id.start_ornament_panel), alpha(1f, 0f))
+                        .showAnimation(duration_constant(200), interpreter_accelerate(null))
+                        .hideAnimation(duration_constant(200), interpreter_accelerate(0.4f)));
+
+        view(R.id.start_bottom_layer, RelativeLayoutExt.class).setTranslationListener(new RelativeLayoutExt.TranslationListener() {
+            @Override
+            public void onX(View source, float translationX) {
+            }
+
+            @Override
+            public void onY(View view, float translationY) {
+                view(R.id.start_ornament_panel).setTranslationY(-translationY + translationY*0.5f);
+            }
+        });
 
         tileShowFromLeftAC.showWithoutAnimation();
         tileShowFromRightAC.showWithoutAnimation();
@@ -179,6 +196,8 @@ public class TilesFragment extends FrontPageFragment {
         setupTileBoard();
         applyTileContentUsing(0);
         setupTileCaption();
+
+
     }
 
     private float dpToPx(float ... values){
@@ -349,6 +368,11 @@ public class TilesFragment extends FrontPageFragment {
                 view(R.id.start_tile_space_wrap_panel).getLayoutParams().height = (int) (startHeight + height_px_close_dash * fraction);
                 view(R.id.start_tile_space_wrap_panel).requestLayout();
                 view(R.id.start_time_panel).setAlpha(1f*fraction);
+                float alpha = fraction * 2;
+                if (alpha > 1f){
+                    alpha = 1f;
+                }
+                view(R.id.start_ornament_panel).setAlpha(alpha);
             }
 
             @Override
