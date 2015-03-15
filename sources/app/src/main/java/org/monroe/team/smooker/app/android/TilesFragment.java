@@ -190,7 +190,7 @@ public class TilesFragment extends FrontPageFragment {
     }
 
     private int height_dp_action_bar(){
-        return 60;
+        return 50;
     }
 
     private int height_dp_open_picker(){

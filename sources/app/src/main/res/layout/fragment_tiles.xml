@@ -209,7 +209,7 @@
     <RelativeLayout
         android:id="@+id/start_header_panel"
         android:layout_width="fill_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="20dp">
         <TextView
             android:id="@+id/start_caption_text"
@@ -229,12 +229,13 @@
         <ImageButton
             android:id="@+id/start_setting_btn"
             android:background="@drawable/setting_button"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginRight="20dp"
-            android:layout_alignBottom="@+id/start_caption_text"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            />
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp" />
 
         <TextView
             android:id="@+id/today_value_description_text"

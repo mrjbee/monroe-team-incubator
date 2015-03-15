@@ -35,8 +35,8 @@
             <ImageButton
                 android:id="@+id/tracker_setting_btn"
                 android:background="@drawable/setting_button"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_marginRight="20dp"
                 android:layout_alignBottom="@+id/tracker_today_text"
                 android:layout_alignParentRight="true"
