@@ -43,6 +43,54 @@
                     android:layout_height="fill_parent"
                     android:src="@drawable/clock_value"
                     android:visibility="visible"/>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:id="@+id/relativeLayout">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/past_after_last_smoke"
+                        android:textSize="@dimen/text_size_caption"
+                        android:textColor="@color/font.dark"
+                        android:id="@+id/clock_after_text"
+                        android:layout_centerHorizontal="true"
+                        />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_below="@+id/clock_after_text"
+                        android:layout_centerHorizontal="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0 days"
+                            android:textSize="@dimen/text_size_caption_small"
+                            android:textColor="@color/font.dark"
+                            android:textStyle="bold"
+                            android:id="@+id/clock_day_value"
+                            android:layout_below="@+id/clock_after_text"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="00:00:00"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/text_size_caption_small"
+                            android:textColor="@color/font.dark"
+                            android:id="@+id/clock_time_value"
+                            android:layout_marginLeft="10dp"
+                            android:layout_below="@+id/clock_after_text"
+                            android:layout_alignBaseline="@id/clock_day_value"
+                            android:layout_toRightOf="@id/clock_day_value"/>
+                    </LinearLayout>
+                </RelativeLayout>
+
+
             </RelativeLayout>
 
             <LinearLayout
