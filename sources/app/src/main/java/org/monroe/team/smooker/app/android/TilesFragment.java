@@ -10,6 +10,7 @@ import android.widget.TextView;
 import org.monroe.team.android.box.app.ui.AppearanceControllerOld;
 import org.monroe.team.android.box.app.ui.SlideTouchGesture;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceController;
+import org.monroe.team.android.box.data.DataProvider;
 import org.monroe.team.android.box.utils.DisplayUtils;
 import org.monroe.team.corebox.utils.Closure;
 import org.monroe.team.corebox.utils.DateUtils;
@@ -17,8 +18,10 @@ import org.monroe.team.corebox.utils.Lists;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.android.view.RelativeLayoutExt;
 import org.monroe.team.smooker.app.android.view.RoundSegmentImageView;
+import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -60,8 +63,8 @@ public class TilesFragment extends FrontPageFragment {
     List<HoleController> holeControllerList;
     private int currentTileIndex;
 
-    private long startMs;
     private Timer clockTimer;
+    private long msSinceLastSmoke = -1;
 
     @Override
     protected int getLayoutId() {
@@ -75,27 +78,72 @@ public class TilesFragment extends FrontPageFragment {
     }
 
 
+    @Override
+    protected void onInvalidData(Class invalidDataClass) {
+        if (PrepareSmokeClockDetails.SmokeClockDetails.class == invalidDataClass){
+            fetchClockData();
+        }
+    }
 
     @Override
     public void onResumeSafe() {
-        startMs = System.currentTimeMillis();
         clockTimer = new Timer();
         clockTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-
-               long ms = System.currentTimeMillis();
-               long delta = ms % (60 * 1000);
-               final float angle = 360 * delta / (60 * 1000);
-               runLastOnUiThread(new Runnable() {
-                   @Override
-                   public void run() {
-                       view(R.id.start_clock_value_panel, RoundSegmentImageView.class).setAngle(angle);
-                       view(R.id.start_clock_value_panel, RoundSegmentImageView.class).invalidate();
-                   }
-               });
+                if (msSinceLastSmoke == -1) return;
+                updateClock();
             }
         },0,300);
+
+        fetchClockData();
+    }
+
+    private void fetchClockData() {
+        application().data_smokeClock().fetch(true, new DataProvider.FetchObserver<PrepareSmokeClockDetails.SmokeClockDetails>() {
+            @Override
+            public void onFetch(PrepareSmokeClockDetails.SmokeClockDetails smokeClockDetails) {
+                setupClock(smokeClockDetails);
+                updateClock();
+            }
+
+            @Override
+            public void onError(DataProvider.FetchError fetchError) {
+                activity().forceCloseWithErrorCode(3);
+            }
+        });
+    }
+
+    private synchronized void setupClock(PrepareSmokeClockDetails.SmokeClockDetails smokeClockDetails) {
+        msSinceLastSmoke = smokeClockDetails.msSinceLastSmoke;
+    }
+
+    private synchronized void updateClock() {
+        long[] ls = DateUtils.splitPeriod(DateUtils.now(), new Date(msSinceLastSmoke));
+
+        final String timeString = twoDigitString(ls[1])+":"+twoDigitString(ls[2]);
+        final String daysString = ls[0]+" days";
+
+        long ms = System.currentTimeMillis() - msSinceLastSmoke;
+        long delta = ms % (60 * 1000);
+        final float angle = 360 * delta / (60 * 1000);
+        runLastOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                view(R.id.start_clock_value_panel, RoundSegmentImageView.class).setAngle(angle);
+                view(R.id.start_clock_value_panel, RoundSegmentImageView.class).invalidate();
+                view_text(R.id.clock_day_value).setText(daysString);
+                view_text(R.id.clock_time_value).setText(timeString);
+            }
+        });
+    }
+
+    private String twoDigitString(long val) {
+        String textValue = Long.toString(val);
+        if (textValue.length() < 2){
+            textValue = "0"+textValue;
+        }
+        return textValue;
     }
 
     @Override
@@ -103,6 +151,7 @@ public class TilesFragment extends FrontPageFragment {
         clockTimer.cancel();
         clockTimer.purge();
         clockTimer = null;
+
     }
 
 

@@ -22,6 +22,7 @@ import org.monroe.team.smooker.app.db.SmookerSchema;
 import org.monroe.team.smooker.app.uc.CalculateSchedule;
 import org.monroe.team.smooker.app.uc.GetBasicSmokeQuitDetails;
 import org.monroe.team.smooker.app.uc.GetSmokeStatistic;
+import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeSchedule;
 
@@ -30,6 +31,7 @@ public class SmookerModel extends AndroidModel{
     private Context context;
     private DataProvider<PrepareTodaySmokeDetails.TodaySmokeDetails> todaySmokeDetailsDataProvider;
     private UcDataProvider<PrepareTodaySmokeSchedule.TodaySmokeSchedule> todaySmokeScheduleDataProvider;
+    private UcDataProvider<PrepareSmokeClockDetails.SmokeClockDetails> smokeClockDataProvider;
 
     public SmookerModel(Context context) {
         super("SMOOKER", context);
@@ -87,6 +89,12 @@ public class SmookerModel extends AndroidModel{
                 PrepareTodaySmokeSchedule.TodaySmokeSchedule.class,
                 PrepareTodaySmokeSchedule.class);
 
+        smokeClockDataProvider = new UcDataProvider<PrepareSmokeClockDetails.SmokeClockDetails>(this,
+                context,
+                PrepareSmokeClockDetails.SmokeClockDetails.class,
+                PrepareSmokeClockDetails.class);
+
+
     }
 
 
@@ -96,6 +104,10 @@ public class SmookerModel extends AndroidModel{
 
     public UcDataProvider<PrepareTodaySmokeSchedule.TodaySmokeSchedule> getTodaySmokeScheduleDataProvider() {
         return todaySmokeScheduleDataProvider;
+    }
+
+    public UcDataProvider<PrepareSmokeClockDetails.SmokeClockDetails> getSmokeClockDataProvider() {
+        return smokeClockDataProvider;
     }
 
     public void stopNotificationControlService() {

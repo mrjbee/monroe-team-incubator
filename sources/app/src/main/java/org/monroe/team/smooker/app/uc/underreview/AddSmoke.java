@@ -7,6 +7,7 @@ import org.monroe.team.smooker.app.common.SmookerModel;
 import org.monroe.team.smooker.app.common.constant.Events;
 import org.monroe.team.smooker.app.db.Dao;
 
+@Deprecated
 public class AddSmoke extends TransactionUserCase<Void,GetStatisticState.StatisticState, Dao> {
 
     public AddSmoke(ServiceRegistry serviceRegistry) {

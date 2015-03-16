@@ -273,6 +273,7 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
 
                     model().getTodaySmokeDetailsDataProvider().invalidate();
                     model().getTodaySmokeScheduleDataProvider().invalidate();
+                    model().getSmokeClockDataProvider().invalidate();
 
                 } else {
                     warn(AddSmoke.class);
@@ -297,5 +298,9 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
 
     public DataProvider<PrepareTodaySmokeSchedule.TodaySmokeSchedule> data_smokeSchedule() {
         return model().getTodaySmokeScheduleDataProvider();
+    }
+
+    public DataProvider<org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails.SmokeClockDetails> data_smokeClock() {
+        return model().getSmokeClockDataProvider();
     }
 }

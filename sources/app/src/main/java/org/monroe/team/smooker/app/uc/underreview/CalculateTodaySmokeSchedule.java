@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+@Deprecated
 //TODO: Optimization required
 public class CalculateTodaySmokeSchedule extends TransactionUserCase<Void, List<CalculateTodaySmokeSchedule.SmokeSuggestion>, Dao> {
 

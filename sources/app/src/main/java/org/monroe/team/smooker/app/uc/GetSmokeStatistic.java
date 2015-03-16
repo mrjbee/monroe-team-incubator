@@ -2,9 +2,10 @@ package org.monroe.team.smooker.app.uc;
 
 import org.monroe.team.android.box.db.DAOSupport;
 import org.monroe.team.android.box.db.TransactionUserCase;
+import org.monroe.team.android.box.services.SettingManager;
 import org.monroe.team.corebox.services.ServiceRegistry;
 import org.monroe.team.corebox.utils.Lists;
-import org.monroe.team.smooker.app.android.SmookerApplication;
+import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.db.Dao;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
 
@@ -45,19 +46,25 @@ public class GetSmokeStatistic extends TransactionUserCase<Void, GetSmokeStatist
            average = Math.round(answer/(results.size()));
         }
 
-
-        return new SmokeStatistic(average,totalSmokes,todaySmokeDates);
+        DAOSupport.Result result = dao.getLastLoggedSmoke();
+        Date lastSmokeDate = null;
+        if (result != null){
+            lastSmokeDate = result.get(1,Date.class);
+        }
+        return new SmokeStatistic(average,totalSmokes, lastSmokeDate, todaySmokeDates);
     }
 
     public static class SmokeStatistic implements Serializable {
 
         private final int averageSmokeCount;
         private final int totalSmokeCount;
+        private final Date lastSmokeDate;
         private final List<Date> todaySmokeDateList;
 
-        public SmokeStatistic(int averageSmokeCount, int totalSmokeCount, List<Date> todaySmokeDateList) {
+        public SmokeStatistic(int averageSmokeCount, int totalSmokeCount, Date lastSmokeDate, List<Date> todaySmokeDateList) {
             this.averageSmokeCount = averageSmokeCount;
             this.totalSmokeCount = totalSmokeCount;
+            this.lastSmokeDate = lastSmokeDate;
             this.todaySmokeDateList = todaySmokeDateList;
         }
 
@@ -79,6 +86,10 @@ public class GetSmokeStatistic extends TransactionUserCase<Void, GetSmokeStatist
 
         public int getTodaySmokeCount() {
             return todaySmokeDateList.size();
+        }
+
+        public Date getLastSmokeDate() {
+            return lastSmokeDate;
         }
     }
 }
