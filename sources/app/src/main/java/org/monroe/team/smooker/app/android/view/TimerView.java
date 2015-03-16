@@ -15,6 +15,7 @@ import org.monroe.team.smooker.app.R;
 
 import java.lang.reflect.Method;
 
+@Deprecated
 public class TimerView extends View{
 
     private float offset;

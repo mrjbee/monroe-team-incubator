@@ -12,6 +12,7 @@ import org.monroe.team.android.box.app.ui.SlideTouchGesture;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceController;
 import org.monroe.team.android.box.utils.DisplayUtils;
 import org.monroe.team.corebox.utils.Closure;
+import org.monroe.team.corebox.utils.DateUtils;
 import org.monroe.team.corebox.utils.Lists;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.android.view.RelativeLayoutExt;
@@ -82,8 +83,9 @@ public class TilesFragment extends FrontPageFragment {
         clockTimer.schedule(new TimerTask() {
             @Override
             public void run() {
+
                long ms = System.currentTimeMillis();
-               long delta = (ms - startMs) % (60 * 1000);
+               long delta = ms % (60 * 1000);
                final float angle = 360 * delta / (60 * 1000);
                runLastOnUiThread(new Runnable() {
                    @Override
