@@ -9,7 +9,7 @@
         android:id="@+id/start_bottom_layer"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/background.main">
+        android:background="@color/background.main2">
 
         <RelativeLayout
             android:id="@+id/start_header_panel"
@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/title_activity_front_page"
                 android:textStyle="bold"
-                android:layout_marginLeft="23dp"
+                android:layout_marginLeft="20dp"
                 android:textSize="@dimen/text_size_caption"
                 android:textColor="@color/font.white"
                 android:shadowColor="@color/font.dark.shadow"
@@ -86,8 +86,9 @@
             <TextView
                 android:id="@+id/tracker_title_caption_text"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:gravity="center"
@@ -100,27 +101,6 @@
                 android:shadowDy="1"
                 />
 
-            <TextView
-                android:id="@+id/start_tile_caption_text"
-                android:layout_width="100dp"
-                android:layout_marginRight="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:gravity="center"
-                android:text="3 Mar, 2015"
-                android:textSize="@dimen/text_size_normal_small"
-                android:textColor="@color/font.dark"
-                android:shadowColor="@color/font.white.shadow"
-                android:shadowRadius="1"
-                android:shadowDy="1"
-                />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="70dp"
-                android:src="@drawable/tracker_date_picker"/>
 
             <org.monroe.team.smooker.app.android.view.DayTrackChartView
                 android:id="@+id/tracker_day_chart_view"
