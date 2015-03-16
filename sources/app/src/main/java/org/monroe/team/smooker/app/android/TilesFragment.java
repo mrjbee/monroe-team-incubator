@@ -18,6 +18,7 @@ import org.monroe.team.corebox.utils.Lists;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.android.view.RelativeLayoutExt;
 import org.monroe.team.smooker.app.android.view.RoundSegmentImageView;
+import org.monroe.team.smooker.app.android.view.TextViewExt;
 import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
 
 import java.util.ArrayList;
@@ -133,7 +134,7 @@ public class TilesFragment extends FrontPageFragment {
                 view(R.id.start_clock_value_panel, RoundSegmentImageView.class).setAngle(angle);
                 view(R.id.start_clock_value_panel, RoundSegmentImageView.class).invalidate();
                 view_text(R.id.clock_day_value).setText(daysString);
-                view_text(R.id.clock_time_value).setText(timeString);
+                view(R.id.clock_time_value, TextViewExt.class).setText(timeString,true);
             }
         });
     }
@@ -252,7 +253,7 @@ public class TilesFragment extends FrontPageFragment {
 
             @Override
             public void onY(View view, float translationY) {
-                view(R.id.start_ornament_panel).setTranslationY(-translationY + translationY*0.5f);
+                view(R.id.start_ornament_panel).setTranslationY(-translationY + translationY*0.4f);
             }
         });
 
