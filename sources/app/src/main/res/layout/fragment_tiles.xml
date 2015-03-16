@@ -37,7 +37,7 @@
                     android:layout_height="fill_parent"
                     android:src="@drawable/clock_background"
                     android:visibility="visible"/>
-                <ImageView
+                <org.monroe.team.smooker.app.android.view.RoundSegmentImageView
                     android:id="@+id/start_clock_value_panel"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"

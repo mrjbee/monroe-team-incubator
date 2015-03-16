@@ -15,9 +15,12 @@ import org.monroe.team.corebox.utils.Closure;
 import org.monroe.team.corebox.utils.Lists;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.android.view.RelativeLayoutExt;
+import org.monroe.team.smooker.app.android.view.RoundSegmentImageView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.alpha;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.animateAppearance;
@@ -56,6 +59,9 @@ public class TilesFragment extends FrontPageFragment {
     List<HoleController> holeControllerList;
     private int currentTileIndex;
 
+    private long startMs;
+    private Timer clockTimer;
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_tiles;
@@ -71,12 +77,30 @@ public class TilesFragment extends FrontPageFragment {
 
     @Override
     public void onResumeSafe() {
-
+        startMs = System.currentTimeMillis();
+        clockTimer = new Timer();
+        clockTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+               long ms = System.currentTimeMillis();
+               long delta = (ms - startMs) % (60 * 1000);
+               final float angle = 360 * delta / (60 * 1000);
+               runLastOnUiThread(new Runnable() {
+                   @Override
+                   public void run() {
+                       view(R.id.start_clock_value_panel, RoundSegmentImageView.class).setAngle(angle);
+                       view(R.id.start_clock_value_panel, RoundSegmentImageView.class).invalidate();
+                   }
+               });
+            }
+        },0,300);
     }
 
     @Override
     public void onPauseSafe() {
-
+        clockTimer.cancel();
+        clockTimer.purge();
+        clockTimer = null;
     }
 
 
