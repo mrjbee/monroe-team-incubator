@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+@Deprecated
 public class AddSmokeAnimationView extends View {
 
 

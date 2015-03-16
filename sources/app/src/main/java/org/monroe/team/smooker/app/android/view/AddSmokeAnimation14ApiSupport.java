@@ -18,6 +18,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 
+
+@Deprecated
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class AddSmokeAnimation14ApiSupport implements AddSmokeAnimationView.Support{
 

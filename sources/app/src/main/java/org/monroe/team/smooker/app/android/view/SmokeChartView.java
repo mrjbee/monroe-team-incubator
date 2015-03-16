@@ -20,6 +20,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+@Deprecated
 public class SmokeChartView extends View {
 
     Paint axisPaint;
