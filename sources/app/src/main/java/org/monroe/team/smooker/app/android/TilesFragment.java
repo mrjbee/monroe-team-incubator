@@ -82,7 +82,7 @@ public class TilesFragment extends FrontPageFragment {
     @Override
     protected void onInvalidData(Class invalidDataClass) {
         if (PrepareSmokeClockDetails.SmokeClockDetails.class == invalidDataClass){
-            fetchClockData();
+            fetchClockData(true);
         }
     }
 
@@ -93,19 +93,19 @@ public class TilesFragment extends FrontPageFragment {
             @Override
             public void run() {
                 if (msSinceLastSmoke == -1) return;
-                updateClock();
+                updateClock(true);
             }
         },0,300);
 
-        fetchClockData();
+        fetchClockData(false);
     }
 
-    private void fetchClockData() {
+    private void fetchClockData(final boolean animation) {
         application().data_smokeClock().fetch(true, new DataProvider.FetchObserver<PrepareSmokeClockDetails.SmokeClockDetails>() {
             @Override
             public void onFetch(PrepareSmokeClockDetails.SmokeClockDetails smokeClockDetails) {
                 setupClock(smokeClockDetails);
-                updateClock();
+                updateClock(animation);
             }
 
             @Override
@@ -119,11 +119,11 @@ public class TilesFragment extends FrontPageFragment {
         msSinceLastSmoke = smokeClockDetails.msSinceLastSmoke;
     }
 
-    private synchronized void updateClock() {
+    private synchronized void updateClock(final boolean animation) {
         long[] ls = DateUtils.splitPeriod(DateUtils.now(), new Date(msSinceLastSmoke));
 
         final String timeString = twoDigitString(ls[1])+":"+twoDigitString(ls[2]);
-        final String daysString = ls[0]+" days";
+        final String daysString = ls[0]+" "+getString(R.string.short_days);
 
         long ms = System.currentTimeMillis() - msSinceLastSmoke;
         long delta = ms % (60 * 1000);
@@ -134,7 +134,7 @@ public class TilesFragment extends FrontPageFragment {
                 view(R.id.start_clock_value_panel, RoundSegmentImageView.class).setAngle(angle);
                 view(R.id.start_clock_value_panel, RoundSegmentImageView.class).invalidate();
                 view_text(R.id.clock_day_value).setText(daysString);
-                view(R.id.clock_time_value, TextViewExt.class).setText(timeString,true);
+                view(R.id.clock_time_value, TextViewExt.class).setText(timeString,animation);
             }
         });
     }

@@ -79,7 +79,7 @@
     <string name="single_day">днів</string>
     <string name="few_days">днів</string>
     <string name="before_next_recommended_smoke">до наступного перекуру</string>
-    <string name="past_after_last_smoke">після останнього перекуру</string>
+    <string name="past_after_last_smoke">Без перекурів</string>
     <string name="smokes_per_day">перекурів в день</string>
     <string name="short_min">хв</string>
     <string name="short_days">днів</string>
