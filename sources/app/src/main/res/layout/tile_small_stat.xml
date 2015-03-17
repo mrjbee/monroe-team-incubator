@@ -11,7 +11,7 @@
             android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total/Average"
+            android:text="Total"
             android:textSize="@dimen/text_size_normal"
             android:textColor="@color/font.dark.light"
             android:id="@+id/stat_total_smokes"
@@ -19,15 +19,15 @@
             android:layout_toRightOf="@+id/stat_image"/>
 
         <TextView
-            android:layout_marginTop="7dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="120 / 5 smokes"
+            android:text="120 smokes"
             android:textSize="@dimen/text_size_normal_smalles"
             android:textColor="@color/font.dark.lighter"
             android:id="@+id/stat_total_smokes_value"
-            android:layout_below="@+id/stat_total_smokes"
-            android:layout_alignLeft="@+id/stat_total_smokes" />
+            android:layout_alignBottom="@+id/stat_total_smokes"
+            android:layout_alignLeft="@+id/textView2"
+            android:layout_alignStart="@+id/textView2" />
 
     <ImageView
         android:layout_width="30dp"
@@ -36,5 +36,28 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:src="@drawable/tile_icon_stat"/>
+
+    <TextView
+        android:layout_marginTop="6dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Average"
+        android:textSize="@dimen/text_size_normal"
+        android:textColor="@color/font.dark.light"
+        android:id="@+id/stat_average_text"
+        android:layout_below="@+id/stat_image"
+        android:layout_alignLeft="@+id/stat_total_smokes"
+        android:layout_alignStart="@+id/stat_total_smokes" />
+
+    <TextView
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5 smokes"
+        android:textSize="@dimen/text_size_normal_smalles"
+        android:textColor="@color/font.dark.lighter"
+        android:id="@+id/textView2"
+        android:layout_alignBottom="@+id/stat_average_text"
+        android:layout_toRightOf="@+id/stat_average_text" />
 
 </RelativeLayout>
