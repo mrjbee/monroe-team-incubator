@@ -3,69 +3,38 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:gravity="center"
-    android:layout_marginLeft="10dp">
+    android:layout_marginTop="15dp"
+    android:layout_marginLeft="20dp">
 
         <TextView
-            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total/This week average"
-            android:textSize="@dimen/text_size_caption_small"
+            android:text="Total/Average"
+            android:textSize="@dimen/text_size_normal"
             android:textColor="@color/font.dark.light"
             android:id="@+id/stat_total_smokes"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/stat_image"/>
 
         <TextView
-            android:layout_marginLeft="20dp"
+            android:layout_marginTop="7dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="120 / 5 smokes"
-            android:textSize="@dimen/text_size_normal_small"
+            android:textSize="@dimen/text_size_normal_smalles"
             android:textColor="@color/font.dark.lighter"
             android:id="@+id/stat_total_smokes_value"
             android:layout_below="@+id/stat_total_smokes"
             android:layout_alignLeft="@+id/stat_total_smokes" />
 
-        <LinearLayout
-            android:id="@+id/stat_separ"
-            android:layout_marginTop="5dp"
-            android:layout_below="@+id/stat_total_smokes_value"
-            android:layout_alignLeft="@+id/stat_total_smokes"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@color/font.dark.lightest"
-            android:orientation="vertical" />
-
-    <TextView
-        android:layout_marginTop="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Last week average"
-        android:textSize="@dimen/text_size_normal_small"
-        android:textColor="@color/font.dark.light"
-        android:id="@+id/stat_this_week"
-        android:layout_below="@+id/stat_separ"
-        android:layout_alignLeft="@+id/stat_total_smokes"/>
-
-    <TextView
-        android:layout_marginLeft="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="5 smokes"
-        android:textSize="@dimen/text_size_normal_small"
-        android:textColor="@color/font.dark.lighter"
-        android:id="@+id/stat_this_week_value"
-        android:layout_toRightOf="@+id/stat_this_week"
-        android:layout_alignBottom="@+id/stat_this_week" />
-
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:id="@+id/stat_image"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/chart_btn_checked"/>
+        android:src="@drawable/tile_icon_stat"/>
 
 </RelativeLayout>
