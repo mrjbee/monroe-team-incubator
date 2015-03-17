@@ -26,8 +26,8 @@
             android:textColor="@color/font.dark.lighter"
             android:id="@+id/stat_total_smokes_value"
             android:layout_alignBottom="@+id/stat_total_smokes"
-            android:layout_alignLeft="@+id/textView2"
-            android:layout_alignStart="@+id/textView2" />
+            android:layout_alignLeft="@+id/stat_average_text_value"
+            android:layout_alignStart="@+id/stat_average_text_value" />
 
     <ImageView
         android:layout_width="30dp"
@@ -56,7 +56,7 @@
         android:text="5 smokes"
         android:textSize="@dimen/text_size_normal_smalles"
         android:textColor="@color/font.dark.lighter"
-        android:id="@+id/textView2"
+        android:id="@+id/stat_average_text_value"
         android:layout_alignBottom="@+id/stat_average_text"
         android:layout_toRightOf="@+id/stat_average_text" />
 

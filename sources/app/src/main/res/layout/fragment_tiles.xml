@@ -179,12 +179,22 @@
                 android:background="@drawable/panel_round_whitest_2">
                 <LinearLayout
                     android:layout_weight="1"
-                    android:id="@+id/start_tile_big_content"
+                    android:id="@+id/start_tile_big_content_wrapper"
                     android:orientation="vertical"
                     android:layout_width="fill_parent"
                     android:layout_height="300dp"
                     android:gravity="bottom"
                     android:visibility="gone">
+                        <LinearLayout
+                            android:id="@+id/start_tile_big_content"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:visibility="invisible"
+                            android:orientation="horizontal">
+                            <org.monroe.team.smooker.app.android.view.SmokeHistogramView
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent" />
+                        </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/start_tile_small_content"

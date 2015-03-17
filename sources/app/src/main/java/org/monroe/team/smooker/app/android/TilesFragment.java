@@ -2,6 +2,7 @@ package org.monroe.team.smooker.app.android;
 
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,6 @@ import org.monroe.team.smooker.app.android.view.RelativeLayoutExt;
 import org.monroe.team.smooker.app.android.view.RoundSegmentImageView;
 import org.monroe.team.smooker.app.android.view.TextViewExt;
 import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
-import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -83,7 +83,7 @@ public class TilesFragment extends FrontPageFragment {
 
     @Override
     protected void onInvalidData(Class invalidDataClass) {
-        if (PrepareSmokeClockDetails.SmokeClockDetails.class == invalidDataClass){
+        if (PrepareSmokeClockDetails.SmokeClockDetails.class == invalidDataClass) {
             fetchClockData(true);
         }
     }
@@ -97,7 +97,7 @@ public class TilesFragment extends FrontPageFragment {
                 if (msSinceLastSmoke == -1) return;
                 updateClock(true);
             }
-        },0,300);
+        }, 0, 300);
 
         fetchClockData(false);
     }
@@ -124,8 +124,8 @@ public class TilesFragment extends FrontPageFragment {
     private synchronized void updateClock(final boolean animation) {
         long[] ls = DateUtils.splitPeriod(DateUtils.now(), new Date(msSinceLastSmoke));
 
-        final String timeString = twoDigitString(ls[1])+":"+twoDigitString(ls[2]);
-        final String daysString = ls[0]+" "+getString(R.string.short_days);
+        final String timeString = twoDigitString(ls[1]) + ":" + twoDigitString(ls[2]);
+        final String daysString = ls[0] + " " + getString(R.string.short_days);
 
         long ms = System.currentTimeMillis() - msSinceLastSmoke;
         long delta = ms % (60 * 1000);
@@ -136,15 +136,15 @@ public class TilesFragment extends FrontPageFragment {
                 view(R.id.start_clock_value_panel, RoundSegmentImageView.class).setAngle(angle);
                 view(R.id.start_clock_value_panel, RoundSegmentImageView.class).invalidate();
                 view_text(R.id.clock_day_value).setText(daysString);
-                view(R.id.clock_time_value, TextViewExt.class).setText(timeString,animation);
+                view(R.id.clock_time_value, TextViewExt.class).setText(timeString, animation);
             }
         });
     }
 
     private String twoDigitString(long val) {
         String textValue = Long.toString(val);
-        if (textValue.length() < 2){
-            textValue = "0"+textValue;
+        if (textValue.length() < 2) {
+            textValue = "0" + textValue;
         }
         return textValue;
     }
@@ -161,9 +161,9 @@ public class TilesFragment extends FrontPageFragment {
     @Override
     public void onScreenSizeCalculatedSafe(int activityWidth, int activityHeight) {
 
-        height_px_close_dash = activityHeight - dpToPx(height_dp_background_bottom(),height_dp_open_picker(), height_dp_action_bar());
+        height_px_close_dash = activityHeight - dpToPx(height_dp_background_bottom(), height_dp_open_picker(), height_dp_action_bar());
 
-        bottomLayerAC = animateAppearance(view(R.id.start_bottom_layer),ySlide(- height_px_close_dash, 0))
+        bottomLayerAC = animateAppearance(view(R.id.start_bottom_layer), ySlide(-height_px_close_dash, 0))
                 .showAnimation(duration_constant(400), interpreter_overshot())
                 .hideAnimation(duration_auto_fint(0.5f), interpreter_decelerate(0.3f))
                 .build();
@@ -175,7 +175,7 @@ public class TilesFragment extends FrontPageFragment {
                 .build();
 
         tileCaptionTextChangeAC = animateAppearance(view(R.id.start_tile_caption_text),
-                alpha(1f,0.2f))
+                alpha(1f, 0.2f))
                 .showAnimation(duration_constant(400), interpreter_decelerate(null))
                 .hideAnimation(duration_constant(200), interpreter_accelerate(0.3f))
                 .build();
@@ -196,10 +196,12 @@ public class TilesFragment extends FrontPageFragment {
 
         float tileBigDataHeight =
                 activityHeight - dpToPx(height_dp_open_picker() + height_dp_tile_title() * 1.2f + height_dp_action_bar() + height_dp_tile_small_content() + height_dp_holes());
-        tileBigContentAC = animateAppearance(view(R.id.start_tile_big_content), heightSlide((int) tileBigDataHeight, 0))
+
+        tileBigContentAC = animateAppearance(view(R.id.start_tile_big_content_wrapper), heightSlide((int) tileBigDataHeight, 0))
                 .showAnimation(duration_constant(200), interpreter_overshot())
                 .hideAnimation(duration_constant(150), interpreter_decelerate(0.5f))
                 .hideAndGone().build();
+
 
         tileShowFromLeftAC = animateAppearance(view(R.id.start_tile_content),
                 xSlide(0, -DisplayUtils.screenWidth(getResources()))
@@ -216,33 +218,33 @@ public class TilesFragment extends FrontPageFragment {
                 .hideAndGone().build();
 
         tileShowAC = animateAppearance(view(R.id.start_tile_content),
-                xSlide(0,-DisplayUtils.screenWidth(getResources()))
+                xSlide(0, -DisplayUtils.screenWidth(getResources()))
         )
                 .showAnimation(duration_constant(200), interpreter_overshot())
                 .hideAnimation(duration_constant(200), interpreter_decelerate(0.5f))
                 .hideAndGone().build();
 
         settingAlternativeBtnAC = combine(
-                animateAppearance(view(R.id.start_setting_dublicate_btn), scale(1f,0f))
+                animateAppearance(view(R.id.start_setting_dublicate_btn), scale(1f, 0f))
                         .showAnimation(duration_constant(400), interpreter_overshot())
                         .hideAnimation(duration_constant(400), interpreter_accelerate(0.4f))
                         .hideAndInvisible(),
-                animateAppearance(view(R.id.start_setting_dublicate_btn), rotate(180+90,0))
+                animateAppearance(view(R.id.start_setting_dublicate_btn), rotate(180 + 90, 0))
                         .showAnimation(duration_constant(300), interpreter_overshot())
                         .hideAnimation(duration_constant(300), interpreter_accelerate(0.4f))
         );
 
-        addSmokeBtnAC =  animateAppearance(view(R.id.add_btn), scale(1f,0f))
-                        .showAnimation(duration_constant(300), interpreter_overshot())
-                        .hideAnimation(duration_constant(300), interpreter_accelerate(0.4f))
-                        .hideAndInvisible().build();
+        addSmokeBtnAC = animateAppearance(view(R.id.add_btn), scale(1f, 0f))
+                .showAnimation(duration_constant(300), interpreter_overshot())
+                .hideAnimation(duration_constant(300), interpreter_accelerate(0.4f))
+                .hideAndInvisible().build();
 
 
-        timePanelAC =  combine(
+        timePanelAC = combine(
 
                 animateAppearance(view(R.id.start_time_panel), alpha(1f, 0f))
-                    .showAnimation(duration_constant(200), interpreter_accelerate(null))
-                    .hideAnimation(duration_constant(200), interpreter_accelerate(0.4f)),
+                        .showAnimation(duration_constant(200), interpreter_accelerate(null))
+                        .hideAnimation(duration_constant(200), interpreter_accelerate(0.4f)),
 
                 animateAppearance(view(R.id.start_ornament_panel), alpha(1f, 0f))
                         .showAnimation(duration_constant(200), interpreter_accelerate(null))
@@ -255,7 +257,7 @@ public class TilesFragment extends FrontPageFragment {
 
             @Override
             public void onY(View view, float translationY) {
-                view(R.id.start_ornament_panel).setTranslationY(-translationY + translationY*0.4f);
+                view(R.id.start_ornament_panel).setTranslationY(-translationY + translationY * 0.4f);
             }
         });
 
@@ -274,39 +276,38 @@ public class TilesFragment extends FrontPageFragment {
         setupTileBoard();
         applyTileContentUsing(0);
         setupTileCaption();
-        View smallContentView = getTileController(currentTileIndex).getSmallContent(activity().getLayoutInflater(), view(R.id.start_tile_small_content,ViewGroup.class));
-        setupSmallTileView(smallContentView);
+        applyTileContentUsing(currentTileIndex);
     }
 
-    private float dpToPx(float ... values){
-        int value = 0 ;
+    private float dpToPx(float... values) {
+        int value = 0;
         for (float v : values) {
             value += v;
         }
         return DisplayUtils.dpToPx(value, getResources());
     }
 
-    private int height_dp_action_bar(){
+    private int height_dp_action_bar() {
         return 50;
     }
 
-    private int height_dp_open_picker(){
+    private int height_dp_open_picker() {
         return 33;
     }
 
-    private int height_dp_tile_small_content(){
+    private int height_dp_tile_small_content() {
         return 100;
     }
 
-    private int height_dp_holes(){
+    private int height_dp_holes() {
         return 20;
     }
 
-    private int height_dp_tile_title(){
+    private int height_dp_tile_title() {
         return 60;
     }
 
-    private int height_dp_background_bottom(){
+    private int height_dp_background_bottom() {
         return 200;
     }
 
@@ -376,7 +377,6 @@ public class TilesFragment extends FrontPageFragment {
     }
 
 
-
     //when picker is down
     private void setupDashCloseState() {
         view(R.id.start_open_picker_panel).setOnTouchListener(new SlideTouchGesture(400, SlideTouchGesture.Axis.Y_UP) {
@@ -405,6 +405,7 @@ public class TilesFragment extends FrontPageFragment {
                                             @Override
                                             public void onAnimationEnd(Animator animation) {
                                                 settingAlternativeBtnAC.show();
+                                                view(R.id.start_tile_big_content).setVisibility(View.VISIBLE);
                                             }
                                         });
                                     }
@@ -440,14 +441,14 @@ public class TilesFragment extends FrontPageFragment {
             @Override
             protected void onProgress(float x, float y, float slideValue, float fraction) {
                 view(R.id.start_bottom_layer).setTranslationY((float) (startTranslation + height_px_close_dash * fraction));
-                float scaleFactor = 1.2f - 0.5f *fraction;
-                view(R.id.start_tile_caption_text,TextView.class).setScaleX(scaleFactor);
-                view(R.id.start_tile_caption_text,TextView.class).setScaleY(scaleFactor);
+                float scaleFactor = 1.2f - 0.5f * fraction;
+                view(R.id.start_tile_caption_text, TextView.class).setScaleX(scaleFactor);
+                view(R.id.start_tile_caption_text, TextView.class).setScaleY(scaleFactor);
                 view(R.id.start_tile_space_wrap_panel).getLayoutParams().height = (int) (startHeight + height_px_close_dash * fraction);
                 view(R.id.start_tile_space_wrap_panel).requestLayout();
-                view(R.id.start_time_panel).setAlpha(1f*fraction);
+                view(R.id.start_time_panel).setAlpha(1f * fraction);
                 float alpha = fraction * 2;
-                if (alpha > 1f){
+                if (alpha > 1f) {
                     alpha = 1f;
                 }
                 view(R.id.start_ornament_panel).setAlpha(alpha);
@@ -470,7 +471,17 @@ public class TilesFragment extends FrontPageFragment {
                         animator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
-                                tileBigContentAC.show();
+                                tileBigContentAC.showAndCustomize(new AppearanceController.AnimatorCustomization() {
+                                    @Override
+                                    public void customize(Animator ani) {
+                                        ani.addListener(new AnimatorListenerAdapter() {
+                                            @Override
+                                            public void onAnimationEnd(Animator animation) {
+                                                view(R.id.start_tile_big_content).setVisibility(View.VISIBLE);
+                                            }
+                                        });
+                                    }
+                                });
                             }
                         });
                     }
@@ -485,6 +496,7 @@ public class TilesFragment extends FrontPageFragment {
     }
 
     private void onStartingCloseDash() {
+        view(R.id.start_tile_big_content).setVisibility(View.INVISIBLE);
         tileBigContentAC.hide();
         settingAlternativeBtnAC.hide();
     }
@@ -495,7 +507,7 @@ public class TilesFragment extends FrontPageFragment {
         bottomLayerAC.hideAndCustomize(new AppearanceController.AnimatorCustomization() {
             @Override
             public void customize(Animator animator) {
-                animator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter(){
+                animator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(final Animator animation) {
                         setupDashCloseState();
@@ -514,21 +526,21 @@ public class TilesFragment extends FrontPageFragment {
     }
 
     public boolean onBackPressedSafe() {
-        if (view(R.id.start_tile_big_content).getVisibility() == View.VISIBLE){
+        if (view(R.id.start_tile_big_content_wrapper).getVisibility() == View.VISIBLE) {
             onStartingCloseDash();
             closeDash();
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
     private int calculateTileIndex(int step) {
         int answer = currentTileIndex + step;
-        if (answer < 0){
+        if (answer < 0) {
             answer = Lists.getLastIndex(tileControllerList);
         }
-        if (answer > Lists.getLastIndex(tileControllerList)){
+        if (answer > Lists.getLastIndex(tileControllerList)) {
             answer = 0;
         }
         return answer;
@@ -538,9 +550,6 @@ public class TilesFragment extends FrontPageFragment {
     private void changeTileContentUsing(int tileControllerIndex) {
         destroyTileContentUsing(currentTileIndex);
         applyTileContentUsing(tileControllerIndex);
-        View view = getTileController(currentTileIndex).getSmallContent(activity().getLayoutInflater(), view(R.id.start_tile_small_content, ViewGroup.class));
-        setupSmallTileView(view);
-        getTileController(tileControllerIndex).onResume();
     }
 
     private void destroyTileContentUsing(int tileControllerIndex) {
@@ -550,7 +559,11 @@ public class TilesFragment extends FrontPageFragment {
 
     private void applyTileContentUsing(int tileControllerIndex) {
         currentTileIndex = tileControllerIndex;
-        //TODO: place data to panels
+        View view = getTileController(currentTileIndex).getSmallContent(activity().getLayoutInflater(), view(R.id.start_tile_small_content, ViewGroup.class));
+        setupSmallTileView(view);
+        view = getTileController(currentTileIndex).getBigContent(activity().getLayoutInflater(), view(R.id.start_tile_small_content, ViewGroup.class));
+        setupBigTileView(view);
+        getTileController(tileControllerIndex).onResume();
     }
 
     private void setupTileCaption() {
@@ -599,13 +612,19 @@ public class TilesFragment extends FrontPageFragment {
         View getSmallContent(LayoutInflater layoutInflater, ViewGroup parentView);
         void onPause();
         void onResume();
+        View getBigContent(LayoutInflater layoutInflater, ViewGroup view);
     }
 
     private abstract class AbstractTileController implements TileController{
 
         protected View smallContentView;
+        protected View bigContentView;
 
         protected int smallTileId() {
+            return R.layout.tile_small_stub;
+        }
+
+        protected int bigTileId() {
             return R.layout.tile_small_stub;
         }
 
@@ -615,6 +634,14 @@ public class TilesFragment extends FrontPageFragment {
                 smallContentView = layoutInflater.inflate(smallTileId(), parentView, false);
             }
             return smallContentView;
+        }
+
+        @Override
+        final public View getBigContent(LayoutInflater layoutInflater, ViewGroup parentView) {
+            if (bigContentView == null) {
+                bigContentView = layoutInflater.inflate(bigTileId(), parentView, false);
+            }
+            return bigContentView;
         }
 
         @Override
@@ -634,6 +661,12 @@ public class TilesFragment extends FrontPageFragment {
         layout.addView(smallContentView);
     }
 
+    private void setupBigTileView(View smallContentView) {
+        ViewGroup layout = view(R.id.start_tile_big_content, ViewGroup.class);
+        layout.removeAllViews();
+        layout.addView(smallContentView);
+    }
+
     class StatisticTile extends AbstractTileController{
 
         @Override
@@ -644,6 +677,11 @@ public class TilesFragment extends FrontPageFragment {
         @Override
         protected int smallTileId() {
             return R.layout.tile_small_stat;
+        }
+
+        @Override
+        protected int bigTileId() {
+            return R.layout.tile_big_stat;
         }
     }
 
