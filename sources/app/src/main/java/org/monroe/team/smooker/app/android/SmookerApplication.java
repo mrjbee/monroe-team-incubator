@@ -29,6 +29,7 @@ import org.monroe.team.smooker.app.uc.AddSmoke;
 import org.monroe.team.smooker.app.uc.CalculateSchedule;
 import org.monroe.team.smooker.app.uc.GetBasicSmokeQuitDetails;
 import org.monroe.team.smooker.app.uc.GetSmokeStatistic;
+import org.monroe.team.smooker.app.uc.PreparePeriodStatistic;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeSchedule;
 
@@ -274,6 +275,7 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
                     model().getTodaySmokeDetailsDataProvider().invalidate();
                     model().getTodaySmokeScheduleDataProvider().invalidate();
                     model().getSmokeClockDataProvider().invalidate();
+                    model().getPeriodStatsProvider().invalidate();
 
                 } else {
                     warn(AddSmoke.class);
@@ -302,5 +304,9 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
 
     public DataProvider<org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails.SmokeClockDetails> data_smokeClock() {
         return model().getSmokeClockDataProvider();
+    }
+
+    public DataProvider<PreparePeriodStatistic.PeriodStatistic> data_periodStat() {
+        return model().getPeriodStatsProvider();
     }
 }

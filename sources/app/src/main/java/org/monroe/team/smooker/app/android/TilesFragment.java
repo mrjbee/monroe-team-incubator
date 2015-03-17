@@ -20,7 +20,9 @@ import org.monroe.team.corebox.utils.Lists;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.android.view.RelativeLayoutExt;
 import org.monroe.team.smooker.app.android.view.RoundSegmentImageView;
+import org.monroe.team.smooker.app.android.view.SmokePeriodHistogramView;
 import org.monroe.team.smooker.app.android.view.TextViewExt;
+import org.monroe.team.smooker.app.uc.PreparePeriodStatistic;
 import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 
@@ -674,18 +676,17 @@ public class TilesFragment extends FrontPageFragment {
         layout.addView(smallContentView);
     }
 
-    private void setupBigTileView(View smallContentView) {
+    private void setupBigTileView(View bigContentView) {
         ViewGroup layout = view(R.id.start_tile_big_content, ViewGroup.class);
         layout.removeAllViews();
-        layout.addView(smallContentView);
+        layout.addView(bigContentView);
     }
 
     class StatisticTile extends AbstractTileController{
 
-        private TextView averageText;
         private TextView averageValueText;
         private TextView totalValueText;
-
+        private SmokePeriodHistogramView histogramView;
 
         @Override
         public String caption() {
@@ -704,14 +705,19 @@ public class TilesFragment extends FrontPageFragment {
 
         @Override
         protected void findView_smallContent(View smallContentView) {
-            averageText = (TextView) smallContentView.findViewById(R.id.stat_average_text);
             averageValueText = (TextView) smallContentView.findViewById(R.id.stat_average_text_value);
             totalValueText = (TextView) smallContentView.findViewById(R.id.stat_total_smokes_value);
         }
 
         @Override
+        protected void findView_bigContent(View bigContentView) {
+            histogramView = (SmokePeriodHistogramView) bigContentView.findViewById(R.id.stat_chart);
+        }
+
+        @Override
         public void onResume() {
             fetchSmokeDetails();
+            fetchPeriodData();
         }
 
         private void fetchSmokeDetails() {
@@ -733,13 +739,32 @@ public class TilesFragment extends FrontPageFragment {
             });
         }
 
+        private void fetchPeriodData() {
+            application().data_periodStat().fetch(true, new DataProvider.FetchObserver<PreparePeriodStatistic.PeriodStatistic>() {
+                @Override
+                public void onFetch(PreparePeriodStatistic.PeriodStatistic periodStatistic) {
+                    histogramView.setModel(periodStatistic.smokesPerDayList);
+                }
+
+                @Override
+                public void onError(DataProvider.FetchError fetchError) {
+                    activity().forceCloseWithErrorCode(203);
+                }
+            });
+        }
+
         @Override
         public void onInvalidData(Class dataClass) {
+            if (histogramView == null) return;
             if (dataClass == PrepareTodaySmokeDetails.TodaySmokeDetails.class){
                 fetchSmokeDetails();
+            } else if(dataClass == PreparePeriodStatistic.PeriodStatistic.class){
+                fetchPeriodData();
             }
         }
     }
+
+
 
     class MotivationTile extends AbstractTileController{
 

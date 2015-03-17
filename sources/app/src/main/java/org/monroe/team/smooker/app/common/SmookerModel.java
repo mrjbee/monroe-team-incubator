@@ -19,6 +19,7 @@ import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
 import org.monroe.team.smooker.app.db.Dao;
 import org.monroe.team.smooker.app.db.SmookerSchema;
+import org.monroe.team.smooker.app.uc.PreparePeriodStatistic;
 import org.monroe.team.smooker.app.uc.CalculateSchedule;
 import org.monroe.team.smooker.app.uc.GetBasicSmokeQuitDetails;
 import org.monroe.team.smooker.app.uc.GetSmokeStatistic;
@@ -32,6 +33,7 @@ public class SmookerModel extends AndroidModel{
     private DataProvider<PrepareTodaySmokeDetails.TodaySmokeDetails> todaySmokeDetailsDataProvider;
     private UcDataProvider<PrepareTodaySmokeSchedule.TodaySmokeSchedule> todaySmokeScheduleDataProvider;
     private UcDataProvider<PrepareSmokeClockDetails.SmokeClockDetails> smokeClockDataProvider;
+    private UcDataProvider<PreparePeriodStatistic.PeriodStatistic> periodStatsProvider;
 
     public SmookerModel(Context context) {
         super("SMOOKER", context);
@@ -94,6 +96,10 @@ public class SmookerModel extends AndroidModel{
                 PrepareSmokeClockDetails.SmokeClockDetails.class,
                 PrepareSmokeClockDetails.class);
 
+        periodStatsProvider = new UcDataProvider<PreparePeriodStatistic.PeriodStatistic>(this,
+                context,
+                PreparePeriodStatistic.PeriodStatistic.class,
+                PreparePeriodStatistic.class);
 
     }
 
@@ -108,6 +114,10 @@ public class SmookerModel extends AndroidModel{
 
     public UcDataProvider<PrepareSmokeClockDetails.SmokeClockDetails> getSmokeClockDataProvider() {
         return smokeClockDataProvider;
+    }
+
+    public UcDataProvider<PreparePeriodStatistic.PeriodStatistic> getPeriodStatsProvider() {
+        return periodStatsProvider;
     }
 
     public void stopNotificationControlService() {

@@ -15,7 +15,7 @@
         android:id="@+id/stat_chart_caption"
         />
 
-    <org.monroe.team.smooker.app.android.view.SmokeHistogramView
+    <org.monroe.team.smooker.app.android.view.SmokePeriodHistogramView
         android:id="@+id/stat_chart"
         android:layout_below="@+id/stat_chart_caption"
         android:layout_width="fill_parent"
