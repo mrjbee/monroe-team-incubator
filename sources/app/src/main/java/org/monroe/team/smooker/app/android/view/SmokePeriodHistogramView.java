@@ -31,8 +31,8 @@ public class SmokePeriodHistogramView extends View {
     Paint stripePaint;
 
     Paint valuePaint;
+    Paint valueShadowPaint;
     Paint selectionValuePaint;
-    Paint selectionValuePaintWithoutShadow;
 
 
     Rect verticalAxisTextBounds = new Rect();
@@ -86,32 +86,23 @@ public class SmokePeriodHistogramView extends View {
 
         valuePaint = new Paint();
         valuePaint.setAntiAlias(true);
-        valuePaint.setColor(Color.parseColor("#58cb1c"));
+        valuePaint.setColor(Color.parseColor("#d53434"));
         valuePaint.setStyle(Paint.Style.STROKE);
         valuePaint.setStrokeWidth(dimen(R.integer.chart_stroke_default_float));
 
+        valueShadowPaint = new Paint();
+        valueShadowPaint.setAntiAlias(true);
+        valueShadowPaint.setColor(Color.parseColor("#000000"));
+        valueShadowPaint.setAlpha(50);
+        valueShadowPaint.setStyle(Paint.Style.STROKE);
+        valueShadowPaint.setStrokeWidth(dimen(R.integer.chart_stroke_default_float));
+
+
         selectionValuePaint= new Paint();
         selectionValuePaint.setAntiAlias(true);
-        selectionValuePaint.setColor(Color.parseColor("#008cec"));
+        selectionValuePaint.setColor(Color.parseColor("#3c3c3c"));
         selectionValuePaint.setStrokeWidth(dimen(R.integer.chart_stroke_boldest_float));
         selectionValuePaint.setTextSize(axisCaptionTextSize);
-        selectionValuePaint.setShadowLayer(
-                dimen(R.integer.chart_shadow_radius_float),
-                dimen(R.integer.chart_shadow_dx_float),
-                dimen(R.integer.chart_shadow_dy_float), Color.LTGRAY);
-
-        selectionValuePaintWithoutShadow = new Paint();
-        selectionValuePaintWithoutShadow.setAntiAlias(true);
-        selectionValuePaintWithoutShadow.setColor(Color.parseColor("#008cec"));
-        selectionValuePaintWithoutShadow.setStrokeWidth(dimen(R.integer.chart_stroke_boldest_float));
-        selectionValuePaintWithoutShadow.setTextSize(axisCaptionTextSize);
-
-        try {
-            Method method = this.getClass().getMethod("setLayerType",int.class,Paint.class);
-            if (method!=null){
-                method.invoke(this,LAYER_TYPE_SOFTWARE, selectionValuePaint);
-            }
-        } catch (Exception e) {}
 
         axisLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.LINEAR_TEXT_FLAG);
         axisLabelPaint.setAntiAlias(true);
@@ -122,7 +113,7 @@ public class SmokePeriodHistogramView extends View {
         verticalAxisPadding = verticalAxisTextBounds.height() / 2;
 
         axisLabelPaint.getTextBounds(horizontalAxisName, 0, horizontalAxisName.length(), horizontalAxisTextBounds);
-        horizontalAxisPadding = horizontalAxisTextBounds.height() * 1.5f;
+        horizontalAxisPadding = horizontalAxisTextBounds.height() * 2f;
 
         transparentPaint = new Paint();
         transparentPaint.setColor(Color.TRANSPARENT);
@@ -133,7 +124,8 @@ public class SmokePeriodHistogramView extends View {
 
         stripePaint = new Paint();
         stripePaint.setColor(Color.BLACK);
-        stripePaint.setAlpha(30);
+        stripePaint.setAlpha(10);
+        stripePaint.setStrokeWidth(1);
 
     }
 
@@ -150,46 +142,19 @@ public class SmokePeriodHistogramView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        drawBackgroundStripes(canvas);
+        //drawBackgroundStripes(canvas);
         float topPadding = drawStripes(canvas);
 
         List<TempModelItem> valuePoints = new ArrayList<TempModelItem>();
 
         if(!model.isEmpty()){
-            drawModel(canvas,valuePoints);
+            drawModel(canvas,null, valueShadowPaint, new PointF(2, 4));
+            drawModel(canvas,valuePoints, valuePaint, new PointF(0,0));
         }
-
-        if(originalTouch != null){
-            drawSelectionShadow(canvas, valuePoints);
-            valuePoints.clear();
-            drawModel(canvas, valuePoints);
-        }
-
-        drawAxis(canvas, topPadding);
 
         if(originalTouch != null){
             drawSelection(canvas, valuePoints);
         }
-    }
-
-
-    private void drawSelectionShadow(Canvas canvas,   List<TempModelItem> valuePoints) {
-
-        PointF touch = new PointF(originalTouch.x, originalTouch.y);
-
-        if (touch.x < verticalAxisPadding + 5) {
-            touch.set(verticalAxisPadding + 5, touch.y);
-        } else if (touch.x > getMaxXValue()) {
-            touch.x = getMaxXValue();
-        }
-
-        TempModelItem modelItem = findSmoke(touch, valuePoints);
-        if (modelItem != null) {
-            touch.set(modelItem.valueAnchor.x, touch.y);
-        }
-
-        canvas.drawLine(touch.x, 0, touch.x, getHeight() - horizontalAxisPadding, selectionValuePaint);
-
     }
 
     private void drawSelection(Canvas canvas,   List<TempModelItem> valuePoints) {
@@ -207,7 +172,7 @@ public class SmokePeriodHistogramView extends View {
             touch.set(modelItem.valueAnchor.x,touch.y);
         }
 
-        canvas.drawLine(touch.x, 0, touch.x, getHeight() - horizontalAxisPadding, selectionValuePaintWithoutShadow);
+        canvas.drawLine(touch.x, 0, touch.x, getHeight() - horizontalAxisPadding, selectionValuePaint);
         Rect textBounds = new Rect();
         String timeText = null;
         if (modelItem != null){
@@ -229,7 +194,8 @@ public class SmokePeriodHistogramView extends View {
                 textXPosition = getWidth() - textBounds.width() - 5;
             }
 
-            canvas.drawText(timeText, textXPosition, getHeight() - horizontalAxisPadding + timeText2Bounds.height() * 1.2f, selectionValuePaint);
+            canvas.drawText(timeText, textXPosition,
+                    getHeight() - timeText2Bounds.height()/2, selectionValuePaint);
         }
 
         if (modelItem != null && modelItem.value > 0){
@@ -240,7 +206,7 @@ public class SmokePeriodHistogramView extends View {
                 valueTextX = modelItem.valueAnchor.x + stripeHeight;
             }
             canvas.drawText(text,valueTextX, modelItem.valueAnchor.y -stripeHeight, selectionValuePaint);
-            canvas.drawCircle(modelItem.valueAnchor.x,modelItem.valueAnchor.y,stripeHeight / 2, selectionValuePaintWithoutShadow);
+            canvas.drawCircle(modelItem.valueAnchor.x,modelItem.valueAnchor.y,stripeHeight, selectionValuePaint);
         }
     }
 
@@ -264,25 +230,28 @@ public class SmokePeriodHistogramView extends View {
     }
 
 
-    private void drawModel(Canvas canvas,   List<TempModelItem> valuePoints) {
-        valuePaint.setStyle(Paint.Style.FILL);
+    private void drawModel(Canvas canvas,   List<TempModelItem> valuePoints, Paint paint, PointF offset) {
+        paint.setStyle(Paint.Style.FILL);
 
         float barWidth = getBarWidth();
 
         RectF barRect = new RectF();
         for (int i = 0; i < model.size() ; i++) {
-            barRect.set(verticalAxisPadding + i*barWidth + (i+1)*barSpacing,
-                    getHeight() - horizontalAxisPadding - model.get(i).second * getSmokeHeight(),
-                    verticalAxisPadding + (i+1)*barWidth + (i+1)*barSpacing,
-                    getHeight() - horizontalAxisPadding);
+            barRect.set(
+                    verticalAxisPadding + i*barWidth + (i+1)*barSpacing+offset.x,
+                    getHeight() - horizontalAxisPadding - model.get(i).second * getSmokeHeight()+offset.y,
+                    verticalAxisPadding + (i+1)*barWidth + (i+1)*barSpacing+offset.x,
+                    getHeight() - horizontalAxisPadding+offset.y);
 
-            canvas.drawRect(barRect, valuePaint);
-            valuePoints.add(new TempModelItem(
-                    new PointF(verticalAxisPadding + i*barWidth + (i+1)*barSpacing + barWidth/2,
-                            getHeight() - horizontalAxisPadding - model.get(i).second * getSmokeHeight()),
-                    model.get(i).second,
-                    model.get(i).first
-            ));
+            canvas.drawRect(barRect, paint);
+            if (valuePoints != null) {
+                valuePoints.add(new TempModelItem(
+                        new PointF(verticalAxisPadding + i * barWidth + (i + 1) * barSpacing + barWidth / 2,
+                                getHeight() - horizontalAxisPadding - model.get(i).second * getSmokeHeight()),
+                        model.get(i).second,
+                        model.get(i).first
+                ));
+            }
         }
     }
 
