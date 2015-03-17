@@ -4,7 +4,7 @@
     <string name="app_name">Smooker</string>
     <string name="app_version">App Version 1.5</string>
     <string name="chart_time_axis">hours</string>
-    <string name="chart_smokes_axis">smokes</string>
+    <string name="smokes">smokes</string>
     <string name="chart_day_axis">dates</string>
     <string name="a_wizard_title">Smooker Setup</string>
     <string name="a_wizard_about">About Setup</string>
@@ -102,5 +102,7 @@
     <string name="over_limit">Over today limit</string>
     <string name="title_activity_front_page" translatable="false">Smooker</string>
     <string name="hello_world">Hello world!</string>
+    <string name="not_enough_data">not enough data</string>
+    <string name="statistics">Statistics</string>
 
 </resources>

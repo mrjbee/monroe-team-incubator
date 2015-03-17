@@ -11,11 +11,9 @@
         android:layout_height="wrap_content"
         android:text="Last 30 days smokes"
         android:textSize="@dimen/text_size_normal_smalles"
-        android:textColor="@color/font.dark"
+        android:textColor="@color/font.dark.lighter"
         android:id="@+id/stat_chart_caption"
-        android:layout_below="@+id/stat_image"
-        android:layout_alignLeft="@+id/stat_total_smokes"
-        android:layout_alignStart="@+id/stat_total_smokes" />
+        />
 
     <org.monroe.team.smooker.app.android.view.SmokeHistogramView
         android:id="@+id/stat_chart"

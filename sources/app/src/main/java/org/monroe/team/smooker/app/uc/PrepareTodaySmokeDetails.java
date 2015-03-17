@@ -31,7 +31,9 @@ public class PrepareTodaySmokeDetails extends UserCaseSupport<Void, PrepareToday
         }
 
         if (smokeQuitDetails.level == QuitSmokeDifficultLevel.DISABLED){
-            return new TodaySmokeDetails(smokeStatistic.getTodaySmokeCount(), TodaySmokeDetails.SpecialType.NO_LIMIT);
+            return new TodaySmokeDetails(smokeStatistic.getTodaySmokeCount(),
+                    smokeStatistic.getTotalSmokeCount(),
+                    smokeStatistic.getAverageSmokeCount(), TodaySmokeDetails.SpecialType.NO_LIMIT);
         } else {
             int delta = smokeQuitDetails.limit - smokeStatistic.getTotalSmokeCount();
             TodaySmokeDetails.SpecialType type = TodaySmokeDetails.SpecialType.BEFORE_LIMIT;
@@ -40,17 +42,22 @@ public class PrepareTodaySmokeDetails extends UserCaseSupport<Void, PrepareToday
             } if (delta == 0){
                 type = TodaySmokeDetails.SpecialType.NO_LEFT;
             }
-            return new TodaySmokeDetails(Math.abs(delta), type);
+            return new TodaySmokeDetails(Math.abs(delta), smokeStatistic.getTotalSmokeCount(),
+                    smokeStatistic.getAverageSmokeCount(), type);
         }
     }
 
     public static class TodaySmokeDetails implements Serializable {
 
         public final int specialCount;
+        public final int total;
+        public final int avarage;
         public final SpecialType type;
 
-        public TodaySmokeDetails(int specialCount, SpecialType type) {
+        public TodaySmokeDetails(int specialCount, int total, int avarage, SpecialType type) {
             this.specialCount = specialCount;
+            this.total = total;
+            this.avarage = avarage;
             this.type = type;
         }
 

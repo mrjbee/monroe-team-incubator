@@ -1,7 +1,6 @@
 package org.monroe.team.smooker.app.android.view;
 
 import android.content.Context;
-import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -18,7 +17,6 @@ import org.monroe.team.corebox.utils.DateUtils;
 import org.monroe.team.corebox.utils.Lists;
 import org.monroe.team.smooker.app.R;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -80,7 +78,7 @@ public class DayTrackChartView extends View {
 
     private void initialize(Context context) {
 
-        verticalAxisName = context.getResources().getString(R.string.chart_smokes_axis);
+        verticalAxisName = context.getResources().getString(R.string.smokes);
         horizontalAxisName = context.getResources().getString(R.string.chart_time_axis);
 
 

@@ -22,6 +22,7 @@ import org.monroe.team.smooker.app.android.view.RelativeLayoutExt;
 import org.monroe.team.smooker.app.android.view.RoundSegmentImageView;
 import org.monroe.team.smooker.app.android.view.TextViewExt;
 import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
+import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -86,6 +87,7 @@ public class TilesFragment extends FrontPageFragment {
         if (PrepareSmokeClockDetails.SmokeClockDetails.class == invalidDataClass) {
             fetchClockData(true);
         }
+        getTileController(currentTileIndex).onInvalidData(invalidDataClass);
     }
 
     @Override
@@ -613,6 +615,7 @@ public class TilesFragment extends FrontPageFragment {
         void onPause();
         void onResume();
         View getBigContent(LayoutInflater layoutInflater, ViewGroup view);
+        void onInvalidData(Class dataClass);
     }
 
     private abstract class AbstractTileController implements TileController{
@@ -632,14 +635,19 @@ public class TilesFragment extends FrontPageFragment {
         final public View getSmallContent(LayoutInflater layoutInflater, ViewGroup parentView) {
             if (smallContentView == null) {
                 smallContentView = layoutInflater.inflate(smallTileId(), parentView, false);
+                findView_smallContent(smallContentView);
             }
             return smallContentView;
         }
+
+        protected void findView_smallContent(View smallContentView) {}
+        protected void findView_bigContent(View bigContentView) {}
 
         @Override
         final public View getBigContent(LayoutInflater layoutInflater, ViewGroup parentView) {
             if (bigContentView == null) {
                 bigContentView = layoutInflater.inflate(bigTileId(), parentView, false);
+                findView_bigContent(bigContentView);
             }
             return bigContentView;
         }
@@ -651,6 +659,11 @@ public class TilesFragment extends FrontPageFragment {
 
         @Override
         public void onResume() {
+
+        }
+
+        @Override
+        public void onInvalidData(Class dataClass) {
 
         }
     }
@@ -669,9 +682,14 @@ public class TilesFragment extends FrontPageFragment {
 
     class StatisticTile extends AbstractTileController{
 
+        private TextView averageText;
+        private TextView averageValueText;
+        private TextView totalValueText;
+
+
         @Override
         public String caption() {
-            return "Statistics";
+            return getString(R.string.statistics);
         }
 
         @Override
@@ -682,6 +700,44 @@ public class TilesFragment extends FrontPageFragment {
         @Override
         protected int bigTileId() {
             return R.layout.tile_big_stat;
+        }
+
+        @Override
+        protected void findView_smallContent(View smallContentView) {
+            averageText = (TextView) smallContentView.findViewById(R.id.stat_average_text);
+            averageValueText = (TextView) smallContentView.findViewById(R.id.stat_average_text_value);
+            totalValueText = (TextView) smallContentView.findViewById(R.id.stat_total_smokes_value);
+        }
+
+        @Override
+        public void onResume() {
+            fetchSmokeDetails();
+        }
+
+        private void fetchSmokeDetails() {
+            application().data_smokeDetails().fetch(true, new DataProvider.FetchObserver<PrepareTodaySmokeDetails.TodaySmokeDetails>() {
+                @Override
+                public void onFetch(PrepareTodaySmokeDetails.TodaySmokeDetails todaySmokeDetails) {
+                     totalValueText.setText(""+todaySmokeDetails.total+" "+getString(R.string.smokes));
+                     if (todaySmokeDetails.avarage != -1){
+                         averageValueText.setText(""+todaySmokeDetails.avarage+" "+getString(R.string.smokes));
+                     } else {
+                         averageValueText.setText(getString(R.string.not_enough_data));
+                     }
+                }
+
+                @Override
+                public void onError(DataProvider.FetchError fetchError) {
+                    activity().forceCloseWithErrorCode(201);
+                }
+            });
+        }
+
+        @Override
+        public void onInvalidData(Class dataClass) {
+            if (dataClass == PrepareTodaySmokeDetails.TodaySmokeDetails.class){
+                fetchSmokeDetails();
+            }
         }
     }
 

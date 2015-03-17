@@ -9,7 +9,7 @@
     <string name="app_version">Версия 1.5</string>
 
     <string name="chart_time_axis">время</string>
-    <string name="chart_smokes_axis">перекуры</string>
+    <string name="smokes">перекуры</string>
     <string name="chart_day_axis">дни</string>
 
     <string name="a_wizard_title">Smooker. Настройки</string>
@@ -116,5 +116,7 @@
     <string name="left_for_today">Осталось на сегодня</string>
     <string name="over_limit">Сверх лимита</string>
     <string name="smokes_today">перекуров сегодня</string>
+    <string name="statistics">Статистика</string>
+    <string name="not_enough_data">не хватает данных</string>
 
 </resources>

@@ -73,7 +73,7 @@ public class SmokeHistogramView extends View {
 
     private void initialize(Context context) {
 
-        verticalAxisName = context.getResources().getString(R.string.chart_smokes_axis);
+        verticalAxisName = context.getResources().getString(R.string.smokes);
         horizontalAxisName = context.getResources().getString(R.string.chart_day_axis);
 
 
