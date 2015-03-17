@@ -29,7 +29,7 @@ public class PreparePeriodStatistic extends TransactionUserCase<Void, PreparePer
         Date itDate = null;
         int itSmokeCount = 0;
         boolean wasValuable = false;
-        for (int i = 31; i > -1; i--){
+        for (int i = 11; i > -1; i--){
             itDate = DateUtils.mathDays(today,-i);
             itSmokeCount = getSmokeCountForDate(itDate, loggedDates);
             if (wasValuable || itSmokeCount > 0){
@@ -37,7 +37,7 @@ public class PreparePeriodStatistic extends TransactionUserCase<Void, PreparePer
                 monthSmokeList.add(new Pair<Date, Integer>(itDate,itSmokeCount));
             }
         }
-        for (int i=1; monthSmokeList.size() < 31;i++){
+        for (int i=1; monthSmokeList.size() < 11;i++){
             itDate = DateUtils.mathDays(today,i);
             monthSmokeList.add(new Pair<Date, Integer>(itDate,0));
         }

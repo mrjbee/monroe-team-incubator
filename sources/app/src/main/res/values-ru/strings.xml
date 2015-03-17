@@ -61,14 +61,14 @@
     <string name="pattern_over_limit_for_today_with_value" formatted="false">%d перекуров сверх лимита</string>
     <string name="pattern_smokes_today_with_value" formatted="false">%d перекуров сегодня</string>
 
-    <string name="total_smokes">Всего перекуров</string>
+    <string name="total_smokes">Всего</string>
     <string name="spend_money">Потрачено</string>
     <string name="menu_last_smoke">Удалить последний перекур</string>
     <string name="menu_quit_program">Ассистент перекуров …</string>
     <string name="menu_notifications">Уведомления …</string>
     <string name="menu_general_settings">Общие настройки …</string>
     <string name="today_smokes">перекуров сегодня</string>
-    <string name="today_per_average_smokes">Перекуров сегодня/среднее</string>
+    <string name="today_per_average_smokes">Cреднее</string>
     <string name="today">Сегодня</string>
     <string name="yesterday">Вчера</string>
     <string name="new_day_limit">новый лимит</string>
@@ -118,5 +118,6 @@
     <string name="smokes_today">перекуров сегодня</string>
     <string name="statistics">Статистика</string>
     <string name="not_enough_data">не хватает данных</string>
+    <string name="days_10_smokes">Перекуров за последние 10 дней</string>
 
 </resources>

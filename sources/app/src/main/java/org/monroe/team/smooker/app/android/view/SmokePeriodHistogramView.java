@@ -23,7 +23,7 @@ import java.util.List;
 
 public class SmokePeriodHistogramView extends View {
 
-    private final int barSpacing = 2;
+    private final int barSpacing = 5;
     Paint axisPaint;
     Paint axisLabelPaint;
     Paint transparentPaint;
@@ -86,7 +86,7 @@ public class SmokePeriodHistogramView extends View {
 
         valuePaint = new Paint();
         valuePaint.setAntiAlias(true);
-        valuePaint.setColor(Color.parseColor("#d53434"));
+        valuePaint.setColor(Color.parseColor("#ff2020"));
         valuePaint.setStyle(Paint.Style.STROKE);
         valuePaint.setStrokeWidth(dimen(R.integer.chart_stroke_default_float));
 

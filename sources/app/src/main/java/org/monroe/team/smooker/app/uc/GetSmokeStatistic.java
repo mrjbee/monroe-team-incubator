@@ -4,10 +4,10 @@ import org.monroe.team.android.box.db.DAOSupport;
 import org.monroe.team.android.box.db.TransactionUserCase;
 import org.monroe.team.android.box.services.SettingManager;
 import org.monroe.team.corebox.services.ServiceRegistry;
+import org.monroe.team.corebox.utils.DateUtils;
 import org.monroe.team.corebox.utils.Lists;
 import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.db.Dao;
-import org.monroe.team.smooker.app.uc.common.DateUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class GetSmokeStatistic extends TransactionUserCase<Void, GetSmokeStatist
            results.remove(0);
            results.remove(Lists.getLastIndex(results));
            int answer = 0;
-           for (int i=0; i<results.size()-1; i++){
+           for (int i=0; i<results.size(); i++){
                 answer+= results.get(i).get(1,Long.class);
            }
            average = Math.round(answer/(results.size()));

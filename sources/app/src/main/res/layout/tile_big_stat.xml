@@ -9,7 +9,7 @@
         android:layout_marginTop="6dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Last 30 days smokes"
+        android:text="@string/days_10_smokes"
         android:textSize="@dimen/text_size_normal_smalles"
         android:textColor="@color/font.dark.lighter"
         android:id="@+id/stat_chart_caption"
