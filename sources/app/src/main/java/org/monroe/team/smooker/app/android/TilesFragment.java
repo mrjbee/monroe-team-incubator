@@ -3,6 +3,7 @@ package org.monroe.team.smooker.app.android;
 
 import android.animation.Animator;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import org.monroe.team.smooker.app.android.view.RelativeLayoutExt;
 import org.monroe.team.smooker.app.android.view.RoundSegmentImageView;
 import org.monroe.team.smooker.app.android.view.TextViewExt;
 import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
+import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -272,8 +274,8 @@ public class TilesFragment extends FrontPageFragment {
         setupTileBoard();
         applyTileContentUsing(0);
         setupTileCaption();
-
-
+        View smallContentView = getTileController(currentTileIndex).getSmallContent(activity().getLayoutInflater(), view(R.id.start_tile_small_content,ViewGroup.class));
+        setupSmallTileView(smallContentView);
     }
 
     private float dpToPx(float ... values){
@@ -536,10 +538,14 @@ public class TilesFragment extends FrontPageFragment {
     private void changeTileContentUsing(int tileControllerIndex) {
         destroyTileContentUsing(currentTileIndex);
         applyTileContentUsing(tileControllerIndex);
+        View view = getTileController(currentTileIndex).getSmallContent(activity().getLayoutInflater(), view(R.id.start_tile_small_content, ViewGroup.class));
+        setupSmallTileView(view);
+        getTileController(tileControllerIndex).onResume();
     }
 
     private void destroyTileContentUsing(int tileControllerIndex) {
         holeControllerList.get(tileControllerIndex).unselect();
+        getTileController(tileControllerIndex).onPause();
     }
 
     private void applyTileContentUsing(int tileControllerIndex) {
@@ -549,11 +555,13 @@ public class TilesFragment extends FrontPageFragment {
 
     private void setupTileCaption() {
         holeControllerList.get(currentTileIndex).select();
-        String title =  tileControllerList.get(currentTileIndex).caption();
+        String title =  getTileController(currentTileIndex).caption();
         view_text(R.id.start_tile_caption_text).setText(title);
     }
 
-
+    private TileController getTileController(int index) {
+        return tileControllerList.get(index);
+    }
 
 
     class HoleController{
@@ -588,17 +596,58 @@ public class TilesFragment extends FrontPageFragment {
 
     private static interface TileController{
         String caption();
+        View getSmallContent(LayoutInflater layoutInflater, ViewGroup parentView);
+        void onPause();
+        void onResume();
     }
 
-    class StatisticTile implements TileController{
+    private abstract class AbstractTileController implements TileController{
+
+        protected View smallContentView;
+
+        protected int smallTileId() {
+            return R.layout.tile_small_stub;
+        }
+
+        @Override
+        final public View getSmallContent(LayoutInflater layoutInflater, ViewGroup parentView) {
+            if (smallContentView == null) {
+                smallContentView = layoutInflater.inflate(smallTileId(), parentView, false);
+            }
+            return smallContentView;
+        }
+
+        @Override
+        public void onPause() {
+
+        }
+
+        @Override
+        public void onResume() {
+
+        }
+    }
+
+    private void setupSmallTileView(View smallContentView) {
+        ViewGroup layout = view(R.id.start_tile_small_content, ViewGroup.class);
+        layout.removeAllViews();
+        layout.addView(smallContentView);
+    }
+
+    class StatisticTile extends AbstractTileController{
 
         @Override
         public String caption() {
             return "Statistics";
         }
+
+        @Override
+        protected int smallTileId() {
+            return R.layout.tile_small_stat;
+        }
     }
 
-    class MotivationTile implements TileController{
+    class MotivationTile extends AbstractTileController{
 
         @Override
         public String caption() {
@@ -606,7 +655,7 @@ public class TilesFragment extends FrontPageFragment {
         }
     }
 
-    class QuitSmokeTile implements TileController{
+    class QuitSmokeTile extends AbstractTileController{
 
         @Override
         public String caption() {

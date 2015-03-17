@@ -95,6 +95,13 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
     }
 
     @Override
+    final public void onStart() {
+        super.onStart();
+        if (isActive()){
+            onStartSafe();
+        }
+    }
+    @Override
     final public void onResume() {
         super.onResume();
         if (isActive()){
@@ -126,6 +133,7 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
     }
 
     protected void onActivityCreatedSafe(Bundle savedInstanceState){}
+    protected void onStartSafe() {}
     protected void onResumeSafe(){}
     protected void onPauseSafe(){}
     protected void onScreenSizeCalculatedSafe(int activityWidth, int activityHeight) {}

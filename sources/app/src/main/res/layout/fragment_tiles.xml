@@ -192,71 +192,7 @@
                     android:layout_height="100dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
-                    <GridLayout
-                        android:layout_weight="1"
-                        android:layout_margin="10dp"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:columnCount="2"
-                        android:rowCount="3">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Total Smokes"
-                            android:textSize="@dimen/text_size_normal_small"
-                            android:textColor="@color/font.dark"
-                            android:id="@+id/start_total_smoke_text"
-                            />
-
-                        <TextView
-                            android:layout_marginLeft="10dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0"
-                            android:textSize="@dimen/text_size_normal_small"
-                            android:textColor="@color/font.dark"
-                            android:textStyle="bold"
-                            android:id="@+id/start_total_smoke_value_text"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Average Smokes"
-                            android:textSize="@dimen/text_size_normal_small"
-                            android:textColor="@color/font.dark"
-                            android:id="@+id/start_average_smoke_text"
-                            />
-
-                        <TextView
-                            android:layout_marginLeft="10dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/text_size_normal_small"
-                            android:textColor="@color/font.dark"
-                            android:id="@+id/start_average_smoke_value_text"/>
-
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Proximately Spend Time"
-                            android:textSize="@dimen/text_size_normal_small"
-                            android:textColor="@color/font.dark"
-                            android:id="@+id/start_spend_time_text"
-                            />
-
-                        <TextView
-                            android:layout_marginLeft="10dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0 hr"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/text_size_normal_small"
-                            android:textColor="@color/font.dark"
-                            android:id="@+id/start_spend_time_value_text"/>
-                        </GridLayout>
+                    <!-- Small Tile adds here -->
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
