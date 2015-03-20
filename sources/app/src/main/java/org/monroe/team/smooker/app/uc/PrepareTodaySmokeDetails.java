@@ -35,7 +35,7 @@ public class PrepareTodaySmokeDetails extends UserCaseSupport<Void, PrepareToday
                     smokeStatistic.getTotalSmokeCount(),
                     smokeStatistic.getAverageSmokeCount(), TodaySmokeDetails.SpecialType.NO_LIMIT);
         } else {
-            int delta = smokeQuitDetails.limit - smokeStatistic.getTotalSmokeCount();
+            int delta = smokeQuitDetails.limit - smokeStatistic.getTodaySmokeCount();
             TodaySmokeDetails.SpecialType type = TodaySmokeDetails.SpecialType.BEFORE_LIMIT;
             if (delta < 0 ){
                 type = TodaySmokeDetails.SpecialType.AFTER_LIMIT;

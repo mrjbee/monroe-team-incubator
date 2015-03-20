@@ -59,9 +59,13 @@
             android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".SetupQuitSmokeActivity"
+            android:label="@string/title_activity_setting_quit_smoke"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".android.SmokeBreakActivity"
@@ -114,7 +118,6 @@
             android:enabled="true"
             android:exported="true" >
         </receiver>
-
     </application>
 
 </manifest>

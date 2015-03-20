@@ -15,11 +15,11 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class CalculateSchedule  extends TransactionUserCase<Void, CalculateSchedule.SmokeSuggestion, Dao> {
+public class GetDaySmokeSchedule extends TransactionUserCase<Void, GetDaySmokeSchedule.SmokeSuggestion, Dao> {
 
 
 
-    public CalculateSchedule(ServiceRegistry serviceRegistry) {
+    public GetDaySmokeSchedule(ServiceRegistry serviceRegistry) {
         super(serviceRegistry);
     }
 

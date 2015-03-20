@@ -19,8 +19,8 @@ import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
 import org.monroe.team.smooker.app.db.Dao;
 import org.monroe.team.smooker.app.db.SmookerSchema;
+import org.monroe.team.smooker.app.uc.GetDaySmokeSchedule;
 import org.monroe.team.smooker.app.uc.PreparePeriodStatistic;
-import org.monroe.team.smooker.app.uc.CalculateSchedule;
 import org.monroe.team.smooker.app.uc.GetBasicSmokeQuitDetails;
 import org.monroe.team.smooker.app.uc.GetSmokeStatistic;
 import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
@@ -71,12 +71,12 @@ public class SmookerModel extends AndroidModel{
                                 GetBasicSmokeQuitDetails.BasicSmokeQuitDetails.class,
                                 GetBasicSmokeQuitDetails.class)
                 );
-                put(CalculateSchedule.SmokeSuggestion.class,
-                        new UcDataProvider<CalculateSchedule.SmokeSuggestion>(
+                put(GetDaySmokeSchedule.SmokeSuggestion.class,
+                        new UcDataProvider<GetDaySmokeSchedule.SmokeSuggestion>(
                                 SmookerModel.this,
                                 context,
-                                CalculateSchedule.SmokeSuggestion.class,
-                                CalculateSchedule.class
+                                GetDaySmokeSchedule.SmokeSuggestion.class,
+                                GetDaySmokeSchedule.class
                         ));
             }
         });

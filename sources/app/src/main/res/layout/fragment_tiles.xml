@@ -140,8 +140,8 @@
                 <ImageButton
                     android:id="@+id/start_setting_dublicate_btn"
                     android:background="@drawable/setting_dark_btn_push"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_marginRight="20dp"
                     android:layout_alignBottom="@+id/start_tile_caption_text"
                     android:layout_alignParentRight="true"

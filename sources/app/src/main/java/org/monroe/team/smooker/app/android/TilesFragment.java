@@ -3,11 +3,14 @@ package org.monroe.team.smooker.app.android;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.monroe.team.android.box.app.ui.AppearanceControllerOld;
 import org.monroe.team.android.box.app.ui.SlideTouchGesture;
@@ -18,6 +21,7 @@ import org.monroe.team.corebox.utils.Closure;
 import org.monroe.team.corebox.utils.DateUtils;
 import org.monroe.team.corebox.utils.Lists;
 import org.monroe.team.smooker.app.R;
+import org.monroe.team.smooker.app.SetupQuitSmokeActivity;
 import org.monroe.team.smooker.app.android.view.RelativeLayoutExt;
 import org.monroe.team.smooker.app.android.view.RoundSegmentImageView;
 import org.monroe.team.smooker.app.android.view.SmokePeriodHistogramView;
@@ -281,6 +285,21 @@ public class TilesFragment extends FrontPageFragment {
         applyTileContentUsing(0);
         setupTileCaption();
         applyTileContentUsing(currentTileIndex);
+        view(R.id.start_setting_dublicate_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                performTileSetup();
+            }
+        });
+    }
+
+    private void performTileSetup() {
+        Class<? extends Activity> activityClass = getTileController(currentTileIndex).getSetupActivityClass();
+        if (activityClass == null){
+            Toast.makeText(getActivity(), "No setup yet.", Toast.LENGTH_SHORT).show();
+        }else{
+            startActivity(new Intent(getActivity(), activityClass));
+        }
     }
 
     private float dpToPx(float... values) {
@@ -618,12 +637,19 @@ public class TilesFragment extends FrontPageFragment {
         void onResume();
         View getBigContent(LayoutInflater layoutInflater, ViewGroup view);
         void onInvalidData(Class dataClass);
+        Class<? extends Activity> getSetupActivityClass();
     }
 
     private abstract class AbstractTileController implements TileController{
 
         protected View smallContentView;
         protected View bigContentView;
+
+
+        @Override
+        public Class<? extends Activity> getSetupActivityClass() {
+            return null;
+        }
 
         protected int smallTileId() {
             return R.layout.tile_small_stub;
@@ -637,19 +663,19 @@ public class TilesFragment extends FrontPageFragment {
         final public View getSmallContent(LayoutInflater layoutInflater, ViewGroup parentView) {
             if (smallContentView == null) {
                 smallContentView = layoutInflater.inflate(smallTileId(), parentView, false);
-                findView_smallContent(smallContentView);
+                init_smallContent(smallContentView, layoutInflater);
             }
             return smallContentView;
         }
 
-        protected void findView_smallContent(View smallContentView) {}
-        protected void findView_bigContent(View bigContentView) {}
+        protected void init_smallContent(View smallContentView, LayoutInflater layoutInflater) {}
+        protected void init_bigContent(View bigContentView, LayoutInflater layoutInflater) {}
 
         @Override
         final public View getBigContent(LayoutInflater layoutInflater, ViewGroup parentView) {
             if (bigContentView == null) {
                 bigContentView = layoutInflater.inflate(bigTileId(), parentView, false);
-                findView_bigContent(bigContentView);
+                init_bigContent(bigContentView, layoutInflater);
             }
             return bigContentView;
         }
@@ -704,13 +730,13 @@ public class TilesFragment extends FrontPageFragment {
         }
 
         @Override
-        protected void findView_smallContent(View smallContentView) {
+        protected void init_smallContent(View smallContentView, LayoutInflater layoutInflater) {
             averageValueText = (TextView) smallContentView.findViewById(R.id.stat_average_text_value);
             totalValueText = (TextView) smallContentView.findViewById(R.id.stat_total_smokes_value);
         }
 
         @Override
-        protected void findView_bigContent(View bigContentView) {
+        protected void init_bigContent(View bigContentView, LayoutInflater layoutInflater) {
             histogramView = (SmokePeriodHistogramView) bigContentView.findViewById(R.id.stat_chart);
         }
 
@@ -779,6 +805,21 @@ public class TilesFragment extends FrontPageFragment {
         @Override
         public String caption() {
             return "Quitting";
+        }
+
+        @Override
+        protected int bigTileId() {
+            return R.layout.tile_big_quit;
+        }
+
+        @Override
+        protected void init_bigContent(View bigContentView, LayoutInflater layoutInflater) {
+            ViewGroup dayCaptionPanel = (ViewGroup) bigContentView.findViewById(R.id.quit_day_caption_panel);
+        }
+
+        @Override
+        public Class<? extends Activity> getSetupActivityClass() {
+            return SetupQuitSmokeActivity.class;
         }
     }
 

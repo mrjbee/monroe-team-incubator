@@ -87,11 +87,29 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
                 }
             });
         }
-        if (smokeStatistic.type != PrepareTodaySmokeDetails.TodaySmokeDetails.SpecialType.NO_LIMIT){
-            throw new UnsupportedOperationException();
+        String text = "";
+
+        /*
+        <string name="left_for_today">Left for today</string>
+    <string name="over_limit">Over today limit</string>
+         */
+
+        switch (smokeStatistic.type){
+            case NO_LIMIT:
+                text = getString(R.string.today_smokes);
+                break;
+            case NO_LEFT:
+            case BEFORE_LIMIT:
+                text = getString(R.string.left_for_today);
+                break;
+            case AFTER_LIMIT:
+                text = getString(R.string.over_limit);
+                break;
+            default:
+                throw new UnsupportedOperationException();
         }
         //TODO: add animation too
-        view_text(R.id.today_value_description_text).setText(getString(R.string.today_smokes));
+        view_text(R.id.today_value_description_text).setText(text.toLowerCase());
     }
 
     @Override
@@ -115,7 +133,7 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
                     return null;
                 }
             });
-            fetchSmokeDetails(false, false);
+            fetchSmokeDetails(true, false);
             onResumeSafe();
         }
     }

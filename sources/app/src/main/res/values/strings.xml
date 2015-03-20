@@ -48,6 +48,7 @@
     <string name="pattern_left_for_today_with_value" formatted="false">%d smokes left for today</string>
     <string name="pattern_over_limit_for_today_with_value" formatted="false">%d smokes over limit today</string>
     <string name="pattern_smokes_today_with_value" formatted="false">%d smokes today</string>
+
     <string name="smokes_today" formatted="false">smokes today</string>
     <string name="total_smokes">Total</string>
     <string name="spend_money">Spend money</string>
@@ -105,5 +106,6 @@
     <string name="not_enough_data">not enough data</string>
     <string name="statistics">Statistics</string>
     <string name="days_10_smokes">Last 10 days smokes</string>
+    <string name="title_activity_setting_quit_smoke">Quit Smoke Settings</string>
 
 </resources>

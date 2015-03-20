@@ -91,5 +91,13 @@
         android:layout_below="@+id/qs_level_seekBar"
         />
 
+    <Button
+        android:layout_below="@+id/qs_level_label_description"
+        android:layout_marginTop="30dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Apply"
+        android:id="@+id/qs_apply_btn"
+        />
 
 </RelativeLayout>

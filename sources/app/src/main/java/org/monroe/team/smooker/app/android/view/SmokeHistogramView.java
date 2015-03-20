@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Deprecated
 public class SmokeHistogramView extends View {
 
     private final int barSpacing = 2;

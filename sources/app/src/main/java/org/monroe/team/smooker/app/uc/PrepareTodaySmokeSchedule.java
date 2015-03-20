@@ -20,7 +20,7 @@ public class PrepareTodaySmokeSchedule extends UserCaseSupport<Void, PrepareToda
     public TodaySmokeSchedule executeImpl(Void request) {
 
         GetSmokeStatistic.SmokeStatistic todaySmokeDetails;
-        CalculateSchedule.SmokeSuggestion smokeSuggestion;
+        GetDaySmokeSchedule.SmokeSuggestion smokeSuggestion;
         GetBasicSmokeQuitDetails.BasicSmokeQuitDetails smokeQuitDetails;
 
         try {
@@ -30,7 +30,7 @@ public class PrepareTodaySmokeSchedule extends UserCaseSupport<Void, PrepareToda
         }
 
         try {
-            smokeSuggestion = using(DataManger.class).fetch(CalculateSchedule.SmokeSuggestion.class);
+            smokeSuggestion = using(DataManger.class).fetch(GetDaySmokeSchedule.SmokeSuggestion.class);
         } catch (DataProvider.FetchException e) {
             throw new FetchFailedException("GTSS2",e);
         }
