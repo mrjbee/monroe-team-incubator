@@ -1,14 +1,19 @@
 package org.monroe.team.smooker.app.android.controller;
 
+import android.util.Pair;
+
 import org.monroe.team.android.box.data.DataProvider;
 import org.monroe.team.corebox.utils.DateUtils;
 import org.monroe.team.corebox.utils.Lists;
 import org.monroe.team.smooker.app.uc.GetSmokeQuitSchedule;
 
 import java.text.DateFormat;
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class SmokeQuitCalendarDisplayManager {
 
@@ -23,7 +28,6 @@ public class SmokeQuitCalendarDisplayManager {
 
     public void calculateCalendarLimits(final OnLimitsCalculated resultObserver){
         quitScheduleDataProvider.fetch(true,new DataProvider.FetchObserver<GetSmokeQuitSchedule.QuitSchedule>() {
-
             @Override
             public void onFetch(GetSmokeQuitSchedule.QuitSchedule quitSchedule) {
 
@@ -54,7 +58,6 @@ public class SmokeQuitCalendarDisplayManager {
     }
 
     private int calculateDaysPastInThisWeek(Date date, Calendar calendar) {
-
         calendar.setTime(date);
 
         int daysToAdd = calendar.get(Calendar.DAY_OF_WEEK) - calendar.getFirstDayOfWeek();
@@ -64,6 +67,21 @@ public class SmokeQuitCalendarDisplayManager {
         }
         return daysToAdd;
     }
+
+    public List<Pair<String,Boolean>> weekDaysNames() {
+        List<Pair<String,Boolean>> answer = new ArrayList<>(7);
+        int firstDay = calendar.getFirstDayOfWeek();
+        DateFormatSymbols formatSymbols = new DateFormatSymbols();
+        String[] shortWeekdays = formatSymbols.getShortWeekdays();
+        for (int i=0;i<7;i++){
+            int dayIndex = (i+firstDay) % 8;
+            if (dayIndex == 0) dayIndex = 1;
+            String name = shortWeekdays[dayIndex];
+            answer.add(i,new Pair<String, Boolean>(name,dayIndex==Calendar.SATURDAY||dayIndex==Calendar.SUNDAY));
+        }
+        return answer;
+    }
+
 
     public static interface  OnLimitsCalculated{
         public void onLimit(Date startDate, Date endDate);
@@ -76,6 +94,9 @@ public class SmokeQuitCalendarDisplayManager {
         answer.isMonthStart = false;
         if ("1".equals(answer.mainText)){
             answer.mainText = monthOnlyDateFormat.format(probeDate);
+            if (answer.mainText.length() > 3){
+                answer.mainText = answer.mainText.substring(0,3)+".";
+            }
             answer.isMonthStart = true;
         }
 

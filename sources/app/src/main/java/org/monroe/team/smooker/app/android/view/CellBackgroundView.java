@@ -53,7 +53,7 @@ public class CellBackgroundView extends View{
         weekPaint = new Paint();
         weekPaint.setColor(Color.parseColor("#d02636"));
         weekPaint.setStyle(Paint.Style.STROKE);
-        weekPaint.setStrokeWidth(6f);
+        weekPaint.setStrokeWidth(3f);
 
     }
 

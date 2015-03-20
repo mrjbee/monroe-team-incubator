@@ -20,16 +20,18 @@
         android:id="@+id/quit_day_caption_panel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal">
-        <GridView
-            android:id="@+id/quit_grid"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
 
-            android:numColumns="7">
-
-            </GridView>
     </LinearLayout>
+    <GridView
+        android:layout_below="@+id/quit_day_caption_panel"
+        android:id="@+id/quit_grid"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
 
+        android:numColumns="7">
+
+    </GridView>
 
 </RelativeLayout>

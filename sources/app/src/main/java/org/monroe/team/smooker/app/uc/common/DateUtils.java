@@ -24,10 +24,8 @@ public class DateUtils {
 
 
     public static Date mathDays(Date date, int daysCount) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.add(Calendar.DATE, daysCount);
-        return cal.getTime();
+        long answerMS = date.getTime() + daysCount * (24*60*60*1000);
+        return new Date(answerMS);
     }
 
     public static Date mathMinutes(Date date, int minutes) {

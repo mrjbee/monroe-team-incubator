@@ -178,7 +178,6 @@ public class QuitSmokeProgramManager {
         }
     }
 
-
     public static class SinceTomorrowProgram extends QuitSmokeProgram{
 
         protected SinceTomorrowProgram(QuitSmokeDataDriver dataDriver) {

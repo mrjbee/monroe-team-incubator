@@ -2,6 +2,7 @@ package org.monroe.team.smooker.app.uc;
 
 import org.monroe.team.corebox.services.ServiceRegistry;
 import org.monroe.team.corebox.uc.UserCaseSupport;
+import org.monroe.team.corebox.utils.DateUtils;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeData;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgram;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
@@ -60,7 +61,8 @@ public class GetSmokeQuitSchedule extends UserCaseSupport<Void, GetSmokeQuitSche
         public final boolean successful;
 
         public QuitScheduleDate(Date date, boolean isNewLimitDate, boolean isSuccessful) {
-            this.date = date;
+            //EEST EET issue with date calculation
+            this.date = DateUtils.dateOnly(date);
             this.isNewLimitDate = isNewLimitDate;
             successful = isSuccessful;
         }

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -824,6 +825,17 @@ public class TilesFragment extends FrontPageFragment {
         @Override
         protected void init_bigContent(View bigContentView, LayoutInflater layoutInflater) {
             ViewGroup dayCaptionPanel = (ViewGroup) bigContentView.findViewById(R.id.quit_day_caption_panel);
+            List<Pair<String,Boolean>> weekDays = application().getSmockQuitDataManager().weekDaysNames();
+            for (Pair<String,Boolean> dayName:weekDays){
+                View view = layoutInflater.inflate(R.layout.item_day_caption,dayCaptionPanel, false);
+                TextView tv = (TextView) view.findViewById(R.id.item_text);
+                tv.setText(dayName.first);
+                if (dayName.second){
+                    tv.setTypeface(null, Typeface.BOLD);
+                }
+                dayCaptionPanel.addView(view, dayCaptionPanel.getChildCount());
+            }
+            dayCaptionPanel.requestLayout();
             calendarGrid = (GridView) bigContentView.findViewById(R.id.quit_grid);
             application().getSmockQuitDataManager().calculateCalendarLimits(new SmokeQuitCalendarDisplayManager.OnLimitsCalculated() {
                 @Override
@@ -863,7 +875,7 @@ public class TilesFragment extends FrontPageFragment {
                                     }else if (displayDetails.isMonthStartWeek){
                                         cellBackgroundView.paintWeekStart = true;
                                     }
-
+                                    cellBackgroundView.invalidate();
 
                                     int backgroundResource = 0;
                                     int textColor = text_color_dark;
