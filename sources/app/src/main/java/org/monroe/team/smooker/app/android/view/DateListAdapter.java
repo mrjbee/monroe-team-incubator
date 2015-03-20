@@ -27,7 +27,7 @@ public abstract class DateListAdapter extends BaseAdapter{
 
     private int calculateCount() {
         long deltaMs = endDate.getTime() - startDate.getTime();
-        return (int) DateUtils.asDays(deltaMs);
+        return (int) DateUtils.asDays(deltaMs, false) +1;
     }
 
     @Override

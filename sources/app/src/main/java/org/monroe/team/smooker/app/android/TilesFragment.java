@@ -25,7 +25,7 @@ import org.monroe.team.corebox.utils.Closure;
 import org.monroe.team.corebox.utils.DateUtils;
 import org.monroe.team.corebox.utils.Lists;
 import org.monroe.team.smooker.app.R;
-import org.monroe.team.smooker.app.android.controller.SmokeQuitCalendarDataManager;
+import org.monroe.team.smooker.app.android.controller.SmokeQuitCalendarDisplayManager;
 import org.monroe.team.smooker.app.android.view.DateListAdapter;
 import org.monroe.team.smooker.app.android.view.RelativeLayoutExt;
 import org.monroe.team.smooker.app.android.view.RoundSegmentImageView;
@@ -823,7 +823,7 @@ public class TilesFragment extends FrontPageFragment {
         protected void init_bigContent(View bigContentView, LayoutInflater layoutInflater) {
             ViewGroup dayCaptionPanel = (ViewGroup) bigContentView.findViewById(R.id.quit_day_caption_panel);
             calendarGrid = (GridView) bigContentView.findViewById(R.id.quit_grid);
-            application().getSmockQuitDataManager().calculateCalendarLimits(new SmokeQuitCalendarDataManager.OnLimitsCalculated() {
+            application().getSmockQuitDataManager().calculateCalendarLimits(new SmokeQuitCalendarDisplayManager.OnLimitsCalculated() {
                 @Override
                 public void onLimit(Date startDate, Date endDate) {
                     ListAdapter adapter = new SmokeQuitCalendarAdapter(activity(),
@@ -838,7 +838,7 @@ public class TilesFragment extends FrontPageFragment {
 
                                 @Override
                                 public void update(Date date, int position) {
-                                    SmokeQuitCalendarDataManager.DisplayDetails displayDetails = application().getSmockQuitDataManager().getSmokeQuitDateDisplayDetails(date);
+                                    SmokeQuitCalendarDisplayManager.DisplayDetails displayDetails = application().getSmockQuitDataManager().getSmokeQuitDateDisplayDetails(date);
                                     mainTextView.setText(displayDetails.mainText);
                                 }
 

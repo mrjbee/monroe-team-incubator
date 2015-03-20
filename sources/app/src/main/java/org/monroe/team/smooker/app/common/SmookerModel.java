@@ -14,7 +14,7 @@ import org.monroe.team.android.box.db.DBHelper;
 import org.monroe.team.android.box.db.TransactionManager;
 import org.monroe.team.android.box.services.SettingManager;
 import org.monroe.team.corebox.services.ServiceRegistry;
-import org.monroe.team.smooker.app.android.controller.SmokeQuitCalendarDataManager;
+import org.monroe.team.smooker.app.android.controller.SmokeQuitCalendarDisplayManager;
 import org.monroe.team.smooker.app.android.service.StickyNotificationService;
 import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
@@ -66,8 +66,8 @@ public class SmookerModel extends AndroidModel{
                 GetSmokeQuitSchedule.class
         );
 
-        serviceRegistry.registrate(SmokeQuitCalendarDataManager.class,
-                new SmokeQuitCalendarDataManager(smokeQuitScheduleDataProvider));
+        serviceRegistry.registrate(SmokeQuitCalendarDisplayManager.class,
+                new SmokeQuitCalendarDisplayManager(smokeQuitScheduleDataProvider));
 
         serviceRegistry.registrate(DataManger.class, new DataManger() {
             @Override
