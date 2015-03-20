@@ -6,6 +6,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -853,6 +854,7 @@ public class TilesFragment extends FrontPageFragment {
                                     cellBackgroundView.setBackgroundResource(cellBackgroundR);
 
                                     SmokeQuitCalendarDisplayManager.DisplayDetails displayDetails = application().getSmockQuitDataManager().getSmokeQuitDateDisplayDetails(date);
+                                    mainTextView.setTypeface(null, displayDetails.isWeekEnd?Typeface.BOLD:Typeface.NORMAL);
                                     mainTextView.setText(displayDetails.mainText);
 
                                     int backgroundResource = 0;

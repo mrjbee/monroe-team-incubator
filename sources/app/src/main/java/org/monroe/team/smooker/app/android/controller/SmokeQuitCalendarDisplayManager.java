@@ -71,6 +71,8 @@ public class SmokeQuitCalendarDisplayManager {
     }
 
     public DisplayDetails getSmokeQuitDateDisplayDetails(Date probeDate) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(probeDate);
         DisplayDetails answer = new DisplayDetails();
         answer.mainText = dayOnlyDateFormat.format(probeDate);
         answer.isMonthStart = false;
@@ -78,6 +80,10 @@ public class SmokeQuitCalendarDisplayManager {
             answer.mainText = monthOnlyDateFormat.format(probeDate);
             answer.isMonthStart = true;
         }
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        answer.isWeekEnd  = dayOfWeek == Calendar.SUNDAY || dayOfWeek == Calendar.SATURDAY;
+
+
         GetSmokeQuitSchedule.QuitSchedule quitSchedule = quitScheduleDataProvider.getData();
         if (quitSchedule.isDisabled()){
             return answer;
@@ -116,6 +122,6 @@ public class SmokeQuitCalendarDisplayManager {
         public boolean isMonthStart = false;
         public boolean isNewLimitDay = false;
         public boolean isOutsideQuitProgram = false;
-
+        public boolean isWeekEnd = false;
     }
 }
