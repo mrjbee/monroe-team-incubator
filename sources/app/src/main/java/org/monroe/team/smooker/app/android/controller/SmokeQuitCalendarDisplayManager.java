@@ -70,36 +70,52 @@ public class SmokeQuitCalendarDisplayManager {
         public void onError(Exception e);
     }
 
-    public DisplayDetails getSmokeQuitDateDisplayDetails(Date date) {
-        String mainText = dayOnlyDateFormat.format(date);
-        boolean isMonth = false;
-        if ("1".equals(mainText)){
-            mainText = monthOnlyDateFormat.format(date);
-            isMonth = true;
+    public DisplayDetails getSmokeQuitDateDisplayDetails(Date probeDate) {
+        DisplayDetails answer = new DisplayDetails();
+        answer.mainText = dayOnlyDateFormat.format(probeDate);
+        answer.isMonthStart = false;
+        if ("1".equals(answer.mainText)){
+            answer.mainText = monthOnlyDateFormat.format(probeDate);
+            answer.isMonthStart = true;
         }
-        DisplayDetails answer = new DisplayDetails(mainText);
-        answer.isMonthStart = isMonth;
+        GetSmokeQuitSchedule.QuitSchedule quitSchedule = quitScheduleDataProvider.getData();
+        if (quitSchedule.isDisabled()){
+            return answer;
+        }
+
+        Date today = DateUtils.today();
+        answer.isFuture = !probeDate.before(today);
+        GetSmokeQuitSchedule.QuitScheduleDate itQuitScheduleDate;
+        for (int i = 0; i < quitSchedule.scheduleDates.size(); i++){
+            itQuitScheduleDate = quitSchedule.scheduleDates.get(i);
+            if (probeDate.before(itQuitScheduleDate.date)){
+                if (i == 0){
+                    answer.isOutsideQuitProgram = true;
+                    return answer;
+                }else{
+                    answer.isPassed = true;
+                    return  answer;
+                }
+            }
+            if (!probeDate.after(itQuitScheduleDate.date)){
+                //mean same date
+                answer.isNewLimitDay = itQuitScheduleDate.isNewLimitDate;
+                answer.isPassed = itQuitScheduleDate.successful;
+                return answer;
+            }
+        }
+        answer.isOutsideQuitProgram = true;
         return answer;
     }
 
     public static class DisplayDetails {
+        public String mainText = "";
+        public String optionalText = "";
+        public boolean isPassed = false;
+        public boolean isFuture = true;
+        public boolean isMonthStart = false;
+        public boolean isNewLimitDay = false;
+        public boolean isOutsideQuitProgram = false;
 
-        public String mainText;
-        public String optionalText;
-        public boolean isPassed;
-        public boolean isFuture;
-        public boolean isMonthStart;
-
-        public DisplayDetails(String mainText) {
-            this(mainText,"",false,false,false);
-        }
-
-        public DisplayDetails(String mainText, String optionalText, boolean isPassed, boolean isFuture, boolean isMonthStart) {
-            this.mainText = mainText;
-            this.optionalText = optionalText;
-            this.isPassed = isPassed;
-            this.isFuture = isFuture;
-            this.isMonthStart = isMonthStart;
-        }
     }
 }

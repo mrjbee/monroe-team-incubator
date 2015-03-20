@@ -14,6 +14,9 @@
     <color name="background.main2">#d71326</color>
     <color name="background.main">#d02636</color>
     <color name="background.main.light">#f1f0f0</color>
+    <color name="background.white">#fbfbfb</color>
+    <color name="selection.main">#008cec</color>
+
 
     <color name="background.main.highlight">#c31010</color>
     <color name="background.widget">#f63225</color>

@@ -834,12 +834,49 @@ public class TilesFragment extends FrontPageFragment {
                             return new GetViewImplementation.ViewHolder<Date>() {
 
                                 private View backgroundView = forView.findViewById(R.id.item_background);
+                                private View cellBackgroundView = forView.findViewById(R.id.item_cell_background);
                                 private TextView mainTextView = (TextView) forView.findViewById(R.id.item_text);
+
+                                private final int text_color_light =  getResources().getColor(R.color.font_white);
+                                private final int text_color_dark =  getResources().getColor(R.color.font_dark_light);
 
                                 @Override
                                 public void update(Date date, int position) {
+                                    //deals with cells
+                                    int cellBackgroundR = R.drawable.background_cell_center;
+                                    if ((position+1)%7==0){
+                                        cellBackgroundR = R.drawable.background_cell_right;
+                                    }else if (position%7==0){
+                                        cellBackgroundR = R.drawable.background_cell_left;
+                                    }
+
+                                    cellBackgroundView.setBackgroundResource(cellBackgroundR);
+
                                     SmokeQuitCalendarDisplayManager.DisplayDetails displayDetails = application().getSmockQuitDataManager().getSmokeQuitDateDisplayDetails(date);
                                     mainTextView.setText(displayDetails.mainText);
+
+                                    int backgroundResource = 0;
+                                    int textColor = text_color_dark;
+                                    float alpha = 1f;
+                                    if (displayDetails.isOutsideQuitProgram){
+                                        alpha = 0.2f;
+                                    }
+                                    backgroundView.setAlpha(alpha);
+                                    //background
+                                    if (displayDetails.isMonthStart){
+                                        textColor = text_color_light;
+                                        if (displayDetails.isNewLimitDay){
+                                            backgroundResource = R.drawable.background_cal_month_limit;
+                                        }else {
+                                            backgroundResource = R.drawable.background_cal_month;
+                                        }
+                                    } else if (displayDetails.isNewLimitDay){
+                                        textColor = text_color_light;
+                                        backgroundResource = R.drawable.background_cal_day_limit;
+                                    }
+                                    backgroundView.setBackgroundResource(backgroundResource);
+                                    mainTextView.setTextColor(textColor);
+
                                 }
 
                                 @Override public void cleanup() {}
