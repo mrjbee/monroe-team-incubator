@@ -14,6 +14,7 @@ import org.monroe.team.android.box.db.DBHelper;
 import org.monroe.team.android.box.db.TransactionManager;
 import org.monroe.team.android.box.services.SettingManager;
 import org.monroe.team.corebox.services.ServiceRegistry;
+import org.monroe.team.smooker.app.android.controller.SmokeQuitCalendarDataManager;
 import org.monroe.team.smooker.app.android.service.StickyNotificationService;
 import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
@@ -57,6 +58,17 @@ public class SmookerModel extends AndroidModel{
         });
         serviceRegistry.registrate(TransactionManager.class, transactionManager);
         serviceRegistry.registrate(QuitSmokeProgramManager.class, new QuitSmokeProgramManager(this.context));
+
+        final DataProvider<GetSmokeQuitSchedule.QuitSchedule> smokeQuitScheduleDataProvider = new UcDataProvider<GetSmokeQuitSchedule.QuitSchedule>(
+                SmookerModel.this,
+                context,
+                GetSmokeQuitSchedule.QuitSchedule.class,
+                GetSmokeQuitSchedule.class
+        );
+
+        serviceRegistry.registrate(SmokeQuitCalendarDataManager.class,
+                new SmokeQuitCalendarDataManager(smokeQuitScheduleDataProvider));
+
         serviceRegistry.registrate(DataManger.class, new DataManger() {
             @Override
             protected void construct() {
@@ -82,16 +94,11 @@ public class SmookerModel extends AndroidModel{
                                 GetDaySmokeSchedule.class
                         ));
 
-                put(GetSmokeQuitSchedule.QuitSchedule.class,
-                        new UcDataProvider<GetSmokeQuitSchedule.QuitSchedule>(
-                                SmookerModel.this,
-                                context,
-                                GetSmokeQuitSchedule.QuitSchedule.class,
-                                GetSmokeQuitSchedule.class
-                        ));
+                put(GetSmokeQuitSchedule.QuitSchedule.class,smokeQuitScheduleDataProvider);
 
             }
         });
+
 
 
         todaySmokeDetailsDataProvider = new UcDataProvider<PrepareTodaySmokeDetails.TodaySmokeDetails>(this, context,
@@ -117,6 +124,7 @@ public class SmookerModel extends AndroidModel{
                 context,
                 PrepareSmokeQuitBasicDetails.BasicDetails.class,
                 PrepareSmokeQuitBasicDetails.class);
+
 
     }
 

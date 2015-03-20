@@ -4,15 +4,19 @@ package org.monroe.team.smooker.app.android;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.monroe.team.android.box.app.ui.AppearanceControllerOld;
+import org.monroe.team.android.box.app.ui.GetViewImplementation;
 import org.monroe.team.android.box.app.ui.SlideTouchGesture;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceController;
 import org.monroe.team.android.box.data.DataProvider;
@@ -21,14 +25,14 @@ import org.monroe.team.corebox.utils.Closure;
 import org.monroe.team.corebox.utils.DateUtils;
 import org.monroe.team.corebox.utils.Lists;
 import org.monroe.team.smooker.app.R;
-import org.monroe.team.smooker.app.SetupQuitSmokeActivity;
+import org.monroe.team.smooker.app.android.controller.SmokeQuitCalendarDataManager;
+import org.monroe.team.smooker.app.android.view.DateListAdapter;
 import org.monroe.team.smooker.app.android.view.RelativeLayoutExt;
 import org.monroe.team.smooker.app.android.view.RoundSegmentImageView;
 import org.monroe.team.smooker.app.android.view.SmokePeriodHistogramView;
 import org.monroe.team.smooker.app.android.view.TextViewExt;
 import org.monroe.team.smooker.app.uc.PreparePeriodStatistic;
 import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
-import org.monroe.team.smooker.app.uc.PrepareSmokeQuitBasicDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 
 import java.util.ArrayList;
@@ -803,6 +807,8 @@ public class TilesFragment extends FrontPageFragment {
 
     class QuitSmokeTile extends AbstractTileController{
 
+        private GridView calendarGrid;
+
         @Override
         public String caption() {
             return "Quitting";
@@ -816,6 +822,39 @@ public class TilesFragment extends FrontPageFragment {
         @Override
         protected void init_bigContent(View bigContentView, LayoutInflater layoutInflater) {
             ViewGroup dayCaptionPanel = (ViewGroup) bigContentView.findViewById(R.id.quit_day_caption_panel);
+            calendarGrid = (GridView) bigContentView.findViewById(R.id.quit_grid);
+            application().getSmockQuitDataManager().calculateCalendarLimits(new SmokeQuitCalendarDataManager.OnLimitsCalculated() {
+                @Override
+                public void onLimit(Date startDate, Date endDate) {
+                    ListAdapter adapter = new SmokeQuitCalendarAdapter(activity(),
+                            startDate,
+                            endDate, new GetViewImplementation.ViewHolderFactory<GetViewImplementation.ViewHolder<Date>>() {
+                        @Override
+                        public GetViewImplementation.ViewHolder<Date> create(final View forView) {
+                            return new GetViewImplementation.ViewHolder<Date>() {
+
+                                private View backgroundView = forView.findViewById(R.id.item_background);
+                                private TextView mainTextView = (TextView) forView.findViewById(R.id.item_text);
+
+                                @Override
+                                public void update(Date date, int position) {
+                                    SmokeQuitCalendarDataManager.DisplayDetails displayDetails = application().getSmockQuitDataManager().getSmokeQuitDateDisplayDetails(date);
+                                    mainTextView.setText(displayDetails.mainText);
+                                }
+
+                                @Override public void cleanup() {}
+                            };
+                        }
+                    });
+                    calendarGrid.setAdapter(adapter);
+                    calendarGrid.invalidate();
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    activity().forceCloseWithErrorCode(401);
+                }
+            });
         }
 
         @Override
@@ -823,21 +862,22 @@ public class TilesFragment extends FrontPageFragment {
             return SetupQuitSmokeActivity.class;
         }
 
-        @Override
-        public void onResume() {
-            application().data_basicSmokeQuitDetails().fetch(true,new DataProvider.FetchObserver<PrepareSmokeQuitBasicDetails.BasicDetails>() {
-                @Override
-                public void onFetch(PrepareSmokeQuitBasicDetails.BasicDetails basicDetails) {
-                    Date date= basicDetails.endDate;
-                    System.out.println(date);
-                }
+        public class SmokeQuitCalendarAdapter extends DateListAdapter{
 
-                @Override
-                public void onError(DataProvider.FetchError fetchError) {
-                    activity().forceCloseWithErrorCode(401);
-                }
-            });
+            private final GetViewImplementation<Date,GetViewImplementation.ViewHolder<Date>> getViewImplementation;
+
+            public SmokeQuitCalendarAdapter(Context context, Date startDate, Date endDate,
+                                            GetViewImplementation.ViewHolderFactory<GetViewImplementation.ViewHolder<Date>> viewFactory) {
+                super(startDate, endDate);
+                this.getViewImplementation = new GetViewImplementation<>(context, this, viewFactory, R.layout.item_quit_smoke_calendar);
+            }
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                return getViewImplementation.getView(position,convertView,parent);
+            }
         }
+
     }
 
 }

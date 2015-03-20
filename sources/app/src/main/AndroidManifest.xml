@@ -63,7 +63,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SetupQuitSmokeActivity"
+            android:name=".android.SetupQuitSmokeActivity"
             android:label="@string/title_activity_setting_quit_smoke"
             android:screenOrientation="portrait">
         </activity>

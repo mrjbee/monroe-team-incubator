@@ -1,4 +1,4 @@
-package org.monroe.team.smooker.app;
+package org.monroe.team.smooker.app.android;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.monroe.team.android.box.app.ActivitySupport;
+import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.android.SmookerApplication;
 import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;

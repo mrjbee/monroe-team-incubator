@@ -19,6 +19,7 @@ import org.monroe.team.corebox.app.Model;
 import org.monroe.team.corebox.log.L;
 import org.monroe.team.corebox.utils.DateUtils;
 import org.monroe.team.smooker.app.actors.ActorSmoker;
+import org.monroe.team.smooker.app.android.controller.SmokeQuitCalendarDataManager;
 import org.monroe.team.smooker.app.android.controller.SmokeScheduleController;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.actors.ActorSystemAlarm;
@@ -30,18 +31,21 @@ import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
 import org.monroe.team.smooker.app.uc.AddSmoke;
 import org.monroe.team.smooker.app.uc.GetDaySmokeSchedule;
 import org.monroe.team.smooker.app.uc.GetBasicSmokeQuitDetails;
+import org.monroe.team.smooker.app.uc.GetSmokeQuitSchedule;
 import org.monroe.team.smooker.app.uc.GetSmokeStatistic;
 import org.monroe.team.smooker.app.uc.PreparePeriodStatistic;
 import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
-import org.monroe.team.smooker.app.uc.PrepareSmokeQuitBasicDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeSchedule;
 import org.monroe.team.smooker.app.uc.SetupSmokeQuitProgram;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class SmookerApplication extends ApplicationSupport<SmookerModel> {
@@ -321,11 +325,6 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
         return model().getTodaySmokeDetailsDataProvider();
     }
 
-    public DataProvider<PrepareSmokeQuitBasicDetails.BasicDetails> data_basicSmokeQuitDetails() {
-        return model().getBasicQuitSmokeDetailsProvider();
-    }
-
-
     public DataProvider<PrepareTodaySmokeSchedule.TodaySmokeSchedule> data_smokeSchedule() {
         return model().getTodaySmokeScheduleDataProvider();
     }
@@ -337,5 +336,10 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
     public DataProvider<PreparePeriodStatistic.PeriodStatistic> data_periodStat() {
         return model().getPeriodStatsProvider();
     }
+
+    public SmokeQuitCalendarDataManager getSmockQuitDataManager(){
+        return model().usingService(SmokeQuitCalendarDataManager.class);
+    }
+
 
 }
