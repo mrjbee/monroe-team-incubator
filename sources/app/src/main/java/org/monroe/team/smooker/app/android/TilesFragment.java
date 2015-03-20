@@ -28,6 +28,7 @@ import org.monroe.team.smooker.app.android.view.SmokePeriodHistogramView;
 import org.monroe.team.smooker.app.android.view.TextViewExt;
 import org.monroe.team.smooker.app.uc.PreparePeriodStatistic;
 import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
+import org.monroe.team.smooker.app.uc.PrepareSmokeQuitBasicDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 
 import java.util.ArrayList;
@@ -820,6 +821,22 @@ public class TilesFragment extends FrontPageFragment {
         @Override
         public Class<? extends Activity> getSetupActivityClass() {
             return SetupQuitSmokeActivity.class;
+        }
+
+        @Override
+        public void onResume() {
+            application().data_basicSmokeQuitDetails().fetch(true,new DataProvider.FetchObserver<PrepareSmokeQuitBasicDetails.BasicDetails>() {
+                @Override
+                public void onFetch(PrepareSmokeQuitBasicDetails.BasicDetails basicDetails) {
+                    Date date= basicDetails.endDate;
+                    System.out.println(date);
+                }
+
+                @Override
+                public void onError(DataProvider.FetchError fetchError) {
+                    activity().forceCloseWithErrorCode(401);
+                }
+            });
         }
     }
 

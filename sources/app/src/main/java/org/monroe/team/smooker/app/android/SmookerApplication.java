@@ -32,6 +32,8 @@ import org.monroe.team.smooker.app.uc.GetDaySmokeSchedule;
 import org.monroe.team.smooker.app.uc.GetBasicSmokeQuitDetails;
 import org.monroe.team.smooker.app.uc.GetSmokeStatistic;
 import org.monroe.team.smooker.app.uc.PreparePeriodStatistic;
+import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
+import org.monroe.team.smooker.app.uc.PrepareSmokeQuitBasicDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeSchedule;
 import org.monroe.team.smooker.app.uc.SetupSmokeQuitProgram;
@@ -319,11 +321,16 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
         return model().getTodaySmokeDetailsDataProvider();
     }
 
+    public DataProvider<PrepareSmokeQuitBasicDetails.BasicDetails> data_basicSmokeQuitDetails() {
+        return model().getBasicQuitSmokeDetailsProvider();
+    }
+
+
     public DataProvider<PrepareTodaySmokeSchedule.TodaySmokeSchedule> data_smokeSchedule() {
         return model().getTodaySmokeScheduleDataProvider();
     }
 
-    public DataProvider<org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails.SmokeClockDetails> data_smokeClock() {
+    public DataProvider<PrepareSmokeClockDetails.SmokeClockDetails> data_smokeClock() {
         return model().getSmokeClockDataProvider();
     }
 

@@ -20,8 +20,8 @@ public class GetSmokeQuitSchedule extends UserCaseSupport<Void, GetSmokeQuitSche
     @Override
     protected QuitSchedule executeImpl(Void request) {
         QuitSmokeProgram program = using(QuitSmokeProgramManager.class).get();
-        //TODO: might need to return no quit program stub
-        if (program == null) return null;
+        if (program == null)
+            return new QuitSchedule(null);
         List<QuitScheduleDate> quitScheduleDateList = new ArrayList<>();
         for (int i=0; i<program.getStages().size(); i++) {
             QuitSmokeData.Stage stage = program.getStages().get(i);
@@ -29,7 +29,7 @@ public class GetSmokeQuitSchedule extends UserCaseSupport<Void, GetSmokeQuitSche
                 QuitScheduleDate quitScheduleDate = new QuitScheduleDate(stage.date, true, stage.result == QuitSmokeData.QuiteStageResult.PASS);
                 quitScheduleDateList.add(quitScheduleDate);
             } else {
-                QuitSmokeData.Stage prevStage = program.getStages().get(i);
+                QuitSmokeData.Stage prevStage = program.getStages().get(i-1);
                 if (prevStage.smokeLimit != stage.smokeLimit) {
                     quitScheduleDateList.add(new QuitScheduleDate(stage.date, true, stage.result == QuitSmokeData.QuiteStageResult.PASS));
                 } else if (stage.result == QuitSmokeData.QuiteStageResult.FAILS) {
@@ -40,12 +40,16 @@ public class GetSmokeQuitSchedule extends UserCaseSupport<Void, GetSmokeQuitSche
         return new QuitSchedule(quitScheduleDateList);
     }
 
-    public static class QuitSchedule {
+    public static class QuitSchedule implements Serializable {
 
         public final List<QuitScheduleDate> scheduleDates;
 
         public QuitSchedule(List<QuitScheduleDate> scheduleDates) {
             this.scheduleDates = scheduleDates;
+        }
+
+        public boolean isDisabled() {
+            return scheduleDates == null;
         }
     }
 
