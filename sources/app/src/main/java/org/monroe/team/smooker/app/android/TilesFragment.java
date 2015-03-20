@@ -27,6 +27,7 @@ import org.monroe.team.corebox.utils.DateUtils;
 import org.monroe.team.corebox.utils.Lists;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.android.controller.SmokeQuitCalendarDisplayManager;
+import org.monroe.team.smooker.app.android.view.CellBackgroundView;
 import org.monroe.team.smooker.app.android.view.DateListAdapter;
 import org.monroe.team.smooker.app.android.view.RelativeLayoutExt;
 import org.monroe.team.smooker.app.android.view.RoundSegmentImageView;
@@ -827,7 +828,8 @@ public class TilesFragment extends FrontPageFragment {
             application().getSmockQuitDataManager().calculateCalendarLimits(new SmokeQuitCalendarDisplayManager.OnLimitsCalculated() {
                 @Override
                 public void onLimit(Date startDate, Date endDate) {
-                    ListAdapter adapter = new SmokeQuitCalendarAdapter(activity(),
+                    if (startDate ==null)return;
+                    final ListAdapter adapter = new SmokeQuitCalendarAdapter(activity(),
                             startDate,
                             endDate, new GetViewImplementation.ViewHolderFactory<GetViewImplementation.ViewHolder<Date>>() {
                         @Override
@@ -835,27 +837,33 @@ public class TilesFragment extends FrontPageFragment {
                             return new GetViewImplementation.ViewHolder<Date>() {
 
                                 private View backgroundView = forView.findViewById(R.id.item_background);
-                                private View cellBackgroundView = forView.findViewById(R.id.item_cell_background);
                                 private TextView mainTextView = (TextView) forView.findViewById(R.id.item_text);
+                                private CellBackgroundView cellBackgroundView = (CellBackgroundView) forView.findViewById(R.id.item_cell_background);
 
                                 private final int text_color_light =  getResources().getColor(R.color.font_white);
                                 private final int text_color_dark =  getResources().getColor(R.color.font_dark_light);
 
                                 @Override
                                 public void update(Date date, int position) {
-                                    //deals with cells
-                                    int cellBackgroundR = R.drawable.background_cell_center;
-                                    if ((position+1)%7==0){
-                                        cellBackgroundR = R.drawable.background_cell_right;
-                                    }else if (position%7==0){
-                                        cellBackgroundR = R.drawable.background_cell_left;
+                                    cellBackgroundView.resetAll();
+                                    cellBackgroundView.paintBottom = false;
+                                    cellBackgroundView.paintLeft = false;
+                                    if (position < 7) {
+                                        cellBackgroundView.paintTop = false;
                                     }
-
-                                    cellBackgroundView.setBackgroundResource(cellBackgroundR);
-
+                                    if ((position+1)%7==0){
+                                       cellBackgroundView.paintRight = false;
+                                    }
                                     SmokeQuitCalendarDisplayManager.DisplayDetails displayDetails = application().getSmockQuitDataManager().getSmokeQuitDateDisplayDetails(date);
                                     mainTextView.setTypeface(null, displayDetails.isWeekEnd?Typeface.BOLD:Typeface.NORMAL);
                                     mainTextView.setText(displayDetails.mainText);
+
+                                    if (displayDetails.isMonthEndWeek){
+                                        cellBackgroundView.paintWeekEnd = true;
+                                    }else if (displayDetails.isMonthStartWeek){
+                                        cellBackgroundView.paintWeekStart = true;
+                                    }
+
 
                                     int backgroundResource = 0;
                                     int textColor = text_color_dark;
@@ -863,7 +871,7 @@ public class TilesFragment extends FrontPageFragment {
                                     if (displayDetails.isOutsideQuitProgram){
                                         alpha = 0.2f;
                                     }
-                                    backgroundView.setAlpha(alpha);
+                                    mainTextView.setAlpha(alpha);
                                     //background
                                     if (displayDetails.isMonthStart){
                                         textColor = text_color_light;

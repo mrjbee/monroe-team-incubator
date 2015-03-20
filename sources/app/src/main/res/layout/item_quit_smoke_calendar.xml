@@ -4,14 +4,11 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-
-    <LinearLayout
-        android:id="@+id/item_cell_background"
-        android:layout_width="fill_parent"
+    <org.monroe.team.smooker.app.android.view.CellBackgroundView
+        android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_centerInParent="true"
-        android:background="@drawable/background_cell_center"
-        android:orientation="vertical" />
+        android:minHeight="40dp"
+        android:id="@+id/item_cell_background"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
