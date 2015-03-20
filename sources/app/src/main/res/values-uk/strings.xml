@@ -118,5 +118,6 @@
     <string name="statistics">Статистика</string>
     <string name="not_enough_data">невистачає даних</string>
     <string name="days_10_smokes">Перекурів за останні 10 днів</string>
+    <string name="quit_schedule">Графік боротьби з курінням</string>
 
 </resources>

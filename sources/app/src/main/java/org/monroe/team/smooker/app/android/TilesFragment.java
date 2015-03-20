@@ -12,6 +12,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
@@ -836,7 +837,38 @@ public class TilesFragment extends FrontPageFragment {
                 dayCaptionPanel.addView(view, dayCaptionPanel.getChildCount());
             }
             dayCaptionPanel.requestLayout();
+            final View shadow_top = bigContentView.findViewById(R.id.quit_top_shadow);
+            final View shadow_bottom = bigContentView.findViewById(R.id.quit_bottom_shadow);
             calendarGrid = (GridView) bigContentView.findViewById(R.id.quit_grid);
+            calendarGrid.setOnScrollListener(new AbsListView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+                }
+
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                    View firstChildView = view.getChildAt(0);
+                    if (firstVisibleItem == 0 && firstChildView != null && firstChildView.getTop() == 0){
+                       shadow_top.setVisibility(View.INVISIBLE);
+                    }else {
+                       shadow_top.setVisibility(View.VISIBLE);
+                    }
+
+                    int lastVisiblePosition =view.getLastVisiblePosition();
+                    if (visibleItemCount >= totalItemCount){
+                        shadow_bottom.setVisibility(View.INVISIBLE);
+                    } else if (lastVisiblePosition != totalItemCount-1) {
+                        shadow_bottom.setVisibility(View.VISIBLE);
+                    } else {
+                        View lastChildView = view.getChildAt(view.getChildCount()-1);
+                        int delta = view.getHeight() - lastChildView.getBottom();
+                        if (Math.abs(delta) < 3){
+                            shadow_bottom.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                }
+            });
             application().getSmockQuitDataManager().calculateCalendarLimits(new SmokeQuitCalendarDisplayManager.OnLimitsCalculated() {
                 @Override
                 public void onLimit(Date startDate, Date endDate) {

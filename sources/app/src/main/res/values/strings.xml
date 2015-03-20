@@ -107,5 +107,6 @@
     <string name="statistics">Statistics</string>
     <string name="days_10_smokes">Last 10 days smokes</string>
     <string name="title_activity_setting_quit_smoke">Quit Smoke Settings</string>
+    <string name="quit_schedule">Quit Schedule</string>
 
 </resources>

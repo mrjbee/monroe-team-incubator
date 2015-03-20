@@ -7,15 +7,17 @@
 
     <TextView
         android:layout_marginTop="6dp"
+        android:layout_marginBottom="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Smoke quit schedule"
+        android:text="@string/quit_schedule"
         android:textSize="@dimen/text_size_normal_smalles"
         android:textColor="@color/font.dark.lighter"
         android:id="@+id/quit_caption"
         />
 
     <LinearLayout
+        android:layout_marginBottom="5dp"
         android:layout_below="@+id/quit_caption"
         android:id="@+id/quit_day_caption_panel"
         android:layout_width="fill_parent"
@@ -34,4 +36,21 @@
 
     </GridView>
 
+    <ImageView
+        android:layout_below="@+id/quit_day_caption_panel"
+        android:id="@+id/quit_top_shadow"
+        android:layout_width="fill_parent"
+        android:layout_height="6dp"
+        android:src="@drawable/shadow_down"
+        android:scaleType="fitXY"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:layout_alignParentBottom="true"
+        android:id="@+id/quit_bottom_shadow"
+        android:layout_width="fill_parent"
+        android:layout_height="6dp"
+        android:src="@drawable/shadow_up"
+        android:scaleType="fitXY"
+        android:visibility="visible"/>
 </RelativeLayout>
