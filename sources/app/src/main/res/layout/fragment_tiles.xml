@@ -226,21 +226,20 @@
         android:id="@+id/start_header_panel"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:layout_marginBottom="20dp">
+        android:layout_marginTop="10dp">
         <TextView
+            android:layout_marginLeft="20dp"
             android:id="@+id/start_caption_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/title_activity_front_page"
             android:textStyle="bold"
-            android:layout_marginLeft="21dp"
             android:textSize="@dimen/text_size_caption"
             android:textColor="@color/font.white"
             android:shadowColor="@color/font.dark.shadow"
             android:shadowRadius="1"
             android:shadowDy="1"
-            android:layout_marginStart="21dp"
-            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
@@ -251,11 +250,12 @@
             android:layout_height="25dp"
             android:layout_marginRight="17dp"
             android:layout_marginEnd="17dp"
-            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
         <TextView
+            android:layout_marginRight="20dp"
             android:id="@+id/today_value_description_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -264,11 +264,11 @@
             android:textSize="@dimen/text_size_normal_smalles"
             android:textColor="@color/font.white"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@+id/today_value_text"
-            android:layout_toEndOf="@+id/today_value_text" />
+            android:layout_toLeftOf="@+id/start_setting_btn"
+            android:layout_toStartOf="@+id/start_setting_btn" />
 
         <TextView
+            android:layout_marginRight="2dp"
             android:id="@+id/today_value_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -277,10 +277,8 @@
             android:textColor="@color/font.white"
             android:background="@drawable/background_smoke_count"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/start_caption_text"
-            android:layout_toEndOf="@+id/start_caption_text"
-            android:layout_marginLeft="15dp"
-            android:layout_marginStart="15dp" />
+            android:layout_toLeftOf="@+id/today_value_description_text"
+            android:layout_toStartOf="@+id/today_value_description_text" />
 
     </RelativeLayout>
 
