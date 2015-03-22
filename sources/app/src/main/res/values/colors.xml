@@ -8,6 +8,7 @@
     <color name="font.dark.lighter">#ff8e8e8e</color>
     <color name="font.white.shadow">#ffffffff</color>
     <color name="font.dark.lightest">#ffbbbbbb</color>
+    <color name="font.link">#ff006db7</color>
 
 
     <color name="background.main3">#9a1b1b</color>
@@ -16,6 +17,8 @@
     <color name="background.main.light">#f1f0f0</color>
     <color name="background.white">#fbfbfb</color>
     <color name="selection.main">#008cec</color>
+    <color name="background.info.panel.white">#fff8f8f8</color>
+    <color name="background.info.panel.white.stroke">#ffe8e8e8</color>
 
 
     <color name="background.main.highlight">#c31010</color>

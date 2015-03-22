@@ -42,7 +42,7 @@
         android:id="@+id/item_date_today"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:padding="3dp"
+        android:padding="7dp"
         android:src="@drawable/date_today"
         android:layout_centerInParent="true"/>
 

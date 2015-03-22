@@ -108,5 +108,8 @@
     <string name="days_10_smokes">Last 10 days smokes</string>
     <string name="title_activity_setting_quit_smoke">Quit Smoke Settings</string>
     <string name="quit_schedule">Quit Schedule</string>
+    <string name="no_quit_program">Quit Program Not Set</string>
+    <string name="quit_program_choose_prompt">Choose program which fits you.</string>
+    <string name="quit_program_prompt_action">Set Program</string>
 
 </resources>

@@ -119,5 +119,8 @@
     <string name="not_enough_data">невистачає даних</string>
     <string name="days_10_smokes">Перекурів за останні 10 днів</string>
     <string name="quit_schedule">Графік боротьби з курінням</string>
+    <string name="quit_program_prompt_action">Встановити</string>
+    <string name="quit_program_choose_prompt">Виберіть програму відповідну до вашого смаку.</string>
+    <string name="no_quit_program">Програма не обрана</string>
 
 </resources>

@@ -815,7 +815,10 @@ public class TilesFragment extends FrontPageFragment {
 
     class QuitSmokeTile extends AbstractTileController{
 
+        private ViewGroup dataContent;
         private GridView calendarGrid;
+        private View shadow_top;
+        private View shadow_bottom;
 
         @Override
         public String caption() {
@@ -841,8 +844,8 @@ public class TilesFragment extends FrontPageFragment {
                 dayCaptionPanel.addView(view, dayCaptionPanel.getChildCount());
             }
             dayCaptionPanel.requestLayout();
-            final View shadow_top = bigContentView.findViewById(R.id.quit_top_shadow);
-            final View shadow_bottom = bigContentView.findViewById(R.id.quit_bottom_shadow);
+            shadow_top = bigContentView.findViewById(R.id.quit_top_shadow);
+            shadow_bottom = bigContentView.findViewById(R.id.quit_bottom_shadow);
             calendarGrid = (GridView) bigContentView.findViewById(R.id.quit_grid);
             calendarGrid.setOnScrollListener(new AbsListView.OnScrollListener() {
                 @Override
@@ -873,6 +876,21 @@ public class TilesFragment extends FrontPageFragment {
                     }
                 }
             });
+            dataContent = (ViewGroup) bigContentView.findViewById(R.id.quit_data_panel);
+            dataContent.getChildAt(0).setVisibility(View.GONE);
+            dataContent.getChildAt(1).setVisibility(View.VISIBLE);
+            shadow_top.setVisibility(View.INVISIBLE);
+            shadow_bottom.setVisibility(View.INVISIBLE);
+            PanelUI.initLightPanel(
+                    dataContent.getChildAt(1),
+                    getString(R.string.no_quit_program),
+                    getString(R.string.quit_program_choose_prompt),
+                    getString(R.string.quit_program_prompt_action), new View.OnClickListener(){
+                        @Override
+                        public void onClick(View v) {
+                           performTileSetup();
+                        }
+                    });
             fetchQuitSchedule();
         }
 
@@ -880,13 +898,22 @@ public class TilesFragment extends FrontPageFragment {
             application().getSmockQuitDataManager().calculateCalendarLimits(new SmokeQuitCalendarDisplayManager.OnLimitsCalculated() {
                 @Override
                 public void onLimit(Date startDate, Date endDate) {
-                    if (startDate ==null)return;
+
+                    if (startDate ==null) {
+                        dataContent.getChildAt(0).setVisibility(View.GONE);
+                        dataContent.getChildAt(1).setVisibility(View.VISIBLE);
+                        shadow_top.setVisibility(View.INVISIBLE);
+                        shadow_bottom.setVisibility(View.INVISIBLE);
+                        return;
+                    }
 
                     final ListAdapter adapter = new SmokeQuitCalendarAdapter(activity(),
                             startDate,
                             endDate, calendarItemViewFactory());
                     calendarGrid.setAdapter(adapter);
                     calendarGrid.invalidate();
+                    dataContent.getChildAt(0).setVisibility(View.VISIBLE);
+                    dataContent.getChildAt(1).setVisibility(View.GONE);
                 }
 
                 @Override
