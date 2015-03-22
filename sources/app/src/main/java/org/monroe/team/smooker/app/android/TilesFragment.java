@@ -35,6 +35,7 @@ import org.monroe.team.smooker.app.android.view.RelativeLayoutExt;
 import org.monroe.team.smooker.app.android.view.RoundSegmentImageView;
 import org.monroe.team.smooker.app.android.view.SmokePeriodHistogramView;
 import org.monroe.team.smooker.app.android.view.TextViewExt;
+import org.monroe.team.smooker.app.uc.GetSmokeQuitSchedule;
 import org.monroe.team.smooker.app.uc.PreparePeriodStatistic;
 import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
@@ -117,6 +118,7 @@ public class TilesFragment extends FrontPageFragment {
         }, 0, 300);
 
         fetchClockData(false);
+        getTileController(currentTileIndex).onResume();
     }
 
     private void fetchClockData(final boolean animation) {
@@ -528,7 +530,7 @@ public class TilesFragment extends FrontPageFragment {
     }
 
     private void onStartingCloseDash() {
-        view(R.id.start_tile_big_content).setVisibility(View.INVISIBLE);
+        view(R.id.start_tile_big_content).setVisibility(View.GONE);
         tileBigContentAC.hide();
         settingAlternativeBtnAC.hide();
     }
@@ -775,17 +777,19 @@ public class TilesFragment extends FrontPageFragment {
         }
 
         private void fetchPeriodData() {
-            application().data_periodStat().fetch(true, new DataProvider.FetchObserver<PreparePeriodStatistic.PeriodStatistic>() {
-                @Override
-                public void onFetch(PreparePeriodStatistic.PeriodStatistic periodStatistic) {
-                    histogramView.setModel(periodStatistic.smokesPerDayList);
-                }
+            if (histogramView != null) {
+                application().data_periodStat().fetch(true, new DataProvider.FetchObserver<PreparePeriodStatistic.PeriodStatistic>() {
+                    @Override
+                    public void onFetch(PreparePeriodStatistic.PeriodStatistic periodStatistic) {
+                        histogramView.setModel(periodStatistic.smokesPerDayList);
+                    }
 
-                @Override
-                public void onError(DataProvider.FetchError fetchError) {
-                    activity().forceCloseWithErrorCode(203);
-                }
-            });
+                    @Override
+                    public void onError(DataProvider.FetchError fetchError) {
+                        activity().forceCloseWithErrorCode(203);
+                    }
+                });
+            }
         }
 
         @Override
@@ -869,83 +873,18 @@ public class TilesFragment extends FrontPageFragment {
                     }
                 }
             });
+            fetchQuitSchedule();
+        }
+
+        private void fetchQuitSchedule() {
             application().getSmockQuitDataManager().calculateCalendarLimits(new SmokeQuitCalendarDisplayManager.OnLimitsCalculated() {
                 @Override
                 public void onLimit(Date startDate, Date endDate) {
                     if (startDate ==null)return;
+
                     final ListAdapter adapter = new SmokeQuitCalendarAdapter(activity(),
                             startDate,
-                            endDate, new GetViewImplementation.ViewHolderFactory<GetViewImplementation.ViewHolder<Date>>() {
-                        @Override
-                        public GetViewImplementation.ViewHolder<Date> create(final View forView) {
-                            return new GetViewImplementation.ViewHolder<Date>() {
-
-                                private View owner = forView;
-                                private View backgroundView = forView.findViewById(R.id.item_background);
-                                private TextView mainTextView = (TextView) forView.findViewById(R.id.item_text);
-                                private CellBackgroundView cellBackgroundView = (CellBackgroundView) forView.findViewById(R.id.item_cell_background);
-                                private View overCrossImage = forView.findViewById(R.id.item_date_past);
-                                private View todayImage = forView.findViewById(R.id.item_date_today);
-
-                                private final int text_color_light =  getResources().getColor(R.color.font_white);
-                                private final int text_color_dark =  getResources().getColor(R.color.font_dark_light);
-
-                                @Override
-                                public void update(Date date, int position) {
-                                    cellBackgroundView.resetAll();
-                                    cellBackgroundView.paintBottom = false;
-                                    cellBackgroundView.paintLeft = false;
-                                    if (position < 7) {
-                                        cellBackgroundView.paintTop = false;
-                                    }
-                                    if ((position+1)%7==0){
-                                       cellBackgroundView.paintRight = false;
-                                    }
-                                    SmokeQuitCalendarDisplayManager.DisplayDetails displayDetails = application().getSmockQuitDataManager().getSmokeQuitDateDisplayDetails(date);
-
-                                    mainTextView.setTypeface(null, displayDetails.isWeekEnd?Typeface.BOLD:Typeface.NORMAL);
-                                    mainTextView.setText(displayDetails.mainText);
-
-                                    overCrossImage.setVisibility(
-                                            (!displayDetails.isPassed
-                                            && !displayDetails.isFuture
-                                            && !displayDetails.isOutsideQuitProgram) ?  View.VISIBLE:View.GONE);
-                                    todayImage.setVisibility(displayDetails.isToday?View.VISIBLE:View.GONE);
-                                    if (displayDetails.isMonthEndWeek){
-                                        cellBackgroundView.paintWeekEnd = true;
-                                    }else if (displayDetails.isMonthStartWeek){
-                                        cellBackgroundView.paintWeekStart = true;
-                                    }
-
-                                    int backgroundResource = 0;
-                                    int textColor = text_color_dark;
-                                    float alpha = 1f;
-                                    if (displayDetails.isOutsideQuitProgram){
-                                        alpha = 0.2f;
-                                    }
-                                    owner.setAlpha(alpha);
-                                    //background
-                                    if (displayDetails.isMonthStart){
-                                        textColor = text_color_light;
-                                        if (displayDetails.isNewLimitDay){
-                                            backgroundResource = R.drawable.background_cal_month_limit;
-                                        }else {
-                                            backgroundResource = R.drawable.background_cal_month;
-                                        }
-                                    } else if (displayDetails.isNewLimitDay){
-                                        textColor = text_color_light;
-                                        backgroundResource = R.drawable.background_cal_day_limit;
-                                    }
-                                    backgroundView.setBackgroundResource(backgroundResource);
-                                    mainTextView.setTextColor(textColor);
-                                    owner.invalidate();
-
-                                }
-
-                                @Override public void cleanup() {}
-                            };
-                        }
-                    });
+                            endDate, calendarItemViewFactory());
                     calendarGrid.setAdapter(adapter);
                     calendarGrid.invalidate();
                 }
@@ -962,6 +901,20 @@ public class TilesFragment extends FrontPageFragment {
             return SetupQuitSmokeActivity.class;
         }
 
+        @Override
+        public void onInvalidData(Class dataClass) {
+            if (GetSmokeQuitSchedule.QuitSchedule.class == dataClass){
+                fetchQuitSchedule();
+            }
+        }
+
+        @Override
+        public void onResume() {
+            if (calendarGrid != null){
+                fetchQuitSchedule();
+            }
+        }
+
         public class SmokeQuitCalendarAdapter extends DateListAdapter{
 
             private final GetViewImplementation<Date,GetViewImplementation.ViewHolder<Date>> getViewImplementation;
@@ -976,6 +929,80 @@ public class TilesFragment extends FrontPageFragment {
             public View getView(int position, View convertView, ViewGroup parent) {
                 return getViewImplementation.getView(position,convertView,parent);
             }
+        }
+
+        private GetViewImplementation.ViewHolderFactory<GetViewImplementation.ViewHolder<Date>> calendarItemViewFactory() {
+            return new GetViewImplementation.ViewHolderFactory<GetViewImplementation.ViewHolder<Date>>() {
+                @Override
+                public GetViewImplementation.ViewHolder<Date> create(final View forView) {
+                    return new GetViewImplementation.ViewHolder<Date>() {
+
+                        private View owner = forView;
+                        private View backgroundView = forView.findViewById(R.id.item_background);
+                        private TextView mainTextView = (TextView) forView.findViewById(R.id.item_text);
+                        private CellBackgroundView cellBackgroundView = (CellBackgroundView) forView.findViewById(R.id.item_cell_background);
+                        private View overCrossImage = forView.findViewById(R.id.item_date_past);
+                        private View todayImage = forView.findViewById(R.id.item_date_today);
+
+                        private final int text_color_light =  getResources().getColor(R.color.font_white);
+                        private final int text_color_dark =  getResources().getColor(R.color.font_dark_light);
+
+                        @Override
+                        public void update(Date date, int position) {
+                            cellBackgroundView.resetAll();
+                            cellBackgroundView.paintBottom = false;
+                            cellBackgroundView.paintLeft = false;
+                            if (position < 7) {
+                                cellBackgroundView.paintTop = false;
+                            }
+                            if ((position+1)%7==0){
+                                cellBackgroundView.paintRight = false;
+                            }
+                            SmokeQuitCalendarDisplayManager.DisplayDetails displayDetails = application().getSmockQuitDataManager().getSmokeQuitDateDisplayDetails(date);
+
+                            mainTextView.setTypeface(null, displayDetails.isWeekEnd? Typeface.BOLD:Typeface.NORMAL);
+                            mainTextView.setText(displayDetails.mainText);
+
+                            overCrossImage.setVisibility(
+                                    (!displayDetails.isPassed
+                                            && !displayDetails.isFuture
+                                            && !displayDetails.isOutsideQuitProgram) ?  View.VISIBLE:View.GONE);
+                            todayImage.setVisibility(displayDetails.isToday?View.VISIBLE:View.GONE);
+                            if (displayDetails.isMonthEndWeek){
+                                cellBackgroundView.paintWeekEnd = true;
+                            }else if (displayDetails.isMonthStartWeek){
+                                cellBackgroundView.paintWeekStart = true;
+                            }
+
+                            int backgroundResource = 0;
+                            int textColor = text_color_dark;
+                            float alpha = 1f;
+                            if (displayDetails.isOutsideQuitProgram){
+                                alpha = 0.2f;
+                            }
+                            mainTextView.setAlpha(alpha);
+                            //background
+                            if (displayDetails.isMonthStart){
+                                textColor = text_color_light;
+                                if (displayDetails.isNewLimitDay){
+                                    backgroundResource = R.drawable.background_cal_month_limit;
+                                }else {
+                                    backgroundResource = R.drawable.background_cal_month;
+                                }
+                            } else if (displayDetails.isNewLimitDay){
+                                textColor = text_color_light;
+                                backgroundResource = R.drawable.background_cal_day_limit;
+                            }
+                            backgroundView.setBackgroundResource(backgroundResource);
+                            mainTextView.setTextColor(textColor);
+                            owner.invalidate();
+
+                        }
+
+                        @Override public void cleanup() {}
+                    };
+                }
+            };
         }
 
     }

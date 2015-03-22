@@ -27,7 +27,7 @@ public class GetSmokeQuitSchedule extends UserCaseSupport<Void, GetSmokeQuitSche
         for (int i=0; i<program.getStages().size(); i++) {
             QuitSmokeData.Stage stage = program.getStages().get(i);
             if (i == 0) {
-                QuitScheduleDate quitScheduleDate = new QuitScheduleDate(stage.date, true, stage.result == QuitSmokeData.QuiteStageResult.PASS);
+                 QuitScheduleDate quitScheduleDate = new QuitScheduleDate(stage.date, true, stage.result == QuitSmokeData.QuiteStageResult.PASS);
                 quitScheduleDateList.add(quitScheduleDate);
             } else {
                 QuitSmokeData.Stage prevStage = program.getStages().get(i-1);

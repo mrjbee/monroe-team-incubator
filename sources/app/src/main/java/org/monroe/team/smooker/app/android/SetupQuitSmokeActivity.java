@@ -106,12 +106,6 @@ public class SetupQuitSmokeActivity extends ActivitySupport<SmookerApplication> 
         final Integer finalSmokePerDay = smokePerDay;
         final int finalDesireSmokePerDayCount = desireSmokePerDayCount;
 
-        if (!application().getSetting(Settings.IS_SMOKE_QUIT_ACTIVE) ||
-                (oldDifficult == difficult && !oldDifficult.mayHaveDifferentTargetCount())){
-            doActualUpdate(difficult, finalSmokePerDay, finalDesireSmokePerDayCount);
-            return;
-        }
-
         AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.quit_page_change_program_alert_title))
                 .setMessage(getString(R.string.quit_page_change_program_alert_content))
@@ -142,15 +136,6 @@ public class SetupQuitSmokeActivity extends ActivitySupport<SmookerApplication> 
             smokePerDay == null? -1:smokePerDay,
             desireSmokePerDayCount
         );
-
-        //TODO: implement actual smoke quit program activation
-        /*
-            model().execute(SetupQuitSmokeProgram.class,new SetupQuitSmokeProgram.QuitSmokeProgramRequest(
-                    difficult,
-                    smokePerDay == null?-1:smokePerDay,
-                    desireSmokePerDayCount
-            ));
-        */
     }
 
 }

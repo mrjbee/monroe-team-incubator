@@ -31,6 +31,7 @@ import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
 import org.monroe.team.smooker.app.uc.AddSmoke;
 import org.monroe.team.smooker.app.uc.GetDaySmokeSchedule;
 import org.monroe.team.smooker.app.uc.GetBasicSmokeQuitDetails;
+import org.monroe.team.smooker.app.uc.GetSmokeQuitSchedule;
 import org.monroe.team.smooker.app.uc.GetSmokeStatistic;
 import org.monroe.team.smooker.app.uc.PreparePeriodStatistic;
 import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
@@ -299,6 +300,7 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
         model().execute(SetupSmokeQuitProgram.class, new SetupSmokeQuitProgram.QuitSmokeProgramRequest(difficult,startCount,endCount), new Model.BackgroundResultCallback<Void>() {
             @Override
             public void onResult(Void response) {
+                model().usingService(DataManger.class).invalidate(GetSmokeQuitSchedule.QuitSchedule.class);
                 model().usingService(DataManger.class).invalidate(GetBasicSmokeQuitDetails.BasicSmokeQuitDetails.class);
                 model().usingService(DataManger.class).invalidate(GetDaySmokeSchedule.SmokeSuggestion.class);
                 model().getTodaySmokeDetailsDataProvider().invalidate();

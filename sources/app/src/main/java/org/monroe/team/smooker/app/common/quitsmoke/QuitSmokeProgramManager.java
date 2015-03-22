@@ -3,7 +3,7 @@ package org.monroe.team.smooker.app.common.quitsmoke;
 import android.content.Context;
 
 import org.monroe.team.corebox.utils.Closure;
-import org.monroe.team.smooker.app.uc.common.DateUtils;
+import org.monroe.team.corebox.utils.DateUtils;
 
 import java.util.Date;
 
@@ -187,6 +187,10 @@ public class QuitSmokeProgramManager {
         @Override
         protected void doInitialize(QuitSmokeData smokeData, int startSmokeCount, int endSmokeCount) {
             Date nextStageDate = DateUtils.dateOnly(DateUtils.now());
+            if (startSmokeCount == -1){
+                startSmokeCount = 20;
+            }
+            smokeData.stageList.add(new QuitSmokeData.Stage(startSmokeCount, nextStageDate));
             smokeData.stageList.add(new QuitSmokeData.Stage(0, DateUtils.mathDays(nextStageDate, 1)));
         }
     }

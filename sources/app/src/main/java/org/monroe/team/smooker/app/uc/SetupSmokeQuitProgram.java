@@ -1,5 +1,7 @@
 package org.monroe.team.smooker.app.uc;
 
+import org.monroe.team.android.box.data.DataManger;
+import org.monroe.team.android.box.data.DataProvider;
 import org.monroe.team.corebox.services.ServiceRegistry;
 import org.monroe.team.corebox.uc.UserCaseSupport;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
@@ -17,8 +19,20 @@ public class SetupSmokeQuitProgram extends UserCaseSupport<SetupSmokeQuitProgram
         if (request.level == QuitSmokeDifficultLevel.DISABLED){
             using(QuitSmokeProgramManager.class).disable();
         } else {
+            int startSmokeCount = request.startSmokeCount;
+            if (startSmokeCount == -1){
+                try {
+                    GetSmokeStatistic.SmokeStatistic smokeQuitDetails = using(DataManger.class).fetch(GetSmokeStatistic.SmokeStatistic.class);
+                    if (smokeQuitDetails.isAverageSmokeDefined())
+                        startSmokeCount = smokeQuitDetails.getAverageSmokeCount();
+                    else
+                        startSmokeCount = 20;
+                } catch (DataProvider.FetchException e) {
+                    startSmokeCount = 21;
+                }
+            }
            QuitSmokeProgram quitSmokeProgram = using(QuitSmokeProgramManager.class).setup(request.level,
-                    request.startSmokeCount,
+                    startSmokeCount,
                     request.endSmokeCount);
         }
         return null;
