@@ -111,5 +111,6 @@
     <string name="no_quit_program">Quit Program Not Set</string>
     <string name="quit_program_choose_prompt">Choose program which fits you.</string>
     <string name="quit_program_prompt_action">Set Program</string>
+    <string name="quitting">Quitting</string>
 
 </resources>

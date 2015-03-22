@@ -6,50 +6,61 @@
     android:layout_marginTop="25dp"
     android:layout_marginLeft="20dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/stat_image"
         android:orientation="vertical"
-        android:background="#626262"
         android:gravity="center">
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:src="@drawable/quit_progress_background"
+            android:layout_centerInParent="true"/>
+        <org.monroe.team.smooker.app.android.view.RoundSegmentImageView
+            android:id="@+id/quit_progress_round_image"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:src="@drawable/quit_progress_value"
+            android:layout_centerInParent="true"/>
 
         <org.monroe.team.smooker.app.android.view.TextViewExt
-            android:id="@+id/stat_today_smokes"
+            android:id="@+id/quit_progress_value"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:text="0%"
             android:textStyle="bold"
-            android:textSize="@dimen/text_size_normal"
-            android:textColor="@color/font.white"
-            android:shadowColor="@color/font.dark.shadow"
+            android:textSize="@dimen/text_size_normal_small"
+            android:textColor="@color/font.dark"
+            android:shadowColor="@color/font.white.shadow"
             android:shadowDy="2"
             android:shadowDx="1"
             android:shadowRadius="1"
+            android:layout_centerInParent="true"
             />
-    </LinearLayout>
+    </RelativeLayout>
 
     <TextView
         android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/total_smokes"
+        android:text="End Date"
         android:textSize="@dimen/text_size_normal"
         android:textColor="@color/font.dark.light"
-        android:id="@+id/stat_total_smokes"
+        android:id="@+id/quit_end_date"
         android:layout_toRightOf="@+id/stat_image"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0 smokes"
+        android:text="not set"
         android:textSize="@dimen/text_size_normal_smalles"
         android:textColor="@color/font.dark.lighter"
-        android:id="@+id/stat_total_smokes_value"
-        android:layout_alignBottom="@+id/stat_total_smokes"
-        android:layout_alignLeft="@+id/stat_average_text_value"
-        android:layout_alignStart="@+id/stat_average_text_value" />
+        android:id="@+id/quit_end_date_value"
+        android:layout_alignBottom="@+id/quit_end_date"
+        android:layout_alignLeft="@+id/quit_target_value"
+        android:layout_alignStart="@+id/quit_target_value" />
 
 
 
@@ -57,23 +68,23 @@
         android:layout_marginTop="6dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/today_per_average_smokes"
+        android:text="Target count"
         android:textSize="@dimen/text_size_normal"
         android:textColor="@color/font.dark.light"
-        android:id="@+id/stat_average_text"
-        android:layout_below="@+id/stat_total_smokes"
-        android:layout_alignLeft="@+id/stat_total_smokes"
-        android:layout_alignStart="@+id/stat_total_smokes"/>
+        android:id="@+id/quit_target_text"
+        android:layout_below="@+id/quit_end_date"
+        android:layout_alignLeft="@+id/quit_end_date"
+        android:layout_alignStart="@+id/quit_end_date"/>
 
     <TextView
         android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0 smokes"
+        android:text="not set"
         android:textSize="@dimen/text_size_normal_smalles"
         android:textColor="@color/font.dark.lighter"
-        android:id="@+id/stat_average_text_value"
-        android:layout_alignBottom="@+id/stat_average_text"
-        android:layout_toRightOf="@+id/stat_average_text" />
+        android:id="@+id/quit_target_value"
+        android:layout_alignBottom="@+id/quit_target_text"
+        android:layout_toRightOf="@+id/quit_target_text" />
 
 </RelativeLayout>

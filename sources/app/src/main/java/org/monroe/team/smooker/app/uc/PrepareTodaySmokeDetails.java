@@ -33,7 +33,7 @@ public class PrepareTodaySmokeDetails extends UserCaseSupport<Void, PrepareToday
         if (smokeQuitDetails.level == QuitSmokeDifficultLevel.DISABLED){
             return new TodaySmokeDetails(smokeStatistic.getTodaySmokeCount(),
                     smokeStatistic.getTotalSmokeCount(),
-                    smokeStatistic.getAverageSmokeCount(), TodaySmokeDetails.SpecialType.NO_LIMIT);
+                    smokeStatistic.getAverageSmokeCount(), TodaySmokeDetails.SpecialType.NO_LIMIT, smokeStatistic.getTodaySmokeCount());
         } else {
             int delta = smokeQuitDetails.limit - smokeStatistic.getTodaySmokeCount();
             TodaySmokeDetails.SpecialType type = TodaySmokeDetails.SpecialType.BEFORE_LIMIT;
@@ -43,7 +43,7 @@ public class PrepareTodaySmokeDetails extends UserCaseSupport<Void, PrepareToday
                 type = TodaySmokeDetails.SpecialType.NO_LEFT;
             }
             return new TodaySmokeDetails(Math.abs(delta), smokeStatistic.getTotalSmokeCount(),
-                    smokeStatistic.getAverageSmokeCount(), type);
+                    smokeStatistic.getAverageSmokeCount(), type, smokeStatistic.getTodaySmokeCount());
         }
     }
 
@@ -53,12 +53,14 @@ public class PrepareTodaySmokeDetails extends UserCaseSupport<Void, PrepareToday
         public final int total;
         public final int avarage;
         public final SpecialType type;
+        public final int todaySmokes;
 
-        public TodaySmokeDetails(int specialCount, int total, int avarage, SpecialType type) {
+        public TodaySmokeDetails(int specialCount, int total, int avarage, SpecialType type, int todaySmokes) {
             this.specialCount = specialCount;
             this.total = total;
             this.avarage = avarage;
             this.type = type;
+            this.todaySmokes = todaySmokes;
         }
 
         public static enum SpecialType{

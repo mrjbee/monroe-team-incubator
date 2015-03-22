@@ -27,14 +27,14 @@ public class GetSmokeQuitSchedule extends UserCaseSupport<Void, GetSmokeQuitSche
         for (int i=0; i<program.getStages().size(); i++) {
             QuitSmokeData.Stage stage = program.getStages().get(i);
             if (i == 0) {
-                 QuitScheduleDate quitScheduleDate = new QuitScheduleDate(stage.date, true, stage.result == QuitSmokeData.QuiteStageResult.PASS);
+                 QuitScheduleDate quitScheduleDate = new QuitScheduleDate(stage.date, true, stage.result == QuitSmokeData.QuiteStageResult.PASS, stage.smokeLimit);
                 quitScheduleDateList.add(quitScheduleDate);
             } else {
                 QuitSmokeData.Stage prevStage = program.getStages().get(i-1);
                 if (prevStage.smokeLimit != stage.smokeLimit) {
-                    quitScheduleDateList.add(new QuitScheduleDate(stage.date, true, stage.result == QuitSmokeData.QuiteStageResult.PASS));
+                    quitScheduleDateList.add(new QuitScheduleDate(stage.date, true, stage.result == QuitSmokeData.QuiteStageResult.PASS, stage.smokeLimit));
                 } else if (stage.result == QuitSmokeData.QuiteStageResult.FAILS) {
-                    quitScheduleDateList.add(new QuitScheduleDate(stage.date, false, false));
+                    quitScheduleDateList.add(new QuitScheduleDate(stage.date, false, false, stage.smokeLimit));
                 }
             }
         }
@@ -59,8 +59,10 @@ public class GetSmokeQuitSchedule extends UserCaseSupport<Void, GetSmokeQuitSche
         public final Date date;
         public final boolean isNewLimitDate;
         public final boolean successful;
+        public final int limit;
 
-        public QuitScheduleDate(Date date, boolean isNewLimitDate, boolean isSuccessful) {
+        public QuitScheduleDate(Date date, boolean isNewLimitDate, boolean isSuccessful, int limit) {
+            this.limit = limit;
             //EEST EET issue with date calculation
             this.date = DateUtils.dateOnly(date);
             this.isNewLimitDate = isNewLimitDate;

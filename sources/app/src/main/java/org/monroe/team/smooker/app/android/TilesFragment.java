@@ -40,6 +40,7 @@ import org.monroe.team.smooker.app.uc.PreparePeriodStatistic;
 import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -723,6 +724,7 @@ public class TilesFragment extends FrontPageFragment {
 
         private TextView averageValueText;
         private TextView totalValueText;
+        private TextViewExt todaySmokeCountText;
         private SmokePeriodHistogramView histogramView;
 
         @Override
@@ -744,6 +746,7 @@ public class TilesFragment extends FrontPageFragment {
         protected void init_smallContent(View smallContentView, LayoutInflater layoutInflater) {
             averageValueText = (TextView) smallContentView.findViewById(R.id.stat_average_text_value);
             totalValueText = (TextView) smallContentView.findViewById(R.id.stat_total_smokes_value);
+            todaySmokeCountText = (TextViewExt) smallContentView.findViewById(R.id.stat_today_smokes);
         }
 
         @Override
@@ -767,6 +770,7 @@ public class TilesFragment extends FrontPageFragment {
                      } else {
                          averageValueText.setText(getString(R.string.not_enough_data));
                      }
+                    todaySmokeCountText.setText("" + todaySmokeDetails.todaySmokes, true);
                 }
 
                 @Override
@@ -819,15 +823,33 @@ public class TilesFragment extends FrontPageFragment {
         private GridView calendarGrid;
         private View shadow_top;
         private View shadow_bottom;
+        private TextView endDateText;
+        private TextView endCountText;
+        private TextView progressText;
+        private final DateFormat dateFormater = DateFormat.getDateInstance();
+        private RoundSegmentImageView progressView;
 
         @Override
         public String caption() {
-            return "Quitting";
+            return getString(R.string.quitting);
         }
 
         @Override
         protected int bigTileId() {
             return R.layout.tile_big_quit;
+        }
+
+        @Override
+        protected int smallTileId() {
+            return R.layout.tile_small_quit;
+        }
+
+        @Override
+        protected void init_smallContent(View smallContentView, LayoutInflater layoutInflater) {
+           endDateText  = (TextView) smallContentView.findViewById(R.id.quit_end_date_value);
+           endCountText  = (TextView) smallContentView.findViewById(R.id.quit_target_value);
+           progressText  = (TextView) smallContentView.findViewById(R.id.quit_progress_value);
+           progressView = (RoundSegmentImageView) smallContentView.findViewById(R.id.quit_progress_round_image);
         }
 
         @Override
@@ -932,6 +954,7 @@ public class TilesFragment extends FrontPageFragment {
         public void onInvalidData(Class dataClass) {
             if (GetSmokeQuitSchedule.QuitSchedule.class == dataClass){
                 fetchQuitSchedule();
+                fetchSmallContentData();
             }
         }
 
@@ -940,6 +963,32 @@ public class TilesFragment extends FrontPageFragment {
             if (calendarGrid != null){
                 fetchQuitSchedule();
             }
+            fetchSmallContentData();
+        }
+
+        private void fetchSmallContentData() {
+            application().getSmockQuitDataManager().basic(new SmokeQuitCalendarDisplayManager.OnSmokeQuitBasicDetails() {
+                @Override
+                public void onSuccess(SmokeQuitCalendarDisplayManager.QuitDetails details) {
+                    if (details.endCount !=-1){
+                        endDateText.setText(dateFormater.format(details.endDate));
+                        endCountText.setText(""+details.endCount+" "+getString(R.string.smokes));
+                        progressText.setText(""+details.progress+"%");
+
+                    } else{
+                        endDateText.setText("Disabled");
+                        endCountText.setText("Disabled");
+                        progressText.setText("0%");
+                    }
+                    progressView.setAngle(360f*((float)details.progress/100f));
+                    progressView.invalidate();
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    activity().forceCloseWithErrorCode(401);
+                }
+            });
         }
 
         public class SmokeQuitCalendarAdapter extends DateListAdapter{
