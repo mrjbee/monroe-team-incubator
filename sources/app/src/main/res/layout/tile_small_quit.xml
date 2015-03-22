@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:layout_marginTop="25dp"
-    android:layout_marginLeft="20dp">
+    android:layout_marginLeft="20dp"
+    android:gravity="center_vertical">
 
     <RelativeLayout
         android:layout_width="50dp"
@@ -41,50 +41,52 @@
             />
     </RelativeLayout>
 
-    <TextView
+    <GridLayout
         android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="End Date"
-        android:textSize="@dimen/text_size_normal"
-        android:textColor="@color/font.dark.light"
-        android:id="@+id/quit_end_date"
-        android:layout_toRightOf="@+id/stat_image"/>
+        android:columnCount="2">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="not set"
-        android:textSize="@dimen/text_size_normal_smalles"
-        android:textColor="@color/font.dark.lighter"
-        android:id="@+id/quit_end_date_value"
-        android:layout_alignBottom="@+id/quit_end_date"
-        android:layout_alignLeft="@+id/quit_target_value"
-        android:layout_alignStart="@+id/quit_target_value" />
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="End Date"
+            android:textSize="@dimen/text_size_normal"
+            android:textColor="@color/font.dark.light"
+            android:id="@+id/quit_end_date"/>
 
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="not set"
+            android:textSize="@dimen/text_size_normal_smalles"
+            android:textColor="@color/font.dark.lighter"
+            android:id="@+id/quit_end_date_value"
+           />
 
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Target count"
+            android:textSize="@dimen/text_size_normal"
+            android:textColor="@color/font.dark.light"
+            android:id="@+id/quit_target_text"
+            />
 
-    <TextView
-        android:layout_marginTop="6dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Target count"
-        android:textSize="@dimen/text_size_normal"
-        android:textColor="@color/font.dark.light"
-        android:id="@+id/quit_target_text"
-        android:layout_below="@+id/quit_end_date"
-        android:layout_alignLeft="@+id/quit_end_date"
-        android:layout_alignStart="@+id/quit_end_date"/>
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="not set"
+            android:textSize="@dimen/text_size_normal_smalles"
+            android:textColor="@color/font.dark.lighter"
+            android:id="@+id/quit_target_value"
+            />
+    </GridLayout>
 
-    <TextView
-        android:layout_marginLeft="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="not set"
-        android:textSize="@dimen/text_size_normal_smalles"
-        android:textColor="@color/font.dark.lighter"
-        android:id="@+id/quit_target_value"
-        android:layout_alignBottom="@+id/quit_target_text"
-        android:layout_toRightOf="@+id/quit_target_text" />
-
-</RelativeLayout>
+</LinearLayout>
