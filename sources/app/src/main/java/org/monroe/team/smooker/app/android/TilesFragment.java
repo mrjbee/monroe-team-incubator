@@ -915,11 +915,15 @@ public class TilesFragment extends FrontPageFragment {
                     });
             fetchQuitSchedule();
         }
+        private String datesString = null;
 
+        long lastUsedId = Long.MAX_VALUE;
         private void fetchQuitSchedule() {
             application().getSmockQuitDataManager().calculateCalendarLimits(new SmokeQuitCalendarDisplayManager.OnLimitsCalculated() {
                 @Override
-                public void onLimit(Date startDate, Date endDate) {
+                public void onLimit(long id, Date startDate, Date endDate) {
+                    if (lastUsedId == id) return;
+                    lastUsedId = id;
 
                     if (startDate ==null) {
                         dataContent.getChildAt(0).setVisibility(View.GONE);
@@ -933,7 +937,6 @@ public class TilesFragment extends FrontPageFragment {
                             startDate,
                             endDate, calendarItemViewFactory());
                     calendarGrid.setAdapter(adapter);
-                    calendarGrid.invalidate();
                     dataContent.getChildAt(0).setVisibility(View.VISIBLE);
                     dataContent.getChildAt(1).setVisibility(View.GONE);
                 }

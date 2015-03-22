@@ -32,7 +32,7 @@ public class SmokeQuitCalendarDisplayManager {
             public void onFetch(GetSmokeQuitSchedule.QuitSchedule quitSchedule) {
 
                 if (quitSchedule.scheduleDates == null || quitSchedule.scheduleDates.size() == 0){
-                    resultObserver.onLimit(null, null);
+                    resultObserver.onLimit(quitSchedule.incrementalId, null, null);
                     return;
                 }
 
@@ -46,7 +46,7 @@ public class SmokeQuitCalendarDisplayManager {
                 if (dayCount != 7){
                     endDate = DateUtils.mathDays(endDate, 7 - dayCount);
                 }
-                resultObserver.onLimit(
+                resultObserver.onLimit(quitSchedule.incrementalId,
                         startDate,endDate);
             }
 
@@ -123,7 +123,7 @@ public class SmokeQuitCalendarDisplayManager {
     }
 
     public static interface  OnLimitsCalculated{
-        public void onLimit(Date startDate, Date endDate);
+        public void onLimit(long id, Date startDate, Date endDate);
         public void onError(Exception e);
     }
 

@@ -17,12 +17,12 @@ public class GetSmokeQuitSchedule extends UserCaseSupport<Void, GetSmokeQuitSche
     public GetSmokeQuitSchedule(ServiceRegistry serviceRegistry) {
         super(serviceRegistry);
     }
-
+    private static long requestId = 1;
     @Override
     protected QuitSchedule executeImpl(Void request) {
         QuitSmokeProgram program = using(QuitSmokeProgramManager.class).get();
         if (program == null)
-            return new QuitSchedule(null);
+            return new QuitSchedule(null, requestId++);
         List<QuitScheduleDate> quitScheduleDateList = new ArrayList<>();
         for (int i=0; i<program.getStages().size(); i++) {
             QuitSmokeData.Stage stage = program.getStages().get(i);
@@ -38,15 +38,17 @@ public class GetSmokeQuitSchedule extends UserCaseSupport<Void, GetSmokeQuitSche
                 }
             }
         }
-        return new QuitSchedule(quitScheduleDateList);
+        return new QuitSchedule(quitScheduleDateList, requestId++);
     }
 
     public static class QuitSchedule implements Serializable {
 
         public final List<QuitScheduleDate> scheduleDates;
+        public final long incrementalId;
 
-        public QuitSchedule(List<QuitScheduleDate> scheduleDates) {
+        public QuitSchedule(List<QuitScheduleDate> scheduleDates, long incrementalId) {
             this.scheduleDates = scheduleDates;
+            this.incrementalId = incrementalId;
         }
 
         public boolean isDisabled() {
