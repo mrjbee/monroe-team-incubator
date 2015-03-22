@@ -880,9 +880,12 @@ public class TilesFragment extends FrontPageFragment {
                         public GetViewImplementation.ViewHolder<Date> create(final View forView) {
                             return new GetViewImplementation.ViewHolder<Date>() {
 
+                                private View owner = forView;
                                 private View backgroundView = forView.findViewById(R.id.item_background);
                                 private TextView mainTextView = (TextView) forView.findViewById(R.id.item_text);
                                 private CellBackgroundView cellBackgroundView = (CellBackgroundView) forView.findViewById(R.id.item_cell_background);
+                                private View overCrossImage = forView.findViewById(R.id.item_date_past);
+                                private View todayImage = forView.findViewById(R.id.item_date_today);
 
                                 private final int text_color_light =  getResources().getColor(R.color.font_white);
                                 private final int text_color_dark =  getResources().getColor(R.color.font_dark_light);
@@ -899,15 +902,20 @@ public class TilesFragment extends FrontPageFragment {
                                        cellBackgroundView.paintRight = false;
                                     }
                                     SmokeQuitCalendarDisplayManager.DisplayDetails displayDetails = application().getSmockQuitDataManager().getSmokeQuitDateDisplayDetails(date);
+
                                     mainTextView.setTypeface(null, displayDetails.isWeekEnd?Typeface.BOLD:Typeface.NORMAL);
                                     mainTextView.setText(displayDetails.mainText);
 
+                                    overCrossImage.setVisibility(
+                                            (!displayDetails.isPassed
+                                            && !displayDetails.isFuture
+                                            && !displayDetails.isOutsideQuitProgram) ?  View.VISIBLE:View.GONE);
+                                    todayImage.setVisibility(displayDetails.isToday?View.VISIBLE:View.GONE);
                                     if (displayDetails.isMonthEndWeek){
                                         cellBackgroundView.paintWeekEnd = true;
                                     }else if (displayDetails.isMonthStartWeek){
                                         cellBackgroundView.paintWeekStart = true;
                                     }
-                                    cellBackgroundView.invalidate();
 
                                     int backgroundResource = 0;
                                     int textColor = text_color_dark;
@@ -915,7 +923,7 @@ public class TilesFragment extends FrontPageFragment {
                                     if (displayDetails.isOutsideQuitProgram){
                                         alpha = 0.2f;
                                     }
-                                    mainTextView.setAlpha(alpha);
+                                    owner.setAlpha(alpha);
                                     //background
                                     if (displayDetails.isMonthStart){
                                         textColor = text_color_light;
@@ -930,6 +938,7 @@ public class TilesFragment extends FrontPageFragment {
                                     }
                                     backgroundView.setBackgroundResource(backgroundResource);
                                     mainTextView.setTextColor(textColor);
+                                    owner.invalidate();
 
                                 }
 

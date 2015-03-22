@@ -1,29 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    android:minHeight="40dp"
     >
     <org.monroe.team.smooker.app.android.view.CellBackgroundView
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="40dp"
-        android:minHeight="40dp"
-        android:id="@+id/item_cell_background"/>
+        android:id="@+id/item_cell_background"
+        android:layout_centerInParent="true"/>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="40dp"
-        android:minHeight="40dp"
-        android:id="@+id/item_background">
+        android:id="@+id/item_background"
+        android:layout_centerInParent="true"
+        android:gravity="center">
 
         <TextView
+            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_normal_smalles"
             android:textColor="@color/font.dark.light"
             android:id="@+id/item_text"
-            android:text="Hello"
-            android:layout_centerInParent="true"/>
+            android:text="Hello"/>
 
-    </RelativeLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/item_date_past"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="5dp"
+        android:src="@drawable/date_past"
+        android:layout_centerInParent="true"/>
+
+
+    <ImageView
+        android:id="@+id/item_date_today"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="3dp"
+        android:src="@drawable/date_today"
+        android:layout_centerInParent="true"/>
+
 </RelativeLayout>

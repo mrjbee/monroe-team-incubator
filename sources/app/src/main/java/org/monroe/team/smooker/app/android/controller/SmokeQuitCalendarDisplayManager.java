@@ -99,8 +99,9 @@ public class SmokeQuitCalendarDisplayManager {
             }
             answer.isMonthStart = true;
         }
-
+        answer.isToday = DateUtils.isToday(probeDate);
         calendar.setTime(probeDate);
+
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         answer.isWeekEnd  = dayOfWeek == Calendar.SUNDAY || dayOfWeek == Calendar.SATURDAY;
 
@@ -158,5 +159,6 @@ public class SmokeQuitCalendarDisplayManager {
         public boolean isWeekEnd = false;
         public boolean isMonthEndWeek = false;
         public boolean isMonthStartWeek = false;
+        public boolean isToday =false;
     }
 }
