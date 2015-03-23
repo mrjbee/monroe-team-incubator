@@ -12,7 +12,7 @@
         android:layout_height="50dp"
         android:id="@+id/stat_image"
         android:orientation="vertical"
-        android:background="#626262"
+        android:background="@drawable/background_stat_today"
         android:gravity="center">
 
         <org.monroe.team.smooker.app.android.view.TextViewExt
