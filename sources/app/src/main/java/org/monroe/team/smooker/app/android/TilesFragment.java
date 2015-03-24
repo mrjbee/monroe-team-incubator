@@ -40,6 +40,7 @@ import org.monroe.team.smooker.app.android.view.TextViewExt;
 import org.monroe.team.smooker.app.uc.GetSmokeQuitSchedule;
 import org.monroe.team.smooker.app.uc.PreparePeriodStatistic;
 import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
+import org.monroe.team.smooker.app.uc.PrepareSmokeQuitDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 
 import java.text.DateFormat;
@@ -863,7 +864,7 @@ public class TilesFragment extends FrontPageFragment {
 
         @Override
         public String caption() {
-            return getString(R.string.quitting);
+            return getString(R.string.quit_page_title);
         }
 
         @Override
@@ -989,8 +990,10 @@ public class TilesFragment extends FrontPageFragment {
         public void onInvalidData(Class dataClass) {
             if (GetSmokeQuitSchedule.QuitSchedule.class == dataClass){
                 fetchQuitSchedule();
+            }else if(PrepareSmokeQuitDetails.Details.class == dataClass){
                 fetchSmallContentData();
             }
+
         }
 
         @Override
@@ -1002,25 +1005,25 @@ public class TilesFragment extends FrontPageFragment {
         }
 
         private void fetchSmallContentData() {
-            application().getSmockQuitDataManager().basic(new SmokeQuitCalendarDisplayManager.OnSmokeQuitBasicDetails() {
+            application().data_smokeQuit().fetch(true, new DataProvider.FetchObserver<PrepareSmokeQuitDetails.Details>() {
                 @Override
-                public void onSuccess(SmokeQuitCalendarDisplayManager.QuitDetails details) {
-                    if (details.endCount !=-1){
-                        endDateText.setText(dateFormater.format(details.endDate));
-                        endCountText.setText(""+details.endCount+" "+getString(R.string.smokes));
-                        progressText.setText(""+details.progress+"%");
+                public void onFetch(PrepareSmokeQuitDetails.Details details) {
+                    if (details.todayLimit != -1) {
+                        endDateText.setText(details.dayLeftCount+" days");
+                        endCountText.setText("" + details.todayLimit + " " + getString(R.string.smokes));
+                        progressText.setText("" + details.progress + "%");
 
-                    } else{
+                    } else {
                         endDateText.setText("Disabled");
                         endCountText.setText("Disabled");
                         progressText.setText("0%");
                     }
-                    progressView.setAngle(360f*((float)details.progress/100f));
+                    progressView.setAngle(360f * ((float) details.progress / 100f));
                     progressView.invalidate();
                 }
 
                 @Override
-                public void onError(Exception e) {
+                public void onError(DataProvider.FetchError fetchError) {
                     activity().forceCloseWithErrorCode(401);
                 }
             });

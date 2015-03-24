@@ -57,40 +57,6 @@ public class SmokeQuitCalendarDisplayManager {
         });
     }
 
-
-    public void basic(final OnSmokeQuitBasicDetails resultObserver){
-        quitScheduleDataProvider.fetch(true,new DataProvider.FetchObserver<GetSmokeQuitSchedule.QuitSchedule>() {
-            @Override
-            public void onFetch(GetSmokeQuitSchedule.QuitSchedule quitSchedule) {
-
-                if (quitSchedule.scheduleDates == null || quitSchedule.scheduleDates.size() == 0){
-                    resultObserver.onSuccess(new QuitDetails(null, -1, 0));
-                    return;
-                }
-
-                Date endDate = Lists.getLast(quitSchedule.scheduleDates).date;
-                int count = Lists.getLast(quitSchedule.scheduleDates).limit;
-                int limitDays = 0;
-                int limitDaysPassed = 0;
-                for(GetSmokeQuitSchedule.QuitScheduleDate scheduleDate:quitSchedule.scheduleDates){
-                    if (scheduleDate.isNewLimitDate){
-                        limitDays++;
-                        if (scheduleDate.successful){
-                            limitDaysPassed++;
-                        }
-                    }
-
-                }
-
-                resultObserver.onSuccess(new QuitDetails(endDate, count,Math.round(limitDaysPassed* (float)limitDays/100f)));
-            }
-
-            @Override
-            public void onError(DataProvider.FetchError fetchError) {
-                resultObserver.onError(new DataProvider.FetchException(fetchError));
-            }
-        });
-    }
     private int calculateDaysPastInThisWeek(Date date, Calendar calendar) {
         calendar.setTime(date);
 
@@ -117,10 +83,6 @@ public class SmokeQuitCalendarDisplayManager {
     }
 
 
-    public static interface  OnSmokeQuitBasicDetails{
-        public void onSuccess(QuitDetails details);
-        public void onError(Exception e);
-    }
 
     public static interface  OnLimitsCalculated{
         public void onLimit(long id, Date startDate, Date endDate);
@@ -185,17 +147,6 @@ public class SmokeQuitCalendarDisplayManager {
         }
         answer.isOutsideQuitProgram = true;
         return answer;
-    }
-    public static class QuitDetails {
-        public final Date endDate;
-        public final int endCount;
-        public final int progress;
-
-        public QuitDetails(Date endDate, int endCount, int progress) {
-            this.endDate = endDate;
-            this.endCount = endCount;
-            this.progress = progress;
-        }
     }
 
     public static class DisplayDetails {

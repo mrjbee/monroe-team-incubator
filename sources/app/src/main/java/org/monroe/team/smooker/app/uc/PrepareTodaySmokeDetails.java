@@ -23,9 +23,9 @@ public class PrepareTodaySmokeDetails extends UserCaseSupport<Void, PrepareToday
         } catch (DataProvider.FetchException e) {
            throw new FetchFailedException("GTSD1",e);
         }
-        GetBasicSmokeQuitDetails.BasicSmokeQuitDetails smokeQuitDetails = null;
+        GetSmokeQuitDetails.Details smokeQuitDetails = null;
         try {
-            smokeQuitDetails = using(DataManger.class).fetch(GetBasicSmokeQuitDetails.BasicSmokeQuitDetails.class);
+            smokeQuitDetails = using(DataManger.class).fetch(GetSmokeQuitDetails.Details.class);
         } catch (DataProvider.FetchException e) {
             throw new FetchFailedException("GTSD2",e);
         }

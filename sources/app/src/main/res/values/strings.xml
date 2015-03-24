@@ -112,5 +112,7 @@
     <string name="quit_program_choose_prompt">Choose program which fits you.</string>
     <string name="quit_program_prompt_action">Set Program</string>
     <string name="quitting">Quitting</string>
+    <string name="today_limit">Limit</string>
+    <string name="finish_date">Left</string>
 
 </resources>

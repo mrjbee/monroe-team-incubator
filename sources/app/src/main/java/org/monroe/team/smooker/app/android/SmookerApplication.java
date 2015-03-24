@@ -30,7 +30,7 @@ import org.monroe.team.smooker.app.common.constant.SetupPage;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
 import org.monroe.team.smooker.app.uc.AddSmoke;
 import org.monroe.team.smooker.app.uc.GetDaySmokeSchedule;
-import org.monroe.team.smooker.app.uc.GetBasicSmokeQuitDetails;
+import org.monroe.team.smooker.app.uc.GetSmokeQuitDetails;
 import org.monroe.team.smooker.app.uc.GetSmokeQuitSchedule;
 import org.monroe.team.smooker.app.uc.GetSmokeStatistic;
 import org.monroe.team.smooker.app.uc.PreparePeriodStatistic;
@@ -276,7 +276,7 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
 
                     model().usingService(DataManger.class).invalidate(GetSmokeStatistic.SmokeStatistic.class);
                     model().usingService(DataManger.class).invalidate(GetDaySmokeSchedule.SmokeSuggestion.class);
-                    model().usingService(DataManger.class).invalidate(GetBasicSmokeQuitDetails.BasicSmokeQuitDetails.class);
+                    model().usingService(DataManger.class).invalidate(GetSmokeQuitDetails.Details.class);
 
                     model().getTodaySmokeDetailsDataProvider().invalidate();
                     model().getTodaySmokeScheduleDataProvider().invalidate();
@@ -301,10 +301,11 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
             @Override
             public void onResult(Void response) {
                 model().usingService(DataManger.class).invalidate(GetSmokeQuitSchedule.QuitSchedule.class);
-                model().usingService(DataManger.class).invalidate(GetBasicSmokeQuitDetails.BasicSmokeQuitDetails.class);
+                model().usingService(DataManger.class).invalidate(GetSmokeQuitDetails.Details.class);
                 model().usingService(DataManger.class).invalidate(GetDaySmokeSchedule.SmokeSuggestion.class);
                 model().getTodaySmokeDetailsDataProvider().invalidate();
                 model().getTodaySmokeScheduleDataProvider().invalidate();
+                model().getBasicQuitSmokeDetailsProvider().invalidate();
             }
 
             @Override
@@ -333,6 +334,10 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
 
     public DataProvider<PreparePeriodStatistic.PeriodStatistic> data_periodStat() {
         return model().getPeriodStatsProvider();
+    }
+
+    public DataProvider<org.monroe.team.smooker.app.uc.PrepareSmokeQuitDetails.Details> data_smokeQuit() {
+        return model().getBasicQuitSmokeDetailsProvider();
     }
 
     public SmokeQuitCalendarDisplayManager getSmockQuitDataManager(){

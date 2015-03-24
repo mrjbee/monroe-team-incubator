@@ -129,7 +129,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
                     android:textStyle="bold"
-                    android:textSize="@dimen/text_size_caption"
+                    android:textSize="@dimen/text_size_caption_small"
                     android:textColor="@color/font.dark.light"
                     android:shadowColor="@color/font.white.shadow"
                     android:shadowRadius="1"

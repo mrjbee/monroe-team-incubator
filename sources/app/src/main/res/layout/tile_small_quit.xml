@@ -51,7 +51,7 @@
             android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="End Date"
+            android:text="@string/finish_date"
             android:textSize="@dimen/text_size_normal"
             android:textColor="@color/font.dark.light"
             android:id="@+id/quit_end_date"/>
@@ -71,7 +71,7 @@
             android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Target count"
+            android:text="@string/today_limit"
             android:textSize="@dimen/text_size_normal"
             android:textColor="@color/font.dark.light"
             android:id="@+id/quit_target_text"

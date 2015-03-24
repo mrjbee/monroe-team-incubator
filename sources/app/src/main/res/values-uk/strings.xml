@@ -122,5 +122,7 @@
     <string name="quit_program_prompt_action">Встановити</string>
     <string name="quit_program_choose_prompt">Виберіть програму відповідну до вашого смаку.</string>
     <string name="no_quit_program">Програма не обрана</string>
+    <string name="today_limit">Ліміт</string>
+    <string name="finish_date">Закінчення</string>
 
 </resources>

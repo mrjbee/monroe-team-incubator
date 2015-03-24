@@ -21,7 +21,7 @@ public class PrepareTodaySmokeSchedule extends UserCaseSupport<Void, PrepareToda
 
         GetSmokeStatistic.SmokeStatistic todaySmokeDetails;
         GetDaySmokeSchedule.SmokeSuggestion smokeSuggestion;
-        GetBasicSmokeQuitDetails.BasicSmokeQuitDetails smokeQuitDetails;
+        GetSmokeQuitDetails.Details smokeQuitDetails;
 
         try {
             todaySmokeDetails = using(DataManger.class).fetch(GetSmokeStatistic.SmokeStatistic.class);
@@ -36,7 +36,7 @@ public class PrepareTodaySmokeSchedule extends UserCaseSupport<Void, PrepareToda
         }
 
         try {
-            smokeQuitDetails = using(DataManger.class).fetch(GetBasicSmokeQuitDetails.BasicSmokeQuitDetails.class);
+            smokeQuitDetails = using(DataManger.class).fetch(GetSmokeQuitDetails.Details.class);
         } catch (DataProvider.FetchException e) {
             throw new FetchFailedException("GTSS3",e);
         }

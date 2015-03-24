@@ -21,12 +21,12 @@ import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
 import org.monroe.team.smooker.app.db.Dao;
 import org.monroe.team.smooker.app.db.SmookerSchema;
 import org.monroe.team.smooker.app.uc.GetDaySmokeSchedule;
+import org.monroe.team.smooker.app.uc.GetSmokeQuitDetails;
 import org.monroe.team.smooker.app.uc.GetSmokeQuitSchedule;
 import org.monroe.team.smooker.app.uc.PreparePeriodStatistic;
-import org.monroe.team.smooker.app.uc.GetBasicSmokeQuitDetails;
 import org.monroe.team.smooker.app.uc.GetSmokeStatistic;
 import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
-import org.monroe.team.smooker.app.uc.PrepareSmokeQuitBasicDetails;
+import org.monroe.team.smooker.app.uc.PrepareSmokeQuitDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeSchedule;
 
@@ -37,7 +37,7 @@ public class SmookerModel extends AndroidModel{
     private UcDataProvider<PrepareTodaySmokeSchedule.TodaySmokeSchedule> todaySmokeScheduleDataProvider;
     private UcDataProvider<PrepareSmokeClockDetails.SmokeClockDetails> smokeClockDataProvider;
     private UcDataProvider<PreparePeriodStatistic.PeriodStatistic> periodStatsProvider;
-    private UcDataProvider<PrepareSmokeQuitBasicDetails.BasicDetails> basicQuitSmokeDetailsProvider;
+    private UcDataProvider<PrepareSmokeQuitDetails.Details> basicQuitSmokeDetailsProvider;
 
     public SmookerModel(Context context) {
         super("SMOOKER", context);
@@ -79,12 +79,12 @@ public class SmookerModel extends AndroidModel{
                                 GetSmokeStatistic.SmokeStatistic.class,
                                 GetSmokeStatistic.class)
                 );
-                put(GetBasicSmokeQuitDetails.BasicSmokeQuitDetails.class,
-                        new UcDataProvider<GetBasicSmokeQuitDetails.BasicSmokeQuitDetails>(
+                put(GetSmokeQuitDetails.Details.class,
+                        new UcDataProvider<GetSmokeQuitDetails.Details>(
                                 SmookerModel.this,
                                 context,
-                                GetBasicSmokeQuitDetails.BasicSmokeQuitDetails.class,
-                                GetBasicSmokeQuitDetails.class)
+                                GetSmokeQuitDetails.Details.class,
+                                GetSmokeQuitDetails.class)
                 );
                 put(GetDaySmokeSchedule.SmokeSuggestion.class,
                         new UcDataProvider<GetDaySmokeSchedule.SmokeSuggestion>(
@@ -120,10 +120,10 @@ public class SmookerModel extends AndroidModel{
                 PreparePeriodStatistic.PeriodStatistic.class,
                 PreparePeriodStatistic.class);
 
-        basicQuitSmokeDetailsProvider = new UcDataProvider<PrepareSmokeQuitBasicDetails.BasicDetails>(this,
+        basicQuitSmokeDetailsProvider = new UcDataProvider<PrepareSmokeQuitDetails.Details>(this,
                 context,
-                PrepareSmokeQuitBasicDetails.BasicDetails.class,
-                PrepareSmokeQuitBasicDetails.class);
+                PrepareSmokeQuitDetails.Details.class,
+                PrepareSmokeQuitDetails.class);
 
 
     }
@@ -145,9 +145,10 @@ public class SmookerModel extends AndroidModel{
         return periodStatsProvider;
     }
 
-    public UcDataProvider<PrepareSmokeQuitBasicDetails.BasicDetails> getBasicQuitSmokeDetailsProvider() {
+    public UcDataProvider<PrepareSmokeQuitDetails.Details> getBasicQuitSmokeDetailsProvider() {
         return basicQuitSmokeDetailsProvider;
     }
+
 
     public void stopNotificationControlService() {
         context.stopService(new Intent(context,StickyNotificationService.class));
