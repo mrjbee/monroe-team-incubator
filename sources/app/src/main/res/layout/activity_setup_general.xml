@@ -45,15 +45,25 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:paddingBottom="20dp" />
+            <ImageButton
+                android:id="@+id/setup_quit_btn"
+                android:layout_margin="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="centerCrop"
+                android:background="@android:color/transparent"
+                android:src="@drawable/cancel_logo"/>
         </RelativeLayout>
 
-        <LinearLayout
+        <ScrollView
             android:id="@+id/setup_content_panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical"
-            android:layout_margin="10dp">
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
 
-        </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </org.monroe.team.smooker.app.android.view.CircleAppearanceRelativeLayout>

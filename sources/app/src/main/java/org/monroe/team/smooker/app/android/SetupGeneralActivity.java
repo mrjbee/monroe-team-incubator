@@ -17,11 +17,14 @@ import org.monroe.team.smooker.app.android.view.CircleAppearanceRelativeLayout;
 
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.alpha;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.animateAppearance;
+import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.combine;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.duration_auto_fint;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.duration_constant;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.interpreter_accelerate;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.interpreter_decelerate;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.interpreter_overshot;
+import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.rotate;
+import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.scale;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.ySlide;
 
 public abstract class SetupGeneralActivity extends ActivitySupport<SmookerApplication> {
@@ -29,13 +32,19 @@ public abstract class SetupGeneralActivity extends ActivitySupport<SmookerApplic
 
     private AppearanceController baseContainerAC;
     private AppearanceController contentContainerAC;
+    private AppearanceController exitBtnAC;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         crunch_requestNoAnimation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_general);
-
+        view(R.id.setup_quit_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         PointF position = getFromIntent("position" , null);
         CircleAppearanceRelativeLayout baseContainer= view(R.id.setup_base_container, CircleAppearanceRelativeLayout.class);
         baseContainer.setCenter(position);
@@ -48,12 +57,25 @@ public abstract class SetupGeneralActivity extends ActivitySupport<SmookerApplic
                 .hideAnimation(duration_constant(200), interpreter_decelerate(0.8f))
                 .hideAndGone()
                 .build();
+
+        exitBtnAC = combine(
+                animateAppearance(view(R.id.setup_quit_btn), scale(1f, 0f))
+                        .showAnimation(duration_constant(400), interpreter_overshot())
+                        .hideAnimation(duration_constant(400), interpreter_accelerate(0.4f))
+                        .hideAndInvisible(),
+                animateAppearance(view(R.id.setup_quit_btn), rotate(360, 0))
+                        .showAnimation(duration_constant(300), interpreter_overshot())
+                        .hideAnimation(duration_constant(300), interpreter_accelerate(0.4f))
+        );
+
         if (isFirstRun()){
             baseContainerAC.hideWithoutAnimation();
             contentContainerAC.hideWithoutAnimation();
+            exitBtnAC.hideWithoutAnimation();
         }else {
             baseContainerAC.showWithoutAnimation();
             contentContainerAC.showWithoutAnimation();
+            exitBtnAC.showWithoutAnimation();
             fillUI();
         }
     }
@@ -76,7 +98,17 @@ public abstract class SetupGeneralActivity extends ActivitySupport<SmookerApplic
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             fillUI();
-                            contentContainerAC.show();
+                            contentContainerAC.showAndCustomize(new AppearanceController.AnimatorCustomization() {
+                                @Override
+                                public void customize(Animator ani) {
+                                    ani.addListener(new AnimatorListenerSupport(){
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
+                                            exitBtnAC.show();
+                                        }
+                                    });
+                                }
+                            });
                         }
                     });
                 }
