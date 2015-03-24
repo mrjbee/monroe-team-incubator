@@ -64,6 +64,7 @@
         </activity>
         <activity
             android:name=".android.SetupQuitSmokeActivity"
+            android:theme="@style/AppTheme.Transperent.NoAnimation"
             android:label="@string/title_activity_setting_quit_smoke"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden"

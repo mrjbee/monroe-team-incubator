@@ -1,23 +1,23 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<org.monroe.team.smooker.app.android.view.CircleAppearanceRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/background.main.light">
-    <org.monroe.team.smooker.app.android.view.CircleAppearanceRelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+    android:id="@+id/setup_base_container">
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:background="@color/background.main.light">
 
         <RelativeLayout
+            android:id="@+id/setup_header"
             android:layout_width="fill_parent"
             android:layout_height="200dp"
             android:background="@drawable/background_main"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/setup_caption_text"
@@ -56,5 +56,4 @@
 
         </LinearLayout>
     </LinearLayout>
-    </org.monroe.team.smooker.app.android.view.CircleAppearanceRelativeLayout>
-</LinearLayout>
+</org.monroe.team.smooker.app.android.view.CircleAppearanceRelativeLayout>

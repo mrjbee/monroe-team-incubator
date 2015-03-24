@@ -6,6 +6,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PointF;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Pair;
@@ -310,7 +311,18 @@ public class TilesFragment extends FrontPageFragment {
         if (activityClass == null){
             Toast.makeText(getActivity(), "No setup yet.", Toast.LENGTH_SHORT).show();
         }else{
-            startActivity(new Intent(getActivity(), activityClass));
+            Intent intent = new Intent(getActivity(), activityClass);
+            View btn = view(R.id.start_setting_dublicate_btn);
+            int[] root_location = new int[2];
+            int[] location = new int[2];
+            view(R.id.star_root).getLocationOnScreen(root_location);
+            btn.getLocationOnScreen(location);
+            intent.putExtra("position",new PointF(
+                    location[0]-root_location[0]
+                            + btn.getWidth()/2,
+                    location[1]-root_location[1]
+                            -btn.getHeight()/2));
+            startActivity(intent);
         }
     }
 

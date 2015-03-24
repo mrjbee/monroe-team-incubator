@@ -22,6 +22,7 @@ public class CircleAppearanceRelativeLayout extends RelativeLayout {
 
     private Paint maskDefinePaint;
     private Paint maskApplyPaint;
+    private Paint backgroundPaint;
 
     private float fraction = 1f;
     private PointF center = new PointF(100,100);
@@ -40,6 +41,10 @@ public class CircleAppearanceRelativeLayout extends RelativeLayout {
         maskApplyPaint = new Paint();
         maskApplyPaint.setAntiAlias(true);
         maskApplyPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+
+        backgroundPaint = new Paint();
+        backgroundPaint.setColor(Color.BLACK);
+        backgroundPaint.setStyle(Paint.Style.FILL);
     }
 
     public CircleAppearanceRelativeLayout(Context context, AttributeSet attrs) {
@@ -60,6 +65,11 @@ public class CircleAppearanceRelativeLayout extends RelativeLayout {
 
     @Override
     public void draw(Canvas canvas) {
+
+        if (fraction == 0f){
+            return;
+        }
+
         if (fraction == 1f){
             componentSize = null;
             super.draw(canvas);
@@ -78,6 +88,9 @@ public class CircleAppearanceRelativeLayout extends RelativeLayout {
         Canvas finalCanvas = new Canvas(finalImageBitmap);
         finalCanvas.drawCircle(center.x, center.y, calculateRadius(componentSize), maskDefinePaint);
         finalCanvas.drawBitmap(originImageBitmap, 0, 0, maskApplyPaint);
+
+        backgroundPaint.setAlpha((int) (150*fraction));
+        canvas.drawRect(componentSize,backgroundPaint);
         canvas.drawBitmap(finalImageBitmap, 0, 0, null);
     }
 

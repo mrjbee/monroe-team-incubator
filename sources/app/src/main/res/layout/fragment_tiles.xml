@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background.main.light"
+    android:id="@+id/star_root"
     tools:context="org.monroe.team.smooker.app.StartActivity">
     <org.monroe.team.smooker.app.android.view.RelativeLayoutExt
         android:id="@+id/start_bottom_layer"
