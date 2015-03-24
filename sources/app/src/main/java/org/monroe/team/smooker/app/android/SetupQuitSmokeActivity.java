@@ -25,6 +25,11 @@ public class SetupQuitSmokeActivity extends SetupGeneralActivity {
     }
 
     @Override
+    protected int caption_string()  {
+        return R.string.quit_page_title;
+    }
+
+    @Override
     protected void initializeUI() {
 
         view_text(R.id.qs_start_edit).setText(application().getSettingAsString(Settings.QUITE_START_SMOKE));

@@ -39,6 +39,8 @@ public abstract class SetupGeneralActivity extends ActivitySupport<SmookerApplic
         crunch_requestNoAnimation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_general);
+        //@string/quit_page_title
+        view_text(R.id.setup_description_text).setText(caption_string());
         view(R.id.setup_quit_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,6 +155,7 @@ public abstract class SetupGeneralActivity extends ActivitySupport<SmookerApplic
     }
 
     protected abstract int setup_layout();
+    protected abstract int caption_string();
 
     @Override
     public void onBackPressed() {

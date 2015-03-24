@@ -22,6 +22,7 @@ import android.widget.Toast;
 import org.monroe.team.android.box.app.ui.AppearanceControllerOld;
 import org.monroe.team.android.box.app.ui.GetViewImplementation;
 import org.monroe.team.android.box.app.ui.SlideTouchGesture;
+import org.monroe.team.android.box.app.ui.animation.AnimatorListenerSupport;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceController;
 import org.monroe.team.android.box.data.DataProvider;
 import org.monroe.team.android.box.utils.DisplayUtils;
@@ -246,14 +247,14 @@ public class TilesFragment extends FrontPageFragment {
                 .hideAndGone().build();
 
         settingAlternativeBtnAC = combine(
+                animateAppearance(view(R.id.start_setting_dublicate_btn), rotate(180 + 90, 0))
+                        .showAnimation(duration_constant(300), interpreter_overshot())
+                        .hideAnimation(duration_constant(300), interpreter_accelerate(0.4f)),
                 animateAppearance(view(R.id.start_setting_dublicate_btn), scale(1f, 0f))
                         .showAnimation(duration_constant(400), interpreter_overshot())
                         .hideAnimation(duration_constant(400), interpreter_accelerate(0.4f))
-                        .hideAndInvisible(),
-                animateAppearance(view(R.id.start_setting_dublicate_btn), rotate(180 + 90, 0))
-                        .showAnimation(duration_constant(300), interpreter_overshot())
-                        .hideAnimation(duration_constant(300), interpreter_accelerate(0.4f))
-        );
+                        .hideAndInvisible()
+                );
 
         addSmokeBtnAC = animateAppearance(view(R.id.add_btn), scale(1f, 0f))
                 .showAnimation(duration_constant(300), interpreter_overshot())
@@ -311,18 +312,37 @@ public class TilesFragment extends FrontPageFragment {
         if (activityClass == null){
             Toast.makeText(getActivity(), "No setup yet.", Toast.LENGTH_SHORT).show();
         }else{
-            Intent intent = new Intent(getActivity(), activityClass);
+            final Intent intent = new Intent(getActivity(), activityClass);
             View btn = view(R.id.start_setting_dublicate_btn);
             int[] root_location = new int[2];
             int[] location = new int[2];
             view(R.id.star_root).getLocationOnScreen(root_location);
             btn.getLocationOnScreen(location);
-            intent.putExtra("position",new PointF(
-                    location[0]-root_location[0]
-                            + btn.getWidth()/2,
-                    location[1]-root_location[1]
-                            -btn.getHeight()/2));
-            startActivity(intent);
+            intent.putExtra("position", new PointF(
+                    location[0] - root_location[0]
+                            + btn.getWidth() / 2,
+                    location[1] - root_location[1]
+                            - btn.getHeight() / 2));
+            settingAlternativeBtnAC.hideAndCustomize(new AppearanceController.AnimatorCustomization() {
+                @Override
+                public void customize(Animator animator) {
+                    animator.addListener(new AnimatorListenerSupport() {
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            startActivityForResult(intent, 220);
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 220){
+            settingAlternativeBtnAC.show();
         }
     }
 
