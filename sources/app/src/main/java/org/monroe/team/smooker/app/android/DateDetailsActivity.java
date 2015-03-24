@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import org.monroe.team.android.box.app.ActivitySupport;
 import org.monroe.team.android.box.app.ui.AppearanceControllerOld;
@@ -38,6 +39,9 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_date_details);
         PointF position = getFromIntent("position" , null);
+        Theme theme = getFromIntent("theme",Theme.RED);
+        applyTheme(theme);
+
         CircleAppearanceRelativeLayout baseContainer= view(R.id.date_root, CircleAppearanceRelativeLayout.class);
         baseContainer.setCenter(position);
         baseContainerAC = animateAppearance(baseContainer, circleGrowing())
@@ -61,6 +65,13 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
                         .hideAnimation(duration_constant(300), interpreter_accelerate(0.4f))
         );
 
+        view(R.id.date_quit_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         if (isFirstRun()){
             baseContainerAC.hideWithoutAnimation();
             contentContainerAC.hideWithoutAnimation();
@@ -70,6 +81,49 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
             contentContainerAC.showWithoutAnimation();
             exitBtnAC.showWithoutAnimation();
         }
+    }
+
+    private void applyTheme(Theme theme) {
+
+        int fontColorId = R.color.font_white;
+        int fontValueColorId = R.color.font_white;
+        int fontCaptionColorId = R.color.font_dark_light;
+        int cancelDrawable = R.drawable.cancel_logo;
+
+        int colorId = R.color.background_main_light;
+        switch (theme){
+            case RED:
+                colorId = R.color.background_main;
+                break;
+            case BLUE:
+                colorId = R.color.selection_main;
+                break;
+            case WHITE:
+                cancelDrawable = R.drawable.cancel_logo_dark;
+                fontColorId = R.color.font_dark_light;
+                fontCaptionColorId = R.color.font_dark_lighter;
+                fontValueColorId = R.color.selection_main;
+                break;
+        }
+
+        int textValueColor = getResources().getColor(fontValueColorId);
+        int textColor = getResources().getColor(fontColorId);
+        int textCaptionColor = getResources().getColor(fontCaptionColorId);
+
+        view(R.id.date_quit_btn, ImageView.class).setImageResource(cancelDrawable);
+        view(R.id.date_header).setBackgroundResource(colorId);
+        view(R.id.date_body).setBackgroundResource(colorId);
+
+        view_text(R.id.date_caption_text).setTextColor(textColor);
+        view_text(R.id.date_description_text).setTextColor(textColor);
+
+        view_text(R.id.date_smoke_count_value_text).setTextColor(textValueColor);
+        view_text(R.id.date_limit_value_text).setTextColor(textValueColor);
+        view_text(R.id.date_status_value_text).setTextColor(textValueColor);
+
+        view_text(R.id.date_smoke_count_text).setTextColor(textCaptionColor);
+        view_text(R.id.date_limit_text).setTextColor(textCaptionColor);
+        view_text(R.id.date_status_text).setTextColor(textCaptionColor);
     }
 
     @Override
@@ -102,6 +156,7 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
 
     @Override
     public void onBackPressed() {
+        contentContainerAC.hide();
         baseContainerAC.hideAndCustomize(new AppearanceController.AnimatorCustomization() {
             @Override
             public void customize(Animator animator) {
@@ -151,4 +206,7 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
         };
     }
 
+    public static enum Theme {
+        BLUE, RED, WHITE
+    }
 }

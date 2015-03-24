@@ -36,27 +36,30 @@
             android:paddingBottom="20dp" />
         <ImageButton
             android:id="@+id/date_quit_btn"
-            android:layout_margin="15dp"
+            android:layout_margin="30dp"
             android:layout_alignParentRight="true"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="12dp"
             android:scaleType="centerCrop"
             android:background="@android:color/transparent"
             android:src="@drawable/cancel_logo"/>
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/date_body"
         android:layout_below="@+id/date_header"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background.main.light"
+        android:background="@color/background.main"
         android:paddingTop="30dp"
         android:paddingLeft="50dp">
-        <GridLayout
+        <LinearLayout
             android:id="@+id/date_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:columnCount="1">
+            android:orientation="vertical">
             <TextView
+                android:id="@+id/date_smoke_count_text"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -66,16 +69,18 @@
                 />
 
             <TextView
+                android:id="@+id/date_smoke_count_value_text"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="10 smokes"
                 android:textSize="@dimen/text_size_normal"
-                android:textColor="@color/font.dark.lighter"
+                android:textColor="@color/font.white"
                 />
 
             <TextView
+                android:id="@+id/date_limit_text"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
@@ -86,16 +91,18 @@
                 />
 
             <TextView
+                android:id="@+id/date_limit_value_text"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="10 smokes"
                 android:textSize="@dimen/text_size_normal"
-                android:textColor="@color/font.dark.lighter"
+                android:textColor="@color/font.white"
                 />
 
             <TextView
+                android:id="@+id/date_status_text"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
@@ -106,15 +113,16 @@
                 />
 
             <TextView
+                android:id="@+id/date_status_value_text"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Successfully Passed"
                 android:textSize="@dimen/text_size_normal"
-                android:textColor="@color/font.dark.lighter"
+                android:textColor="@color/font.white"
                 />
-        </GridLayout>
+        </LinearLayout>
     </RelativeLayout>
     
 </org.monroe.team.smooker.app.android.view.CircleAppearanceRelativeLayout>

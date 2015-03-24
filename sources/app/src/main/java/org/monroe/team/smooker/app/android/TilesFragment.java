@@ -341,12 +341,13 @@ public class TilesFragment extends FrontPageFragment {
         }
     }
 
-    private void showDetailsForDate(View ownedView, Date date, PointF pointF) {
+    private void showDetailsForDate(View ownedView, Date date, DateDetailsActivity.Theme theme, PointF pointF) {
         final Intent intent = new Intent(getActivity(), DateDetailsActivity.class);
         int[] root_location = new int[2];
         view(R.id.star_root).getLocationOnScreen(root_location);
-        pointF.offset(-root_location[0],-root_location[1]);
+        pointF.offset(-root_location[0], -root_location[1]);
         intent.putExtra("position", pointF);
+        intent.putExtra("theme", theme);
         startActivity(intent);
     }
 
@@ -1100,6 +1101,7 @@ public class TilesFragment extends FrontPageFragment {
                                 cellBackgroundView.paintWeekStart = true;
                             }
 
+                            DateDetailsActivity.Theme theme = DateDetailsActivity.Theme.WHITE;
                             int backgroundResource = 0;
                             int textColor = text_color_dark;
                             float alpha = 1f;
@@ -1111,23 +1113,28 @@ public class TilesFragment extends FrontPageFragment {
                             if (displayDetails.isMonthStart){
                                 textColor = text_color_light;
                                 if (displayDetails.isNewLimitDay){
+                                    theme = DateDetailsActivity.Theme.BLUE;
                                     backgroundResource = R.drawable.background_cal_month_limit;
                                 }else {
+                                    theme = DateDetailsActivity.Theme.RED;
                                     backgroundResource = R.drawable.background_cal_month;
                                 }
                             } else if (displayDetails.isNewLimitDay){
                                 textColor = text_color_light;
                                 backgroundResource = R.drawable.background_cal_day_limit;
+                                theme = DateDetailsActivity.Theme.BLUE;
                             }
                             backgroundView.setBackgroundResource(backgroundResource);
                             mainTextView.setTextColor(textColor);
                             owner.invalidate();
+
                             if (!displayDetails.isOutsideQuitProgram) {
+                                final DateDetailsActivity.Theme finalTheme = theme;
                                 owner.setOnTouchListener(new View.OnTouchListener() {
                                     @Override
                                     public boolean onTouch(View v, MotionEvent event) {
                                         if (event.getAction() == MotionEvent.ACTION_UP) {
-                                            showDetailsForDate(v, date, new PointF(event.getRawX(), event.getRawY()));
+                                            showDetailsForDate(v, date, finalTheme, new PointF(event.getRawX(), event.getRawY()));
                                         }
                                         return true;
                                     }

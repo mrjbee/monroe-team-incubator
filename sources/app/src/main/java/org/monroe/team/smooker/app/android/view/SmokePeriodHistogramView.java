@@ -86,7 +86,7 @@ public class SmokePeriodHistogramView extends View {
 
         valuePaint = new Paint();
         valuePaint.setAntiAlias(true);
-        valuePaint.setColor(Color.parseColor("#ff2020"));
+        valuePaint.setColor(Color.parseColor("#d71326"));
         valuePaint.setStyle(Paint.Style.STROKE);
         valuePaint.setStrokeWidth(dimen(R.integer.chart_stroke_default_float));
 
