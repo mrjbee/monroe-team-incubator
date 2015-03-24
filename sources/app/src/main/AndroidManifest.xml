@@ -59,16 +59,16 @@
             android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".android.SetupQuitSmokeActivity"
-            android:theme="@style/AppTheme.Transperent.NoAnimation"
             android:label="@string/title_activity_setting_quit_smoke"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            >
+            android:theme="@style/AppTheme.Transperent.NoAnimation"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
             android:name=".android.SmokeBreakActivity"
@@ -121,6 +121,14 @@
             android:enabled="true"
             android:exported="true" >
         </receiver>
+
+        <activity
+            android:name=".android.DateDetailsActivity"
+            android:label="@string/title_activity_date_details"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Transperent.NoAnimation"
+            >
+        </activity>
     </application>
 
 </manifest>

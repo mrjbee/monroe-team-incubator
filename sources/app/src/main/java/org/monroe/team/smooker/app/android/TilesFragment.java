@@ -11,9 +11,11 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
@@ -337,6 +339,15 @@ public class TilesFragment extends FrontPageFragment {
                 }
             });
         }
+    }
+
+    private void showDetailsForDate(View ownedView, Date date, PointF pointF) {
+        final Intent intent = new Intent(getActivity(), DateDetailsActivity.class);
+        int[] root_location = new int[2];
+        view(R.id.star_root).getLocationOnScreen(root_location);
+        pointF.offset(-root_location[0],-root_location[1]);
+        intent.putExtra("position", pointF);
+        startActivity(intent);
     }
 
     @Override
@@ -931,6 +942,7 @@ public class TilesFragment extends FrontPageFragment {
                     }
                 }
             });
+            ;
             dataContent = (ViewGroup) bigContentView.findViewById(R.id.quit_data_panel);
             dataContent.getChildAt(0).setVisibility(View.GONE);
             dataContent.getChildAt(1).setVisibility(View.VISIBLE);
@@ -1062,7 +1074,7 @@ public class TilesFragment extends FrontPageFragment {
                         private final int text_color_dark =  getResources().getColor(R.color.font_dark_light);
 
                         @Override
-                        public void update(Date date, int position) {
+                        public void update(final Date date, int position) {
                             cellBackgroundView.resetAll();
                             cellBackgroundView.paintBottom = false;
                             cellBackgroundView.paintLeft = false;
@@ -1110,10 +1122,22 @@ public class TilesFragment extends FrontPageFragment {
                             backgroundView.setBackgroundResource(backgroundResource);
                             mainTextView.setTextColor(textColor);
                             owner.invalidate();
-
+                            if (!displayDetails.isOutsideQuitProgram) {
+                                owner.setOnTouchListener(new View.OnTouchListener() {
+                                    @Override
+                                    public boolean onTouch(View v, MotionEvent event) {
+                                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                                            showDetailsForDate(v, date, new PointF(event.getRawX(), event.getRawY()));
+                                        }
+                                        return true;
+                                    }
+                                });
+                            }
                         }
 
-                        @Override public void cleanup() {}
+                        @Override public void cleanup() {
+                            owner.setOnTouchListener(null);
+                        }
                     };
                 }
             };

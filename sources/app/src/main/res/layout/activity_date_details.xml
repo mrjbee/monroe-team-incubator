@@ -1,0 +1,120 @@
+<org.monroe.team.smooker.app.android.view.CircleAppearanceRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/date_root"
+    tools:context="org.monroe.team.smooker.app.android.DateDetailsActivity">
+
+    <RelativeLayout
+        android:id="@+id/date_header"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/background.main">
+        <TextView
+            android:id="@+id/date_caption_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1 Apr 2015"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_normal"
+            android:textColor="@color/font.white"
+            android:layout_above="@+id/date_description_text"
+            android:layout_alignLeft="@+id/date_description_text" />
+
+        <TextView
+            android:id="@+id/date_description_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tuesday"
+            android:textStyle="bold"
+            android:layout_marginLeft="21dp"
+            android:textSize="@dimen/text_size_caption"
+            android:textColor="@color/font.white"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:paddingBottom="20dp" />
+        <ImageButton
+            android:id="@+id/date_quit_btn"
+            android:layout_margin="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:scaleType="centerCrop"
+            android:background="@android:color/transparent"
+            android:src="@drawable/cancel_logo"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_below="@+id/date_header"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background.main.light"
+        android:paddingTop="30dp"
+        android:paddingLeft="50dp">
+        <GridLayout
+            android:id="@+id/date_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="1">
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Smokes on this date"
+                android:textSize="@dimen/text_size_normal"
+                android:textColor="@color/font.dark.light"
+                />
+
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10 smokes"
+                android:textSize="@dimen/text_size_normal"
+                android:textColor="@color/font.dark.lighter"
+                />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Smokes limit on this date"
+                android:textSize="@dimen/text_size_normal"
+                android:textColor="@color/font.dark.light"
+                />
+
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10 smokes"
+                android:textSize="@dimen/text_size_normal"
+                android:textColor="@color/font.dark.lighter"
+                />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Status"
+                android:textSize="@dimen/text_size_normal"
+                android:textColor="@color/font.dark.light"
+                />
+
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Successfully Passed"
+                android:textSize="@dimen/text_size_normal"
+                android:textColor="@color/font.dark.lighter"
+                />
+        </GridLayout>
+    </RelativeLayout>
+    
+</org.monroe.team.smooker.app.android.view.CircleAppearanceRelativeLayout>
