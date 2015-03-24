@@ -8,12 +8,14 @@ import android.view.ViewGroup;
 
 import org.monroe.team.android.box.app.ActivitySupport;
 import org.monroe.team.android.box.app.ui.AppearanceControllerOld;
+import org.monroe.team.android.box.app.ui.animation.AnimatorListenerSupport;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceController;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder;
 import org.monroe.team.android.box.app.ui.animation.apperrance.DefaultAppearanceController;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.android.view.CircleAppearanceRelativeLayout;
 
+import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.alpha;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.animateAppearance;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.duration_auto_fint;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.duration_constant;
@@ -26,29 +28,62 @@ public abstract class SetupGeneralActivity extends ActivitySupport<SmookerApplic
 
 
     private AppearanceController baseContainerAC;
+    private AppearanceController contentContainerAC;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         crunch_requestNoAnimation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup_general);
-        getLayoutInflater().inflate(setup_layout(), (ViewGroup) view(R.id.setup_content_panel), true);
+
         PointF position = getFromIntent("position" , null);
         CircleAppearanceRelativeLayout baseContainer= view(R.id.setup_base_container, CircleAppearanceRelativeLayout.class);
         baseContainer.setCenter(position);
-
         baseContainerAC = animateAppearance(baseContainer, circleGrowing())
-                .showAnimation(duration_constant(700), interpreter_accelerate(0.8f))
+                .showAnimation(duration_constant(500), interpreter_accelerate(0.8f))
                 .hideAnimation(duration_constant(300), interpreter_decelerate(0.8f))
                 .build();
-        baseContainerAC.hideWithoutAnimation();
+        contentContainerAC = animateAppearance(view(R.id.setup_content_panel),alpha(1f,0f))
+                .showAnimation(duration_constant(200), interpreter_accelerate(0.8f))
+                .hideAnimation(duration_constant(200), interpreter_decelerate(0.8f))
+                .hideAndGone()
+                .build();
+        if (isFirstRun()){
+            baseContainerAC.hideWithoutAnimation();
+            contentContainerAC.hideWithoutAnimation();
+        }else {
+            baseContainerAC.showWithoutAnimation();
+            contentContainerAC.showWithoutAnimation();
+            fillUI();
+        }
     }
+
+    private void fillUI() {
+        getLayoutInflater().inflate(setup_layout(), (ViewGroup) view(R.id.setup_content_panel), true);
+        initializeUI();
+    }
+
+    protected abstract void initializeUI();
 
     @Override
     protected void onResume() {
         super.onResume();
-        baseContainerAC.show();
+        if (isFirstRun()) {
+            baseContainerAC.showAndCustomize(new AppearanceController.AnimatorCustomization() {
+                @Override
+                public void customize(Animator animator) {
+                    animator.addListener(new AnimatorListenerSupport(){
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            fillUI();
+                            contentContainerAC.show();
+                        }
+                    });
+                }
+            });
+        }
     }
+
 
     private AppearanceControllerBuilder.TypeBuilder<Float> circleGrowing() {
         return new AppearanceControllerBuilder.TypeBuilder<Float>() {

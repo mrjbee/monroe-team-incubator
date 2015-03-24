@@ -25,8 +25,7 @@ public class SetupQuitSmokeActivity extends SetupGeneralActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initializeUI() {
 
         view_text(R.id.qs_start_edit).setText(application().getSettingAsString(Settings.QUITE_START_SMOKE));
         view_text(R.id.qs_end_edit).setText(application().getSettingAsString(Settings.QUITE_END_SMOKE));
