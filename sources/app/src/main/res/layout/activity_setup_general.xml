@@ -14,7 +14,7 @@
         <RelativeLayout
             android:id="@+id/setup_header"
             android:layout_width="fill_parent"
-            android:layout_height="200dp"
+            android:layout_height="150dp"
             android:background="@drawable/background_main_no_ornament"
             android:padding="10dp"
             android:visibility="visible">
@@ -54,14 +54,10 @@
                 android:src="@drawable/cancel_logo"/>
         </RelativeLayout>
 
-        <ScrollView
+        <LinearLayout
             android:id="@+id/setup_content_panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp">
-
-        </ScrollView>
+            android:orientation="vertical"/>
     </LinearLayout>
 </org.monroe.team.smooker.app.android.view.CircleAppearanceRelativeLayout>

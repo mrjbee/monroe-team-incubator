@@ -2,10 +2,7 @@ package org.monroe.team.smooker.app.android;
 
 import android.animation.Animator;
 import android.graphics.PointF;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -15,8 +12,13 @@ import org.monroe.team.android.box.app.ui.animation.AnimatorListenerSupport;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceController;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder;
 import org.monroe.team.android.box.app.ui.animation.apperrance.DefaultAppearanceController;
+import org.monroe.team.corebox.utils.DateUtils;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.android.view.CircleAppearanceRelativeLayout;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.alpha;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.animateAppearance;
@@ -33,6 +35,7 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
     private AppearanceController baseContainerAC;
     private AppearanceController contentContainerAC;
     private AppearanceController exitBtnAC;
+    private Date date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,9 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
         PointF position = getFromIntent("position" , null);
         Theme theme = getFromIntent("theme",Theme.RED);
         applyTheme(theme);
+
+        date = getFromIntent("date",null);
+        applyCaption(date);
 
         CircleAppearanceRelativeLayout baseContainer= view(R.id.date_root, CircleAppearanceRelativeLayout.class);
         baseContainer.setCenter(position);
@@ -81,6 +87,19 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
             contentContainerAC.showWithoutAnimation();
             exitBtnAC.showWithoutAnimation();
         }
+    }
+
+    private final DateFormat dateFormatFull = DateFormat.getDateInstance();
+    private final DateFormat dayOnlyFormat = new SimpleDateFormat("EEEE");
+
+    private void applyCaption(Date date) {
+        String dateFull = dateFormatFull.format(date);
+        String dayOnly = getString(R.string.today);
+        if (!DateUtils.isToday(date)){
+          dayOnly = dayOnlyFormat.format(date);
+        }
+        view_text(R.id.date_caption_text).setText(dateFull);
+        view_text(R.id.date_description_text).setText(dayOnly);
     }
 
     private void applyTheme(Theme theme) {
@@ -136,13 +155,13 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
                     animator.addListener(new AnimatorListenerSupport(){
                         @Override
                         public void onAnimationEnd(Animator animation) {
+                            exitBtnAC.show();
                             contentContainerAC.showAndCustomize(new AppearanceController.AnimatorCustomization() {
                                 @Override
                                 public void customize(Animator ani) {
                                     ani.addListener(new AnimatorListenerSupport(){
                                         @Override
                                         public void onAnimationEnd(Animator animation) {
-                                            exitBtnAC.show();
                                         }
                                     });
                                 }

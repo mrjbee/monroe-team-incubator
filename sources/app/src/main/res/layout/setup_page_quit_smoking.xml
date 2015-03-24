@@ -1,107 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp"
-    android:paddingRight="10dp"
-    android:paddingLeft="10dp">
-
-    <TextView
-        android:layout_marginTop="30dp"
-        android:id="@+id/qs_start_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dip"
-        android:text="@string/quit_page_per_day_title"
-        android:textSize="@dimen/text_size_normal"
-        />
-
-    <EditText
-        android:layout_width="100dip"
-        android:layout_height="40dp"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/qs_start_edit"
-        android:layout_alignBottom="@+id/qs_start_text"
-        android:layout_alignParentRight="true"/>
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/quit_page_desire_smokes_title"
-        android:layout_marginLeft="10dip"
-        android:id="@+id/qs_end_text"
-        android:textSize="@dimen/text_size_normal"
-        android:layout_alignBottom="@+id/qs_end_edit"
-        />
-
-    <EditText
-        android:layout_width="100dip"
-        android:layout_height="40dp"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/qs_end_edit"
-        android:text="0"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/qs_start_edit"
-        />
-
-
-    <LinearLayout
-        android:id="@+id/qs_separator_layout"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:id="@+id/qs_scroll"
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="1px"
-        android:background="@android:color/darker_gray"
-        android:layout_below="@+id/qs_end_text"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="15dp"
-        >
-    </LinearLayout>
+        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/quite_smoke_program_title"
-        android:layout_marginLeft="10dip"
-        android:id="@+id/qs_level_label"
-        android:textSize="@dimen/text_size_normal"
-        android:layout_below="@+id/qs_separator_layout"
-        />
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginTop="30dp"
+                android:id="@+id/qs_start_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:text="@string/quit_page_per_day_title"
+                android:textSize="@dimen/text_size_normal"
+                />
+
+            <EditText
+                android:layout_width="100dip"
+                android:layout_height="40dp"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/qs_start_edit"
+                android:layout_alignBottom="@+id/qs_start_text"
+                android:layout_alignParentRight="true"/>
 
 
-    <SeekBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dip"
-        android:layout_marginRight="20dip"
-        android:id="@+id/qs_level_seekBar"
-        android:layout_below="@+id/qs_level_label"
-        android:layout_centerHorizontal="true"
-        android:indeterminate="false" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/quit_page_desire_smokes_title"
+                android:layout_marginLeft="10dip"
+                android:id="@+id/qs_end_text"
+                android:textSize="@dimen/text_size_normal"
+                android:layout_alignBottom="@+id/qs_end_edit"
+                />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Here going to be description of level...."
-        android:layout_marginTop="10dip"
-        android:layout_marginLeft="20dip"
-        android:layout_marginRight="10dip"
-        android:id="@+id/qs_level_label_description"
-        android:textSize="@dimen/text_size_normal_small"
-        android:layout_below="@+id/qs_level_seekBar"
-        />
+            <EditText
+                android:layout_width="100dip"
+                android:layout_height="40dp"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/qs_end_edit"
+                android:text="0"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/qs_start_edit"
+                />
+
+
+            <LinearLayout
+                android:id="@+id/qs_separator_layout"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="1px"
+                android:background="@android:color/darker_gray"
+                android:layout_below="@+id/qs_end_text"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="15dp"
+                >
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/quite_smoke_program_title"
+                android:layout_marginLeft="10dip"
+                android:id="@+id/qs_level_label"
+                android:textSize="@dimen/text_size_normal"
+                android:layout_below="@+id/qs_separator_layout"
+                />
+
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dip"
+                android:layout_marginRight="20dip"
+                android:id="@+id/qs_level_seekBar"
+                android:layout_below="@+id/qs_level_label"
+                android:layout_centerHorizontal="true"
+                android:indeterminate="false" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Here going to be description of level...."
+                android:layout_marginTop="10dip"
+                android:layout_marginLeft="20dip"
+                android:layout_marginRight="10dip"
+                android:id="@+id/qs_level_label_description"
+                android:textSize="@dimen/text_size_normal_small"
+                android:layout_below="@+id/qs_level_seekBar"
+                />
+
+        </RelativeLayout>
+    </ScrollView>
 
     <Button
-        android:layout_below="@+id/qs_level_label_description"
-        android:layout_marginTop="30dp"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Apply"
         android:id="@+id/qs_apply_btn"
+        android:layout_marginBottom="10dp"
         />
 
-</RelativeLayout>
+</LinearLayout>

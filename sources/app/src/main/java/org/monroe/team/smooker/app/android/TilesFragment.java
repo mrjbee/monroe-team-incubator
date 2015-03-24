@@ -348,6 +348,7 @@ public class TilesFragment extends FrontPageFragment {
         pointF.offset(-root_location[0], -root_location[1]);
         intent.putExtra("position", pointF);
         intent.putExtra("theme", theme);
+        intent.putExtra("date", date);
         startActivity(intent);
     }
 
