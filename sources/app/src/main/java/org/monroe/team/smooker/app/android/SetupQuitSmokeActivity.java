@@ -16,13 +16,17 @@ import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
 
 
-public class SetupQuitSmokeActivity extends ActivitySupport<SmookerApplication> {
+public class SetupQuitSmokeActivity extends SetupGeneralActivity {
+
+
+    @Override
+    protected int setup_layout() {
+        return R.layout.setup_page_quit_smoking;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setup_general);
-        getLayoutInflater().inflate(R.layout.setup_page_quit_smoking, (ViewGroup)view(R.id.setup_content_panel), true);
 
         view_text(R.id.qs_start_edit).setText(application().getSettingAsString(Settings.QUITE_START_SMOKE));
         view_text(R.id.qs_end_edit).setText(application().getSettingAsString(Settings.QUITE_END_SMOKE));
