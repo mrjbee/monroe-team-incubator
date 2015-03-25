@@ -27,7 +27,7 @@ public class GetSmokeQuitSchedule extends UserCaseSupport<Void, GetSmokeQuitSche
         for (int i=0; i<program.getStages().size(); i++) {
             QuitSmokeData.Stage stage = program.getStages().get(i);
             if (i == 0) {
-                 QuitScheduleDate quitScheduleDate = new QuitScheduleDate(stage.date, true, stage.result == QuitSmokeData.QuiteStageResult.PASS, stage.smokeLimit);
+                QuitScheduleDate quitScheduleDate = new QuitScheduleDate(stage.date, true, stage.result == QuitSmokeData.QuiteStageResult.PASS, stage.smokeLimit);
                 quitScheduleDateList.add(quitScheduleDate);
             } else {
                 QuitSmokeData.Stage prevStage = program.getStages().get(i-1);
@@ -54,14 +54,39 @@ public class GetSmokeQuitSchedule extends UserCaseSupport<Void, GetSmokeQuitSche
         public boolean isDisabled() {
             return scheduleDates == null;
         }
+
+        public QuitScheduleDate getForDate(Date probeDate){
+            if (isDisabled()) return null;
+            GetSmokeQuitSchedule.QuitScheduleDate itQuitScheduleDate;
+            for (int i = 0; i < scheduleDates.size(); i++){
+                itQuitScheduleDate = scheduleDates.get(i);
+                if (probeDate.before(itQuitScheduleDate.date)){
+                    if (i == 0){
+                        return null;
+                    }else{
+                        return  new QuitScheduleDate(probeDate,
+                                false,
+                                true,
+                                scheduleDates.get(i-1).limit);
+                    }
+                }
+                if (!probeDate.after(itQuitScheduleDate.date)){
+                    //mean same date
+                    return new QuitScheduleDate(probeDate,
+                            true, itQuitScheduleDate.successful,
+                            itQuitScheduleDate.limit);
+                }
+            }
+            return null;
+        }
     }
 
     public static class QuitScheduleDate implements Serializable{
 
         public final Date date;
+        public final int limit;
         public final boolean isNewLimitDate;
         public final boolean successful;
-        public final int limit;
 
         public QuitScheduleDate(Date date, boolean isNewLimitDate, boolean isSuccessful, int limit) {
             this.limit = limit;

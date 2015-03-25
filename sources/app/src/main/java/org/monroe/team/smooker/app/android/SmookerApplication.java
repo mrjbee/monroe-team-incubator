@@ -35,6 +35,7 @@ import org.monroe.team.smooker.app.uc.GetSmokeQuitSchedule;
 import org.monroe.team.smooker.app.uc.GetSmokeStatistic;
 import org.monroe.team.smooker.app.uc.PreparePeriodStatistic;
 import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
+import org.monroe.team.smooker.app.uc.PrepareSmokeQuitDateDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeSchedule;
 import org.monroe.team.smooker.app.uc.SetupSmokeQuitProgram;
@@ -43,6 +44,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class SmookerApplication extends ApplicationSupport<SmookerModel> {
@@ -344,5 +346,24 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
         return model().usingService(SmokeQuitCalendarDisplayManager.class);
     }
 
+    public void getSmokeQuitDetailsForDate(Date date, final OnDateDetailsObserver observer){
+        model().execute(PrepareSmokeQuitDateDetails.class,date,new Model.BackgroundResultCallback<PrepareSmokeQuitDateDetails.DateDetails>() {
+            @Override
+            public void onResult(PrepareSmokeQuitDateDetails.DateDetails response) {
+                observer.onResult(response);
+            }
+
+            @Override
+            public void onFails(Throwable e) {
+                debug_exception(e);
+                observer.onFail();
+            }
+        });
+    }
+
+    public static interface OnDateDetailsObserver{
+        public void onResult(PrepareSmokeQuitDateDetails.DateDetails details);
+        public void onFail();
+    }
 
 }

@@ -126,26 +126,14 @@ public class SmokeQuitCalendarDisplayManager {
 
         Date today = DateUtils.today();
         answer.isFuture = !probeDate.before(today);
-        GetSmokeQuitSchedule.QuitScheduleDate itQuitScheduleDate;
-        for (int i = 0; i < quitSchedule.scheduleDates.size(); i++){
-            itQuitScheduleDate = quitSchedule.scheduleDates.get(i);
-            if (probeDate.before(itQuitScheduleDate.date)){
-                if (i == 0){
-                    answer.isOutsideQuitProgram = true;
-                    return answer;
-                }else{
-                    answer.isPassed = true;
-                    return  answer;
-                }
-            }
-            if (!probeDate.after(itQuitScheduleDate.date)){
-                //mean same date
-                answer.isNewLimitDay = itQuitScheduleDate.isNewLimitDate;
-                answer.isPassed = itQuitScheduleDate.successful;
-                return answer;
-            }
+        GetSmokeQuitSchedule.QuitScheduleDate itQuitScheduleDate = quitSchedule.getForDate(probeDate);
+        if (itQuitScheduleDate == null){
+            answer.isOutsideQuitProgram = true;
+            return answer;
         }
-        answer.isOutsideQuitProgram = true;
+
+        answer.isNewLimitDay = itQuitScheduleDate.isNewLimitDate;
+        answer.isPassed = itQuitScheduleDate.successful;
         return answer;
     }
 

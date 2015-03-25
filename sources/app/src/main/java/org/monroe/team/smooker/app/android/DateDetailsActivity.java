@@ -15,6 +15,7 @@ import org.monroe.team.android.box.app.ui.animation.apperrance.DefaultAppearance
 import org.monroe.team.corebox.utils.DateUtils;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.android.view.CircleAppearanceRelativeLayout;
+import org.monroe.team.smooker.app.uc.PrepareSmokeQuitDateDetails;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -106,7 +107,7 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
 
         int fontColorId = R.color.font_white;
         int fontValueColorId = R.color.font_white;
-        int fontCaptionColorId = R.color.font_dark_light;
+        int fontCaptionColorId = R.color.font_white;
         int cancelDrawable = R.drawable.cancel_logo;
 
         int colorId = R.color.background_main_light;
@@ -120,8 +121,8 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
             case WHITE:
                 cancelDrawable = R.drawable.cancel_logo_dark;
                 fontColorId = R.color.font_dark_light;
-                fontCaptionColorId = R.color.font_dark_lighter;
-                fontValueColorId = R.color.selection_main;
+                fontCaptionColorId = R.color.font_dark;
+                fontValueColorId = R.color.font_link;
                 break;
         }
 
@@ -156,14 +157,23 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             exitBtnAC.show();
-                            contentContainerAC.showAndCustomize(new AppearanceController.AnimatorCustomization() {
+                            application().getSmokeQuitDetailsForDate(date, new SmookerApplication.OnDateDetailsObserver() {
                                 @Override
-                                public void customize(Animator ani) {
-                                    ani.addListener(new AnimatorListenerSupport(){
-                                        @Override
-                                        public void onAnimationEnd(Animator animation) {
-                                        }
-                                    });
+                                public void onResult(PrepareSmokeQuitDateDetails.DateDetails details) {
+
+                                    //set result
+                                    view(R.id.date_smoke_count_value_text).setVisibility(details.isFuture()? View.INVISIBLE:View.VISIBLE);
+                                    view(R.id.date_smoke_count_text).setVisibility(details.isFuture()? View.INVISIBLE:View.VISIBLE);
+                                    view(R.id.date_status_text).setVisibility(details.isFuture()? View.INVISIBLE:View.VISIBLE);
+                                    view(R.id.date_status_value_text).setVisibility(details.isFuture()? View.INVISIBLE:View.VISIBLE);
+
+                                    view_text(R.id.date_smoke_count_value_text).setText(""+details.getSmokeCounts()+" "+getString(R.string.smokes));
+                                    view_text(R.id.date_limit_value_text).setText(""+details.getLimit()+" "+getString(R.string.smokes));
+                                    contentContainerAC.show();
+                                }
+                                @Override
+                                public void onFail() {
+                                    forceCloseWithErrorCode(404);
                                 }
                             });
                         }
