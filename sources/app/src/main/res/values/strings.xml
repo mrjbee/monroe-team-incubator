@@ -117,5 +117,6 @@
     <string name="smoke_limit">Smoke limit on this day</string>
     <string name="times">times</string>
     <string name="limit_is_exceeded">The limit is exceeded</string>
+    <string name="moneybox">Moneybox</string>
 
 </resources>

@@ -6,40 +6,14 @@
     android:layout_marginLeft="20dp"
     android:gravity="center_vertical">
 
-    <RelativeLayout
+    <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/stat_image"
         android:orientation="vertical"
-        android:gravity="center">
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:src="@drawable/quit_progress_background"
-            android:layout_centerInParent="true"/>
-        <org.monroe.team.smooker.app.android.view.RoundSegmentImageView
-            android:id="@+id/quit_progress_round_image"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:src="@drawable/quit_progress_value"
-            android:layout_centerInParent="true"/>
-
-        <org.monroe.team.smooker.app.android.view.TextViewExt
-            android:id="@+id/quit_progress_value"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0%"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_size_normal_small"
-            android:textColor="@color/font.dark"
-            android:shadowColor="@color/font.white.shadow"
-            android:shadowDy="2"
-            android:shadowDx="1"
-            android:shadowRadius="1"
-            android:layout_centerInParent="true"
-            />
-    </RelativeLayout>
+        android:gravity="center"
+        android:src="@drawable/moneybox_icon">
+    </ImageView>
 
     <GridLayout
         android:layout_marginLeft="20dp"
@@ -51,7 +25,7 @@
             android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/finish_date"
+            android:text="Money saved"
             android:textSize="@dimen/text_size_normal_small"
             android:textColor="@color/font.dark.light"
             android:id="@+id/quit_end_date"/>
@@ -67,14 +41,9 @@
             android:id="@+id/quit_end_date_value"
            />
 
-        <TextView
-            android:layout_gravity="center_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/today_limit"
-            android:textSize="@dimen/text_size_normal_small"
-            android:textColor="@color/font.dark.light"
-            android:id="@+id/quit_target_text"
+           h<LinearLayout
+                android:layout_width="100dp"
+                android:layout_height="16sp"
             />
 
         <TextView

@@ -35,7 +35,7 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/stat_image"
         android:layout_marginLeft="20dp"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:columnCount="2"
         android:layout_gravity="center_vertical">
@@ -45,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/total_smokes"
-        android:textSize="@dimen/text_size_normal"
+        android:textSize="@dimen/text_size_normal_small"
         android:textColor="@color/font.dark.light"
         android:id="@+id/stat_total_smokes"/>
 
@@ -55,8 +55,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0 smokes"
-        android:textSize="@dimen/text_size_normal_smalles"
-        android:textColor="@color/font.dark.lighter"
+        android:textSize="@dimen/text_size_normal_small"
+        android:textColor="@color/background.main3"
         android:id="@+id/stat_total_smokes_value" />
 
 
@@ -66,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/today_per_average_smokes"
-        android:textSize="@dimen/text_size_normal"
+        android:textSize="@dimen/text_size_normal_small"
         android:textColor="@color/font.dark.light"
         android:id="@+id/stat_average_text"/>
 
@@ -76,8 +76,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0 smokes"
-        android:textSize="@dimen/text_size_normal_smalles"
-        android:textColor="@color/font.dark.lighter"
+        android:textSize="@dimen/text_size_normal_small"
+        android:textColor="@color/background.main3"
         android:id="@+id/stat_average_text_value" />
     </GridLayout>
 </LinearLayout>

@@ -15,7 +15,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
@@ -395,7 +394,7 @@ public class TilesFragment extends FrontPageFragment {
     private void setupTilesControllers() {
         tileControllerList.add(new StatisticTile());
         tileControllerList.add(new QuitSmokeTile());
-        tileControllerList.add(new MotivationTile());
+        tileControllerList.add(new MoneyBoxTile());
         holeControllerList = Lists.collect(tileControllerList, new Closure<TileController, HoleController>() {
             @Override
             public HoleController execute(TileController arg) {
@@ -855,11 +854,21 @@ public class TilesFragment extends FrontPageFragment {
 
 
 
-    class MotivationTile extends AbstractTileController{
+    class MoneyBoxTile extends AbstractTileController{
 
         @Override
         public String caption() {
-            return "Motivation";
+            return getString(R.string.moneybox);
+        }
+
+        @Override
+        protected int smallTileId() {
+            return R.layout.tile_small_moneybox;
+        }
+
+        @Override
+        protected int bigTileId() {
+            return R.layout.tile_big_moneybox;
         }
     }
 
