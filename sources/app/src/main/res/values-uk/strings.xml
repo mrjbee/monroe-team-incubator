@@ -82,7 +82,7 @@
     <string name="past_after_last_smoke">Без перекурів</string>
     <string name="smokes_per_day">перекурів в день</string>
     <string name="short_min">хв</string>
-    <string name="short_days">днів</string>
+    <string name="days">днів</string>
     <string name="short_hours">годин</string>
     <string name="time_since_last_smoke">Зі часу останнього перекуру</string>
     <string name="smoke_limit_decreased">Ліміт перекурів знижений</string>

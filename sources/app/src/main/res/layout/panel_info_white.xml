@@ -16,7 +16,7 @@
     <TextView
         android:id="@+id/panel_description"
         android:layout_below="@+id/panel_caption"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Text"
@@ -25,11 +25,9 @@
 
     <TextView
         android:id="@+id/panel_action"
-        android:layout_toRightOf="@+id/panel_description"
-        android:layout_alignBottom="@+id/panel_description"
+        android:layout_below="@+id/panel_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
         android:text="Action"
         android:lines="1"
         android:textSize="@dimen/text_size_normal_smalles"

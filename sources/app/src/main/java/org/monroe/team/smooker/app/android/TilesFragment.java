@@ -149,7 +149,7 @@ public class TilesFragment extends FrontPageFragment {
         long[] ls = DateUtils.splitPeriod(DateUtils.now(), new Date(msSinceLastSmoke));
 
         final String timeString = twoDigitString(ls[1]) + ":" + twoDigitString(ls[2]);
-        final String daysString = ls[0] + " " + getString(R.string.short_days);
+        final String daysString = ls[0] + " " + getString(R.string.days);
 
         long ms = System.currentTimeMillis() - msSinceLastSmoke;
         long delta = ms % (60 * 1000);
@@ -852,26 +852,6 @@ public class TilesFragment extends FrontPageFragment {
         }
     }
 
-
-
-    class MoneyBoxTile extends AbstractTileController{
-
-        @Override
-        public String caption() {
-            return getString(R.string.moneybox);
-        }
-
-        @Override
-        protected int smallTileId() {
-            return R.layout.tile_small_moneybox;
-        }
-
-        @Override
-        protected int bigTileId() {
-            return R.layout.tile_big_moneybox;
-        }
-    }
-
     class QuitSmokeTile extends AbstractTileController{
 
         private ViewGroup dataContent;
@@ -1032,13 +1012,13 @@ public class TilesFragment extends FrontPageFragment {
                 @Override
                 public void onFetch(PrepareSmokeQuitDetails.Details details) {
                     if (details.todayLimit != -1) {
-                        endDateText.setText(details.dayLeftCount+" days");
+                        endDateText.setText(details.dayLeftCount+" "+getString(R.string.days));
                         endCountText.setText("" + details.todayLimit + " " + getString(R.string.smokes));
                         progressText.setText("" + details.progress + "%");
 
                     } else {
-                        endDateText.setText("Disabled");
-                        endCountText.setText("Disabled");
+                        endDateText.setText(getString(R.string.disabled));
+                        endCountText.setText(getString(R.string.disabled));
                         progressText.setText("0%");
                     }
                     progressView.setAngle(360f * ((float) details.progress / 100f));
@@ -1161,6 +1141,41 @@ public class TilesFragment extends FrontPageFragment {
             };
         }
 
+    }
+
+    class MoneyBoxTile extends AbstractTileController{
+
+        private ViewGroup contentPanel;
+
+        @Override
+        public String caption() {
+            return getString(R.string.moneybox);
+        }
+
+        @Override
+        protected int smallTileId() {
+            return R.layout.tile_small_moneybox;
+        }
+
+        @Override
+        protected int bigTileId() {
+            return R.layout.tile_big_moneybox;
+        }
+
+        @Override
+        protected void init_bigContent(View bigContentView, LayoutInflater layoutInflater) {
+            contentPanel = (ViewGroup) bigContentView.findViewById(R.id.money_content_panel);
+            PanelUI.initLightPanel(
+                    contentPanel.getChildAt(1),
+                    "Save your money on something",
+                    "Choose your currency, price and start saving",
+                    "Setup", new View.OnClickListener(){
+                        @Override
+                        public void onClick(View v) {
+                            performTileSetup();
+                        }
+                    });
+        }
     }
 
 }

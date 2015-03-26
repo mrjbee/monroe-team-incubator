@@ -71,7 +71,7 @@
     <string name="past_after_last_smoke">Without smoking</string>
     <string name="smokes_per_day"> smokes per day</string>
     <string name="short_min">min</string>
-    <string name="short_days">days</string>
+    <string name="days">days</string>
     <string name="short_hours">hours</string>
     <string name="time_since_last_smoke">Time since last smoking</string>
     <string name="smoke_limit_decreased">Smoke limit decreased</string>
@@ -118,5 +118,6 @@
     <string name="times">times</string>
     <string name="limit_is_exceeded">The limit is exceeded</string>
     <string name="moneybox">Moneybox</string>
+    <string name="disabled">Disabled</string>
 
 </resources>

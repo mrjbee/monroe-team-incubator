@@ -35,10 +35,10 @@
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="not set"
+            android:text="@string/disabled"
             android:textSize="@dimen/text_size_normal_small"
             android:textColor="@color/background.main3"
-            android:id="@+id/quit_end_date_value"
+            android:id="@+id/money_saved_value_text"
            />
 
            h<LinearLayout
@@ -51,10 +51,10 @@
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="not set"
+            android:text="0%"
             android:textSize="@dimen/text_size_normal_small"
             android:textColor="@color/background.main3"
-            android:id="@+id/quit_target_value"
+            android:id="@+id/money_progress_text"
             />
     </GridLayout>
 
