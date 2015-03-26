@@ -15,7 +15,7 @@
     <string name="welcome_page_content">Hello, Smoker! Thank you for choosing Smooker as your personal daily assistance during quitting smoking. Hope that assistance will help you to quit smoking completely. Please continue by hitting next button. Good luck!</string>
     <string name="general_page_title">General</string>
     <string name="general_page_about">Please specify your general settings. In future you might be referred to this page again if assistance will require more settings </string>
-    <string name="general_page_one_smoke_cost">Cost per One Smoke</string>
+    <string name="general_page_one_smoke_cost">Specify cost per one smoke (one cigarette, pipe and etc)</string>
     <string name="general_page_smoke_cost_not_set">Please specify smoke break cost</string>
     <string name="quit_page_title">Quit Smoking</string>
     <string name="quit_page_about">Please choose quit smoking program and desire smokes per day which fits to you. You would be able to change program any time from option menu</string>
@@ -33,7 +33,7 @@
     <string name="quit_page_change_program_alert_content">You are going to start over your Quit Smoke program with new settings. Is that what you are really want to do?</string>
     <string name="quit_page_change_program_alert_yes">Yes, start over</string>
     <string name="quit_page_change_program_alert_no">No, just exit</string>
-    <string name="quit_page_per_day_title">Times per day</string>
+    <string name="quit_page_per_day_title">Smoke breaks per day</string>
     <string name="quit_page_desire_smokes_title">Desire times per day</string>
     <string name="quite_smoke_program_title">Quit program loyalty</string>
     <string name="ui_page_title">Notification</string>
@@ -107,8 +107,8 @@
     <string name="days_10_smokes">Last 10 days smokes</string>
     <string name="title_activity_setting_quit_smoke">Quit Smoke Settings</string>
     <string name="quit_schedule">Quit Schedule</string>
-    <string name="no_quit_program">Quit Program Not Set</string>
-    <string name="quit_program_choose_prompt">Choose program which fits you.</string>
+    <string name="no_quit_program">Make first step to quit smoking</string>
+    <string name="quit_program_choose_prompt">Choose program which fits you</string>
     <string name="quit_program_prompt_action">Set Program</string>
     <string name="quitting">Quitting</string>
     <string name="today_limit">Limit</string>
@@ -119,5 +119,6 @@
     <string name="limit_is_exceeded">The limit is exceeded</string>
     <string name="moneybox">Moneybox</string>
     <string name="disabled">Disabled</string>
+    <string name="title_activity_setting_moneybox">Moneybox Settings</string>
 
 </resources>

@@ -1163,6 +1163,11 @@ public class TilesFragment extends FrontPageFragment {
         }
 
         @Override
+        public Class<? extends Activity> getSetupActivityClass() {
+            return SetupMoneyboxActivity.class;
+        }
+
+        @Override
         protected void init_bigContent(View bigContentView, LayoutInflater layoutInflater) {
             contentPanel = (ViewGroup) bigContentView.findViewById(R.id.money_content_panel);
             PanelUI.initLightPanel(

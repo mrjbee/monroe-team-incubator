@@ -71,6 +71,16 @@
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
+            android:name=".android.SetupMoneyboxActivity"
+            android:label="@string/title_activity_setting_moneybox"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Transperent.NoAnimation"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+
+
+
+        <activity
             android:name=".android.SmokeBreakActivity"
             android:label="@string/title_activity_smoke_break"
             android:launchMode="singleInstance" >
@@ -129,6 +139,7 @@
             android:theme="@style/AppTheme.Transperent.NoAnimation"
             >
         </activity>
+
     </application>
 
 </manifest>

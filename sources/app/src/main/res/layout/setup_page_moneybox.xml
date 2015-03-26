@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:id="@+id/qs_scroll"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:paddingTop="20dp"
+            >
+
+            <GridLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2">
+
+                <TextView
+                    android:id="@+id/qs_start_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/quit_page_per_day_title"
+                    android:textSize="@dimen/text_size_normal"
+                    android:layout_marginRight="10dp"
+                    />
+
+                <EditText
+                    android:layout_width="100dip"
+                    android:layout_height="40dp"
+                    android:inputType="number"
+                    android:ems="10"
+                    android:id="@+id/qs_start_edit"
+                    />
+
+            </GridLayout>
+
+
+            <LinearLayout
+                android:id="@+id/qs_separator_layout"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="1px"
+                android:background="@android:color/darker_gray"
+                android:layout_below="@+id/qs_end_text"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="15dp"
+                >
+            </LinearLayout>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:columnCount="2">
+
+                <TextView
+                    android:layout_columnSpan="2"
+                    android:id="@+id/gs_price_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/general_page_one_smoke_cost"
+                    android:textSize="@dimen/text_size_normal"
+                    />
+
+                <EditText
+                    android:layout_width="100dip"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:ems="10"
+                    android:id="@+id/gs_price_edit"
+                    android:layout_alignLeft="@+id/gs_price_text"
+                    android:layout_below="@+id/gs_price_text" />
+
+                <Spinner
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/gs_cur_spinner"
+                    android:layout_toRightOf="@+id/gs_price_edit"
+                    android:layout_alignBottom="@+id/gs_price_edit"/>
+
+            </GridLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="1px"
+            android:background="@android:color/darker_gray"
+            android:layout_below="@+id/qs_end_text"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="15dp"
+            />
+
+            <GridLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2">
+
+                <TextView
+                    android:layout_columnSpan="2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Choose something on what you are going to save money"
+                    android:textSize="@dimen/text_size_normal_small"
+                    android:textColor="@color/font.dark.lighter"
+                    />
+
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_columnSpan="2"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Title"
+                    android:textSize="@dimen/text_size_normal"
+                     />
+
+                <EditText
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:lines="1"
+                    android:maxLines="1"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Price"
+                    android:textSize="@dimen/text_size_normal"
+                    />
+
+                <EditText
+                    android:layout_width="100dip"
+                    android:layout_height="40dp"
+                    android:inputType="number"
+                    android:ems="10"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Short Description"
+                    android:textSize="@dimen/text_size_normal"
+                    />
+
+                <EditText
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:lines="1"
+                    android:maxLines="1"
+                    />
+            </GridLayout>
+
+
+
+        </LinearLayout>
+
+
+
+    </ScrollView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Apply"
+        android:id="@+id/qs_apply_btn"
+        android:layout_marginBottom="10dp"
+        />
+
+</LinearLayout>
