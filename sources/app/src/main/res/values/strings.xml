@@ -59,7 +59,7 @@
     <string name="today_per_average_smokes">Average</string>
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
-    <string name="new_day_limit">New day limit</string>
+    <string name="new_day_limit">The new limit per day</string>
     <string name="new_day_limit_increased">day limit decreased to</string>
     <string name="limit_failed">FAILED</string>
     <string name="day_limit_exceeded">day limit exceeded</string>
@@ -114,5 +114,8 @@
     <string name="today_limit">Limit</string>
     <string name="finish_date">Left</string>
     <string name="title_activity_date_details">Date Details</string>
+    <string name="smoke_limit">Smoke limit on this day</string>
+    <string name="times">times</string>
+    <string name="limit_is_exceeded">The limit is exceeded</string>
 
 </resources>

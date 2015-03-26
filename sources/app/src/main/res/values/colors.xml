@@ -3,9 +3,9 @@
 
     <color name="font.white">#fff6f6f6</color>
     <color name="font.dark.shadow">#b6000000</color>
-    <color name="font.dark">#ff5b5b5b</color>
+    <color name="font.dark">#ff141414</color>
     <color name="font.dark.light">#ff343434</color>
-    <color name="font.dark.lighter">#ff8e8e8e</color>
+    <color name="font.dark.lighter">#ff848484</color>
     <color name="font.white.shadow">#ffffffff</color>
     <color name="font.dark.lightest">#ffbbbbbb</color>
     <color name="font.link">#ff006db7</color>
@@ -16,6 +16,7 @@
     <color name="background.main">#d02636</color>
     <color name="background.main.light">#f1f0f0</color>
     <color name="background.white">#fbfbfb</color>
+    <color name="background.dark">#ff3c3c3c</color>
     <color name="selection.main">#008cec</color>
     <color name="background.info.panel.white">#fff8f8f8</color>
     <color name="background.info.panel.white.stroke">#ffe8e8e8</color>

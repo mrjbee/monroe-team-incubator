@@ -12,6 +12,7 @@ import org.monroe.team.android.box.app.ui.animation.AnimatorListenerSupport;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceController;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder;
 import org.monroe.team.android.box.app.ui.animation.apperrance.DefaultAppearanceController;
+import org.monroe.team.android.box.utils.DisplayUtils;
 import org.monroe.team.corebox.utils.DateUtils;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.android.view.CircleAppearanceRelativeLayout;
@@ -21,7 +22,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.alpha;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.animateAppearance;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.combine;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.duration_constant;
@@ -30,6 +30,7 @@ import static org.monroe.team.android.box.app.ui.animation.apperrance.Appearance
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.interpreter_overshot;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.rotate;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.scale;
+import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.ySlide;
 
 public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
 
@@ -56,8 +57,9 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
                 .hideAnimation(duration_constant(300), interpreter_decelerate(0.8f))
                 .build();
 
-        contentContainerAC = animateAppearance(view(R.id.date_content),alpha(1f,0f))
-                .showAnimation(duration_constant(200), interpreter_accelerate(0.8f))
+        contentContainerAC = animateAppearance(view(R.id.date_content),
+                ySlide(0, DisplayUtils.screenHeight(getResources())))
+                .showAnimation(duration_constant(200), interpreter_accelerate(null))
                 .hideAnimation(duration_constant(200), interpreter_decelerate(0.8f))
                 .hideAndGone()
                 .build();
@@ -75,7 +77,17 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
         view(R.id.date_quit_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                exitBtnAC.hideAndCustomize(new AppearanceController.AnimatorCustomization() {
+                    @Override
+                    public void customize(Animator animator) {
+                        animator.addListener(new AnimatorListenerSupport(){
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                onBackPressed();
+                            }
+                        });
+                    }
+                });
             }
         });
 
@@ -108,31 +120,35 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
         int fontColorId = R.color.font_white;
         int fontValueColorId = R.color.font_white;
         int fontCaptionColorId = R.color.font_white;
-        int cancelDrawable = R.drawable.cancel_logo;
+        int closeImageId = R.drawable.cancel_logo;
 
-        int colorId = R.color.background_main_light;
+        int headerColorId = R.color.background_dark;
+        int contentColorId = R.color.white;
         switch (theme){
             case RED:
-                colorId = R.color.background_main;
+                headerColorId = R.color.background_main;
                 break;
             case BLUE:
-                colorId = R.color.selection_main;
+                headerColorId = R.color.selection_main;
                 break;
             case WHITE:
-                cancelDrawable = R.drawable.cancel_logo_dark;
+                closeImageId = R.drawable.cancel_logo_dark;
                 fontColorId = R.color.font_dark_light;
                 fontCaptionColorId = R.color.font_dark;
-                fontValueColorId = R.color.font_link;
+                fontValueColorId = R.color.font_dark;
                 break;
         }
 
+
+        view(R.id.date_header).setBackgroundResource(headerColorId);
+        view(R.id.date_body).setBackgroundResource(headerColorId);
+        view(R.id.date_content).setBackgroundResource(contentColorId);
+
+        /*
+        view(R.id.date_quit_btn, ImageView.class).setImageResource(closeImageId);
         int textValueColor = getResources().getColor(fontValueColorId);
         int textColor = getResources().getColor(fontColorId);
         int textCaptionColor = getResources().getColor(fontCaptionColorId);
-
-        view(R.id.date_quit_btn, ImageView.class).setImageResource(cancelDrawable);
-        view(R.id.date_header).setBackgroundResource(colorId);
-        view(R.id.date_body).setBackgroundResource(colorId);
 
         view_text(R.id.date_caption_text).setTextColor(textColor);
         view_text(R.id.date_description_text).setTextColor(textColor);
@@ -143,12 +159,16 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
 
         view_text(R.id.date_smoke_count_text).setTextColor(textCaptionColor);
         view_text(R.id.date_limit_text).setTextColor(textCaptionColor);
-        view_text(R.id.date_status_text).setTextColor(textCaptionColor);
+        */
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        startAnimation();
+    }
+
+    private void startAnimation() {
         if (isFirstRun()) {
             baseContainerAC.showAndCustomize(new AppearanceController.AnimatorCustomization() {
                 @Override
@@ -160,17 +180,27 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
                             application().getSmokeQuitDetailsForDate(date, new SmookerApplication.OnDateDetailsObserver() {
                                 @Override
                                 public void onResult(PrepareSmokeQuitDateDetails.DateDetails details) {
-
                                     //set result
-                                    view(R.id.date_smoke_count_value_text).setVisibility(details.isFuture()? View.INVISIBLE:View.VISIBLE);
-                                    view(R.id.date_smoke_count_text).setVisibility(details.isFuture()? View.INVISIBLE:View.VISIBLE);
-                                    view(R.id.date_status_text).setVisibility(details.isFuture()? View.INVISIBLE:View.VISIBLE);
-                                    view(R.id.date_status_value_text).setVisibility(details.isFuture()? View.INVISIBLE:View.VISIBLE);
+                                    view(R.id.date_smoke_count_text).setVisibility(details.isFuture() ? View.GONE : View.VISIBLE);
+                                    view(R.id.date_smoke_count_value_text).setVisibility(details.isFuture() ? View.GONE : View.VISIBLE);
 
-                                    view_text(R.id.date_smoke_count_value_text).setText(""+details.getSmokeCounts()+" "+getString(R.string.smokes));
-                                    view_text(R.id.date_limit_value_text).setText(""+details.getLimit()+" "+getString(R.string.smokes));
+                                    view(R.id.date_status_value_text).setVisibility(details.isFuture()|| details.isPassed() ? View.GONE : View.VISIBLE);
+
+                                    if (details.isLimitChanged()){
+                                        view_text(R.id.date_limit_text).setText(R.string.new_day_limit);
+                                    } else {
+                                        view_text(R.id.date_limit_text).setText(R.string.smoke_limit);
+                                    }
+
+                                    if (!details.isPassed()){
+                                        view_text(R.id.date_status_value_text).setText(R.string.limit_is_exceeded);
+                                    }
+
+                                    view_text(R.id.date_limit_value_text).setText("" + details.getLimit() + " " + getString(R.string.times));
+                                    view_text(R.id.date_smoke_count_value_text).setText("" + details.getSmokeCounts() + " " + getString(R.string.times));
                                     contentContainerAC.show();
                                 }
+
                                 @Override
                                 public void onFail() {
                                     forceCloseWithErrorCode(404);
@@ -185,14 +215,23 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
 
     @Override
     public void onBackPressed() {
-        contentContainerAC.hide();
-        baseContainerAC.hideAndCustomize(new AppearanceController.AnimatorCustomization() {
+        contentContainerAC.hideAndCustomize(new AppearanceController.AnimatorCustomization() {
             @Override
-            public void customize(Animator animator) {
-                animator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter() {
+            public void customize(Animator a) {
+                a.addListener(new AnimatorListenerSupport(){
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                      DateDetailsActivity.super.onBackPressed();
+                        baseContainerAC.hideAndCustomize(new AppearanceController.AnimatorCustomization() {
+                            @Override
+                            public void customize(Animator animator) {
+                                animator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        DateDetailsActivity.super.onBackPressed();
+                                    }
+                                });
+                            }
+                        });
                     }
                 });
             }

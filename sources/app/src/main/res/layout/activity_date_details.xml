@@ -50,81 +50,73 @@
         android:layout_below="@+id/date_header"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background.main"
-        android:paddingTop="30dp"
-        android:paddingLeft="50dp">
+        >
         <LinearLayout
+            android:paddingTop="0dp"
+            android:paddingLeft="70dp"
             android:id="@+id/date_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:orientation="vertical">
+
+
             <TextView
+                android:layout_marginTop="30dp"
+                android:id="@+id/date_status_value_text"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="@string/limit_is_exceeded"
+                android:textSize="@dimen/text_size_normal"
+                android:textColor="@color/font.dark.light"
+                />
+
+            <TextView
+                android:layout_marginTop="30dp"
                 android:id="@+id/date_smoke_count_text"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Smokes on this date"
+                android:text="Smoke breaks on this day"
                 android:textSize="@dimen/text_size_normal"
-                android:textStyle="bold"
                 android:textColor="@color/font.dark.light"
                 />
 
             <TextView
                 android:id="@+id/date_smoke_count_value_text"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10 smokes"
+                android:text="10 times"
                 android:textSize="@dimen/text_size_normal"
-                android:textColor="@color/font.white"
+                android:textColor="@color/font.dark.lighter"
                 />
 
             <TextView
                 android:id="@+id/date_limit_text"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="30dp"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Smokes limit on this date"
+                android:text="@string/smoke_limit"
                 android:textSize="@dimen/text_size_normal"
-                android:textStyle="bold"
                 android:textColor="@color/font.dark.light"
                 />
 
             <TextView
                 android:id="@+id/date_limit_value_text"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10 smokes"
+                android:text="10 times"
                 android:textSize="@dimen/text_size_normal"
-                android:textColor="@color/font.white"
+                android:textColor="@color/font.dark.lighter"
                 />
 
-            <TextView
-                android:id="@+id/date_status_text"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Status"
-                android:textSize="@dimen/text_size_normal"
-                android:textStyle="bold"
-                android:textColor="@color/font.dark.light"
-                />
 
-            <TextView
-                android:id="@+id/date_status_value_text"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Successfully Passed"
-                android:textSize="@dimen/text_size_normal"
-                android:textColor="@color/font.white"
-                />
         </LinearLayout>
     </RelativeLayout>
     

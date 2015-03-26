@@ -23,7 +23,7 @@ public class PrepareSmokeQuitDateDetails extends TransactionUserCase<Date, Prepa
         Date today = DateUtils.today();
         Date requestDate = DateUtils.dateOnly(request);
 
-        answer.isFuture = request.after(today);
+        answer.isFuture = !request.before(today);
         answer.smokeCounts = dao.getSmokesForPeriod(requestDate, DateUtils.mathDays(requestDate, 1)).size();
 
         GetSmokeQuitSchedule.QuitSchedule schedule = null;
@@ -37,6 +37,7 @@ public class PrepareSmokeQuitDateDetails extends TransactionUserCase<Date, Prepa
         if (scheduleDate != null){
             answer.limit = scheduleDate.limit;
             answer.isPassed = scheduleDate.successful;
+            answer.isLimitChanged = scheduleDate.isNewLimitDate;
         }
         return answer;
     }
@@ -47,6 +48,7 @@ public class PrepareSmokeQuitDateDetails extends TransactionUserCase<Date, Prepa
         private boolean isPassed = false;
         private int smokeCounts = 0;
         private int limit = -1;
+        private boolean isLimitChanged = false;
 
         public boolean isFuture() {
             return isFuture;
@@ -62,6 +64,10 @@ public class PrepareSmokeQuitDateDetails extends TransactionUserCase<Date, Prepa
 
         public int getLimit() {
             return limit;
+        }
+
+        public boolean isLimitChanged() {
+            return isLimitChanged;
         }
     }
 }
