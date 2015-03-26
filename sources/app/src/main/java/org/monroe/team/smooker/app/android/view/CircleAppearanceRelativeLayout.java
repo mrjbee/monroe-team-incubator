@@ -84,13 +84,13 @@ public class CircleAppearanceRelativeLayout extends RelativeLayout {
             originImageBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
             super.draw(new Canvas(originImageBitmap));
         }
+        backgroundPaint.setAlpha((int) (150*fraction));
+        canvas.drawRect(componentSize,backgroundPaint);
+
         finalImageBitmap.eraseColor(Color.TRANSPARENT);
         Canvas finalCanvas = new Canvas(finalImageBitmap);
         finalCanvas.drawCircle(center.x, center.y, calculateRadius(componentSize), maskDefinePaint);
         finalCanvas.drawBitmap(originImageBitmap, 0, 0, maskApplyPaint);
-
-        backgroundPaint.setAlpha((int) (150*fraction));
-        canvas.drawRect(componentSize,backgroundPaint);
         canvas.drawBitmap(finalImageBitmap, 0, 0, null);
     }
 

@@ -1101,6 +1101,7 @@ public class TilesFragment extends FrontPageFragment {
                             }else if (displayDetails.isMonthStartWeek){
                                 cellBackgroundView.paintWeekStart = true;
                             }
+                            cellBackgroundView.invalidate();
 
                             DateDetailsActivity.Theme theme = DateDetailsActivity.Theme.WHITE;
                             int backgroundResource = 0;
@@ -1127,7 +1128,6 @@ public class TilesFragment extends FrontPageFragment {
                             }
                             backgroundView.setBackgroundResource(backgroundResource);
                             mainTextView.setTextColor(textColor);
-                            owner.invalidate();
 
                             if (!displayDetails.isOutsideQuitProgram) {
                                 final DateDetailsActivity.Theme finalTheme = theme;
@@ -1141,6 +1141,7 @@ public class TilesFragment extends FrontPageFragment {
                                     }
                                 });
                             }
+                            owner.invalidate();
                         }
 
                         @Override public void cleanup() {
