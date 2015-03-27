@@ -24,11 +24,25 @@
                 android:columnCount="2">
 
                 <TextView
+                    android:layout_columnSpan="2"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Smoke Break Settings"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_size_normal_small"
+                    android:textColor="@color/background.main"
+                    android:layout_marginRight="10dp"
+                    />
+
+
+                <TextView
                     android:id="@+id/qs_start_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/quit_page_per_day_title"
                     android:textSize="@dimen/text_size_normal"
+                    android:textColor="@color/font.dark.lighter"
                     android:layout_marginRight="10dp"
                     />
 
@@ -38,55 +52,41 @@
                     android:inputType="number"
                     android:ems="10"
                     android:id="@+id/qs_start_edit"
+                    android:textColor="@color/font.dark.lighter"
                     />
 
-            </GridLayout>
-
-
-            <LinearLayout
-                android:id="@+id/qs_separator_layout"
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="1px"
-                android:background="@android:color/darker_gray"
-                android:layout_below="@+id/qs_end_text"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="15dp"
-                >
-            </LinearLayout>
-
-            <GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:columnCount="2">
-
                 <TextView
+                    android:layout_marginTop="10dp"
                     android:layout_columnSpan="2"
                     android:id="@+id/gs_price_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/general_page_one_smoke_cost"
-                    android:textSize="@dimen/text_size_normal"
+                    android:textSize="@dimen/text_size_normal_small"
+                    android:textColor="@color/font.dark.lighter"
                     />
 
                 <EditText
                     android:layout_width="100dip"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:inputType="numberDecimal"
                     android:ems="10"
                     android:id="@+id/gs_price_edit"
-                    android:layout_alignLeft="@+id/gs_price_text"
-                    android:layout_below="@+id/gs_price_text" />
+                    android:layout_gravity="center"
+                    android:gravity="bottom"
+                    android:textColor="@color/font.dark.lighter"
+                    />
 
                 <Spinner
-                    android:layout_marginLeft="10dp"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="120dp"
+                    android:layout_height="60dp"
                     android:id="@+id/gs_cur_spinner"
-                    android:layout_toRightOf="@+id/gs_price_edit"
-                    android:layout_alignBottom="@+id/gs_price_edit"/>
+                    />
 
             </GridLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -98,12 +98,25 @@
             android:layout_margin="15dp"
             />
 
-            <GridLayout
+            <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:columnCount="2">
+                android:orientation="vertical">
 
                 <TextView
+                    android:layout_columnSpan="2"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="What to Buy"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_size_normal_small"
+                    android:textColor="@color/background.main"
+                    android:layout_marginRight="10dp"
+                    />
+
+                <TextView
+                    android:layout_marginTop="10dp"
                     android:layout_columnSpan="2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -113,56 +126,49 @@
                     />
 
 
+                <EditText
+                    android:layout_width="150dip"
+                    android:layout_height="40dp"
+                    android:inputType="number"
+                    android:ems="10"
+                    android:textColor="@color/font.dark.lighter"
+                    android:textSize="@dimen/text_size_normal"
+                    android:hint="Price"
+                    />
+
+
                 <ImageView
+                    android:visibility="gone"
                     android:layout_gravity="center"
                     android:layout_columnSpan="2"
                     android:layout_width="200dp"
                     android:layout_height="200dp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Title"
-                    android:textSize="@dimen/text_size_normal"
-                     />
+
 
                 <EditText
-                    android:layout_gravity="fill_horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="40dp"
                     android:lines="1"
                     android:maxLines="1"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Price"
+                    android:singleLine="true"
+                    android:textColor="@color/font.dark.lighter"
                     android:textSize="@dimen/text_size_normal"
-                    />
-
-                <EditText
-                    android:layout_width="100dip"
-                    android:layout_height="40dp"
-                    android:inputType="number"
-                    android:ems="10"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Short Description"
-                    android:textSize="@dimen/text_size_normal"
+                    android:hint="Title"
                     />
 
                 <EditText
                     android:layout_gravity="fill_horizontal"
-                    android:layout_width="200dp"
+                    android:layout_width="fill_parent"
                     android:layout_height="40dp"
                     android:lines="1"
                     android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/font.dark.lighter"
+                    android:textSize="@dimen/text_size_normal"
+                    android:hint="Short Description"
                     />
-            </GridLayout>
+            </LinearLayout>
 
 
 
@@ -171,13 +177,5 @@
 
 
     </ScrollView>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Apply"
-        android:id="@+id/qs_apply_btn"
-        android:layout_marginBottom="10dp"
-        />
 
 </LinearLayout>
