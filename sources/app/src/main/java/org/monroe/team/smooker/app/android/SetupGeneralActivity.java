@@ -46,19 +46,19 @@ public abstract class SetupGeneralActivity extends ActivitySupport<SmookerApplic
         view(R.id.setup_quit_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                action_exit();
             }
         });
         view(R.id.setup_apply_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onApply();
+                action_apply();
             }
         });
         view(R.id.setup_revert_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onRevert();
+                action_revert();
             }
         });
         PointF position = getFromIntent("position" , null);
@@ -110,14 +110,16 @@ public abstract class SetupGeneralActivity extends ActivitySupport<SmookerApplic
         }
     }
 
+
     private void fillUI() {
         getLayoutInflater().inflate(setup_layout(), (ViewGroup) view(R.id.setup_content_panel), true);
-        onStartup();
+        action_start();
     }
 
-    protected abstract void onStartup();
-    protected abstract void onApply();
-    protected abstract void onRevert();
+    protected abstract void action_start();
+    protected abstract void action_apply();
+    protected abstract void action_revert();
+    protected void action_exit(){onBackPressed();}
 
     @Override
     protected void onResume() {

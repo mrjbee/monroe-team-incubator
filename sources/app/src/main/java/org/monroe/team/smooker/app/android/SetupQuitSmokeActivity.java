@@ -2,7 +2,6 @@ package org.monroe.team.smooker.app.android;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +14,8 @@ import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
 public class SetupQuitSmokeActivity extends SetupGeneralActivity {
 
 
+    private String uiStateCheckSum;
+
     @Override
     protected int setup_layout() {
         return R.layout.setup_page_quit_smoking;
@@ -26,7 +27,7 @@ public class SetupQuitSmokeActivity extends SetupGeneralActivity {
     }
 
     @Override
-    protected void onStartup() {
+    protected void action_start() {
 
         view_text(R.id.qs_start_edit).setText(application().getSettingAsString(Settings.QUITE_START_SMOKE));
         view_text(R.id.qs_end_edit).setText(application().getSettingAsString(Settings.QUITE_END_SMOKE));
@@ -46,16 +47,48 @@ public class SetupQuitSmokeActivity extends SetupGeneralActivity {
         view(R.id.qs_level_seekBar,SeekBar.class).setProgress(application().getSetting(Settings.QUIT_PROGRAM_INDEX));
         updateUIByDifficultLevel(QuitSmokeDifficultLevel.levelByIndex(application().getSetting(Settings.QUIT_PROGRAM_INDEX)));
 
+        uiStateCheckSum = uiCheckSum();
+
+    }
+
+    private String uiCheckSum() {
+        return ""+view_text(R.id.qs_start_edit).getText().toString().hashCode()+"" +
+                ""+view_text(R.id.qs_end_edit).getText().toString().hashCode()+"" +
+                ""+view(R.id.qs_level_seekBar,SeekBar.class).getProgress();
     }
 
     @Override
-    protected void onApply() {
+    protected void action_apply() {
         performQuitSmokeSetup();
     }
 
     @Override
-    protected void onRevert() {
-        onStartup();
+    protected void action_revert() {
+        action_start();
+    }
+
+    @Override
+    protected void action_exit() {
+        String existingUICheckSum = uiCheckSum();
+        if (existingUICheckSum.equals(uiStateCheckSum)){
+            onBackPressed();
+        }else{
+            //show dialog
+            AlertDialog alertDialog = new AlertDialog.Builder(this)
+                    .setTitle("Unsaved changes")
+                    .setMessage("You have made changes to your quit program. Do you want to apply them?")
+                    .setPositiveButton("Apply", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            action_apply();
+                        }
+                    }).setNegativeButton("No, Just Exit", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            onBackPressed();
+                        }
+                    }).show();
+        }
     }
 
     private void updateUIByDifficultLevel(QuitSmokeDifficultLevel difficult) {
@@ -115,19 +148,33 @@ public class SetupQuitSmokeActivity extends SetupGeneralActivity {
         final Integer finalSmokePerDay = smokePerDay;
         final int finalDesireSmokePerDayCount = desireSmokePerDayCount;
 
-        AlertDialog alertDialog = new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.quit_page_change_program_alert_title))
-                .setMessage(getString(R.string.quit_page_change_program_alert_content))
-                .setPositiveButton(getString(R.string.quit_page_change_program_alert_yes), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        doActualUpdate(difficult, finalSmokePerDay, finalDesireSmokePerDayCount);
-                        finish();
-                    }
-                }).setNegativeButton(getString(R.string.quit_page_change_program_alert_no), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {}
-                }).show();
+        if (oldDifficult == QuitSmokeDifficultLevel.DISABLED){
+            doActualUpdate(difficult, finalSmokePerDay, finalDesireSmokePerDayCount);
+            finish();
+        } else {
+
+            String message = "You are going to change your quit program. Are you sure?";
+            if (difficult == QuitSmokeDifficultLevel.DISABLED) {
+                message = "You are going to disable quit program. Are you sure?";
+            } else if(oldDifficult == difficult){
+                message = "You are going to restart your quit program. Are you sure?";
+            }
+
+            AlertDialog alertDialog = new AlertDialog.Builder(this)
+                    .setTitle("Quit Program Changes")
+                    .setMessage(message)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            doActualUpdate(difficult, finalSmokePerDay, finalDesireSmokePerDayCount);
+                            finish();
+                        }
+                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {}
+                    }).show();
+        }
+
     }
 
     private void doActualUpdate(QuitSmokeDifficultLevel difficult, Integer smokePerDay, int desireSmokePerDayCount) {

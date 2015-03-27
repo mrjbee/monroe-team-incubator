@@ -26,16 +26,16 @@ public class SetupMoneyboxActivity extends SetupGeneralActivity {
     }
 
     @Override
-    protected void onStartup() {
+    protected void action_start() {
     }
 
     @Override
-    protected void onApply() {
-        
+    protected void action_apply() {
+
     }
 
     @Override
-    protected void onRevert() {
+    protected void action_revert() {
 
     }
 
