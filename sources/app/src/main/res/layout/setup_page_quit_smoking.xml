@@ -18,11 +18,12 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:id="@+id/qs_start_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"
+                android:textColor="@color/font.dark.lighter"
                 android:text="@string/quit_page_per_day_title"
                 android:textSize="@dimen/text_size_normal"
                 />
@@ -34,6 +35,7 @@
                 android:ems="10"
                 android:id="@+id/qs_start_edit"
                 android:layout_alignBottom="@+id/qs_start_text"
+                android:textColor="@color/font.dark.lighter"
                 android:layout_alignParentRight="true"/>
 
 
@@ -44,6 +46,7 @@
                 android:layout_marginLeft="10dip"
                 android:id="@+id/qs_end_text"
                 android:textSize="@dimen/text_size_normal"
+                android:textColor="@color/font.dark.lighter"
                 android:layout_alignBottom="@+id/qs_end_edit"
                 />
 
@@ -55,6 +58,7 @@
                 android:id="@+id/qs_end_edit"
                 android:text="0"
                 android:layout_alignParentRight="true"
+                android:textColor="@color/font.dark.lighter"
                 android:layout_below="@+id/qs_start_edit"
                 />
 
@@ -78,6 +82,7 @@
                 android:layout_marginLeft="10dip"
                 android:id="@+id/qs_level_label"
                 android:textSize="@dimen/text_size_normal"
+                android:textColor="@color/font.dark.lighter"
                 android:layout_below="@+id/qs_separator_layout"
                 />
 
@@ -101,18 +106,10 @@
                 android:layout_marginRight="10dip"
                 android:id="@+id/qs_level_label_description"
                 android:textSize="@dimen/text_size_normal_small"
+                android:textColor="@color/font.dark.lighter"
                 android:layout_below="@+id/qs_level_seekBar"
                 />
 
         </RelativeLayout>
     </ScrollView>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Apply"
-        android:id="@+id/qs_apply_btn"
-        android:layout_marginBottom="10dp"
-        />
-
 </LinearLayout>

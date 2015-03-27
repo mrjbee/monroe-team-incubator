@@ -25,7 +25,6 @@ import static org.monroe.team.android.box.app.ui.animation.apperrance.Appearance
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.interpreter_overshot;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.rotate;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.scale;
-import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.ySlide;
 
 public abstract class SetupGeneralActivity extends ActivitySupport<SmookerApplication> {
 
@@ -33,6 +32,9 @@ public abstract class SetupGeneralActivity extends ActivitySupport<SmookerApplic
     private AppearanceController baseContainerAC;
     private AppearanceController contentContainerAC;
     private AppearanceController exitBtnAC;
+    private AppearanceController revertBtnAC;
+    private AppearanceController applyBtnAC;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,18 @@ public abstract class SetupGeneralActivity extends ActivitySupport<SmookerApplic
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+        view(R.id.setup_apply_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onApply();
+            }
+        });
+        view(R.id.setup_revert_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRevert();
             }
         });
         PointF position = getFromIntent("position" , null);
@@ -70,29 +84,45 @@ public abstract class SetupGeneralActivity extends ActivitySupport<SmookerApplic
                         .hideAnimation(duration_constant(300), interpreter_accelerate(0.4f))
         );
 
+        revertBtnAC = animateAppearance(view(R.id.setup_revert_btn),  rotate(180, 0))
+                        .showAnimation(duration_constant(300), interpreter_overshot())
+                        .hideAnimation(duration_constant(300), interpreter_accelerate(0.4f))
+                        .hideAndInvisible().build();
+
+        applyBtnAC = animateAppearance(view(R.id.setup_apply_btn),  scale(1f, 0f))
+                .showAnimation(duration_constant(200), interpreter_overshot())
+                .hideAnimation(duration_constant(200), interpreter_accelerate(0.4f))
+                .hideAndInvisible().build();
+
         if (isFirstRun()){
             baseContainerAC.hideWithoutAnimation();
             contentContainerAC.hideWithoutAnimation();
             exitBtnAC.hideWithoutAnimation();
+            revertBtnAC.hideWithoutAnimation();
+            applyBtnAC.hideWithoutAnimation();
         }else {
             baseContainerAC.showWithoutAnimation();
             contentContainerAC.showWithoutAnimation();
             exitBtnAC.showWithoutAnimation();
+            revertBtnAC.hideWithoutAnimation();
+            applyBtnAC.hideWithoutAnimation();
             fillUI();
         }
     }
 
     private void fillUI() {
         getLayoutInflater().inflate(setup_layout(), (ViewGroup) view(R.id.setup_content_panel), true);
-        initializeUI();
+        onStartup();
     }
 
-    protected abstract void initializeUI();
+    protected abstract void onStartup();
+    protected abstract void onApply();
+    protected abstract void onRevert();
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (isFirstRun()) {
+        if (isFirstRun() && view(R.id.setup_quit_btn).getVisibility() != View.INVISIBLE) {
             baseContainerAC.showAndCustomize(new AppearanceController.AnimatorCustomization() {
                 @Override
                 public void customize(Animator animator) {
@@ -106,7 +136,27 @@ public abstract class SetupGeneralActivity extends ActivitySupport<SmookerApplic
                                     ani.addListener(new AnimatorListenerSupport(){
                                         @Override
                                         public void onAnimationEnd(Animator animation) {
-                                            exitBtnAC.show();
+                                            exitBtnAC.showAndCustomize(new AppearanceController.AnimatorCustomization() {
+                                                @Override
+                                                public void customize(Animator eanimator) {
+                                                        eanimator.addListener(new AnimatorListenerSupport(){
+                                                            @Override
+                                                            public void onAnimationEnd(Animator animation) {
+                                                                revertBtnAC.showAndCustomize(new AppearanceController.AnimatorCustomization() {
+                                                                    @Override
+                                                                    public void customize(Animator ranimator) {
+                                                                        ranimator.addListener(new AnimatorListenerSupport(){
+                                                                            @Override
+                                                                            public void onAnimationEnd(Animator animation) {
+                                                                                applyBtnAC.show();
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                });
+                                                            }
+                                                        });
+                                                }
+                                            });
                                         }
                                     });
                                 }

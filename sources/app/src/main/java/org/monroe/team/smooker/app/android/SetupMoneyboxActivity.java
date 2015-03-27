@@ -26,7 +26,17 @@ public class SetupMoneyboxActivity extends SetupGeneralActivity {
     }
 
     @Override
-    protected void initializeUI() {
+    protected void onStartup() {
+    }
+
+    @Override
+    protected void onApply() {
+        
+    }
+
+    @Override
+    protected void onRevert() {
+
     }
 
 }

@@ -2,16 +2,12 @@ package org.monroe.team.smooker.app.android;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.monroe.team.android.box.app.ActivitySupport;
 import org.monroe.team.smooker.app.R;
-import org.monroe.team.smooker.app.android.SmookerApplication;
 import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
 
@@ -30,7 +26,7 @@ public class SetupQuitSmokeActivity extends SetupGeneralActivity {
     }
 
     @Override
-    protected void initializeUI() {
+    protected void onStartup() {
 
         view_text(R.id.qs_start_edit).setText(application().getSettingAsString(Settings.QUITE_START_SMOKE));
         view_text(R.id.qs_end_edit).setText(application().getSettingAsString(Settings.QUITE_END_SMOKE));
@@ -49,12 +45,17 @@ public class SetupQuitSmokeActivity extends SetupGeneralActivity {
         });
         view(R.id.qs_level_seekBar,SeekBar.class).setProgress(application().getSetting(Settings.QUIT_PROGRAM_INDEX));
         updateUIByDifficultLevel(QuitSmokeDifficultLevel.levelByIndex(application().getSetting(Settings.QUIT_PROGRAM_INDEX)));
-        view_button(R.id.qs_apply_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                performQuitSmokeSetup();
-            }
-        });
+
+    }
+
+    @Override
+    protected void onApply() {
+        performQuitSmokeSetup();
+    }
+
+    @Override
+    protected void onRevert() {
+        onStartup();
     }
 
     private void updateUIByDifficultLevel(QuitSmokeDifficultLevel difficult) {

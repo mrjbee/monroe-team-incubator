@@ -169,7 +169,7 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
     }
 
     private void startAnimation() {
-        if (isFirstRun()) {
+        if (isFirstRun()  && view(R.id.date_quit_btn).getVisibility() != View.INVISIBLE) {
             baseContainerAC.showAndCustomize(new AppearanceController.AnimatorCustomization() {
                 @Override
                 public void customize(Animator animator) {
