@@ -61,7 +61,8 @@
                 android:padding="12dp"
                 android:scaleType="centerCrop"
                 android:background="@android:color/transparent"
-                android:src="@drawable/cancel_logo_dark"/>
+                android:src="@drawable/cancel_logo_dark"
+                android:visibility="invisible"/>
 
             <ImageButton
                 android:id="@+id/setup_revert_btn"

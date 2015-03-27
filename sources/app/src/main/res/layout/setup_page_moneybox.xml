@@ -16,6 +16,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:paddingTop="20dp"
+            android:paddingBottom="20dp"
             >
 
             <GridLayout
@@ -30,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:text="Smoke Break Settings"
                     android:textStyle="bold"
-                    android:textSize="@dimen/text_size_normal_small"
+                    android:textSize="@dimen/text_size_normal"
                     android:textColor="@color/background.main"
                     android:layout_marginRight="10dp"
                     />
@@ -51,7 +52,7 @@
                     android:layout_height="40dp"
                     android:inputType="number"
                     android:ems="10"
-                    android:id="@+id/qs_start_edit"
+                    android:id="@+id/moneybox_start_smoke_edit"
                     android:textColor="@color/font.dark.lighter"
                     />
 
@@ -62,16 +63,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/general_page_one_smoke_cost"
-                    android:textSize="@dimen/text_size_normal_small"
+                    android:textSize="@dimen/text_size_normal"
                     android:textColor="@color/font.dark.lighter"
                     />
 
                 <EditText
                     android:layout_width="100dip"
-                    android:layout_height="60dp"
+                    android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
                     android:ems="10"
-                    android:id="@+id/gs_price_edit"
+                    android:id="@+id/moneybox_price_edit"
                     android:layout_gravity="center"
                     android:gravity="bottom"
                     android:textColor="@color/font.dark.lighter"
@@ -81,8 +82,8 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
                     android:layout_width="120dp"
-                    android:layout_height="60dp"
-                    android:id="@+id/gs_cur_spinner"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/moneybox_cur_spinner"
                     />
 
             </GridLayout>
@@ -110,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:text="What to Buy"
                     android:textStyle="bold"
-                    android:textSize="@dimen/text_size_normal_small"
+                    android:textSize="@dimen/text_size_normal"
                     android:textColor="@color/background.main"
                     android:layout_marginRight="10dp"
                     />
@@ -120,16 +121,17 @@
                     android:layout_columnSpan="2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Choose something on what you are going to save money"
-                    android:textSize="@dimen/text_size_normal_small"
+                    android:text="Choose something to save money on it"
+                    android:textSize="@dimen/text_size_normal"
                     android:textColor="@color/font.dark.lighter"
                     />
 
 
                 <EditText
+                    android:id="@+id/moneybox_price_something_edit"
                     android:layout_width="150dip"
                     android:layout_height="40dp"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     android:ems="10"
                     android:textColor="@color/font.dark.lighter"
                     android:textSize="@dimen/text_size_normal"
@@ -147,6 +149,7 @@
 
 
                 <EditText
+                    android:id="@+id/moneybox_title_edit"
                     android:layout_width="150dp"
                     android:layout_height="40dp"
                     android:lines="1"
@@ -158,6 +161,7 @@
                     />
 
                 <EditText
+                    android:id="@+id/moneybox_description_edit"
                     android:layout_gravity="fill_horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="40dp"
@@ -169,7 +173,51 @@
                     android:hint="Short Description"
                     />
             </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="1px"
+            android:background="@android:color/darker_gray"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
+            />
 
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_columnSpan="2"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Warning"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_normal"
+                android:textColor="@color/background.main"
+                android:layout_marginRight="10dp"
+                />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Clear collected data"
+                android:textColor="@color/font.link"
+                android:textSize="@dimen/text_size_normal_small"
+                android:background="@android:color/transparent"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Disable moneybox"
+                android:textColor="@color/font.link"
+                android:textSize="@dimen/text_size_normal_small"
+                android:background="@android:color/transparent"/>
+
+        </LinearLayout>
 
 
         </LinearLayout>

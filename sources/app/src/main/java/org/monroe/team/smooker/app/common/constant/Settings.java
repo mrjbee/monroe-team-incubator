@@ -10,6 +10,12 @@ public interface Settings {
     SettingManager.SettingItem<Long> LAST_OVERNIGHT_UPDATE_DATE = new SettingManager.SettingItem<Long>("LAST_OVERNIGHT_UPDATE_DATE",Long.class, -1L);
     SettingManager.SettingItem<Integer> QUITE_START_SMOKE = new SettingManager.SettingItem<Integer>("QUITE_START_SMOKE",Integer.class, null);
     SettingManager.SettingItem<Integer> QUITE_END_SMOKE = new SettingManager.SettingItem<Integer>("DESIRE_SMOKE", Integer.class,0);
+
+    SettingManager.SettingItem<Integer> MONEYBOX_START_SMOKE = new SettingManager.SettingItem<Integer>("MONEYBOX_START_SMOKE",Integer.class, null);
+    SettingManager.SettingItem<String> MONEYBOX_SOMETHING_TITLE = new SettingManager.SettingItem<String>("MONEYBOX_SOMETHING_TITLE",String.class, null);
+    SettingManager.SettingItem<String> MONEYBOX_SOMETHING_DESCRIPTION = new SettingManager.SettingItem<String>("MONEYBOX_SOMETHING_DESCRIPTION",String.class, null);
+    SettingManager.SettingItem<Float> MONEYBOX_SOMETHING_PRICE = new SettingManager.SettingItem<Float>("MONEYBOX_SOMETHING_PRICE",Float.class,null);
+
     SettingManager.SettingItem<Float> SMOKE_PRICE = new SettingManager.SettingItem<Float>("SMOKE_PRICE",Float.class,0.6f);
     SettingManager.SettingItem<Integer> CURRENCY_ID = new SettingManager.SettingItem<Integer>("CURRENCY_INDEX",Integer.class,Currency.RUB.id);
     SettingManager.SettingItem<Integer> QUIT_PROGRAM_INDEX = new SettingManager.SettingItem<Integer>("QUITE_PROGRAM",Integer.class, 0);

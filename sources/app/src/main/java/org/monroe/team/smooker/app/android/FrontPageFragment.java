@@ -89,11 +89,6 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
         }
         String text = "";
 
-        /*
-        <string name="left_for_today">Left for today</string>
-    <string name="over_limit">Over today limit</string>
-         */
-
         switch (smokeStatistic.type){
             case NO_LIMIT:
                 text = getString(R.string.today_smokes);

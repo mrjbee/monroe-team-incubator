@@ -124,7 +124,7 @@ public abstract class SetupGeneralActivity extends ActivitySupport<SmookerApplic
     @Override
     protected void onResume() {
         super.onResume();
-        if (isFirstRun() && view(R.id.setup_quit_btn).getVisibility() != View.INVISIBLE) {
+        if (isFirstRun() && view(R.id.setup_revert_btn).getVisibility() == View.INVISIBLE) {
             baseContainerAC.showAndCustomize(new AppearanceController.AnimatorCustomization() {
                 @Override
                 public void customize(Animator animator) {
