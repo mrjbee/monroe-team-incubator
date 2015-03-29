@@ -9,7 +9,7 @@
     <string name="app_version">Версия 1.5</string>
 
     <string name="chart_time_axis">время</string>
-    <string name="smokes">перекуры</string>
+    <string name="smokes">перекуров</string>
     <string name="chart_day_axis">дни</string>
 
     <string name="a_wizard_title">Smooker. Настройки</string>
@@ -125,5 +125,14 @@
     <string name="no_quit_program">Программа не выбрана</string>
     <string name="today_limit">Лимит</string>
     <string name="finish_date">Окончания</string>
+    <string name="moneybox">Копилка</string>
+    <string name="disabled">Отключено</string>
+    <string name="money_saved">Сэкономлено</string>
+    <string name="saving_on">Вы экономите на</string>
+    <string name="apply">Применить</string>
+    <string name="warning_change_quit_program">Вы собираетесь изменить свою пррограмму борьбы с куреннием. Все ваши предыдущие результаты будут удалены. Вы уверены, что хотите продолжить?</string>
+    <string name="warning_disable_quit_program">Вы собираетесь отключить программу борьбы с курениемм. Все ваши преведущие результаты будут удалены. Вы уверены, что хотите продолжить?</string>
+    <string name="warning_quit_program_title">Изменения ассистента перекуров</string>
+    <string name="warning_restart_quit_program">Вы собираетесь перезагрузить ассистент. Все ваши предыдущие результаты будут удалены. Вы уверены, что хотите продолжить?</string>
 
 </resources>

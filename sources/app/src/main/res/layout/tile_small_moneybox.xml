@@ -25,7 +25,7 @@
             android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Money saved"
+            android:text="@string/money_saved"
             android:textSize="@dimen/text_size_normal_small"
             android:textColor="@color/font.dark.light"
             android:id="@+id/quit_end_date"/>

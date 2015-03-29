@@ -10,7 +10,7 @@
         android:layout_marginBottom="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="You are saving on"
+        android:text="@string/saving_on"
         android:textSize="@dimen/text_size_normal_smalles"
         android:textColor="@color/font.dark.lighter"
         android:id="@+id/moneybox_caption_text"

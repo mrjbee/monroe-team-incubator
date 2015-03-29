@@ -46,7 +46,7 @@
                 android:id="@+id/setup_apply_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Apply"
+                android:text="@string/apply"
                 android:textColor="@color/font.link"
                 android:background="@android:color/transparent"
                 android:layout_alignBottom="@+id/setup_quit_btn"

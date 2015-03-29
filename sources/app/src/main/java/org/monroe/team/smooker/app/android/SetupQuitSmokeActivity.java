@@ -70,25 +70,7 @@ public class SetupQuitSmokeActivity extends SetupGeneralActivity {
     @Override
     protected void action_exit() {
         String existingUICheckSum = uiCheckSum();
-        if (existingUICheckSum.equals(uiStateCheckSum)){
-            onBackPressed();
-        }else{
-            //show dialog
-            AlertDialog alertDialog = new AlertDialog.Builder(this)
-                    .setTitle("Unsaved changes")
-                    .setMessage("You have made changes to your quit program. Do you want to apply them?")
-                    .setPositiveButton("Apply", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            action_apply();
-                        }
-                    }).setNegativeButton("No, Just Exit", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            onBackPressed();
-                        }
-                    }).show();
-        }
+        onBackPressed();
     }
 
     private void updateUIByDifficultLevel(QuitSmokeDifficultLevel difficult) {
@@ -153,25 +135,26 @@ public class SetupQuitSmokeActivity extends SetupGeneralActivity {
             finish();
         } else {
 
-            String message = "You are going to change your quit program. Are you sure?";
+            String message = getString(R.string.warning_change_quit_program);
             if (difficult == QuitSmokeDifficultLevel.DISABLED) {
-                message = "You are going to disable quit program. Are you sure?";
+                message = getString(R.string.warning_disable_quit_program);
             } else if(oldDifficult == difficult){
-                message = "You are going to restart your quit program. Are you sure?";
+                message = getString(R.string.warning_restart_quit_program);
             }
 
             AlertDialog alertDialog = new AlertDialog.Builder(this)
-                    .setTitle("Quit Program Changes")
+                    .setTitle(getString(R.string.warning_quit_program_title))
                     .setMessage(message)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             doActualUpdate(difficult, finalSmokePerDay, finalDesireSmokePerDayCount);
                             finish();
                         }
-                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    }).setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {}
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
                     }).show();
         }
 

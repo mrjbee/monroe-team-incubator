@@ -120,5 +120,14 @@
     <string name="moneybox">Moneybox</string>
     <string name="disabled">Disabled</string>
     <string name="title_activity_setting_moneybox">Moneybox Settings</string>
+    <string name="money_saved">Money saved</string>
+    <string name="saving_on">You are saving on</string>
+    <string name="apply">Apply</string>
+    <string name="warning_restart_quit_program">You are going to restart your quit program. All your previous results would be removed. Are you sure want to continue?</string>
+    <string name="warning_quit_program_title">Quit Program Update</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="warning_change_quit_program">You аре going to change your smoke quit program. All previous result will be removed. Are you sure want to continue?</string>
+    <string name="warning_disable_quit_program">You are going to disable your quit program. All your results will be removed. Are you sure want to continue?</string>
 
 </resources>
