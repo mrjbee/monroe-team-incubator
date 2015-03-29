@@ -14,6 +14,7 @@ public interface Settings {
     SettingManager.SettingItem<Integer> MONEYBOX_START_SMOKE = new SettingManager.SettingItem<Integer>("MONEYBOX_START_SMOKE",Integer.class, null);
     SettingManager.SettingItem<String> MONEYBOX_SOMETHING_TITLE = new SettingManager.SettingItem<String>("MONEYBOX_SOMETHING_TITLE",String.class, null);
     SettingManager.SettingItem<String> MONEYBOX_SOMETHING_DESCRIPTION = new SettingManager.SettingItem<String>("MONEYBOX_SOMETHING_DESCRIPTION",String.class, null);
+    SettingManager.SettingItem<String> MONEYBOX_SOMETHING_IMAGE_ID = new SettingManager.SettingItem<String>("MONEYBOX_SOMETHING_IMAGE_ID",String.class, null);
     SettingManager.SettingItem<Float> MONEYBOX_SOMETHING_PRICE = new SettingManager.SettingItem<Float>("MONEYBOX_SOMETHING_PRICE",Float.class,null);
 
     SettingManager.SettingItem<Float> SMOKE_PRICE = new SettingManager.SettingItem<Float>("SMOKE_PRICE",Float.class,0.6f);

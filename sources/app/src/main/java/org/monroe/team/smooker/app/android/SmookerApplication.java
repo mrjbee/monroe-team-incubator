@@ -6,17 +6,22 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.util.Pair;
 
+import org.monroe.team.android.box.BitmapUtils;
 import org.monroe.team.android.box.app.ApplicationSupport;
 import org.monroe.team.android.box.data.DataManger;
 import org.monroe.team.android.box.data.DataProvider;
 import org.monroe.team.android.box.event.Event;
 import org.monroe.team.android.box.services.SettingManager;
 import org.monroe.team.android.box.utils.AndroidLogImplementation;
+import org.monroe.team.android.box.utils.FileUtils;
 import org.monroe.team.corebox.app.Model;
 import org.monroe.team.corebox.log.L;
+import org.monroe.team.corebox.services.BackgroundTaskManager;
 import org.monroe.team.corebox.utils.DateUtils;
 import org.monroe.team.smooker.app.actors.ActorSmoker;
 import org.monroe.team.smooker.app.android.controller.SmokeQuitCalendarDisplayManager;
@@ -40,12 +45,18 @@ import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeSchedule;
 import org.monroe.team.smooker.app.uc.SetupSmokeQuitProgram;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class SmookerApplication extends ApplicationSupport<SmookerModel> {
 
@@ -359,6 +370,126 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
                 observer.onFail();
             }
         });
+    }
+
+    public void saveImage(final InputStream fromIs, final OnSaveImageObserver observer) {
+        model().usingService(BackgroundTaskManager.class).execute(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                File saveFile =  FileUtils.storageFile(getApplicationContext(), FileUtils.timeName());
+                FileOutputStream outputStream = null;
+                try {
+                    outputStream = new FileOutputStream(saveFile);
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+
+                byte[] buffer = new byte[1024];
+                int length;
+
+                try {
+                    while((length = fromIs.read(buffer)) > 0){
+                        outputStream.write(buffer, 0, length);
+                    }
+                    return saveFile.getAbsolutePath();
+                } catch (IOException e) {
+                    if (outputStream != null){
+                        try {
+                            outputStream.close();
+                            outputStream = null;
+                        } catch (IOException e1) {}
+                        saveFile.delete();
+                    }
+                    throw new RuntimeException(e);
+                } finally {
+                    if (outputStream != null){
+                        try {
+                            outputStream.flush();
+                        } catch (IOException e) {throw new RuntimeException("Flush error", e);}
+                        try {
+                            outputStream.close();
+                        } catch (IOException e) {}
+                    }
+                    if (fromIs != null){
+                        try {
+                            fromIs.close();
+                        } catch (IOException e) {}
+                    }
+                }
+            }
+        }, new BackgroundTaskManager.TaskCompletionNotificationObserver<String>() {
+            @Override
+            public void onSuccess(final String s) {
+                model().ui(new Runnable() {
+                    @Override
+                    public void run() {
+                        observer.onResult(s);
+                    }
+                });
+            }
+
+            @Override
+            public void onFails(final Exception e) {
+                model().ui(new Runnable() {
+                    @Override
+                    public void run() {
+                        debug_exception(e);
+                        observer.onFail();
+                    }
+                });
+            }
+        });
+    }
+
+    public void loadToBitmap(final String imageId, final int reqHeight, final int reqWidth, final OnImageLoadedObserver observer) {
+        model().usingService(BackgroundTaskManager.class).execute(new Callable<Bitmap>() {
+            @Override
+            public Bitmap call() throws Exception {
+                File file = new File(imageId);
+                if (!file.exists()){
+                    throw new RuntimeException("File not exists = "+imageId);
+                }
+                return BitmapUtils.decodeBitmap(BitmapUtils.fromFile(file),
+                        reqWidth,
+                        reqHeight);
+            }
+        }, new BackgroundTaskManager.TaskCompletionNotificationObserver<Bitmap>() {
+            @Override
+            public void onSuccess(final Bitmap bitmap) {
+                model().ui(new Runnable() {
+                    @Override
+                    public void run() {
+                        observer.onResult(imageId, bitmap);
+                    }
+                });
+            }
+
+            @Override
+            public void onFails(final Exception e) {
+                model().ui(new Runnable() {
+                    @Override
+                    public void run() {
+                        debug_exception(e);
+                        observer.onFail();
+                    }
+                });
+            }
+        });
+    }
+
+    public void deleteImage(String newImageId) {
+        new File(newImageId).delete();
+    }
+
+    public static interface OnImageLoadedObserver {
+        public void onResult(String imageId, Bitmap bitmap);
+        public void onFail();
+    }
+
+
+    public static interface OnSaveImageObserver {
+        public void onResult(String imageId);
+        public void onFail();
     }
 
     public static interface OnDateDetailsObserver{

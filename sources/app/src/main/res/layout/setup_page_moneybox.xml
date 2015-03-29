@@ -159,19 +159,28 @@
                         android:layout_centerVertical="true"
                         android:layout_toRightOf="@+id/moneybox_price_something_edit"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="fill_parent"
                         android:layout_marginLeft="5dp">
                         <ImageView
+                            android:id="@+id/moneybox_image"
                             android:layout_width="fill_parent"
                             android:layout_height="80dp"
                             android:scaleType="centerCrop"/>
+                        <ProgressBar
+                            android:id="@+id/moneybox_image_progress"
+                            android:layout_width="fill_parent"
+                            android:layout_height="80dp"
+                            android:indeterminate="true"
+                            android:visibility="invisible"/>
                         <LinearLayout
+                            android:id="@+id/moneybox_image_change_panel"
                             android:layout_alignParentBottom="true"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/background.main.light.dark.transperent"
                             android:orientation="vertical">
                             <Button
+                                android:id="@+id/moneybox_image_select_btn"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_width="wrap_content"
                                 android:layout_height="40dp"
