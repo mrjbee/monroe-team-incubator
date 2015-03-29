@@ -129,5 +129,6 @@
     <string name="no">No</string>
     <string name="warning_change_quit_program">You аре going to change your smoke quit program. All previous result will be removed. Are you sure want to continue?</string>
     <string name="warning_disable_quit_program">You are going to disable your quit program. All your results will be removed. Are you sure want to continue?</string>
+    <string name="smoke_breaks_on_this_date">Smoke breaks on this day</string>
 
 </resources>

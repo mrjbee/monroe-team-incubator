@@ -1,6 +1,8 @@
 package org.monroe.team.smooker.app.android;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import org.monroe.team.android.box.app.ActivitySupport;
 import org.monroe.team.smooker.app.R;
@@ -11,6 +13,11 @@ public class FrontPageActivity extends ActivitySupport<SmookerApplication> {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.background_main3));
+        }
+
         setContentView(R.layout.activity_front_page);
         FrontPageFragment mainFragment;
         if (isLandscape(R.bool.class)){

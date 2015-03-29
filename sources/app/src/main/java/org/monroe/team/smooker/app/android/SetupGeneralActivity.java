@@ -2,9 +2,11 @@ package org.monroe.team.smooker.app.android;
 
 import android.animation.Animator;
 import android.graphics.PointF;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import org.monroe.team.android.box.app.ActivitySupport;
 import org.monroe.team.android.box.app.ui.AppearanceControllerOld;
@@ -40,6 +42,11 @@ public abstract class SetupGeneralActivity extends ActivitySupport<SmookerApplic
     protected void onCreate(Bundle savedInstanceState) {
         crunch_requestNoAnimation();
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.background_main_light_darkest));
+        }
+
         setContentView(R.layout.activity_setup_general);
         //@string/quit_page_title
         view_text(R.id.setup_description_text).setText(caption_string());

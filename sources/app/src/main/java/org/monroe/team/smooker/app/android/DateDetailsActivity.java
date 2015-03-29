@@ -110,6 +110,7 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
         String dayOnly = getString(R.string.today);
         if (!DateUtils.isToday(date)){
           dayOnly = dayOnlyFormat.format(date);
+          dayOnly = dayOnly.substring(0,1).toUpperCase()+dayOnly.substring(1,dayOnly.length());
         }
         view_text(R.id.date_caption_text).setText(dateFull);
         view_text(R.id.date_description_text).setText(dayOnly);

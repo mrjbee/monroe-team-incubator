@@ -16,6 +16,7 @@
     <color name="background.main">#d02636</color>
     <color name="background.main.light">#f1f0f0</color>
     <color name="background.main.light.dark">#ffdddcdc</color>
+    <color name="background.main.light.darkest">#ffaeadad</color>
     <color name="background.main.light.dark.transperent">#eddddcdc</color>
     <color name="background.white">#fbfbfb</color>
     <color name="background.dark">#ff3c3c3c</color>

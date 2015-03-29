@@ -80,7 +80,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Smoke breaks on this day"
+                android:text="@string/smoke_breaks_on_this_date"
                 android:textSize="@dimen/text_size_normal"
                 android:textColor="@color/font.dark.light"
                 />

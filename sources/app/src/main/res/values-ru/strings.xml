@@ -71,7 +71,7 @@
     <string name="today_per_average_smokes">Cреднее</string>
     <string name="today">Сегодня</string>
     <string name="yesterday">Вчера</string>
-    <string name="new_day_limit">новый лимит</string>
+    <string name="new_day_limit">Изменение лимита в этот день</string>
     <string name="new_day_limit_increased">дневной лимит увеличен до</string>
     <string name="limit_failed">ПРОВАЛЕНО</string>
     <string name="day_limit_exceeded">дневной лимит превышен</string>
@@ -134,5 +134,12 @@
     <string name="warning_disable_quit_program">Вы собираетесь отключить программу борьбы с курениемм. Все ваши преведущие результаты будут удалены. Вы уверены, что хотите продолжить?</string>
     <string name="warning_quit_program_title">Изменения ассистента перекуров</string>
     <string name="warning_restart_quit_program">Вы собираетесь перезагрузить ассистент. Все ваши предыдущие результаты будут удалены. Вы уверены, что хотите продолжить?</string>
+    <string name="no">Нет</string>
+    <string name="yes">Да</string>
+    <string name="times">раз(ов)</string>
+    <string name="title_activity_date_details">Описание дня</string>
+    <string name="smoke_breaks_on_this_date">Перекуров в этот день</string>
+    <string name="smoke_limit">Лимит перекуров в этот день</string>
+    <string name="limit_is_exceeded">Лимит перекуров превышен</string>
 
 </resources>
