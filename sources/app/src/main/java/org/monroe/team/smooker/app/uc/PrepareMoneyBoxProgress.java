@@ -20,12 +20,12 @@ public class PrepareMoneyBoxProgress extends TransactionUserCase<Void,PrepareMon
     @Override
     protected MoneyBoxProgress transactionalExecute(Void request, Dao dao) {
         Float endPrice = using(SettingManager.class).get(Settings.MONEYBOX_SOMETHING_PRICE);
-        if (endPrice == null){
+        Date startDate = using(SettingManager.class).getAs(Settings.MONEYBOX_START_DATE, Settings.CONVERT_DATE);
+        if (endPrice == null || startDate == null){
             return new MoneyBoxProgress(0,0,0);
         }
         Integer averageSmoke = using(SettingManager.class).get(Settings.MONEYBOX_START_SMOKE);
         Float singleSmokePrice = using(SettingManager.class).get(Settings.SMOKE_PRICE);
-        Date startDate = using(SettingManager.class).getAs(Settings.MONEYBOX_START_DATE, Settings.CONVERT_DATE);
         Date endDate = DateUtils.today();
         float savedMoney = 0;
         if (endDate.after(startDate)){
@@ -56,6 +56,10 @@ public class PrepareMoneyBoxProgress extends TransactionUserCase<Void,PrepareMon
             this.totalPrice = totalPrice;
             this.savedMoney = savedMoney;
             this.targetProgress = targetProgress;
+        }
+
+        public boolean isDisabled() {
+            return totalPrice == 0f;
         }
     }
 }

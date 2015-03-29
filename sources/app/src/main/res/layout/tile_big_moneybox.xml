@@ -21,11 +21,49 @@
         android:layout_below="@+id/moneybox_caption_text"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            o<ImageView
+                android:id="@+id/money_image"
+                android:scaleType="centerCrop"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+            <RelativeLayout
+                android:layout_alignParentBottom="true"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:background="@color/white.transperent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Title"
+                    android:textSize="@dimen/text_size_caption_small"
+                    android:textColor="@color/font.dark.light"
+                    android:id="@+id/money_title_text"/>
+                <TextView
+                    android:layout_below="@+id/money_title_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Description"
+                    android:textSize="@dimen/text_size_normal_small"
+                    android:textColor="@color/font.dark.light"
+                    android:id="@+id/money_description_text"/>
 
-        </LinearLayout>
+                <TextView
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 $"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_size_caption"
+                    android:textColor="@color/font.dark.light"
+                    android:id="@+id/money_price_text"/>
+
+            </RelativeLayout>
+        </RelativeLayout>
         <include
             layout="@layout/panel_info_white"
             android:layout_width="wrap_content"

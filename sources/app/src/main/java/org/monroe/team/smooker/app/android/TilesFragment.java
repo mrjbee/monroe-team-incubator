@@ -6,6 +6,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,13 +40,17 @@ import org.monroe.team.smooker.app.android.view.RelativeLayoutExt;
 import org.monroe.team.smooker.app.android.view.RoundSegmentImageView;
 import org.monroe.team.smooker.app.android.view.SmokePeriodHistogramView;
 import org.monroe.team.smooker.app.android.view.TextViewExt;
+import org.monroe.team.smooker.app.common.SmookerModel;
+import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.uc.GetSmokeQuitSchedule;
+import org.monroe.team.smooker.app.uc.PrepareMoneyBoxProgress;
 import org.monroe.team.smooker.app.uc.PreparePeriodStatistic;
 import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
 import org.monroe.team.smooker.app.uc.PrepareSmokeQuitDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -1146,6 +1152,11 @@ public class TilesFragment extends FrontPageFragment {
     class MoneyBoxTile extends AbstractTileController{
 
         private ViewGroup contentPanel;
+        private TextView savedMoneyView;
+        private TextView titleView;
+        private TextView descriptionView;
+        private TextView priceView;
+        private ImageView imageView;
 
         @Override
         public String caption() {
@@ -1163,6 +1174,118 @@ public class TilesFragment extends FrontPageFragment {
         }
 
         @Override
+        protected void init_smallContent(View smallContentView, LayoutInflater layoutInflater) {
+            savedMoneyView = (TextView) smallContentView.findViewById(R.id.money_saved_value_text);
+            super.init_smallContent(smallContentView, layoutInflater);
+        }
+
+        @Override
+        public void onResume() {
+            fetchProgress();
+            if (contentPanel!= null){
+                fetchTargetDescription();
+            }
+            super.onResume();
+        }
+
+        @Override
+        public void onInvalidData(Class dataClass) {
+            if (PrepareMoneyBoxProgress.MoneyBoxProgress.class == dataClass){
+                fetchProgress();
+            }
+            if (SmookerModel.MoneyBoxTargetDescription.class == dataClass){
+                if (contentPanel != null){
+                    fetchTargetDescription();
+                }
+            }
+        }
+
+        private String imageId = null;
+        private void fetchTargetDescription() {
+            application().data_moneyBoxTarget().fetch(true,new DataProvider.FetchObserver<SmookerModel.MoneyBoxTargetDescription>() {
+                @Override
+                public void onFetch(SmookerModel.MoneyBoxTargetDescription description) {
+                    if (!description.isActivated()){
+                        imageView.setImageBitmap(null);
+                        titleView.setText("");
+                        return;
+                    }
+                    titleView.setText(description.title);
+                    descriptionView.setText(description.description);
+                    if (imageId == null || !imageId.equals(description.imageId)){
+                        fetchImage(description.imageId);
+                    }
+                }
+
+                @Override
+                public void onError(DataProvider.FetchError fetchError) {
+                    activity().forceCloseWithErrorCode(31);
+                }
+            });
+        }
+
+        private void fetchImage(final String imageId) {
+            if (imageView.getHeight() == 0){
+                activity().runLastOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        fetchImage(imageId);
+                    }
+                },100);
+                return;
+            }
+            application().loadToBitmap(imageId, imageView.getWidth(), imageView.getHeight(), new SmookerApplication.OnImageLoadedObserver() {
+                @Override
+                public void onResult(String imageId, Bitmap bitmap) {
+                    MoneyBoxTile.this.imageId = imageId;
+                    imageView.setImageBitmap(bitmap);
+                }
+
+                @Override
+                public void onFail() {
+                     activity().forceCloseWithErrorCode(44);
+                }
+            });
+        }
+
+        private void fetchProgress() {
+            application().data_moneyBoxProgress().fetch(true,new DataProvider.FetchObserver<PrepareMoneyBoxProgress.MoneyBoxProgress>() {
+                @Override
+                public void onFetch(PrepareMoneyBoxProgress.MoneyBoxProgress moneyBoxProgress) {
+                    if (moneyBoxProgress.isDisabled()){
+                        savedMoneyView.setText(R.string.disabled);
+                        if (contentPanel != null){
+                            getMainContentPanel().setVisibility(View.INVISIBLE);
+                            getSuggestSetupPanel().setVisibility(View.VISIBLE);
+                        }
+                    }else{
+                        if (contentPanel != null) {
+                            getMainContentPanel().setVisibility(View.VISIBLE);
+                            getSuggestSetupPanel().setVisibility(View.INVISIBLE);
+                            priceView.setText(asMoneyString(moneyBoxProgress.totalPrice));
+                        }
+                        savedMoneyView.setText(asMoneyString(moneyBoxProgress.savedMoney));
+                    }
+                    //TODO: show progress
+                }
+
+                @Override
+                public void onError(DataProvider.FetchError fetchError) {
+                    activity().forceCloseWithErrorCode(30);
+                }
+            });
+        }
+
+        private String asMoneyString(Float money) {
+            DecimalFormat df = new DecimalFormat();
+            org.monroe.team.smooker.app.common.constant.Currency currency = org.monroe.team.smooker.app.common.constant.Currency.byId(application().getSetting(Settings.CURRENCY_ID));
+            df.setCurrency(currency.nativeInstance);
+            df.setMaximumFractionDigits(2);
+            df.setMinimumFractionDigits(2);
+            return df.format(money) +" "+currency.symbol;
+        }
+
+        @Override
         public Class<? extends Activity> getSetupActivityClass() {
             return SetupMoneyboxActivity.class;
         }
@@ -1170,8 +1293,12 @@ public class TilesFragment extends FrontPageFragment {
         @Override
         protected void init_bigContent(View bigContentView, LayoutInflater layoutInflater) {
             contentPanel = (ViewGroup) bigContentView.findViewById(R.id.money_content_panel);
+            titleView = (TextView) bigContentView.findViewById(R.id.money_title_text);
+            descriptionView = (TextView) bigContentView.findViewById(R.id.money_description_text);
+            priceView = (TextView) bigContentView.findViewById(R.id.money_price_text);
+            imageView = (ImageView) bigContentView.findViewById(R.id.money_image);
             PanelUI.initLightPanel(
-                    contentPanel.getChildAt(1),
+                    getSuggestSetupPanel(),
                     "Save your money on something",
                     "Choose your currency, price and start saving",
                     "Setup", new View.OnClickListener(){
@@ -1180,6 +1307,14 @@ public class TilesFragment extends FrontPageFragment {
                             performTileSetup();
                         }
                     });
+        }
+
+        private View getMainContentPanel() {
+            return contentPanel.getChildAt(0);
+        }
+
+        private View getSuggestSetupPanel() {
+            return contentPanel.getChildAt(1);
         }
     }
 
