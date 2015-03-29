@@ -121,7 +121,7 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="60dp"
+                    android:layout_height="40dp"
                     android:gravity="center"
                     android:layout_marginLeft="40dp"
                     android:text="Statistics"
@@ -129,7 +129,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
                     android:textStyle="bold"
-                    android:textSize="@dimen/text_size_caption_small"
+                    android:textSize="@dimen/text_size_normal"
                     android:textColor="@color/font.dark.light"
                     android:shadowColor="@color/font.white.shadow"
                     android:shadowRadius="1"

@@ -390,11 +390,11 @@ public class TilesFragment extends FrontPageFragment {
     }
 
     private int height_dp_holes() {
-        return 20;
+        return 40;
     }
 
     private int height_dp_tile_title() {
-        return 60;
+        return 40;
     }
 
     private int height_dp_background_bottom() {
