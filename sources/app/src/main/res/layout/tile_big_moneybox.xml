@@ -24,7 +24,7 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
-            o<ImageView
+            <org.monroe.team.smooker.app.android.view.BlurImageView
                 android:id="@+id/money_image"
                 android:scaleType="centerCrop"
                 android:layout_width="fill_parent"
@@ -32,16 +32,18 @@
             <RelativeLayout
                 android:layout_alignParentBottom="true"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:padding="10dp"
-                android:background="@color/white.transperent">
+                android:background="@color/white.most.transperent">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Title"
+                    android:textStyle="bold"
                     android:textSize="@dimen/text_size_caption_small"
                     android:textColor="@color/font.dark.light"
-                    android:id="@+id/money_title_text"/>
+                    android:id="@+id/money_title_text"
+                    android:shadowColor="@color/white.transperent"/>
                 <TextView
                     android:layout_below="@+id/money_title_text"
                     android:layout_width="wrap_content"
@@ -58,9 +60,10 @@
                     android:layout_height="wrap_content"
                     android:text="0 $"
                     android:textStyle="bold"
-                    android:textSize="@dimen/text_size_caption"
+                    android:textSize="@dimen/text_size_caption_big"
                     android:textColor="@color/font.dark.light"
-                    android:id="@+id/money_price_text"/>
+                    android:id="@+id/money_price_text"
+                   />
 
             </RelativeLayout>
         </RelativeLayout>

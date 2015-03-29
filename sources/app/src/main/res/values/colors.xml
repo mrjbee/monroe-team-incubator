@@ -30,6 +30,7 @@
 
     <color name="white">#FFFFFF</color>
     <color name="white.transperent">#e1ffffff</color>
+    <color name="white.most.transperent">#5dffffff</color>
 
     <color name="last.time.smoke.bkg">#fafafa</color>
     <color name="last.time.smoke.date">#b5000000</color>

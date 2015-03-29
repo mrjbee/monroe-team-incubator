@@ -80,8 +80,8 @@ public class CircleAppearanceRelativeLayout extends RelativeLayout {
                 componentSize.width() != getWidth() ||
                 componentSize.height() != getHeight()){
             componentSize = new RectF(0,0,getWidth(),getHeight());
-            finalImageBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
-            originImageBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+            finalImageBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_4444);
+            originImageBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_4444);
             super.draw(new Canvas(originImageBitmap));
         }
         backgroundPaint.setAlpha((int) (150*fraction));
