@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.monroe.team.corebox.utils.Closure;
+import org.monroe.team.corebox.utils.DateUtils;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.common.constant.Currency;
 import org.monroe.team.smooker.app.common.constant.Settings;
@@ -29,6 +30,7 @@ public class SetupMoneyboxActivity extends SetupGeneralActivity {
     private static final int PICK_IMAGE = 230;
     private ArrayAdapter<Currency> adapter;
     private String newImageId;
+
 
     @Override
     protected int setup_layout() {
@@ -182,7 +184,7 @@ public class SetupMoneyboxActivity extends SetupGeneralActivity {
         } else {
             view(R.id.moneybox_image, ImageView.class).setImageBitmap(null);
         }
-        
+
         if(newImageId != null){
             application().deleteImage(newImageId);
             newImageId = null;
@@ -239,7 +241,14 @@ public class SetupMoneyboxActivity extends SetupGeneralActivity {
         application().setSetting(Settings.MONEYBOX_SOMETHING_DESCRIPTION, description);
         application().setSetting(Settings.CURRENCY_ID, ((Currency) view(R.id.moneybox_cur_spinner, Spinner.class).getSelectedItem()).id);
         application().setSetting(Settings.MONEYBOX_SOMETHING_IMAGE_ID, imageId);
+        Long startDate = application().getSetting(Settings.MONEYBOX_START_DATE);
+        if (startDate == null){
+            startDate = DateUtils.today().getTime();
+            application().setSetting(Settings.MONEYBOX_START_DATE, startDate);
+        }
 
+        application().changeMoneyBoxTargetDescription();
+        application().changeMoneyBoxTarget(averageSmokeCount,smokePrice,thingPrice,startDate);
         finish();
     }
 

@@ -23,12 +23,15 @@ import org.monroe.team.smooker.app.db.SmookerSchema;
 import org.monroe.team.smooker.app.uc.GetDaySmokeSchedule;
 import org.monroe.team.smooker.app.uc.GetSmokeQuitDetails;
 import org.monroe.team.smooker.app.uc.GetSmokeQuitSchedule;
+import org.monroe.team.smooker.app.uc.PrepareMoneyBoxProgress;
 import org.monroe.team.smooker.app.uc.PreparePeriodStatistic;
 import org.monroe.team.smooker.app.uc.GetSmokeStatistic;
 import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
 import org.monroe.team.smooker.app.uc.PrepareSmokeQuitDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeSchedule;
+
+import java.io.Serializable;
 
 public class SmookerModel extends AndroidModel{
 
@@ -38,6 +41,8 @@ public class SmookerModel extends AndroidModel{
     private UcDataProvider<PrepareSmokeClockDetails.SmokeClockDetails> smokeClockDataProvider;
     private UcDataProvider<PreparePeriodStatistic.PeriodStatistic> periodStatsProvider;
     private UcDataProvider<PrepareSmokeQuitDetails.Details> basicQuitSmokeDetailsProvider;
+    private DataProvider<MoneyBoxTargetDescription> moneyBoxTargetDescriptionProvider;
+    private UcDataProvider<PrepareMoneyBoxProgress.MoneyBoxProgress> moneyBoxProgressProvider;
 
     public SmookerModel(Context context) {
         super("SMOOKER", context);
@@ -125,6 +130,20 @@ public class SmookerModel extends AndroidModel{
                 PrepareSmokeQuitDetails.Details.class,
                 PrepareSmokeQuitDetails.class);
 
+        moneyBoxProgressProvider = new UcDataProvider<PrepareMoneyBoxProgress.MoneyBoxProgress>(this,
+                context,
+                PrepareMoneyBoxProgress.MoneyBoxProgress.class,
+                PrepareMoneyBoxProgress.class);
+
+        moneyBoxTargetDescriptionProvider = new DataProvider<MoneyBoxTargetDescription>(MoneyBoxTargetDescription.class,this,context){
+            @Override
+            protected MoneyBoxTargetDescription provideData() {
+                return new MoneyBoxTargetDescription(
+                        usingService(SettingManager.class).get(Settings.MONEYBOX_SOMETHING_IMAGE_ID),
+                        usingService(SettingManager.class).get(Settings.MONEYBOX_SOMETHING_TITLE),
+                        usingService(SettingManager.class).get(Settings.MONEYBOX_SOMETHING_DESCRIPTION));
+            }
+        };
 
     }
 
@@ -149,6 +168,13 @@ public class SmookerModel extends AndroidModel{
         return basicQuitSmokeDetailsProvider;
     }
 
+    public DataProvider<MoneyBoxTargetDescription> getMoneyBoxTargetDescriptionProvider() {
+        return moneyBoxTargetDescriptionProvider;
+    }
+
+    public UcDataProvider<PrepareMoneyBoxProgress.MoneyBoxProgress> getMoneyBoxProgressProvider() {
+        return moneyBoxProgressProvider;
+    }
 
     public void stopNotificationControlService() {
         context.stopService(new Intent(context,StickyNotificationService.class));
@@ -170,5 +196,21 @@ public class SmookerModel extends AndroidModel{
 
     public String getString(int id) {
         return context.getResources().getString(id);
+    }
+
+    public static class MoneyBoxTargetDescription implements Serializable {
+        public final String imageId;
+        public final String title;
+        public final String description;
+
+        public MoneyBoxTargetDescription(String imageId, String title, String description) {
+            this.imageId = imageId;
+            this.title = title;
+            this.description = description;
+        }
+
+        public boolean isActivated(){
+            return title != null;
+        }
     }
 }

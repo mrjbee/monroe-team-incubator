@@ -353,6 +353,16 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
         return model().getBasicQuitSmokeDetailsProvider();
     }
 
+    public DataProvider<SmookerModel.MoneyBoxTargetDescription> data_moneyBoxTarget() {
+        return model().getMoneyBoxTargetDescriptionProvider();
+    }
+
+
+    public DataProvider<org.monroe.team.smooker.app.uc.PrepareMoneyBoxProgress.MoneyBoxProgress> data_moneyBoxProgress() {
+        return model().getMoneyBoxProgressProvider();
+    }
+
+
     public SmokeQuitCalendarDisplayManager getSmockQuitDataManager(){
         return model().usingService(SmokeQuitCalendarDisplayManager.class);
     }
@@ -479,6 +489,16 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
 
     public void deleteImage(String newImageId) {
         new File(newImageId).delete();
+    }
+
+
+    public void changeMoneyBoxTargetDescription() {
+        model().getMoneyBoxTargetDescriptionProvider().invalidate();
+    }
+
+
+    public void changeMoneyBoxTarget(Integer averageSmokeCount, Float smokePrice, Float thingPrice, Long startDate) {
+        model().getMoneyBoxProgressProvider().invalidate();
     }
 
     public static interface OnImageLoadedObserver {
