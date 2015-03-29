@@ -12,12 +12,12 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 public class CircleAppearanceRelativeLayout extends RelativeLayout {
 
     private Bitmap originImageBitmap;
-    private Bitmap finalImageBitmap;
     private RectF componentSize;
 
     private Paint maskDefinePaint;
@@ -80,18 +80,13 @@ public class CircleAppearanceRelativeLayout extends RelativeLayout {
                 componentSize.width() != getWidth() ||
                 componentSize.height() != getHeight()){
             componentSize = new RectF(0,0,getWidth(),getHeight());
-            finalImageBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_4444);
             originImageBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_4444);
             super.draw(new Canvas(originImageBitmap));
         }
         backgroundPaint.setAlpha((int) (150*fraction));
         canvas.drawRect(componentSize,backgroundPaint);
-
-        finalImageBitmap.eraseColor(Color.TRANSPARENT);
-        Canvas finalCanvas = new Canvas(finalImageBitmap);
-        finalCanvas.drawCircle(center.x, center.y, calculateRadius(componentSize), maskDefinePaint);
-        finalCanvas.drawBitmap(originImageBitmap, 0, 0, maskApplyPaint);
-        canvas.drawBitmap(finalImageBitmap, 0, 0, null);
+        canvas.drawCircle(center.x, center.y, calculateRadius(componentSize), maskDefinePaint);
+        canvas.drawBitmap(originImageBitmap, 0, 0, maskApplyPaint);
     }
 
     private float calculateRadius(RectF componentSize) {
