@@ -36,6 +36,7 @@ import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.android.controller.SmokeQuitCalendarDisplayManager;
 import org.monroe.team.smooker.app.android.view.CellBackgroundView;
 import org.monroe.team.smooker.app.android.view.DateListAdapter;
+import org.monroe.team.smooker.app.android.view.HorizontalProgressView;
 import org.monroe.team.smooker.app.android.view.RelativeLayoutExt;
 import org.monroe.team.smooker.app.android.view.RoundSegmentImageView;
 import org.monroe.team.smooker.app.android.view.SmokePeriodHistogramView;
@@ -92,7 +93,7 @@ public class TilesFragment extends FrontPageFragment {
 
     List<TileController> tileControllerList = new ArrayList<>(3);
     List<HoleController> holeControllerList;
-    private int currentTileIndex;
+    private int currentTileIndex = -1;
 
     private Timer clockTimer;
     private long msSinceLastSmoke = -1;
@@ -129,7 +130,9 @@ public class TilesFragment extends FrontPageFragment {
         }, 0, 300);
 
         fetchClockData(false);
-        getTileController(currentTileIndex).onResume();
+        if (currentTileIndex != -1) {
+            getTileController(currentTileIndex).onResume();
+        }
     }
 
     private void fetchClockData(final boolean animation) {
@@ -1157,6 +1160,8 @@ public class TilesFragment extends FrontPageFragment {
         private TextView descriptionView;
         private TextView priceView;
         private ImageView imageView;
+        private HorizontalProgressView progressView;
+        private TextView progressValueView;
 
         @Override
         public String caption() {
@@ -1176,15 +1181,16 @@ public class TilesFragment extends FrontPageFragment {
         @Override
         protected void init_smallContent(View smallContentView, LayoutInflater layoutInflater) {
             savedMoneyView = (TextView) smallContentView.findViewById(R.id.money_saved_value_text);
+            progressValueView = (TextView) smallContentView.findViewById(R.id.money_progress_text);
+            progressView = (HorizontalProgressView) smallContentView.findViewById(R.id.money_progress);
+
             super.init_smallContent(smallContentView, layoutInflater);
         }
 
         @Override
         public void onResume() {
             fetchProgress();
-            if (contentPanel!= null){
-                fetchTargetDescription();
-            }
+            fetchTargetDescription();
             super.onResume();
         }
 
@@ -1194,9 +1200,7 @@ public class TilesFragment extends FrontPageFragment {
                 fetchProgress();
             }
             if (SmookerModel.MoneyBoxTargetDescription.class == dataClass){
-                if (contentPanel != null){
-                    fetchTargetDescription();
-                }
+                fetchTargetDescription();
             }
         }
 
@@ -1254,6 +1258,8 @@ public class TilesFragment extends FrontPageFragment {
                 public void onFetch(PrepareMoneyBoxProgress.MoneyBoxProgress moneyBoxProgress) {
                     if (moneyBoxProgress.isDisabled()){
                         savedMoneyView.setText(R.string.disabled);
+                        progressValueView.setText("0%");
+                        progressView.setProgress(0f);
                         if (contentPanel != null){
                             getMainContentPanel().setVisibility(View.INVISIBLE);
                             getSuggestSetupPanel().setVisibility(View.VISIBLE);
@@ -1264,6 +1270,8 @@ public class TilesFragment extends FrontPageFragment {
                             getSuggestSetupPanel().setVisibility(View.INVISIBLE);
                             priceView.setText(asMoneyString(moneyBoxProgress.totalPrice));
                         }
+                        progressValueView.setText(moneyBoxProgress.targetProgress+"%");
+                        progressView.setProgress((float)moneyBoxProgress.targetProgress/100f);
                         savedMoneyView.setText(asMoneyString(moneyBoxProgress.savedMoney));
                     }
                     //TODO: show progress

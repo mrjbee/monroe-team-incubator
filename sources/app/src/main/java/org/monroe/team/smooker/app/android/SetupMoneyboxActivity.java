@@ -1,7 +1,9 @@
 package org.monroe.team.smooker.app.android;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -58,7 +60,7 @@ public class SetupMoneyboxActivity extends SetupGeneralActivity {
                 return view;
             }
         };
-      }
+    }
 
     private void performImageSelection() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -154,6 +156,50 @@ public class SetupMoneyboxActivity extends SetupGeneralActivity {
                 performImageSelection();
             }
         });
+        view(R.id.moneybox_disable_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //show dialog
+                AlertDialog alertDialog = new AlertDialog.Builder(SetupMoneyboxActivity.this)
+                        .setTitle("Disable Moneybox")
+                        .setMessage("You are going to disable Moneybox. All your progress and saved money information will be erased. Are you sure want to continue?")
+                        .setPositiveButton("Yes, disable moneybox", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                              disable();
+                            }
+
+
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        }).show();
+            }
+        });
+
+        view(R.id.moneybox_clear_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //show dialog
+                AlertDialog alertDialog = new AlertDialog.Builder(SetupMoneyboxActivity.this)
+                        .setTitle("Clear Moneybox")
+                        .setMessage("You are going to clear you current progress and all data about saved money." +
+                                "Are you sure want to continue?")
+                        .setPositiveButton("Yes, clear progress", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                clearProgress();
+                            }
+
+
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        }).show();
+            }
+        });
 
         final Spinner spinner = view(R.id.moneybox_cur_spinner,Spinner.class);
         // Specify the layout to use when the list of choices appears
@@ -191,6 +237,33 @@ public class SetupMoneyboxActivity extends SetupGeneralActivity {
         }
     }
 
+    private void clearProgress() {
+        application().setSetting(Settings.MONEYBOX_START_DATE, DateUtils.today().getTime());
+        application().changeMoneyBoxTarget();
+        SetupMoneyboxActivity.this.finish();
+    }
+
+    private void disable() {
+        if (newImageId!=null){
+            application().deleteImage(newImageId);
+        }
+        String imageId = application().getSetting(Settings.MONEYBOX_SOMETHING_IMAGE_ID);
+        if (imageId != null){
+            application().deleteImage(imageId);
+        }
+
+        application().setSetting(Settings.MONEYBOX_START_DATE, null);
+        application().setSetting(Settings.MONEYBOX_SOMETHING_IMAGE_ID, null);
+        application().setSetting(Settings.MONEYBOX_SOMETHING_PRICE, null);
+        application().setSetting(Settings.MONEYBOX_SOMETHING_TITLE, null);
+        application().setSetting(Settings.MONEYBOX_SOMETHING_IMAGE_ID, null);
+        application().setSetting(Settings.MONEYBOX_SOMETHING_DESCRIPTION, null);
+        application().setSetting(Settings.MONEYBOX_START_SMOKE, null);
+
+        application().changeMoneyBoxTargetDescription();
+        application().changeMoneyBoxTarget();
+        SetupMoneyboxActivity.this.finish();
+    }
     @Override
     protected void action_apply() {
         Integer averageSmokeCount = getInt(view_text(R.id.moneybox_start_smoke_edit));
@@ -238,9 +311,9 @@ public class SetupMoneyboxActivity extends SetupGeneralActivity {
         application().setSetting(Settings.MONEYBOX_START_SMOKE, averageSmokeCount);
         application().setSetting(Settings.MONEYBOX_SOMETHING_PRICE, thingPrice);
         application().setSetting(Settings.MONEYBOX_SOMETHING_TITLE, title);
+        application().setSetting(Settings.MONEYBOX_SOMETHING_IMAGE_ID, imageId);
         application().setSetting(Settings.MONEYBOX_SOMETHING_DESCRIPTION, description);
         application().setSetting(Settings.CURRENCY_ID, ((Currency) view(R.id.moneybox_cur_spinner, Spinner.class).getSelectedItem()).id);
-        application().setSetting(Settings.MONEYBOX_SOMETHING_IMAGE_ID, imageId);
         Long startDate = application().getSetting(Settings.MONEYBOX_START_DATE);
         if (startDate == null){
             startDate = DateUtils.today().getTime();
@@ -248,8 +321,8 @@ public class SetupMoneyboxActivity extends SetupGeneralActivity {
         }
 
         application().changeMoneyBoxTargetDescription();
-        application().changeMoneyBoxTarget(averageSmokeCount,smokePrice,thingPrice,startDate);
-        finish();
+        application().changeMoneyBoxTarget();
+        onBackPressed();
     }
 
     private Integer getInt(TextView textView) {

@@ -234,17 +234,19 @@
                 />
 
             <Button
+                android:id="@+id/moneybox_clear_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Clear collected data"
+                android:text="Clear current progress ..."
                 android:textColor="@color/font.link"
                 android:textSize="@dimen/text_size_normal_small"
                 android:background="@android:color/transparent"/>
 
             <Button
+                android:id="@+id/moneybox_disable_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Disable moneybox"
+                android:text="Disable moneybox ..."
                 android:textColor="@color/font.link"
                 android:textSize="@dimen/text_size_normal_small"
                 android:background="@android:color/transparent"/>

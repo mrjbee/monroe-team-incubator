@@ -497,7 +497,7 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
     }
 
 
-    public void changeMoneyBoxTarget(Integer averageSmokeCount, Float smokePrice, Float thingPrice, Long startDate) {
+    public void changeMoneyBoxTarget() {
         model().getMoneyBoxProgressProvider().invalidate();
     }
 
