@@ -19,7 +19,6 @@ import org.monroe.team.android.box.event.Event;
 import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.uc.underreview.CalculateTodaySmokeSchedule;
 import org.monroe.team.smooker.app.uc.common.DateUtils;
-import org.monroe.team.smooker.app.android.DashboardActivity;
 
 import java.util.Date;
 import java.util.List;
@@ -83,7 +82,7 @@ public class SmokeScheduleController {
                 .setContentText(getString(R.string.time_to_smoke))
                 .setSubText(getString(R.string.not_to_smoke_suggestion))
                 .setSmallIcon(R.drawable.notif_quit_assistance)
-                .setContentIntent(DashboardActivity.openDashboardWithExtraAction(context, DashboardActivity.ExtraActionName.SMOKE_DECISION))
+             //   .setContentIntent(DashboardActivity.openDashboardWithExtraAction(context, DashboardActivity.ExtraActionName.SMOKE_DECISION))
                 .setDeleteIntent(skipSmoke)
                 .addAction(R.drawable.notif_cancel_small, getString(R.string.skip_this_time), skipSmoke)
                 .addAction(R.drawable.notif_clock_small, getString(R.string.later_this_time), laterSmoke)

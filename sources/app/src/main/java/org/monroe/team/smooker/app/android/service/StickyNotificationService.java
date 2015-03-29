@@ -16,7 +16,6 @@ import org.monroe.team.smooker.app.actors.ActorSmoker;
 import org.monroe.team.smooker.app.common.constant.Events;
 import org.monroe.team.android.box.event.Event;
 import org.monroe.team.smooker.app.uc.underreview.GetStatisticState;
-import org.monroe.team.smooker.app.android.DashboardActivity;
 import org.monroe.team.smooker.app.android.SmookerApplication;
 
 public class StickyNotificationService extends Service {
@@ -107,7 +106,7 @@ public class StickyNotificationService extends Service {
             // Using RemoteViews to bind custom layouts into Notification
             RemoteViews remoteViews = new RemoteViews(getPackageName(),
                     R.layout.remote_controll_notification);
-            PendingIntent pIntent = DashboardActivity.openDashboard(getApplicationContext());
+            //PendingIntent pIntent = DashboardActivity.openDashboard(getApplicationContext());
 
             PendingIntent addBtnIntent = ActorSmoker.create(getApplicationContext(), ActorSmoker.ADD_SMOKE).buildDefault();
 
@@ -127,7 +126,7 @@ public class StickyNotificationService extends Service {
 
             PendingIntent closeBtnIntent = ActorSmoker.CLOSE_STICKY_NOTIFICATION.createPendingIntent(getApplicationContext());
 
-            remoteViews.setOnClickPendingIntent(R.id.cn_add_btn,pIntent);
+         //   remoteViews.setOnClickPendingIntent(R.id.cn_add_btn,pIntent);
             remoteViews.setOnClickPendingIntent(R.id.cn_close_btn,closeBtnIntent);
 
             return builder.build();

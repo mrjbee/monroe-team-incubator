@@ -65,10 +65,6 @@ public class ActorSmoker extends Actor {
             }
         });
 
-        if (requested("tray",intent)){
-            SmookerApplication.instance.closeSystemDialogs();
-        }
-
         if (requested("toast",intent) && toastText != null){
             Toast.makeText(context, toastText,Toast.LENGTH_LONG).show();
         }

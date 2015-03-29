@@ -364,7 +364,7 @@ public class TilesFragment extends FrontPageFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 220){
-            settingAlternativeBtnAC.show();
+            updateTileSettingBtn();
         }
     }
 
@@ -417,7 +417,7 @@ public class TilesFragment extends FrontPageFragment {
     }
 
     private void setupTileBoard() {
-        view(R.id.start_tile_content).setOnTouchListener(new SlideTouchGesture(DisplayUtils.dpToPx(400, getResources()), SlideTouchGesture.Axis.X) {
+        view(R.id.start_tile_content_wrapper).setOnTouchListener(new SlideTouchGesture(DisplayUtils.dpToPx(400, getResources()), SlideTouchGesture.Axis.X) {
             @Override
             protected void onProgress(float x, float y, float slideValue, float fraction) {
                 view(R.id.start_tile_content).setTranslationX(-slideValue);
@@ -493,8 +493,8 @@ public class TilesFragment extends FrontPageFragment {
                                         animator.addListener(new AppearanceControllerOld.AnimatorListenerAdapter() {
                                             @Override
                                             public void onAnimationEnd(Animator animation) {
-                                                settingAlternativeBtnAC.show();
                                                 view(R.id.start_tile_big_content).setVisibility(View.VISIBLE);
+                                                updateTileSettingBtn();
                                             }
                                         });
                                     }
@@ -553,7 +553,6 @@ public class TilesFragment extends FrontPageFragment {
                 timePanelAC.hide();
                 bottomLayerAC.show();
                 tileCaptionTextAC.show();
-                settingAlternativeBtnAC.show();
                 tileSpaceWraperAC.showAndCustomize(new AppearanceController.AnimatorCustomization() {
                     @Override
                     public void customize(Animator animator) {
@@ -567,6 +566,7 @@ public class TilesFragment extends FrontPageFragment {
                                             @Override
                                             public void onAnimationEnd(Animator animation) {
                                                 view(R.id.start_tile_big_content).setVisibility(View.VISIBLE);
+                                                updateTileSettingBtn();
                                             }
                                         });
                                     }
@@ -657,8 +657,19 @@ public class TilesFragment extends FrontPageFragment {
 
     private void setupTileCaption() {
         holeControllerList.get(currentTileIndex).select();
+        updateTileSettingBtn();
         String title =  getTileController(currentTileIndex).caption();
         view_text(R.id.start_tile_caption_text).setText(title);
+    }
+
+    private void updateTileSettingBtn() {
+        if (view(R.id.start_tile_big_content).getVisibility() == View.VISIBLE) {
+            if (getTileController(currentTileIndex).getSetupActivityClass() == null) {
+                settingAlternativeBtnAC.hide();
+            } else {
+                settingAlternativeBtnAC.show();
+            }
+        }
     }
 
     private TileController getTileController(int index) {

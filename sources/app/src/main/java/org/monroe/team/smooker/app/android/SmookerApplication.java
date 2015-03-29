@@ -105,22 +105,13 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
     public void onRemoteControlNotificationCloseRequest() {
         model().stopNotificationControlService();
         updateStickyNotification(false);
-        if (settings().getAndSet(Settings.FIRST_TIME_CLOSE_STICKY_NOTIFICATION, false)){
-            Intent intent = new Intent(this, WizardActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra("PAGE_INDEX", 0);
-            intent.putExtra("PAGE_STACK", new ArrayList<SetupPage>(Arrays.asList(SetupPage.UI)));
-            intent.putExtra("FORCE", false);
-            startActivity(intent);
-        }
-        closeSystemDialogs();
     }
 
     final public SettingManager settings() {
         return model().usingService(SettingManager.class);
     }
 
-    public void closeSystemDialogs() {
+    public void closeSystemDialogsOld() {
         Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
         this.getApplicationContext().sendBroadcast(it);
     }
@@ -149,59 +140,6 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
         }
 
         return new Pair<Boolean, List<SetupPage>>(required,answer);
-    }
-    public boolean firstSetupDoneTrigger() {
-        return settings().getAndSet(Settings.FIRST_TIME_AFTER_SETUP,false);
-    }
-
-    public void onSetupPageShown(SetupPage setupPage) {
-        if (setupPage == SetupPage.UI){
-            settings().set(Settings.FIRST_TIME_CLOSE_STICKY_NOTIFICATION, false);
-        } else if(setupPage == SetupPage.QUIT_PROGRAM){
-            settings().set(Settings.FIRST_TIME_QUIT_SMOKE_PAGE, false);
-            NotificationManager manager = (NotificationManager) getSystemService(Activity.NOTIFICATION_SERVICE);
-            manager.cancel(QUIT_SMOKE_PROPOSAL_NOTIFICATION_ID);
-        }
-    }
-
-    public void onDashboardCreate() {
-        if (settings().get(Settings.ENABLED_STICKY_NOTIFICATION)){
-            updateStickyNotification(true);
-        }
-        if (!settings().get(Settings.FIRST_TIME_AFTER_SETUP)){
-            doQuitSmokeSuggestionNotification();
-        }
-    }
-
-    private void doQuitSmokeSuggestionNotification() {
-        if (settings().get(Settings.FIRST_TIME_QUIT_SMOKE_PAGE)) {
-            NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-
-            Intent dashBoardIntent = new Intent(this, DashboardActivity.class);
-            dashBoardIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            dashBoardIntent.putExtra("PAGE_INDEX", 0);
-            dashBoardIntent.putExtra("PAGE_STACK", new ArrayList<SetupPage>(Arrays.asList(SetupPage.QUIT_PROGRAM)));
-            dashBoardIntent.putExtra("FORCE", false);
-
-            PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                    DashboardActivity.WIZARD_ACTIVITY_REQUEST,
-                    dashBoardIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
-
-
-            PendingIntent dropNotificationPendingIntent = ActorSmoker.CLOSE_QUIT_SUGGESTION.createPendingIntent(getApplicationContext());
-
-            builder.setAutoCancel(true)
-                    .setContentTitle(getString(R.string.quit_smoke_assistance_title))
-                    .setContentText(getString(R.string.quit_smoking_program_suggestion))
-                    .setSubText(getString(R.string.quit_smoke_program_suggestion_manual))
-                    .setSmallIcon(R.drawable.notif_quit_assistance)
-                    .setDeleteIntent(dropNotificationPendingIntent)
-                    .setContentIntent(pendingIntent);
-
-            manager.notify(QUIT_SMOKE_PROPOSAL_NOTIFICATION_ID, builder.build());
-        }
     }
 
     public void scheduleAlarms() {

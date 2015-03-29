@@ -28,10 +28,7 @@ public interface Settings {
     SettingManager.Flag ENABLED_STICKY_NOTIFICATION = new SettingManager.Flag("STICKY_NOTIFICATION",false);
     SettingManager.Flag ENABLED_STATISTIC_NOTIFICATION = new SettingManager.Flag("STATISTIC_NOTIFICATION",false);
     SettingManager.Flag ENABLED_ASSISTANCE_NOTIFICATION = new SettingManager.Flag("ASSISTANCE_NOTIFICATION",true);
-    SettingManager.Flag FIRST_TIME_CLOSE_STICKY_NOTIFICATION = new SettingManager.Flag("STICKY_NOTIFICATION_FIRST_CLOSE", true);
     SettingManager.Flag FIRST_TIME_ENTER_APP = new SettingManager.Flag("FIRST_TIME_ENTER_APP", true);
-    SettingManager.Flag FIRST_TIME_AFTER_SETUP = new SettingManager.Flag("FIRST_TIME_AFTER_SETUP", true);
-    SettingManager.Flag FIRST_TIME_QUIT_SMOKE_PAGE = new SettingManager.Flag("FIRST_TIME_QUIT_SMOKE_PAGE", true);
     SettingManager.Flag IS_SMOKE_QUIT_ACTIVE = new SettingManager.Flag("IS_SMOKE_QUIT_ACTIVE", false);
 
     Closure<Integer,Currency> CONVERT_CURRENCY = new Closure<Integer, Currency>() {

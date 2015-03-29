@@ -87,10 +87,6 @@
             android:label="@string/title_activity_smoke_break"
             android:launchMode="singleInstance" >
         </activity>
-        <activity
-            android:name=".android.WizardActivity"
-            android:label="@string/a_wizard_title" >
-        </activity>
 
         <service
             android:name=".android.service.StickyNotificationService"
