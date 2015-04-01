@@ -1,6 +1,7 @@
 package org.monroe.team.smooker.app.android;
 
 import android.animation.Animator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -13,6 +14,7 @@ import org.monroe.team.android.box.app.ui.animation.apperrance.DefaultAppearance
 import org.monroe.team.android.box.data.DataProvider;
 import org.monroe.team.android.box.event.Event;
 import org.monroe.team.corebox.utils.Closure;
+import org.monroe.team.smooker.app.NextSmokeTimerActivity;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.android.view.LeftToRightTextView;
 import org.monroe.team.smooker.app.uc.PrepareSmokeQuitDetails;
@@ -76,6 +78,12 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
                 @Override
                 public void onClick(View v) {
                     application().addSmoke();
+                }
+            });
+            view(R.id.start_clock_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getActivity(), NextSmokeTimerActivity.class));
                 }
             });
         }

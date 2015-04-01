@@ -4,8 +4,8 @@
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <compatible-screens>
 
@@ -79,9 +79,6 @@
             android:theme="@style/AppTheme.Transperent.NoAnimation"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
-
-
-
         <activity
             android:name=".android.SmokeBreakActivity"
             android:label="@string/title_activity_smoke_break"
@@ -134,10 +131,12 @@
             android:name=".android.DateDetailsActivity"
             android:label="@string/title_activity_date_details"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Transperent.NoAnimation"
-            >
+            android:theme="@style/AppTheme.Transperent.NoAnimation" >
         </activity>
-
+        <activity
+            android:name=".NextSmokeTimerActivity"
+            android:label="@string/title_activity_next_smoke_timer" >
+        </activity>
     </application>
 
 </manifest>

@@ -6,6 +6,7 @@
     <color name="font.dark">#ff141414</color>
     <color name="font.dark.light">#ff343434</color>
     <color name="font.dark.lighter">#ff4e4e4e</color>
+    <color name="font.dark.lighter2">#ff656565</color>
     <color name="font.white.shadow">#ffffffff</color>
     <color name="font.dark.lightest">#ffbbbbbb</color>
     <color name="font.link">#ff006db7</color>
