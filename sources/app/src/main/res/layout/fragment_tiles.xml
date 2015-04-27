@@ -84,7 +84,7 @@
                         android:layout_below="@+id/clock_since_value_panel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="since last smoke"
+                        android:text="last smoke"
                         android:fontFamily="sans-serif-light"
                         android:textSize="@dimen/text_size_caption_small"
                         android:textColor="@color/font.dark.lighter2"

@@ -119,6 +119,7 @@ public class TilesFragment extends FrontPageFragment {
                 .hideAnimation(duration_constant(300), interpreter_accelerate_decelerate())
                 .hideAndGone()
                 .hideAndInvisible().build();
+        beforeTimerAC.hideWithoutAnimation();
     }
 
 
@@ -166,7 +167,7 @@ public class TilesFragment extends FrontPageFragment {
 
             @Override
             public void onError(Data.FetchError fetchError) {
-
+                activity().forceCloseWithErrorCode(20);
             }
         });
     }
@@ -353,7 +354,6 @@ public class TilesFragment extends FrontPageFragment {
         tileCaptionTextChangeAC.showWithoutAnimation();
         settingAlternativeBtnAC.hideWithoutAnimation();
         timePanelAC.showWithoutAnimation();
-        beforeTimerAC.hideWithoutAnimation();
         setupDashCloseState();
 
         setupTileBoard();
