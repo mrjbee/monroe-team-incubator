@@ -72,6 +72,13 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
                     application().addSmoke();
                 }
             });
+
+            view(R.id.start_setting_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(application(), PreferencesActivity.class));
+                }
+            });
         }
     }
 

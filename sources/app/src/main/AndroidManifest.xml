@@ -133,6 +133,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Transperent.NoAnimation" >
         </activity>
+
+        <activity
+            android:name=".android.PreferencesActivity"
+            android:label="Preferences"
+            android:theme="@style/AppTheme" >
+        </activity>
+
     </application>
 
 </manifest>

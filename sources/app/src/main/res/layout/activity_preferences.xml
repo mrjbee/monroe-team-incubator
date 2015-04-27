@@ -1,0 +1,80 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/setup_base_container">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/background.main.light.dark">
+
+        <RelativeLayout
+            android:id="@+id/setup_header"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="7dp"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:id="@+id/setup_caption_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_normal"
+                android:textColor="@color/font.dark.lighter"
+            />
+
+            <TextView
+                android:id="@+id/setup_description_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Preferences"
+                android:textSize="@dimen/text_size_caption"
+                android:textColor="@color/font.dark.lighter"
+                android:layout_alignLeft="@+id/setup_caption_text"
+                android:layout_below="@+id/setup_caption_text" />
+
+
+            <ImageButton
+                android:id="@+id/setup_quit_btn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="20dp"
+                android:padding="12dp"
+                android:scaleType="centerCrop"
+                android:background="@android:color/transparent"
+                android:src="@drawable/cancel_logo_dark"
+                android:visibility="visible"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_below="@+id/setup_header"
+            android:id="@+id/setup_top_shadow"
+            android:layout_width="fill_parent"
+            android:layout_height="6dp"
+            android:src="@drawable/shadow_down"
+            android:scaleType="fitXY"/>
+
+        <LinearLayout
+            android:layout_below="@id/setup_header"
+            android:id="@+id/setup_content_panel"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>
