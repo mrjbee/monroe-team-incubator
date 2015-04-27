@@ -45,8 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/total_smokes"
-        android:textSize="@dimen/text_size_normal_small"
-        android:textColor="@color/font.dark.light"
+        style="@style/Text.Tile.Small"
         android:id="@+id/stat_total_smokes"/>
 
     <TextView
@@ -55,8 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0 smokes"
-        android:textSize="@dimen/text_size_normal_small"
-        android:textColor="@color/background.main3"
+        style="@style/Text.Tile.Small.Value"
         android:id="@+id/stat_total_smokes_value" />
 
 
@@ -66,8 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/today_per_average_smokes"
-        android:textSize="@dimen/text_size_normal_small"
-        android:textColor="@color/font.dark.light"
+        style="@style/Text.Tile.Small"
         android:id="@+id/stat_average_text"/>
 
     <TextView
@@ -76,8 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0 smokes"
-        android:textSize="@dimen/text_size_normal_small"
-        android:textColor="@color/background.main3"
+        style="@style/Text.Tile.Small.Value"
         android:id="@+id/stat_average_text_value" />
     </GridLayout>
 </LinearLayout>

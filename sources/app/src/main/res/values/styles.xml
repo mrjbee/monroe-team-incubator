@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Debug.Research" parent="android:Theme.NoTitleBar.Fullscreen">
         <item name="android:windowNoTitle">true</item>
@@ -20,5 +20,28 @@
     <style name="AppTheme.Transperent.NoAnimation.FullScreen" parent="AppTheme.Transperent.NoAnimation">
         <item name="android:windowFullscreen">true</item>
     </style>
+
+    <style name="Text.Tile.Small" parent="AppTheme">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#ff343434</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-light</item>
+        <item name="android:shadowColor">#ffffffff</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+
+    <style name="Text.Tile.Small.Value" parent="Text.Tile.Small">
+        <item name="android:textColor">#9a1b1b</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+<!--
+android:fontFamily="sans-serif"           // roboto regular
+android:fontFamily="sans-serif-light"     // roboto light
+android:fontFamily="sans-serif-condensed" // roboto condensed
+android:fontFamily="sans-serif-thin"      // roboto thin (android 4.2)
+android:fontFamily="sans-serif-medium"    // roboto medium (android 5.0)
+-->
 
 </resources>

@@ -26,8 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/money_saved"
-            android:textSize="@dimen/text_size_normal_small"
-            android:textColor="@color/font.dark.light"
+            style="@style/Text.Tile.Small"
             android:id="@+id/quit_end_date"/>
 
         <TextView
@@ -36,8 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/disabled"
-            android:textSize="@dimen/text_size_normal_small"
-            android:textColor="@color/background.main3"
+            style="@style/Text.Tile.Small.Value"
             android:id="@+id/money_saved_value_text"
            />
 
@@ -55,8 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0%"
-            android:textSize="@dimen/text_size_normal_small"
-            android:textColor="@color/background.main3"
+            style="@style/Text.Tile.Small.Value"
             android:id="@+id/money_progress_text"
             />
     </GridLayout>
