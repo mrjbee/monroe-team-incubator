@@ -25,7 +25,7 @@ public interface Settings {
     SettingManager.SettingItem<Integer> CONTENT_VIEW_CONFIG = new SettingManager.SettingItem<Integer>("CONTENT_VIEW",Integer.class, 2);
     SettingManager.SettingItem<Long> APP_FIRST_TIME_DATE = new SettingManager.SettingItem<Long>("APP_FIRST_TIME_DATE",Long.class, null);
     SettingManager.SettingItem<Long> QUIT_SMOKE_VALIDATION_DATE = new SettingManager.SettingItem<Long>("QUIT_SMOKE_VALIDATION_DATE",Long.class, null);
-    SettingManager.Flag ENABLED_STICKY_NOTIFICATION = new SettingManager.Flag("STICKY_NOTIFICATION",false);
+    SettingManager.Flag ENABLED_STICKY_NOTIFICATION = new SettingManager.Flag("STICKY_NOTIFICATION",true);
     SettingManager.Flag ENABLED_STATISTIC_NOTIFICATION = new SettingManager.Flag("STATISTIC_NOTIFICATION",false);
     SettingManager.Flag ENABLED_ASSISTANCE_NOTIFICATION = new SettingManager.Flag("ASSISTANCE_NOTIFICATION",true);
     SettingManager.Flag FIRST_TIME_ENTER_APP = new SettingManager.Flag("FIRST_TIME_ENTER_APP", true);
