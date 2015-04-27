@@ -115,7 +115,7 @@ public class StickyNotificationService extends Service {
         private Notification createNotification(String text) {
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext())
-                    .setSmallIcon(R.drawable.notif_orange_small)
+                    .setSmallIcon(R.drawable.notification_cigareta)
                     .setContentIntent(ActorNotification.ADD_SMOKE.createPendingIntent(getApplicationContext()))
                     .setContentTitle(text)
                     .setContentText(getString(R.string.hit_for_smoke_log))
@@ -123,7 +123,7 @@ public class StickyNotificationService extends Service {
                     .setWhen(0)
                     .setOngoing(true)
                     .addAction(0,"Dashboard", ActorNotification.OPEN_DASHBOARD.createPendingIntent(getApplicationContext()))
-                    .addAction(0,"Close notification", ActorNotification.CLOSE_STICKY_NOTIFICATION.createPendingIntent(getApplicationContext()));
+                    .addAction(0,"Options", ActorNotification.CLOSE_STICKY_NOTIFICATION.createPendingIntent(getApplicationContext()));
 
             return builder.build();
         }

@@ -10,6 +10,7 @@ import org.monroe.team.android.box.actor.Actor;
 import org.monroe.team.android.box.actor.ActorAction;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.android.FrontPageActivity;
+import org.monroe.team.smooker.app.android.PreferencesActivity;
 import org.monroe.team.smooker.app.android.SmookerApplication;
 import org.monroe.team.android.box.actor.ActorActionBuilder;
 import static org.monroe.team.android.box.actor.ActorActionBuilder.requested;
@@ -39,7 +40,9 @@ public class ActorNotification extends Actor {
         reactOn(CLOSE_STICKY_NOTIFICATION,intent,new SilentReaction() {
             @Override
             protected void reactSilent(Intent intent) {
-                SmookerApplication.instance.onRemoteControlNotificationCloseRequest();
+                SmookerApplication.instance.startActivity(
+                        new Intent(SmookerApplication.instance, PreferencesActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                SmookerApplication.instance.closeSystemDialogsOld();
             }
         });
 
@@ -52,7 +55,7 @@ public class ActorNotification extends Actor {
             }
         });
 
-        reactOn(ADD_SMOKE, intent,new SilentReaction() {
+        reactOn(ADD_SMOKE, intent, new SilentReaction() {
             @Override
             protected void reactSilent(Intent intent) {
                 SmookerApplication.instance.addSmoke();

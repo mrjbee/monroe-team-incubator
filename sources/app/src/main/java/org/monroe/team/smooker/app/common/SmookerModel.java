@@ -184,11 +184,6 @@ public class SmookerModel extends AndroidModel{
         context.startService(new Intent(context,StickyNotificationService.class));
     }
 
-    public void onCreate() {
-        if (serviceRegistry.get(SettingManager.class).get(Settings.ENABLED_STICKY_NOTIFICATION)) {
-            startNotificationControlService();
-        }
-    }
 
     public <Type> Type usingService(Class<Type> serviceClass) {
         return serviceRegistry.get(serviceClass);

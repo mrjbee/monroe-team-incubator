@@ -69,7 +69,6 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        model().onCreate();
     }
 
     @Override
@@ -79,6 +78,9 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
             scheduleAlarms();
         }
         getSuggestionsController();
+        if (getSetting(Settings.ENABLED_STICKY_NOTIFICATION)) {
+            model().startNotificationControlService();
+        }
     }
 
     public synchronized SmokeScheduleController getSuggestionsController(){
