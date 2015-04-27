@@ -26,18 +26,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
-                android:textStyle="bold"
-                android:textSize="@dimen/text_size_normal"
-                android:textColor="@color/font.dark.lighter"
+                style="@style/Text.Setup.Sub.Caption"
             />
 
             <TextView
                 android:id="@+id/setup_description_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Preferences"
-                android:textSize="@dimen/text_size_caption"
-                android:textColor="@color/font.dark.lighter"
+                android:text="Options"
+                style="@style/Text.Setup.Caption"
                 android:layout_alignLeft="@+id/setup_caption_text"
                 android:layout_below="@+id/setup_caption_text" />
 
@@ -67,14 +64,57 @@
             android:layout_height="6dp"
             android:src="@drawable/shadow_down"
             android:scaleType="fitXY"/>
-
-        <LinearLayout
+        <ScrollView
             android:layout_below="@id/setup_header"
-            android:id="@+id/setup_content_panel"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical">
+            android:layout_height="fill_parent">
+            <LinearLayout
+                android:layout_below="@id/setup_header"
+                android:id="@+id/setup_content_panel"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:paddingTop="20dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="30dp"
+                android:orientation="vertical">
 
-        </LinearLayout>
+
+                <TextView
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/menu_notifications"
+                    style="@style/Text.Setup.Section.Caption"
+                    />
+
+                <Switch
+                    android:id="@+id/sticky_notification_switch"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Text.Setup.Section"
+                    android:text="@string/ui_page_sticky_notif_title"
+                    />
+
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Text.Setup.Section.Description"
+                    android:text="@string/ui_page_sticky_notif_about"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="1px"
+                    android:background="@android:color/darker_gray"
+                    android:layout_below="@+id/qs_end_text"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="15dp"
+                    />
+
+            </LinearLayout>
+
+        </ScrollView>
     </RelativeLayout>
 </RelativeLayout>

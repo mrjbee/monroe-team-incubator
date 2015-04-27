@@ -34,6 +34,7 @@ public class StickyNotificationService extends Service {
             startForeground(
                     NotificationRemoteControl.NOTIFICATION_ID,
                     notification.createNotification(getNotificationInitialText()));
+
             Event.subscribeOnEvent(getApplicationContext(),this, Events.SMOKE_COUNT_CHANGED,new Closure<Integer, Void>() {
                 @Override
                 public Void execute(Integer smokeCount) {
@@ -49,6 +50,7 @@ public class StickyNotificationService extends Service {
                     return null;
                 }
             });
+
         }
         return super.onStartCommand(intent, flags, startId);
     }

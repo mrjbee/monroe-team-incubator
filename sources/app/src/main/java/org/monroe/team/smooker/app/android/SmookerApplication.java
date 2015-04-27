@@ -117,6 +117,10 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
     }
 
     public void updateStickyNotification(boolean enabled) {
+        boolean oldValue = settings().get(Settings.ENABLED_STICKY_NOTIFICATION);
+        if (oldValue == enabled){
+            return;
+        }
         if (enabled){
             model().startNotificationControlService();
         } else {
@@ -438,6 +442,11 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
     public void changeMoneyBoxTarget() {
         model().getMoneyBoxProgressProvider().invalidate();
     }
+
+    public boolean isStickyNotificationEnabled() {
+        return settings().get(Settings.ENABLED_STICKY_NOTIFICATION);
+    }
+
 
     public static interface OnImageLoadedObserver {
         public void onResult(String imageId, Bitmap bitmap);
