@@ -8,17 +8,20 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
+import org.monroe.team.android.box.data.Data;
+import org.monroe.team.android.box.data.DataProvider;
 import org.monroe.team.android.box.services.SettingManager;
 import org.monroe.team.corebox.utils.Closure;
+import org.monroe.team.corebox.utils.DateUtils;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.actors.ActorNotification;
 import org.monroe.team.smooker.app.actors.ActorSystemAlarm;
+import org.monroe.team.smooker.app.android.SmookerApplication;
 import org.monroe.team.smooker.app.common.constant.Events;
 import org.monroe.team.smooker.app.common.SmookerModel;
 import org.monroe.team.android.box.event.Event;
 import org.monroe.team.smooker.app.common.constant.Settings;
-import org.monroe.team.smooker.app.uc.underreview.CalculateTodaySmokeSchedule;
-import org.monroe.team.smooker.app.uc.common.DateUtils;
+import org.monroe.team.smooker.app.uc.PrepareTodaySmokeSchedule;
 
 import java.util.Date;
 import java.util.List;
@@ -40,26 +43,35 @@ import java.util.List;
 
 public class SmokeScheduleController {
 
+    @Deprecated
     private final Context context;
+    @Deprecated
     private final SmookerModel smookerModel;
+
+private final SmookerApplication application;
 
     private final static int NEXT_SCHEDULE_SMOKE_NOTIFICATION_ID = 337;
 
 
-    public SmokeScheduleController(Context context, SmookerModel smookerModel) {
-        this.context = context;
+    public SmokeScheduleController(SmookerModel smookerModel, SmookerApplication application) {
+        this.context = application;
+        this.application = application;
         this.smookerModel = smookerModel;
     }
 
     public void onSmokeAlarm() {
-        if (!settings().get(Settings.ENABLED_ASSISTANCE_NOTIFICATION)) return;
+        if (!isEnabled()) return;
         showNotification();
+    }
+
+    public boolean isEnabled() {
+        return application.getSetting(Settings.ENABLED_ASSISTANCE_NOTIFICATION);
     }
 
     public void scheduleFallback() {
         AlarmManager alarmManager = smookerModel.usingService(AlarmManager.class);
         alarmManager.set(AlarmManager.RTC_WAKEUP,
-                DateUtils.mathMinutes(DateUtils.now(),5).getTime(),
+                DateUtils.mathMinutes(DateUtils.now(), 5).getTime(),
                 createAlarmIntent());
     }
     private void cancelSmokeNotification() {
@@ -71,16 +83,13 @@ public class SmokeScheduleController {
         NotificationManager manager = smookerModel.usingService(NotificationManager.class);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
-        PendingIntent skipSmoke = ActorNotification.create(context, ActorNotification.SKIP_SMOKE).buildDefault();
         PendingIntent addSmoke = ActorNotification.create(context, ActorNotification.ADD_SMOKE).buildDefault();
+        PendingIntent skipSmoke = ActorNotification.create(context, ActorNotification.SKIP_SMOKE).buildDefault();
         PendingIntent laterSmoke = ActorNotification.create(context, ActorNotification.POSTPONE_SMOKE).buildDefault();
-
-
 
         builder.setAutoCancel(true)
                 .setContentTitle(getString(R.string.quit_smoke_assistance_title))
                 .setContentText(getString(R.string.time_to_smoke))
-                .setSubText(getString(R.string.not_to_smoke_suggestion))
                 .setSmallIcon(R.drawable.notif_quit_assistance)
              //   .setContentIntent(DashboardActivity.openDashboardWithExtraAction(context, DashboardActivity.ExtraActionName.SMOKE_DECISION))
                 .setDeleteIntent(skipSmoke)
@@ -95,9 +104,32 @@ public class SmokeScheduleController {
     }
 
     private void scheduleNextSmokeAlarm() {
-        List<CalculateTodaySmokeSchedule.SmokeSuggestion> smokeSuggestionList = smookerModel.execute(CalculateTodaySmokeSchedule.class,null);
+        if (!isEnabled()) return;
+        application.data_smokeSchedule().fetch(true, new Data.FetchObserver<PrepareTodaySmokeSchedule.TodaySmokeSchedule>() {
+            @Override
+            public void onFetch(PrepareTodaySmokeSchedule.TodaySmokeSchedule todaySmokeSchedule) {
+                List<Date> smokeSuggestionList = todaySmokeSchedule.scheduledSmokes;
+                scheduleNextSmokeAlarmImpl(smokeSuggestionList);
+            }
+
+            @Override
+            public void onError(Data.FetchError fetchError) {
+                new Thread(){
+                    @Override
+                    public void run() {
+                        try {
+                            sleep(2000);
+                        } catch (InterruptedException e) {}
+                        scheduleNextSmokeAlarm();
+                    }
+                }.start();
+            }
+        });
+    }
+
+    private void scheduleNextSmokeAlarmImpl(List<Date> smokeSuggestionList) {
         if (smokeSuggestionList.isEmpty()) return;
-        Date notificationDate = smokeSuggestionList.get(0).date;
+        Date notificationDate = smokeSuggestionList.get(0);
         if (notificationDate.compareTo(DateUtils.now()) <= 0){
             //PAST or NOW
             onSmokeAlarm();
@@ -107,24 +139,24 @@ public class SmokeScheduleController {
         }
     }
 
-
-
-
     private PendingIntent createAlarmIntent() {
         return ActorSystemAlarm.createIntent(context, ActorSystemAlarm.Alarms.TIME_TO_NEXT_SMOKE);
     }
 
     public void initialize() {
-        Event.subscribeOnEvent(context,this, new Closure<Void, Void>() {
+        application.data_smokeSchedule().addDataChangeObserver(new Data.DataChangeObserver<PrepareTodaySmokeSchedule.TodaySmokeSchedule>() {
             @Override
-            public Void execute(Void arg) {
-                cancelSmokeNotification();
-                cancelAlarmIfAny();
+            public void onDataInvalid() {
+                cancelAlarmAndNotification();
                 scheduleNextSmokeAlarm();
-                return null;
             }
-        }, Events.SMOKE_COUNT_CHANGED, Events.QUIT_SCHEDULE_UPDATED, Events.SMOKE_CANCELED);
-        cancelAlarmIfAny();
+
+            @Override
+            public void onData(PrepareTodaySmokeSchedule.TodaySmokeSchedule todaySmokeSchedule) {
+            }
+        });
+
+        cancelAlarmAndNotification();
         scheduleNextSmokeAlarm();
     }
 
@@ -136,8 +168,13 @@ public class SmokeScheduleController {
         return smookerModel.getString(id);
     }
 
-    private SettingManager settings() {
-        return smookerModel.usingService(SettingManager.class);
+
+    public void cancelAlarmAndNotification() {
+        cancelAlarmIfAny();
+        cancelSmokeNotification();
     }
 
+    public void scheduleAlarm() {
+        scheduleNextSmokeAlarm();
+    }
 }

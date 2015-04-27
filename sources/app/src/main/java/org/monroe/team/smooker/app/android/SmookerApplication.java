@@ -85,7 +85,7 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
 
     public synchronized SmokeScheduleController getSuggestionsController(){
         if (suggestionsController == null){
-            suggestionsController = new SmokeScheduleController(this,model());
+            suggestionsController = new SmokeScheduleController(model(),this);
             suggestionsController.initialize();
         }
         return suggestionsController;
@@ -443,7 +443,7 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
     }
 
     public boolean isAssistantNotificationEnabled() {
-        return settings().get(Settings.ENABLED_ASSISTANCE_NOTIFICATION);
+        return getSuggestionsController().isEnabled();
     }
 
     public void enableAssistantNotifications(boolean isChecked) {
@@ -453,8 +453,10 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
         setSetting(Settings.ENABLED_ASSISTANCE_NOTIFICATION, isChecked);
         if (!isAssistantNotificationEnabled()){
             //cancel alarm and notification
+            getSuggestionsController().cancelAlarmAndNotification();
         }else{
             //schedule alarm
+            getSuggestionsController().scheduleAlarm();
         }
     }
 
