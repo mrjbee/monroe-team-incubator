@@ -16,14 +16,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
-    <ImageButton
-        android:id="@+id/start_clock_btn"
-        android:background="@drawable/time_btn_pushed"
-        android:layout_width="33dp"
-        android:layout_height="33dp"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@id/start_setting_btn"/>
-
 
     <org.monroe.team.smooker.app.android.view.LeftToRightTextView
         android:layout_centerVertical="true"

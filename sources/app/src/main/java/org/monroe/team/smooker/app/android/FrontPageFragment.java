@@ -14,7 +14,6 @@ import org.monroe.team.android.box.app.ui.animation.apperrance.DefaultAppearance
 import org.monroe.team.android.box.data.DataProvider;
 import org.monroe.team.android.box.event.Event;
 import org.monroe.team.corebox.utils.Closure;
-import org.monroe.team.smooker.app.NextSmokeTimerActivity;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.android.view.LeftToRightTextView;
 import org.monroe.team.smooker.app.uc.PrepareSmokeQuitDetails;
@@ -31,7 +30,6 @@ import static org.monroe.team.android.box.app.ui.animation.apperrance.Appearance
 public abstract class FrontPageFragment extends FragmentSupport<SmookerApplication> {
 
     private AppearanceController changeCountAC;
-    private AppearanceController clockBtnAC;
     private AppearanceController changeCountDescriptionAC;
     private Boolean isActiveCreation = null;
 
@@ -51,11 +49,6 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
             require_view(R.id.add_btn);
             require_view(R.id.today_value_description_text);
 
-            clockBtnAC = animateAppearance(view(R.id.start_clock_btn), scale(1f, 0f))
-                    .showAnimation(duration_constant(300), interpreter_overshot())
-                    .hideAnimation(duration_constant(200), interpreter_decelerate(0.4f))
-                    .hideAndInvisible()
-                    .build();
 
             changeCountAC = animateAppearance(view(R.id.today_value_text), alpha(1f, 0f))
                     .showAnimation(duration_constant(100), interpreter_decelerate(0.4f))
@@ -67,7 +60,6 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
                     .hideAnimation(duration_constant(100), interpreter_decelerate(0.8f))
                     .build();
 
-            clockBtnAC.showWithoutAnimation();
             changeCountAC.showWithoutAnimation();
             changeCountDescriptionAC.showWithoutAnimation();
             fetchSmokeDetails(true, false);
@@ -78,12 +70,6 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
                 @Override
                 public void onClick(View v) {
                     application().addSmoke();
-                }
-            });
-            view(R.id.start_clock_btn).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(getActivity(), NextSmokeTimerActivity.class));
                 }
             });
         }
@@ -253,30 +239,7 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
         application().data_smokeQuit().fetch(true, new DataProvider.FetchObserver<PrepareSmokeQuitDetails.Details>() {
             @Override
             public void onFetch(PrepareSmokeQuitDetails.Details details) {
-                boolean isSmokeQuitEnabled = details.todayLimit != -1;
-                if (animation){
-                    if (isSmokeQuitEnabled){
-                        clockBtnAC.showAndCustomize(new AppearanceController.AnimatorCustomization() {
-                            @Override
-                            public void customize(Animator animator) {
-                                animator.setStartDelay(200);
-                            }
-                        });
-                    }else {
-                        clockBtnAC.hideAndCustomize(new AppearanceController.AnimatorCustomization() {
-                            @Override
-                            public void customize(Animator animator) {
-                                animator.setStartDelay(200);
-                            }
-                        });
-                    }
-                }else {
-                    if (isSmokeQuitEnabled){
-                        clockBtnAC.showWithoutAnimation();
-                    }else {
-                        clockBtnAC.hideWithoutAnimation();
-                    }
-                }
+
             }
 
             @Override

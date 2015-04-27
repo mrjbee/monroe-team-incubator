@@ -133,10 +133,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Transperent.NoAnimation" >
         </activity>
-        <activity
-            android:name=".NextSmokeTimerActivity"
-            android:label="@string/title_activity_next_smoke_timer" >
-        </activity>
     </application>
 
 </manifest>
