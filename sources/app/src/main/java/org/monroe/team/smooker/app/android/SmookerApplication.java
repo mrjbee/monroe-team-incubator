@@ -442,6 +442,21 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
         return settings().get(Settings.ENABLED_STICKY_NOTIFICATION);
     }
 
+    public boolean isAssistantNotificationEnabled() {
+        return settings().get(Settings.ENABLED_ASSISTANCE_NOTIFICATION);
+    }
+
+    public void enableAssistantNotifications(boolean isChecked) {
+        if (isAssistantNotificationEnabled() == isChecked){
+            return;
+        }
+        setSetting(Settings.ENABLED_ASSISTANCE_NOTIFICATION, isChecked);
+        if (!isAssistantNotificationEnabled()){
+            //cancel alarm and notification
+        }else{
+            //schedule alarm
+        }
+    }
 
     public static interface OnImageLoadedObserver {
         public void onResult(String imageId, Bitmap bitmap);

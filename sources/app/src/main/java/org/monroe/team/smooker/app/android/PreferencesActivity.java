@@ -7,6 +7,7 @@ import android.widget.Switch;
 
 import org.monroe.team.android.box.app.ActivitySupport;
 import org.monroe.team.smooker.app.R;
+import org.monroe.team.smooker.app.common.constant.Settings;
 
 public class PreferencesActivity extends ActivitySupport<SmookerApplication>{
 
@@ -26,11 +27,21 @@ public class PreferencesActivity extends ActivitySupport<SmookerApplication>{
                 application().updateStickyNotification(isChecked);
             }
         });
+
+        view(R.id.assistant_notification_switch, Switch.class).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                application().enableAssistantNotifications(isChecked);
+            }
+        });
     }
+
+
 
     @Override
     protected void onResume() {
         super.onResume();
         view(R.id.sticky_notification_switch, Switch.class).setChecked(application().isStickyNotificationEnabled());
+        view(R.id.assistant_notification_switch, Switch.class).setChecked(application().isAssistantNotificationEnabled());
     }
 }

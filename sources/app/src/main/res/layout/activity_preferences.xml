@@ -81,7 +81,7 @@
 
 
                 <TextView
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="15dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/menu_notifications"
@@ -103,6 +103,16 @@
                     style="@style/Text.Setup.Section.Description"
                     android:text="@string/ui_page_sticky_notif_about"
                     />
+
+                <Switch
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/assistant_notification_switch"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Text.Setup.Section"
+                    android:text="@string/ui_page_assistance_notif_title"
+                    />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
