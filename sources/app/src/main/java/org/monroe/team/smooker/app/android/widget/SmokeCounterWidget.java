@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 import org.monroe.team.smooker.app.R;
-import org.monroe.team.smooker.app.actors.ActorSmoker;
+import org.monroe.team.smooker.app.actors.ActorNotification;
 import org.monroe.team.smooker.app.common.constant.Events;
 import org.monroe.team.smooker.app.uc.underreview.GetStatisticState;
 import org.monroe.team.smooker.app.android.SmookerApplication;
@@ -78,7 +78,7 @@ public class SmokeCounterWidget extends AppWidgetProvider {
         views.setTextViewText(R.id.ws_count_text, countText);
         views.setTextViewText(R.id.ws_count_description_text, descriptionText);
         views.setOnClickPendingIntent(R.id.ws_add_btn,
-                ActorSmoker.create(context, ActorSmoker.ADD_SMOKE).buildDefault());
+                ActorNotification.create(context, ActorNotification.ADD_SMOKE).buildDefault());
      //   views.setOnClickPendingIntent(R.id.widget_root,
      //           DashboardActivity.openDashboard(context));
         return views;

@@ -114,6 +114,11 @@ public class TilesFragment extends FrontPageFragment {
     @Override
     public void onActivityCreatedSafe(Bundle savedInstanceState) {
         setupTilesControllers();
+        beforeTimerAC = animateAppearance(view(R.id.clock_before_value_panel), alpha(1f, 0f))
+                .showAnimation(duration_constant(300), interpreter_accelerate_decelerate())
+                .hideAnimation(duration_constant(300), interpreter_accelerate_decelerate())
+                .hideAndGone()
+                .hideAndInvisible().build();
     }
 
 
@@ -315,11 +320,6 @@ public class TilesFragment extends FrontPageFragment {
                 .hideAnimation(duration_constant(300), interpreter_accelerate(0.4f))
                 .hideAndInvisible().build();
 
-        beforeTimerAC = animateAppearance(view(R.id.clock_before_value_panel), alpha(1f, 0f))
-                .showAnimation(duration_constant(300), interpreter_accelerate_decelerate())
-                .hideAnimation(duration_constant(300), interpreter_accelerate_decelerate())
-                .hideAndGone()
-                .hideAndInvisible().build();
 
 
         timePanelAC = combine(

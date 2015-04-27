@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import org.monroe.team.smooker.app.R;
-import org.monroe.team.smooker.app.actors.ActorSmoker;
+import org.monroe.team.smooker.app.actors.ActorNotification;
 import org.monroe.team.smooker.app.common.SupportActivity;
 
 
@@ -54,15 +54,15 @@ public class SmokeBreakActivity extends SupportActivity {
         Intent intent = null;
         switch (id){
             case R.id.sb_option_postpone_layout:{
-                intent = ActorSmoker.create(this, ActorSmoker.POSTPONE_SMOKE).toast().buildIntent();
+                intent = ActorNotification.create(this, ActorNotification.POSTPONE_SMOKE).toast().buildIntent();
                 break;
             }
             case R.id.sb_option_skip_layout:{
-                intent = ActorSmoker.create(this, ActorSmoker.SKIP_SMOKE).toast().buildIntent();
+                intent = ActorNotification.create(this, ActorNotification.SKIP_SMOKE).toast().buildIntent();
                 break;
             }
             case R.id.sb_option_smoke_layout:{
-                intent = ActorSmoker.create(this, ActorSmoker.ADD_SMOKE).toast().buildIntent();
+                intent = ActorNotification.create(this, ActorNotification.ADD_SMOKE).toast().buildIntent();
                 break;
             }
         }

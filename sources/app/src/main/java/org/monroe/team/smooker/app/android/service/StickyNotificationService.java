@@ -8,13 +8,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.widget.RemoteViews;
+import android.util.Pair;
 
+import org.monroe.team.android.box.app.ApplicationSupport;
+import org.monroe.team.android.box.data.Data;
 import org.monroe.team.corebox.utils.Closure;
 import org.monroe.team.smooker.app.R;
-import org.monroe.team.smooker.app.actors.ActorSmoker;
+import org.monroe.team.smooker.app.actors.ActorNotification;
+import org.monroe.team.smooker.app.android.FrontPageFragment;
 import org.monroe.team.smooker.app.common.constant.Events;
 import org.monroe.team.android.box.event.Event;
+import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 import org.monroe.team.smooker.app.uc.underreview.GetStatisticState;
 import org.monroe.team.smooker.app.android.SmookerApplication;
 
@@ -35,40 +39,45 @@ public class StickyNotificationService extends Service {
                     NotificationRemoteControl.NOTIFICATION_ID,
                     notification.createNotification(getNotificationInitialText()));
 
-            Event.subscribeOnEvent(getApplicationContext(),this, Events.SMOKE_COUNT_CHANGED,new Closure<Integer, Void>() {
+            SmookerApplication.instance.data_smokeDetails().addDataChangeObserver(new Data.DataChangeObserver<PrepareTodaySmokeDetails.TodaySmokeDetails>() {
                 @Override
-                public Void execute(Integer smokeCount) {
-                    updateText();
-                    return null;
+                public void onDataInvalid() {
+                    fetchData();
                 }
-            });
 
-            Event.subscribeOnEvent(getApplicationContext(), this, Events.QUIT_SCHEDULE_UPDATED, new Closure<Boolean, Void>() {
                 @Override
-                public Void execute(Boolean arg) {
-                    updateText();
-                    return null;
+                public void onData(PrepareTodaySmokeDetails.TodaySmokeDetails todaySmokeDetails) {
+
                 }
             });
+            fetchData();
 
         }
         return super.onStartCommand(intent, flags, startId);
     }
 
-    private void updateText() {
-        GetStatisticState.StatisticState state = SmookerApplication.instance.model().execute(GetStatisticState.class,new GetStatisticState.StatisticRequest().with(
-                GetStatisticState.StatisticName.SMOKE_TODAY,
-                GetStatisticState.StatisticName.QUIT_SMOKE));
-        String text = generateNotificationStringFor(state.getTodaySmokeDates().size());
-        if (state.getTodaySmokeLimit() != null && state.getTodaySmokeLimit() > -1){
-            int delta = state.getTodaySmokeLimit() - state.getTodaySmokeDates().size();
-            if (delta >= 0){
-                text = getString(R.string.pattern_left_for_today_with_value,delta);
-            } else {
-                text = getString(R.string.pattern_over_limit_for_today_with_value, Math.abs(delta));
+    private void fetchData() {
+        SmookerApplication.instance.data_smokeDetails().fetch(true, new Data.FetchObserver<PrepareTodaySmokeDetails.TodaySmokeDetails>() {
+            @Override
+            public void onFetch(PrepareTodaySmokeDetails.TodaySmokeDetails todaySmokeDetails) {
+                Pair<String,String> stat = FrontPageFragment.toSimpleString(SmookerApplication.instance, todaySmokeDetails);
+                setText(stat.second+" "+stat.first);
             }
-        }
-        setText(text);
+
+            @Override
+            public void onError(Data.FetchError fetchError) {
+                new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                        }
+                        fetchData();
+                    }
+                }.start();
+            }
+        });
     }
 
     private String generateNotificationStringFor(Integer smokeCount) {
@@ -105,31 +114,16 @@ public class StickyNotificationService extends Service {
 
         private Notification createNotification(String text) {
 
-            // Using RemoteViews to bind custom layouts into Notification
-            RemoteViews remoteViews = new RemoteViews(getPackageName(),
-                    R.layout.remote_controll_notification);
-            //PendingIntent pIntent = DashboardActivity.openDashboard(getApplicationContext());
-
-            PendingIntent addBtnIntent = ActorSmoker.create(getApplicationContext(), ActorSmoker.ADD_SMOKE).buildDefault();
-
-
             NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext())
-                    // Set Icon
                     .setSmallIcon(R.drawable.notif_orange_small)
-                            // Set PendingIntent into Notification
-                    .setContentIntent(addBtnIntent)
-                    .setContentText(text)
-                    .setContentTitle(getString(R.string.hit_for_smoke_log))
-                            // Set RemoteViews into Notification
-                    .setContent(remoteViews);
-
-            remoteViews.setTextViewText(R.id.cn_title_text,text);
-
-
-            PendingIntent closeBtnIntent = ActorSmoker.CLOSE_STICKY_NOTIFICATION.createPendingIntent(getApplicationContext());
-
-         //   remoteViews.setOnClickPendingIntent(R.id.cn_add_btn,pIntent);
-            remoteViews.setOnClickPendingIntent(R.id.cn_close_btn,closeBtnIntent);
+                    .setContentIntent(ActorNotification.ADD_SMOKE.createPendingIntent(getApplicationContext()))
+                    .setContentTitle(text)
+                    .setContentText(getString(R.string.hit_for_smoke_log))
+                    .setShowWhen(false)
+                    .setWhen(0)
+                    .setOngoing(true)
+                    .addAction(0,"Dashboard", ActorNotification.OPEN_DASHBOARD.createPendingIntent(getApplicationContext()))
+                    .addAction(0,"Close notification", ActorNotification.CLOSE_STICKY_NOTIFICATION.createPendingIntent(getApplicationContext()));
 
             return builder.build();
         }

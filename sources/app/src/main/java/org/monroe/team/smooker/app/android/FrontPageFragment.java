@@ -1,8 +1,11 @@
 package org.monroe.team.smooker.app.android;
 
 import android.animation.Animator;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.View;
 
 import org.monroe.team.android.box.app.FragmentSupport;
@@ -132,24 +135,10 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
     }
 
     private void updateSmokeStatistic(boolean animate, PrepareTodaySmokeDetails.TodaySmokeDetails smokeStatistic) {
-        final String newCountText = Integer.toString(smokeStatistic.specialCount);
-        String newDescriptionText = "";
+        Pair<String,String> statisticStrings = toSimpleString(getActivity(), smokeStatistic);
 
-        switch (smokeStatistic.type){
-            case NO_LIMIT:
-                newDescriptionText = getString(R.string.today_smokes);
-                break;
-            case NO_LEFT:
-            case BEFORE_LIMIT:
-                newDescriptionText = getString(R.string.left_for_today);
-                break;
-            case AFTER_LIMIT:
-                newDescriptionText = getString(R.string.over_limit);
-                break;
-            default:
-                throw new UnsupportedOperationException();
-        }
-
+        String newDescriptionText = statisticStrings.second;
+        final String newCountText = statisticStrings.first;
         if (!animate) {
             view_text(R.id.today_value_text).setText(newCountText);
             view_text(R.id.today_value_description_text).setText(newDescriptionText);
@@ -211,6 +200,27 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
             });
         }
      }
+
+    public static Pair<String,String> toSimpleString(Context context, PrepareTodaySmokeDetails.TodaySmokeDetails smokeStatistic) {
+       final String newCountText = Integer.toString(smokeStatistic.specialCount);
+       String newDescriptionText = "";
+
+        switch (smokeStatistic.type){
+            case NO_LIMIT:
+                newDescriptionText = context.getString(R.string.today_smokes);
+                break;
+            case NO_LEFT:
+            case BEFORE_LIMIT:
+                newDescriptionText = context.getString(R.string.left_for_today);
+                break;
+            case AFTER_LIMIT:
+                newDescriptionText = context.getString(R.string.over_limit);
+                break;
+            default:
+                throw new UnsupportedOperationException();
+        }
+        return new Pair<>(newCountText, newDescriptionText);
+    }
 
     @Override
     final public void onStart() {

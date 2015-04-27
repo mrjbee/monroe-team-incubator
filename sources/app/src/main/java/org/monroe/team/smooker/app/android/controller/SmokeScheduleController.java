@@ -11,7 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import org.monroe.team.android.box.services.SettingManager;
 import org.monroe.team.corebox.utils.Closure;
 import org.monroe.team.smooker.app.R;
-import org.monroe.team.smooker.app.actors.ActorSmoker;
+import org.monroe.team.smooker.app.actors.ActorNotification;
 import org.monroe.team.smooker.app.actors.ActorSystemAlarm;
 import org.monroe.team.smooker.app.common.constant.Events;
 import org.monroe.team.smooker.app.common.SmookerModel;
@@ -71,9 +71,9 @@ public class SmokeScheduleController {
         NotificationManager manager = smookerModel.usingService(NotificationManager.class);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
-        PendingIntent skipSmoke = ActorSmoker.create(context, ActorSmoker.SKIP_SMOKE).buildDefault();
-        PendingIntent addSmoke = ActorSmoker.create(context, ActorSmoker.ADD_SMOKE).buildDefault();
-        PendingIntent laterSmoke = ActorSmoker.create(context, ActorSmoker.POSTPONE_SMOKE).buildDefault();
+        PendingIntent skipSmoke = ActorNotification.create(context, ActorNotification.SKIP_SMOKE).buildDefault();
+        PendingIntent addSmoke = ActorNotification.create(context, ActorNotification.ADD_SMOKE).buildDefault();
+        PendingIntent laterSmoke = ActorNotification.create(context, ActorNotification.POSTPONE_SMOKE).buildDefault();
 
 
 

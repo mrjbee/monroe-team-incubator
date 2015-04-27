@@ -1,14 +1,10 @@
 package org.monroe.team.smooker.app.android;
 
-import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.support.v4.app.NotificationCompat;
 import android.util.Pair;
 
 import org.monroe.team.android.box.BitmapUtils;
@@ -23,10 +19,8 @@ import org.monroe.team.corebox.app.Model;
 import org.monroe.team.corebox.log.L;
 import org.monroe.team.corebox.services.BackgroundTaskManager;
 import org.monroe.team.corebox.utils.DateUtils;
-import org.monroe.team.smooker.app.actors.ActorSmoker;
 import org.monroe.team.smooker.app.android.controller.SmokeQuitCalendarDisplayManager;
 import org.monroe.team.smooker.app.android.controller.SmokeScheduleController;
-import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.actors.ActorSystemAlarm;
 import org.monroe.team.smooker.app.common.SmookerModel;
 import org.monroe.team.smooker.app.common.constant.Events;
@@ -52,7 +46,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
