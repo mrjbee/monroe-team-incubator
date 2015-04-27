@@ -1,23 +1,17 @@
 package org.monroe.team.smooker.app.actors;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 
 import org.monroe.team.android.box.actor.Actor;
 import org.monroe.team.android.box.actor.ActorAction;
-import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.android.FrontPageActivity;
 import org.monroe.team.smooker.app.android.PreferencesActivity;
 import org.monroe.team.smooker.app.android.SmookerApplication;
 import org.monroe.team.android.box.actor.ActorActionBuilder;
-import static org.monroe.team.android.box.actor.ActorActionBuilder.requested;
 
 import org.monroe.team.smooker.app.common.constant.SmokeCancelReason;
-import org.monroe.team.smooker.app.uc.underreview.AddSmoke;
-import org.monroe.team.smooker.app.uc.underreview.CancelSmoke;
 
 public class ActorNotification extends Actor {
 
@@ -62,26 +56,20 @@ public class ActorNotification extends Actor {
             }
         });
 
-        toastText = reactOn(SKIP_SMOKE, intent, toastText, new Reaction<String>(){
+
+        reactOn(SKIP_SMOKE, intent, new SilentReaction() {
             @Override
-            public String react(Intent intent) {
-                SmookerApplication.instance.model().execute(CancelSmoke.class, SmokeCancelReason.SKIP);
-                return context.getString(R.string.pattern_one_smoke_saved_with_value,
-                        SmookerApplication.instance.getSmokePriceString());
+            protected void reactSilent(Intent intent) {
+                SmookerApplication.instance.skipSmoke(SmokeCancelReason.SKIP);
             }
         });
 
-        toastText = reactOn(POSTPONE_SMOKE, intent, toastText, new Reaction<String>(){
+        reactOn(POSTPONE_SMOKE, intent, new SilentReaction() {
             @Override
-            public String react(Intent intent) {
-                SmookerApplication.instance.model().execute(CancelSmoke.class, SmokeCancelReason.POSTPONE);
-                return context.getString(R.string.smoke_rescheduled);
+            protected void reactSilent(Intent intent) {
+                SmookerApplication.instance.skipSmoke(SmokeCancelReason.POSTPONE);
             }
         });
-
-        if (requested("toast",intent) && toastText != null){
-            Toast.makeText(context, toastText,Toast.LENGTH_LONG).show();
-        }
 
     }
 

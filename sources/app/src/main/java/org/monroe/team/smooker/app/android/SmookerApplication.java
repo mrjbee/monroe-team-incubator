@@ -26,8 +26,10 @@ import org.monroe.team.smooker.app.common.SmookerModel;
 import org.monroe.team.smooker.app.common.constant.Events;
 import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.constant.SetupPage;
+import org.monroe.team.smooker.app.common.constant.SmokeCancelReason;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
 import org.monroe.team.smooker.app.uc.AddSmoke;
+import org.monroe.team.smooker.app.uc.CancelSmoke;
 import org.monroe.team.smooker.app.uc.GetDaySmokeSchedule;
 import org.monroe.team.smooker.app.uc.GetSmokeQuitDetails;
 import org.monroe.team.smooker.app.uc.GetSmokeQuitSchedule;
@@ -458,6 +460,23 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
             //schedule alarm
             getSuggestionsController().scheduleAlarm();
         }
+    }
+
+    public void skipSmoke(SmokeCancelReason reason) {
+        model().execute(CancelSmoke.class,reason,new Model.BackgroundResultCallback<Void>() {
+            @Override
+            public void onResult(Void response) {
+                model().usingService(DataManger.class).invalidate(GetDaySmokeSchedule.SmokeSuggestion.class);
+                data_smokeSchedule().invalidate();
+                data_smokeClock().invalidate();
+            }
+
+            @Override
+            public void onFails(Throwable e) {
+                debug_exception(e);
+                warn(CancelSmoke.class);
+            }
+        });
     }
 
     public static interface OnImageLoadedObserver {

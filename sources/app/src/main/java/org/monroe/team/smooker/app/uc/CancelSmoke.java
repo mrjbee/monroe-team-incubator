@@ -1,4 +1,4 @@
-package org.monroe.team.smooker.app.uc.underreview;
+package org.monroe.team.smooker.app.uc;
 
 import org.monroe.team.android.box.db.TransactionUserCase;
 import org.monroe.team.android.box.services.EventMessenger;
@@ -17,7 +17,6 @@ public class CancelSmoke extends TransactionUserCase<SmokeCancelReason, Void, Da
     @Override
     protected Void transactionalExecute(SmokeCancelReason reason, Dao dao) {
         dao.addSmokeCancellation(reason);
-        using(EventMessenger.class).send(Events.SMOKE_CANCELED,reason);
         return null;
     }
 
