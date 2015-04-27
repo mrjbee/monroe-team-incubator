@@ -45,48 +45,85 @@
                     android:src="@drawable/clock_value"
                     android:visibility="visible"/>
                 <RelativeLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:id="@+id/relativeLayout">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/past_after_last_smoke"
-                        android:textSize="@dimen/text_size_caption_small"
-                        android:textColor="@color/font.dark.lighter"
-                        android:id="@+id/clock_after_text"
-                        android:layout_centerHorizontal="true"
-                        />
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_below="@+id/clock_after_text"
-                        android:layout_centerHorizontal="true">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0 days"
-                            android:textSize="@dimen/text_size_normal"
-                            android:textColor="@color/font.dark.lighter"
-                            android:id="@+id/clock_day_value"
-                            android:layout_below="@+id/clock_after_text"
-                            />
+                    <LinearLayout
+                        android:id="@+id/clock_since_value_panel"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                         <org.monroe.team.smooker.app.android.view.TextViewExt
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="00:00:00"
+                            android:text="120"
+                            android:textSize="@dimen/text_size_caption_big"
                             android:textStyle="bold"
-                            android:textSize="@dimen/text_size_caption_small"
                             android:textColor="@color/font.dark.lighter"
-                            android:id="@+id/clock_time_value"
+                            android:id="@+id/clock_since_value"
+                            android:layout_centerHorizontal="true"
+                            />
+
+                        <TextView
                             android:layout_marginLeft="5dp"
-                            android:layout_below="@+id/clock_after_text"
-                            android:layout_alignBaseline="@id/clock_day_value"
-                            android:layout_toRightOf="@id/clock_day_value"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="min"
+                            android:textSize="@dimen/text_size_caption_small"
+                            android:fontFamily="sans-serif-light"
+                            android:textColor="@color/font.dark.lighter2"
+                            android:id="@+id/clock_since_caption"
+                            android:layout_centerHorizontal="true"
+                            />
+                    </LinearLayout>
+                    <TextView
+                        android:layout_below="@+id/clock_since_value_panel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="since last smoke"
+                        android:fontFamily="sans-serif-light"
+                        android:textSize="@dimen/text_size_caption_small"
+                        android:textColor="@color/font.dark.lighter2"
+                        android:id="@+id/clock_since_description"
+                        android:layout_centerHorizontal="true"
+                        />
+                    <LinearLayout
+                        android:layout_marginTop="20dp"
+                        android:layout_below="@+id/clock_since_description"
+                        android:id="@+id/clock_before_value_panel"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <org.monroe.team.smooker.app.android.view.TextViewExt
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="120"
+                            android:textSize="@dimen/text_size_normal"
+                            android:fontFamily="sans-serif-light"
+                            android:textColor="@color/font.dark.lighter2"
+                            android:textStyle="italic"
+                            android:id="@+id/clock_before_value"
+                            android:layout_centerHorizontal="true"
+                            />
+
+                        <TextView
+                            android:layout_marginLeft="3dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="min before next"
+                            android:textSize="@dimen/text_size_normal"
+                            android:fontFamily="sans-serif-light"
+                            android:textColor="@color/font.dark.lighter2"
+                            android:textStyle="italic"
+                            android:id="@+id/clock_before_caption"
+                            android:layout_centerHorizontal="true"
+                            />
                     </LinearLayout>
                 </RelativeLayout>
 

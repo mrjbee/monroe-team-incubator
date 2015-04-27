@@ -28,6 +28,7 @@ import org.monroe.team.android.box.app.ui.GetViewImplementation;
 import org.monroe.team.android.box.app.ui.SlideTouchGesture;
 import org.monroe.team.android.box.app.ui.animation.AnimatorListenerSupport;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceController;
+import org.monroe.team.android.box.data.Data;
 import org.monroe.team.android.box.data.DataProvider;
 import org.monroe.team.android.box.utils.DisplayUtils;
 import org.monroe.team.corebox.utils.Closure;
@@ -50,6 +51,7 @@ import org.monroe.team.smooker.app.uc.PreparePeriodStatistic;
 import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
 import org.monroe.team.smooker.app.uc.PrepareSmokeQuitDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
+import org.monroe.team.smooker.app.uc.PrepareTodaySmokeSchedule;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -90,6 +92,7 @@ public class TilesFragment extends FrontPageFragment {
     AppearanceController addSmokeBtnAC;
     AppearanceController timePanelAC;
 
+
     float height_px_close_dash;
     float height_px_tile;
 
@@ -99,6 +102,7 @@ public class TilesFragment extends FrontPageFragment {
 
     private Timer clockTimer;
     private long msSinceLastSmoke = -1;
+    private AppearanceController beforeTimerAC;
 
     @Override
     protected int getLayoutId() {
@@ -116,6 +120,9 @@ public class TilesFragment extends FrontPageFragment {
     protected void onInvalidData(Class invalidDataClass) {
         if (PrepareSmokeClockDetails.SmokeClockDetails.class == invalidDataClass) {
             fetchClockData(true);
+        }
+        if (PrepareTodaySmokeSchedule.TodaySmokeSchedule.class == invalidDataClass){
+            fetchSmokeSqedule();
         }
         getTileController(currentTileIndex).onInvalidData(invalidDataClass);
     }
@@ -135,6 +142,25 @@ public class TilesFragment extends FrontPageFragment {
         if (currentTileIndex != -1) {
             getTileController(currentTileIndex).onResume();
         }
+        fetchSmokeSqedule();
+    }
+
+    private void fetchSmokeSqedule() {
+        application().data_smokeSchedule().fetch(true, new Data.FetchObserver<PrepareTodaySmokeSchedule.TodaySmokeSchedule>() {
+            @Override
+            public void onFetch(PrepareTodaySmokeSchedule.TodaySmokeSchedule todaySmokeSchedule) {
+                if(todaySmokeSchedule.scheduledSmokes.size() > 0){
+                    beforeTimerAC.show();
+                }else {
+                    beforeTimerAC.hide();
+                }
+            }
+
+            @Override
+            public void onError(Data.FetchError fetchError) {
+
+            }
+        });
     }
 
     private void fetchClockData(final boolean animation) {
@@ -157,21 +183,31 @@ public class TilesFragment extends FrontPageFragment {
     }
 
     private synchronized void updateClock(final boolean animation) {
-        long[] ls = DateUtils.splitPeriod(DateUtils.now(), new Date(msSinceLastSmoke));
+        long msPast = DateUtils.now().getTime() - new Date(msSinceLastSmoke).getTime();
+        if (msPast<0){
+            msPast = 0;
+        }
+        String sinceDescription = "min";
+        long sinceValue = DateUtils.asMinutes(msPast);
+        if (sinceValue > 600 ){
+            sinceDescription = "hours";
+            sinceValue = DateUtils.asHours(msPast);
+        }
 
-        final String timeString = twoDigitString(ls[1]) + ":" + twoDigitString(ls[2]);
-        final String daysString = ls[0] + " " + getString(R.string.days);
+        final long finalSinceValue = sinceValue;
+        final String finalSinceDescription = sinceDescription;
 
         long ms = System.currentTimeMillis() - msSinceLastSmoke;
         long delta = ms % (60 * 1000);
         final float angle = 360 * delta / (60 * 1000);
+
         runLastOnUiThread(new Runnable() {
             @Override
             public void run() {
                 view(R.id.start_clock_value_panel, RoundSegmentImageView.class).setAngle(angle);
                 view(R.id.start_clock_value_panel, RoundSegmentImageView.class).invalidate();
-                view_text(R.id.clock_day_value).setText(daysString);
-                view(R.id.clock_time_value, TextViewExt.class).setText(timeString, animation);
+                view_text(R.id.clock_since_caption).setText(finalSinceDescription);
+                view(R.id.clock_since_value, TextViewExt.class).setText(Long.toString(finalSinceValue), animation);
             }
         });
     }
@@ -274,6 +310,12 @@ public class TilesFragment extends FrontPageFragment {
                 .hideAnimation(duration_constant(300), interpreter_accelerate(0.4f))
                 .hideAndInvisible().build();
 
+        beforeTimerAC = animateAppearance(view(R.id.clock_before_value_panel), alpha(1f, 0f))
+                .showAnimation(duration_constant(300), interpreter_accelerate_decelerate())
+                .hideAnimation(duration_constant(300), interpreter_accelerate_decelerate())
+                .hideAndGone()
+                .hideAndInvisible().build();
+
 
         timePanelAC = combine(
 
@@ -306,6 +348,7 @@ public class TilesFragment extends FrontPageFragment {
         tileCaptionTextChangeAC.showWithoutAnimation();
         settingAlternativeBtnAC.hideWithoutAnimation();
         timePanelAC.showWithoutAnimation();
+        beforeTimerAC.hideWithoutAnimation();
         setupDashCloseState();
 
         setupTileBoard();
