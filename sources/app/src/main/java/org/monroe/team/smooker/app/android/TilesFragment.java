@@ -102,6 +102,7 @@ public class TilesFragment extends FrontPageFragment {
 
     private Timer clockTimer;
     private long msSinceLastSmoke = -1;
+    private long msBeforeNextSmoke = -1;
     private AppearanceController beforeTimerAC;
 
     @Override
@@ -151,8 +152,10 @@ public class TilesFragment extends FrontPageFragment {
             public void onFetch(PrepareTodaySmokeSchedule.TodaySmokeSchedule todaySmokeSchedule) {
                 if(todaySmokeSchedule.scheduledSmokes.size() > 0){
                     beforeTimerAC.show();
+                    msBeforeNextSmoke = todaySmokeSchedule.scheduledSmokes.get(0).getTime();
                 }else {
                     beforeTimerAC.hide();
+                    msBeforeNextSmoke = -1;
                 }
             }
 
@@ -184,6 +187,7 @@ public class TilesFragment extends FrontPageFragment {
 
     private synchronized void updateClock(final boolean animation) {
         long msPast = DateUtils.now().getTime() - new Date(msSinceLastSmoke).getTime();
+        final long msBefore = DateUtils.asMinutes(Math.max(0, msBeforeNextSmoke - DateUtils.now().getTime()));
         if (msPast<0){
             msPast = 0;
         }
@@ -208,6 +212,7 @@ public class TilesFragment extends FrontPageFragment {
                 view(R.id.start_clock_value_panel, RoundSegmentImageView.class).invalidate();
                 view_text(R.id.clock_since_caption).setText(finalSinceDescription);
                 view(R.id.clock_since_value, TextViewExt.class).setText(Long.toString(finalSinceValue), animation);
+                view(R.id.clock_before_value, TextViewExt.class).setText(Long.toString(msBefore), false);
             }
         });
     }
