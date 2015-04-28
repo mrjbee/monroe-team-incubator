@@ -62,9 +62,9 @@
 
     <string name="total_smokes">Усього</string>
     <string name="spend_money">Витрачено</string>
-    <string name="menu_last_smoke">Видалити останній перекур</string>
+    <string name="menu_last_smoke">Управління даними</string>
     <string name="menu_quit_program">Ассистент перекурів …</string>
-    <string name="menu_notifications">Повідомлення …</string>
+    <string name="menu_notifications">Повідомлення</string>
     <string name="menu_general_settings">Загальні налаштування …</string>
     <string name="today_smokes">перекурів сьогодні</string>
     <string name="today_per_average_smokes">Cереднє</string>

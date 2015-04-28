@@ -63,9 +63,8 @@
 
     <string name="total_smokes">Всего</string>
     <string name="spend_money">Потрачено</string>
-    <string name="menu_last_smoke">Удалить последний перекур</string>
     <string name="menu_quit_program">Ассистент перекуров …</string>
-    <string name="menu_notifications">Уведомления …</string>
+    <string name="menu_notifications">Уведомления</string>
     <string name="menu_general_settings">Общие настройки …</string>
     <string name="today_smokes">перекуров сегодня</string>
     <string name="today_per_average_smokes">Cреднее</string>
@@ -141,5 +140,6 @@
     <string name="smoke_breaks_on_this_date">Перекуров в этот день</string>
     <string name="smoke_limit">Лимит перекуров в этот день</string>
     <string name="limit_is_exceeded">Лимит перекуров превышен</string>
+    <string name="menu_last_smoke">Управление данными</string>
 
 </resources>

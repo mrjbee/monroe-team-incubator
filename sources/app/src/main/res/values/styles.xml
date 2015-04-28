@@ -23,19 +23,16 @@
 
 
     <style name="Text.Setup.Sub.Caption" parent="AppTheme">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">#ff434343</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="Text.Setup.Caption" parent="Text.Setup.Sub.Caption">
+        <item name="android:textColor">#ff2a2a2a</item>
         <item name="android:textSize">22sp</item>
         <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-light</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:shadowColor">#ffffffff</item>
-        <item name="android:shadowDy">2</item>
-        <item name="android:shadowDx">1</item>
-        <item name="android:shadowRadius">1</item>
     </style>
 
     <style name="Text.Setup.Section.Caption" parent="Text.Setup.Sub.Caption">
@@ -51,6 +48,13 @@
     <style name="Text.Setup.Section.Description" parent="Text.Setup.Section">
         <item name="android:textSize">13sp</item>
         <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-light</item>
+    </style>
+
+    <style name="Button.Setup" parent="AppTheme">
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_height">25dp</item>
+        <item name="android:textColor">#ff006db7</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="Text.Choice.Header.Sub.Caption" parent="AppTheme">

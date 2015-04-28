@@ -51,9 +51,9 @@
     <string name="smokes_today" formatted="false">smokes today</string>
     <string name="total_smokes">Total</string>
     <string name="spend_money">Spend money</string>
-    <string name="menu_last_smoke">Remove Last Smoke</string>
+    <string name="menu_last_smoke">Data Options</string>
     <string name="menu_quit_program">Smoke Quit Program …</string>
-    <string name="menu_notifications">Notification Preferences …</string>
+    <string name="menu_notifications">Notification Preferences</string>
     <string name="menu_general_settings">General Preferences …</string>
     <string name="today_smokes">Today smokes</string>
     <string name="today_per_average_smokes">Average</string>

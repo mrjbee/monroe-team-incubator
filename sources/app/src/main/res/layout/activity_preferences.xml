@@ -81,7 +81,7 @@
 
 
                 <TextView
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/menu_notifications"
@@ -123,6 +123,54 @@
                     android:layout_margin="15dp"
                     />
 
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/menu_last_smoke"
+                    style="@style/Text.Setup.Section.Caption"
+                    />
+
+                <Button
+                    android:id="@+id/remove_last_action"
+                    android:layout_width="wrap_content"
+                    android:text="Remove last smoke action ..."
+                    style="@style/Button.Setup"
+                    />
+
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Text.Setup.Section.Description"
+                    android:text="Allows to remove last added, skipped or postponed smoke break"
+                    />
+
+                <Button
+                    android:layout_marginTop="15dp"
+                    android:id="@+id/remove_today_data"
+                    android:layout_width="wrap_content"
+                    android:text="Remove today data ..."
+                    style="@style/Button.Setup"
+                    />
+
+                <Button
+                    android:id="@+id/remove_all_data"
+                    android:layout_width="wrap_content"
+                    android:text="Remove all collected data ..."
+                    style="@style/Button.Setup"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="1px"
+                    android:background="@android:color/darker_gray"
+                    android:layout_below="@+id/qs_end_text"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="15dp"
+                    />
             </LinearLayout>
 
         </ScrollView>

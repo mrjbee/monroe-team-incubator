@@ -41,6 +41,7 @@ import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
 import org.monroe.team.smooker.app.uc.PrepareSmokeQuitDateDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeSchedule;
+import org.monroe.team.smooker.app.uc.RemoveData;
 import org.monroe.team.smooker.app.uc.SetupSmokeQuitProgram;
 
 import java.io.File;
@@ -496,6 +497,28 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
                         doOverNightUpdate();
                     }
                 }.start();
+            }
+        });
+    }
+
+    public void removeData(boolean todayOnly, final ValueObserver<Void> observer) {
+        fetchValue(RemoveData.class,todayOnly,new NoOpValueAdapter<Void>(), new ValueObserver<Void>() {
+            @Override
+            public void onSuccess(Void value) {
+                model().usingService(DataManger.class).invalidate(GetSmokeStatistic.SmokeStatistic.class);
+                model().usingService(DataManger.class).invalidate(GetDaySmokeSchedule.SmokeSuggestion.class);
+                model().usingService(DataManger.class).invalidate(GetSmokeQuitDetails.Details.class);
+
+                model().getTodaySmokeDetailsDataProvider().invalidate();
+                model().getTodaySmokeScheduleDataProvider().invalidate();
+                model().getSmokeClockDataProvider().invalidate();
+                model().getPeriodStatsProvider().invalidate();
+                observer.onSuccess(value);
+            }
+
+            @Override
+            public void onFail(int errorCode) {
+                observer.onFail(errorCode);
             }
         });
     }
