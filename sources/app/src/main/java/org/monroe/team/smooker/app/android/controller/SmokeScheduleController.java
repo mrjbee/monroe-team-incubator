@@ -93,9 +93,9 @@ private final SmookerApplication application;
                 .setSmallIcon(R.drawable.notif_quit_assistance)
                 //.setContentIntent(DashboardActivity.openDashboardWithExtraAction(context, DashboardActivity.ExtraActionName.SMOKE_DECISION))
                 //.setDeleteIntent(skipSmoke)
-                .addAction(R.drawable.notif_cancel_small, getString(R.string.skip_this_time), skipSmoke)
-                .addAction(R.drawable.notif_clock_small, getString(R.string.later_this_time), laterSmoke)
-                .addAction(R.drawable.notif_orange_small, getString(R.string.add_one_smoke), addSmoke);
+                .addAction(0, getString(R.string.skip_this_time), skipSmoke)
+                .addAction(0, getString(R.string.later_this_time), laterSmoke)
+                .addAction(0, getString(R.string.add_one_smoke), addSmoke);
 
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         builder.setSound(alarmSound);
