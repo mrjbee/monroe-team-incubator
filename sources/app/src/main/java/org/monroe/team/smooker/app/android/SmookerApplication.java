@@ -30,6 +30,7 @@ import org.monroe.team.smooker.app.common.constant.SetupPage;
 import org.monroe.team.smooker.app.common.constant.SmokeCancelReason;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
 import org.monroe.team.smooker.app.uc.AddSmoke;
+import org.monroe.team.smooker.app.uc.CancelLastLoggedAction;
 import org.monroe.team.smooker.app.uc.CancelSmoke;
 import org.monroe.team.smooker.app.uc.GetDaySmokeSchedule;
 import org.monroe.team.smooker.app.uc.GetLastAction;
@@ -530,6 +531,28 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
 
     public void getLastLoggedAction(ValueObserver<ActionDetails> valueObserver) {
         fetchValue(GetLastAction.class, null, new NoOpValueAdapter<ActionDetails>(), valueObserver);
+    }
+
+    public void removeLoggedAction(ActionDetails action, final ValueObserver<Void> observer) {
+        fetchValue(CancelLastLoggedAction.class, action, new NoOpValueAdapter<Void>(), new ValueObserver<Void>() {
+            @Override
+            public void onSuccess(Void value) {
+                model().usingService(DataManger.class).invalidate(GetSmokeStatistic.SmokeStatistic.class);
+                model().usingService(DataManger.class).invalidate(GetDaySmokeSchedule.SmokeSuggestion.class);
+
+                model().getTodaySmokeDetailsDataProvider().invalidate();
+                model().getTodaySmokeScheduleDataProvider().invalidate();
+                model().getSmokeClockDataProvider().invalidate();
+                model().getPeriodStatsProvider().invalidate();
+
+                observer.onSuccess(value);
+            }
+
+            @Override
+            public void onFail(int errorCode) {
+                observer.onFail(errorCode);
+            }
+        });
     }
 
     public static interface OnImageLoadedObserver {

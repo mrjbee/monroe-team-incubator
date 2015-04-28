@@ -13,6 +13,8 @@ import org.monroe.team.android.box.app.ApplicationSupport;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.uc.common.ActionDetails;
 
+import java.text.DateFormat;
+
 public class PreferencesActivity extends ActivitySupport<SmookerApplication>{
 
     @Override
@@ -86,11 +88,40 @@ public class PreferencesActivity extends ActivitySupport<SmookerApplication>{
                 view(R.id.remove_last_action).setVisibility(View.INVISIBLE);
                 application().getLastLoggedAction(new ApplicationSupport.ValueObserver<ActionDetails>(){
                     @Override
-                    public void onSuccess(ActionDetails value) {
+                    public void onSuccess(final ActionDetails action) {
                         view(R.id.remove_last_action).setVisibility(View.VISIBLE);
-                        if (value == null){
+                        if (action == null){
                             Toast.makeText(application(),"No action was done today! Nothing to delete.",Toast.LENGTH_LONG).show();
                         }else{
+                            String detailsString = "Unknown";
+                            switch (action.type){
+                                case SMOKE_BREAK:
+                                    detailsString = "Smoke Added";
+                                    break;
+                                case SMOKE_CANCEL_POSTPONED:
+                                    detailsString = "Smoke Postponed";
+                                    break;
+                                case SMOKE_CANCEL_SKIP:
+                                    detailsString = "Smoke Skipped";
+                                    break;
+
+                            }
+
+                            AlertDialog alertDialog = new AlertDialog.Builder(PreferencesActivity.this)
+                                    .setTitle("Data Deletion")
+                                    .setMessage("You are going to delete last action '"+detailsString+"' which was done " + DateFormat.getDateTimeInstance().format(action.date)+
+                                            " Are you sure want to continue?")
+                                    .setPositiveButton("Yes, remove it", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            removeAction(action);
+                                        }
+
+                                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                        }
+                                    }).show();
 
                         }
                     }
@@ -101,6 +132,19 @@ public class PreferencesActivity extends ActivitySupport<SmookerApplication>{
                         forceCloseWithErrorCode(2034);
                     }
                 });
+            }
+        });
+    }
+
+    private void removeAction(ActionDetails action) {
+        application().removeLoggedAction(action, new ApplicationSupport.ValueObserver<Void>(){
+            @Override
+            public void onSuccess(Void value) {
+                successfullyRemovedToast();
+            }
+            @Override
+            public void onFail(int errorCode) {
+                forceCloseWithErrorCode(205);
             }
         });
     }

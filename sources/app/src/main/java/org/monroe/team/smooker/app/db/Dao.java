@@ -165,6 +165,15 @@ public class Dao extends DAOSupport {
         }
     }
 
+    public void removeSmokeCancellationById(long id) {
+        int i = db.delete(smokeCancelTable().TABLE_NAME,
+                "? == "+smokeCancelTable()._ID.name(),
+                strs(id));
+        if (i != 1){
+            throw new IllegalStateException("Supposed to remove single instance but was "+i);
+        }
+    }
+
     public Result getLastLoggedSmoke() {
         Cursor cursor = db.query(smokeTable().TABLE_NAME,
                 strs(smokeTable()._ID.name(), smokeTable()._DATE.name()),
@@ -236,5 +245,6 @@ public class Dao extends DAOSupport {
     private SmookerSchema.SmokeCancelEntry smokeCancelTable() {
         return table(SmookerSchema.SmokeCancelEntry.class);
     }
+
 
 }
