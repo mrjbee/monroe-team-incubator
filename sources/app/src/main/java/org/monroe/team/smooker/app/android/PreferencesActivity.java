@@ -11,6 +11,7 @@ import android.widget.Toast;
 import org.monroe.team.android.box.app.ActivitySupport;
 import org.monroe.team.android.box.app.ApplicationSupport;
 import org.monroe.team.smooker.app.R;
+import org.monroe.team.smooker.app.uc.common.ActionDetails;
 
 public class PreferencesActivity extends ActivitySupport<SmookerApplication>{
 
@@ -76,6 +77,30 @@ public class PreferencesActivity extends ActivitySupport<SmookerApplication>{
                             public void onClick(DialogInterface dialog, int which) {
                             }
                         }).show();
+            }
+        });
+
+        view(R.id.remove_last_action).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view(R.id.remove_last_action).setVisibility(View.INVISIBLE);
+                application().getLastLoggedAction(new ApplicationSupport.ValueObserver<ActionDetails>(){
+                    @Override
+                    public void onSuccess(ActionDetails value) {
+                        view(R.id.remove_last_action).setVisibility(View.VISIBLE);
+                        if (value == null){
+                            Toast.makeText(application(),"No action was done today! Nothing to delete.",Toast.LENGTH_LONG).show();
+                        }else{
+
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int errorCode) {
+                        view(R.id.remove_last_action).setVisibility(View.VISIBLE);
+                        forceCloseWithErrorCode(2034);
+                    }
+                });
             }
         });
     }

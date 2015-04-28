@@ -182,6 +182,26 @@ public class Dao extends DAOSupport {
 
     }
 
+    public Result getLastLoggedSmokeCancellation() {
+        Cursor cursor = db.query(smokeCancelTable().TABLE_NAME,
+                strs(
+                        smokeCancelTable()._ID.name(),
+                        smokeCancelTable()._DATE.name(),
+                        smokeCancelTable()._REASON.name()),
+                null,
+                null,
+                null,
+                null,
+                smokeCancelTable()._DATE.name() + " DESC",
+                "1");
+
+        if (!cursor.moveToFirst()){
+            return null;
+        }
+
+        return new Result().with(cursor.getLong(0),cursor.getLong(1),cursor.getInt(2));
+    }
+
     public void removeSmokesAfter(Date now) {
         db.delete(smokeTable().TABLE_NAME,
                 "? < " + smokeTable()._DATE.name(),

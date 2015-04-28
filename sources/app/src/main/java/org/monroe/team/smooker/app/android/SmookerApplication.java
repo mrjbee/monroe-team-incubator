@@ -32,6 +32,7 @@ import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
 import org.monroe.team.smooker.app.uc.AddSmoke;
 import org.monroe.team.smooker.app.uc.CancelSmoke;
 import org.monroe.team.smooker.app.uc.GetDaySmokeSchedule;
+import org.monroe.team.smooker.app.uc.GetLastAction;
 import org.monroe.team.smooker.app.uc.GetSmokeQuitDetails;
 import org.monroe.team.smooker.app.uc.GetSmokeQuitSchedule;
 import org.monroe.team.smooker.app.uc.GetSmokeStatistic;
@@ -43,6 +44,7 @@ import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeSchedule;
 import org.monroe.team.smooker.app.uc.RemoveData;
 import org.monroe.team.smooker.app.uc.SetupSmokeQuitProgram;
+import org.monroe.team.smooker.app.uc.common.ActionDetails;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -524,6 +526,10 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
                 observer.onFail(errorCode);
             }
         });
+    }
+
+    public void getLastLoggedAction(ValueObserver<ActionDetails> valueObserver) {
+        fetchValue(GetLastAction.class, null, new NoOpValueAdapter<ActionDetails>(), valueObserver);
     }
 
     public static interface OnImageLoadedObserver {
