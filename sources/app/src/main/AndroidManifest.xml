@@ -105,6 +105,7 @@
             android:enabled="true"
             android:exported="true" >
         </receiver>
+        <!--
         <receiver
             android:name=".android.widget.SmokeCounterWidget"
             android:label="Today smokes" >
@@ -122,6 +123,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/smoke_counter_widget_info" />
         </receiver>
+        -->
         <receiver
             android:name=".actors.ActorNotification"
             android:enabled="true"
