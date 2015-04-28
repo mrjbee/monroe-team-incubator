@@ -1,9 +1,14 @@
 package org.monroe.team.smooker.app.uc;
 
 import org.monroe.team.android.box.db.TransactionUserCase;
+import org.monroe.team.android.box.services.SettingManager;
 import org.monroe.team.corebox.services.ServiceRegistry;
 import org.monroe.team.corebox.utils.DateUtils;
+import org.monroe.team.smooker.app.common.constant.Settings;
+import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeProgramManager;
 import org.monroe.team.smooker.app.db.Dao;
+
+import java.util.Date;
 
 public class RemoveData extends TransactionUserCase<Boolean, Void, Dao>{
 
@@ -13,9 +18,19 @@ public class RemoveData extends TransactionUserCase<Boolean, Void, Dao>{
 
     @Override
     protected Void transactionalExecute(Boolean todayOnly, Dao dao) {
-        if (todayOnly) {
-            dao.removeSmokesAfter(DateUtils.today());
-            dao.removeSmokesCancellationAfter(DateUtils.today());
+        Date date = DateUtils.today();
+        if (!todayOnly) {
+            date = new Date(0);
+        }
+
+        dao.removeSmokesAfter(date);
+        dao.removeSmokesCancellationAfter(date);
+
+        if (!todayOnly){
+            //clear data
+            using(SettingManager.class).set(Settings.APP_FIRST_TIME_DATE, DateUtils.today().getTime());
+            //quit smoke program
+            using(QuitSmokeProgramManager.class).disable();
         }
         return null;
     }

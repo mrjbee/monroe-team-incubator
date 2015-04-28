@@ -505,6 +505,7 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
         fetchValue(RemoveData.class,todayOnly,new NoOpValueAdapter<Void>(), new ValueObserver<Void>() {
             @Override
             public void onSuccess(Void value) {
+                model().usingService(DataManger.class).invalidate(GetSmokeQuitSchedule.QuitSchedule.class);
                 model().usingService(DataManger.class).invalidate(GetSmokeStatistic.SmokeStatistic.class);
                 model().usingService(DataManger.class).invalidate(GetDaySmokeSchedule.SmokeSuggestion.class);
                 model().usingService(DataManger.class).invalidate(GetSmokeQuitDetails.Details.class);
@@ -513,6 +514,8 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
                 model().getTodaySmokeScheduleDataProvider().invalidate();
                 model().getSmokeClockDataProvider().invalidate();
                 model().getPeriodStatsProvider().invalidate();
+                model().getBasicQuitSmokeDetailsProvider().invalidate();
+
                 observer.onSuccess(value);
             }
 

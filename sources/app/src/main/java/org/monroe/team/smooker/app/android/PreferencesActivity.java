@@ -44,10 +44,31 @@ public class PreferencesActivity extends ActivitySupport<SmookerApplication>{
                         .setTitle("Data Deletion")
                         .setMessage("You are going to delete today smoke details. All data about added, skipped and postponed smoke breaks will be removed. " +
                                 "Are you sure want to continue?")
+                        .setPositiveButton("Yes, remove today data", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                removeTodayData(true);
+                            }
+
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        }).show();
+            }
+        });
+
+        view(R.id.remove_all_data).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog alertDialog = new AlertDialog.Builder(PreferencesActivity.this)
+                        .setTitle("Data Deletion")
+                        .setMessage("You are going to delete all collected data. All data including added, skipped and postponed smoke breaks, your smoke quit progress and moneybox progress will be removed. " +
+                                "Are you sure want to continue?")
                         .setPositiveButton("Yes, remove all data", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                removeTodayData();
+                                removeTodayData(false);
                             }
 
                         }).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -59,8 +80,8 @@ public class PreferencesActivity extends ActivitySupport<SmookerApplication>{
         });
     }
 
-    private void removeTodayData() {
-        application().removeData(true, new ApplicationSupport.ValueObserver<Void>() {
+    private void removeTodayData(boolean todayOnly) {
+        application().removeData(todayOnly, new ApplicationSupport.ValueObserver<Void>() {
             @Override
             public void onSuccess(Void value) {
                 successfullyRemovedToast();
