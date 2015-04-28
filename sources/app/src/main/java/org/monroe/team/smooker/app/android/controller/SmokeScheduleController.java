@@ -140,7 +140,7 @@ private final SmookerApplication application;
     }
 
     private PendingIntent createAlarmIntent() {
-        return ActorSystemAlarm.createIntent(context, ActorSystemAlarm.Alarms.TIME_TO_NEXT_SMOKE);
+        return ActorSystemAlarm.ACTION_NEXT_SMOKE.createPendingIntent(application);
     }
 
     public void initialize() {

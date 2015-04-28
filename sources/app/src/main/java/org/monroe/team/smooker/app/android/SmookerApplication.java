@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.util.Pair;
 
 import org.monroe.team.android.box.BitmapUtils;
+import org.monroe.team.android.box.actor.ActorAction;
 import org.monroe.team.android.box.app.ApplicationSupport;
 import org.monroe.team.android.box.data.DataManger;
 import org.monroe.team.android.box.data.DataProvider;
@@ -34,6 +35,7 @@ import org.monroe.team.smooker.app.uc.GetDaySmokeSchedule;
 import org.monroe.team.smooker.app.uc.GetSmokeQuitDetails;
 import org.monroe.team.smooker.app.uc.GetSmokeQuitSchedule;
 import org.monroe.team.smooker.app.uc.GetSmokeStatistic;
+import org.monroe.team.smooker.app.uc.OverNightUpdate;
 import org.monroe.team.smooker.app.uc.PreparePeriodStatistic;
 import org.monroe.team.smooker.app.uc.PrepareSmokeClockDetails;
 import org.monroe.team.smooker.app.uc.PrepareSmokeQuitDateDetails;
@@ -77,12 +79,12 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
     protected void onPostCreate() {
         if (!settings().has(Settings.APP_FIRST_TIME_DATE)){
             settings().set(Settings.APP_FIRST_TIME_DATE, DateUtils.now().getTime());
-            scheduleAlarms();
         }
-        getSuggestionsController();
+        scheduleAlarms();
         if (getSetting(Settings.ENABLED_STICKY_NOTIFICATION)) {
             model().startNotificationControlService();
         }
+        doOverNightUpdate();
     }
 
     public synchronized SmokeScheduleController getSuggestionsController(){
@@ -144,37 +146,26 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
     }
 
     public void scheduleAlarms() {
+        //If first time will call init which will schedule alarm
+        getSuggestionsController();
+        scheduleOvernightUpdateIfRequired();
+    }
+
+    private void scheduleOvernightUpdateIfRequired() {
+        PendingIntent checkIntent = ActorSystemAlarm.ACTION_OVERNIGHT_UPDATE.checkPendingIntent(this);
+        if (checkIntent != null) return;
+
         //Daily alarms
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
 
-        PendingIntent alarmIntent = ActorSystemAlarm.createIntent(this, ActorSystemAlarm.Alarms.TIME_TO_UPDATE_STATISTICS);
+        PendingIntent overNightUpdateIntent = ActorSystemAlarm.ACTION_OVERNIGHT_UPDATE.createPendingIntent(this);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY, alarmIntent);
-
-        calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 8);
-        calendar.set(Calendar.HOUR, 8);
-        calendar.set(Calendar.MINUTE, 0);
-
-        alarmIntent = ActorSystemAlarm.createIntent(this, ActorSystemAlarm.Alarms.TIME_TO_NOTIFICATION_STATISTICS);
-
-        alarmManager.setInexactRepeating(AlarmManager.RTC,
-                calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY, alarmIntent);
-
-        alarmIntent = ActorSystemAlarm.createIntent(this, ActorSystemAlarm.Alarms.TIME_TO_UPDATE_CALENDAR_WIDGET);
-
-        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
-                AlarmManager.INTERVAL_HALF_HOUR,
-                AlarmManager.INTERVAL_HALF_HOUR, alarmIntent);
-
-
+                AlarmManager.INTERVAL_DAY, overNightUpdateIntent);
     }
 
     public void doMorningNotification() {
@@ -475,6 +466,36 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
             public void onFails(Throwable e) {
                 debug_exception(e);
                 warn(CancelSmoke.class);
+            }
+        });
+    }
+
+    public void doOverNightUpdate() {
+        model().execute(OverNightUpdate.class,null, new Model.BackgroundResultCallback<Void>() {
+            @Override
+            public void onResult(Void response) {
+                model().usingService(DataManger.class).invalidate(GetSmokeStatistic.SmokeStatistic.class);
+                model().usingService(DataManger.class).invalidate(GetDaySmokeSchedule.SmokeSuggestion.class);
+                model().usingService(DataManger.class).invalidate(GetSmokeQuitDetails.Details.class);
+                model().getTodaySmokeDetailsDataProvider().invalidate();
+                model().getTodaySmokeScheduleDataProvider().invalidate();
+                model().getSmokeClockDataProvider().invalidate();
+                model().getPeriodStatsProvider().invalidate();
+            }
+
+            @Override
+            public void onFails(Throwable e) {
+                new Thread(){
+                    @Override
+                    public void run() {
+                        try {
+                            sleep(2000);
+                        } catch (InterruptedException e1) {
+
+                        }
+                        doOverNightUpdate();
+                    }
+                }.start();
             }
         });
     }
