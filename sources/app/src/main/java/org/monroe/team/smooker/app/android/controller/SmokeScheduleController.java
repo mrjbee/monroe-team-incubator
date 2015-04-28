@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
@@ -16,6 +17,7 @@ import org.monroe.team.corebox.utils.DateUtils;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.actors.ActorNotification;
 import org.monroe.team.smooker.app.actors.ActorSystemAlarm;
+import org.monroe.team.smooker.app.android.SmokeBreakActivity;
 import org.monroe.team.smooker.app.android.SmookerApplication;
 import org.monroe.team.smooker.app.common.constant.Events;
 import org.monroe.team.smooker.app.common.SmookerModel;
@@ -87,12 +89,15 @@ private final SmookerApplication application;
         PendingIntent skipSmoke = ActorNotification.create(context, ActorNotification.SKIP_SMOKE).buildDefault();
         PendingIntent laterSmoke = ActorNotification.create(context, ActorNotification.POSTPONE_SMOKE).buildDefault();
 
+        PendingIntent smokeBreakActivity = PendingIntent.getActivity(application,0,
+                new Intent(application, SmokeBreakActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
         builder.setAutoCancel(true)
                 .setContentTitle(getString(R.string.quit_smoke_assistance_title))
                 .setContentText(getString(R.string.time_to_smoke))
                 .setSmallIcon(R.drawable.notif_quit_assistance)
-                //.setContentIntent(DashboardActivity.openDashboardWithExtraAction(context, DashboardActivity.ExtraActionName.SMOKE_DECISION))
-                //.setDeleteIntent(skipSmoke)
+                .setContentIntent(smokeBreakActivity)
                 .addAction(0, getString(R.string.skip_this_time), skipSmoke)
                 .addAction(0, getString(R.string.later_this_time), laterSmoke)
                 .addAction(0, getString(R.string.add_one_smoke), addSmoke);

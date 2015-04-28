@@ -53,6 +53,36 @@
         <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-light</item>
     </style>
 
+    <style name="Text.Choice.Header.Sub.Caption" parent="AppTheme">
+        <item name="android:textColor">#ff970009</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#44ffffff</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+
+    <style name="Text.Choice.Header.Caption" parent="AppTheme">
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-light</item>
+        <item name="android:textColor">#fff6f0fa</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Text.Choice.Caption" parent="AppTheme">
+        <item name="android:textColor">#ff434343</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Text.Choice.Description" parent="AppTheme">
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-light</item>
+        <item name="android:textColor">#ff848484</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
 
     <style name="Text.Tile.Small" parent="AppTheme">
         <item name="android:textSize">16sp</item>
