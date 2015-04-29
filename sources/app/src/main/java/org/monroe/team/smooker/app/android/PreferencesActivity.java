@@ -2,6 +2,8 @@ package org.monroe.team.smooker.app.android;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -132,6 +134,41 @@ public class PreferencesActivity extends ActivitySupport<SmookerApplication>{
                         forceCloseWithErrorCode(2034);
                     }
                 });
+            }
+        });
+
+        view(R.id.community_link).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "https://plus.google.com/communities/102324574498196765190";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
+
+        view(R.id.rate_link).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "https://play.google.com/store/apps/details?id=org.monroe.team.smooker.app";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
+
+        view(R.id.mail_link).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                        "mailto","monroe.dev.team@gmail.com", null));
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Smooker: Ask or Suggest");
+                emailIntent.putExtra(Intent.EXTRA_TEXT   , "Hi, I got a question (or suggestion).");
+                try {
+                    startActivity(Intent.createChooser(emailIntent, "Send email..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(PreferencesActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

@@ -171,6 +171,60 @@
                     android:layout_centerHorizontal="true"
                     android:layout_margin="15dp"
                     />
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Application Details"
+                    style="@style/Text.Setup.Section.Caption"
+                    />
+
+                <TextView
+                    android:layout_marginBottom="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Text.Setup.Section.Description"
+                    android:text="@string/app_version"
+                    />
+
+                <Button
+                    android:id="@+id/rate_link"
+                    android:layout_width="wrap_content"
+                    android:text="Rate application ..."
+                    style="@style/Button.Setup"
+                    />
+
+                <Button
+                    android:id="@+id/mail_link"
+                    android:layout_width="wrap_content"
+                    android:text="Ask or Suggest ..."
+                    style="@style/Button.Setup"
+                    />
+
+                <Button
+                    android:id="@+id/community_link"
+                    android:layout_width="wrap_content"
+                    android:text="Community..."
+                    style="@style/Button.Setup"
+                    />
+
+                <TextView
+                    android:layout_marginTop="25dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Text.Setup.Section"
+                    android:text="Third-party libraries"
+                    />
+
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Text.Setup.Section.Description"
+                    android:text="Stack Blur Algorithm by Mario Klingemann 'mario@quasimondo.com'"
+                    />
+
             </LinearLayout>
 
         </ScrollView>
