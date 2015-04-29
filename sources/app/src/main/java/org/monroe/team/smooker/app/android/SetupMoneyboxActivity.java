@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -16,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.monroe.team.android.box.app.ApplicationSupport;
 import org.monroe.team.corebox.utils.Closure;
 import org.monroe.team.corebox.utils.DateUtils;
 import org.monroe.team.smooker.app.R;
@@ -82,25 +84,25 @@ public class SetupMoneyboxActivity extends SetupGeneralActivity {
             try {
                 showImageLoadingProgress();
                 InputStream is = getContentResolver().openInputStream(_uri);
-                application().saveImage(is, new SmookerApplication.OnSaveImageObserver() {
-                    @Override
-                    public void onResult(String imageId) {
-                        loadImage(imageId, new Closure<String, Void>() {
+                application().saveImage(is, new ApplicationSupport.ValueObserver<String>() {
                             @Override
-                            public Void execute(String arg) {
-                                newImageId = arg;
-                                return null;
+                            public void onSuccess(String imageId) {
+                                loadImage(imageId, new Closure<String, Void>() {
+                                    @Override
+                                    public Void execute(String arg) {
+                                        newImageId = arg;
+                                        return null;
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onFail(int errorCode) {
+                                hideImageLoadingProgress();
+                                Toast.makeText(application(),
+                                        "Error during loading image. Please try again", Toast.LENGTH_LONG).show();
                             }
                         });
-                    }
-
-                    @Override
-                    public void onFail() {
-                        hideImageLoadingProgress();
-                        Toast.makeText(application(),
-                                "Error during loading image. Please try again", Toast.LENGTH_LONG).show();
-                    }
-                });
             } catch (FileNotFoundException e) {
                 Toast.makeText(this,"Image not found. Please try again", Toast.LENGTH_LONG).show();
             }
@@ -130,22 +132,22 @@ public class SetupMoneyboxActivity extends SetupGeneralActivity {
             return;
         }
         application().loadToBitmap(imageId, view(R.id.moneybox_image).getHeight(),
-                view(R.id.moneybox_image).getWidth(),new SmookerApplication.OnImageLoadedObserver() {
-            @Override
-            public void onResult(String imageId, Bitmap bitmap) {
-                   hideImageLoadingProgress();
-                   view(R.id.moneybox_image, ImageView.class).setImageBitmap(bitmap);
-                   view(R.id.moneybox_image, ImageView.class).invalidate();
-                   processImageId.execute(imageId);
-            }
+                view(R.id.moneybox_image).getWidth(), new ApplicationSupport.ValueObserver<Pair<String, Bitmap>>() {
+                    @Override
+                    public void onSuccess(Pair<String, Bitmap> value) {
+                        hideImageLoadingProgress();
+                        view(R.id.moneybox_image, ImageView.class).setImageBitmap(value.second);
+                        view(R.id.moneybox_image, ImageView.class).invalidate();
+                        processImageId.execute(value.first);
+                    }
 
-            @Override
-            public void onFail() {
-                hideImageLoadingProgress();
-                Toast.makeText(application(),
-                        "Error during loading image. Please try again", Toast.LENGTH_LONG).show();
-            }
-        });
+                    @Override
+                    public void onFail(int errorCode) {
+                        hideImageLoadingProgress();
+                        Toast.makeText(application(),
+                                "Error during loading image. Please try again", Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     @Override

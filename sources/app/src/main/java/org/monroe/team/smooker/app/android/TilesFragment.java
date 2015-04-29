@@ -23,6 +23,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.monroe.team.android.box.app.ApplicationSupport;
 import org.monroe.team.android.box.app.ui.AppearanceControllerOld;
 import org.monroe.team.android.box.app.ui.GetViewImplementation;
 import org.monroe.team.android.box.app.ui.SlideTouchGesture;
@@ -1299,16 +1300,16 @@ public class TilesFragment extends FrontPageFragment {
                 },100);
                 return;
             }
-            application().loadToBitmap(imageId, imageView.getWidth(), imageView.getHeight(), new SmookerApplication.OnImageLoadedObserver() {
+            application().loadToBitmap(imageId, imageView.getWidth(), imageView.getHeight(),new ApplicationSupport.ValueObserver<Pair<String, Bitmap>>() {
                 @Override
-                public void onResult(String imageId, Bitmap bitmap) {
-                    MoneyBoxTile.this.imageId = imageId;
-                    imageView.setImageBitmap(bitmap);
+                public void onSuccess(Pair<String, Bitmap> value) {
+                    MoneyBoxTile.this.imageId = value.first;
+                    imageView.setImageBitmap(value.second);
                 }
 
                 @Override
-                public void onFail() {
-                     activity().forceCloseWithErrorCode(44);
+                public void onFail(int errorCode) {
+                    activity().forceCloseWithErrorCode(44);
                 }
             });
         }

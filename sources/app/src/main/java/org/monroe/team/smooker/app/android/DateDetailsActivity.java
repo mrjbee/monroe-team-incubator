@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import org.monroe.team.android.box.app.ActivitySupport;
+import org.monroe.team.android.box.app.ApplicationSupport;
 import org.monroe.team.android.box.app.ui.AppearanceControllerOld;
 import org.monroe.team.android.box.app.ui.animation.AnimatorListenerSupport;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceController;
@@ -178,35 +179,35 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             exitBtnAC.show();
-                            application().getSmokeQuitDetailsForDate(date, new SmookerApplication.OnDateDetailsObserver() {
-                                @Override
-                                public void onResult(PrepareSmokeQuitDateDetails.DateDetails details) {
-                                    //set result
-                                    view(R.id.date_smoke_count_text).setVisibility(details.isFuture() ? View.GONE : View.VISIBLE);
-                                    view(R.id.date_smoke_count_value_text).setVisibility(details.isFuture() ? View.GONE : View.VISIBLE);
+                            application().getSmokeQuitDetailsForDate(date, new ApplicationSupport.ValueObserver<PrepareSmokeQuitDateDetails.DateDetails>() {
+                                        @Override
+                                        public void onSuccess(PrepareSmokeQuitDateDetails.DateDetails details) {
+                                            //set result
+                                            view(R.id.date_smoke_count_text).setVisibility(details.isFuture() ? View.GONE : View.VISIBLE);
+                                            view(R.id.date_smoke_count_value_text).setVisibility(details.isFuture() ? View.GONE : View.VISIBLE);
 
-                                    view(R.id.date_status_value_text).setVisibility(details.isFuture()|| details.isPassed() ? View.GONE : View.VISIBLE);
+                                            view(R.id.date_status_value_text).setVisibility(details.isFuture() || details.isPassed() ? View.GONE : View.VISIBLE);
 
-                                    if (details.isLimitChanged()){
-                                        view_text(R.id.date_limit_text).setText(R.string.new_day_limit);
-                                    } else {
-                                        view_text(R.id.date_limit_text).setText(R.string.smoke_limit);
-                                    }
+                                            if (details.isLimitChanged()) {
+                                                view_text(R.id.date_limit_text).setText(R.string.new_day_limit);
+                                            } else {
+                                                view_text(R.id.date_limit_text).setText(R.string.smoke_limit);
+                                            }
 
-                                    if (!details.isPassed()){
-                                        view_text(R.id.date_status_value_text).setText(R.string.limit_is_exceeded);
-                                    }
+                                            if (!details.isPassed()) {
+                                                view_text(R.id.date_status_value_text).setText(R.string.limit_is_exceeded);
+                                            }
 
-                                    view_text(R.id.date_limit_value_text).setText("" + details.getLimit() + " " + getString(R.string.times));
-                                    view_text(R.id.date_smoke_count_value_text).setText("" + details.getSmokeCounts() + " " + getString(R.string.times));
-                                    contentContainerAC.show();
-                                }
+                                            view_text(R.id.date_limit_value_text).setText("" + details.getLimit() + " " + getString(R.string.times));
+                                            view_text(R.id.date_smoke_count_value_text).setText("" + details.getSmokeCounts() + " " + getString(R.string.times));
+                                            contentContainerAC.show();
+                                        }
 
-                                @Override
-                                public void onFail() {
-                                    forceCloseWithErrorCode(404);
-                                }
-                            });
+                                        @Override
+                                        public void onFail(int errorCode) {
+                                            forceCloseWithErrorCode(404);
+                                        }
+                                    });
                         }
                     });
                 }
