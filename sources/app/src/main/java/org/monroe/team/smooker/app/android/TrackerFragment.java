@@ -5,6 +5,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceController;
+import org.monroe.team.android.box.data.Data;
 import org.monroe.team.android.box.data.DataProvider;
 import org.monroe.team.android.box.event.Event;
 import org.monroe.team.android.box.utils.DisplayUtils;
@@ -14,6 +15,7 @@ import org.monroe.team.smooker.app.android.view.DayTrackChartView;
 import org.monroe.team.smooker.app.uc.GetSmokeStatistic;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeDetails;
 import org.monroe.team.smooker.app.uc.PrepareTodaySmokeSchedule;
+import org.monroe.team.smooker.app.uc.common.FetchFailedException;
 
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.animateAppearance;
 import static org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder.duration_constant;
@@ -50,7 +52,7 @@ public class TrackerFragment extends FrontPageFragment{
 
             @Override
             public void onError(DataProvider.FetchError fetchError) {
-                activity().forceCloseWithErrorCode(301);
+                activity().forceCloseWithErrorCode(new Data.FetchException(fetchError));
             }
         });
     }

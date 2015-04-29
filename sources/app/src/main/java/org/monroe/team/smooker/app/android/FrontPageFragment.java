@@ -14,6 +14,7 @@ import org.monroe.team.android.box.app.ui.animation.AnimatorListenerSupport;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceController;
 import org.monroe.team.android.box.app.ui.animation.apperrance.AppearanceControllerBuilder;
 import org.monroe.team.android.box.app.ui.animation.apperrance.DefaultAppearanceController;
+import org.monroe.team.android.box.data.Data;
 import org.monroe.team.android.box.data.DataProvider;
 import org.monroe.team.android.box.event.Event;
 import org.monroe.team.corebox.utils.Closure;
@@ -133,7 +134,7 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
 
             @Override
             public void onError(DataProvider.FetchError fetchError) {
-                activity().forceCloseWithErrorCode(100);
+                activity().forceCloseWithErrorCode(new Data.FetchException(fetchError));
             }
         });
     }
@@ -265,7 +266,7 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
 
             @Override
             public void onError(DataProvider.FetchError fetchError) {
-                activity().forceCloseWithErrorCode(301);
+                activity().forceCloseWithErrorCode(new Data.FetchException(fetchError));
             }
         });
     }

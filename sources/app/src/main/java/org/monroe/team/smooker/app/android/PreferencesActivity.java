@@ -88,7 +88,7 @@ public class PreferencesActivity extends ActivitySupport<SmookerApplication>{
             @Override
             public void onClick(View v) {
                 view(R.id.remove_last_action).setVisibility(View.INVISIBLE);
-                application().getLastLoggedAction(new ApplicationSupport.ValueObserver<ActionDetails>(){
+                application().getLastLoggedAction(new SmookerApplication.Observer<ActionDetails>(){
                     @Override
                     public void onSuccess(final ActionDetails action) {
                         view(R.id.remove_last_action).setVisibility(View.VISIBLE);
@@ -128,11 +128,6 @@ public class PreferencesActivity extends ActivitySupport<SmookerApplication>{
                         }
                     }
 
-                    @Override
-                    public void onFail(int errorCode) {
-                        view(R.id.remove_last_action).setVisibility(View.VISIBLE);
-                        forceCloseWithErrorCode(2034);
-                    }
                 });
             }
         });
@@ -174,28 +169,19 @@ public class PreferencesActivity extends ActivitySupport<SmookerApplication>{
     }
 
     private void removeAction(ActionDetails action) {
-        application().removeLoggedAction(action, new ApplicationSupport.ValueObserver<Void>(){
+        application().removeLoggedAction(action, new SmookerApplication.Observer<Void>(){
             @Override
             public void onSuccess(Void value) {
                 successfullyRemovedToast();
-            }
-            @Override
-            public void onFail(int errorCode) {
-                forceCloseWithErrorCode(205);
             }
         });
     }
 
     private void removeTodayData(boolean todayOnly) {
-        application().removeData(todayOnly, new ApplicationSupport.ValueObserver<Void>() {
+        application().removeData(todayOnly, new SmookerApplication.Observer<Void>() {
             @Override
             public void onSuccess(Void value) {
                 successfullyRemovedToast();
-            }
-
-            @Override
-            public void onFail(int errorCode) {
-               forceCloseWithErrorCode(2);
             }
         });
     }

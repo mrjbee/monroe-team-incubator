@@ -72,7 +72,7 @@ public class SetupMoneyboxActivity extends SetupGeneralActivity {
         try {
             startActivityForResult(Intent.createChooser(intent, "Image Picker"), PICK_IMAGE);
         } catch (ActivityNotFoundException e) {
-            forceCloseWithErrorCode(808);
+            forceCloseWithErrorCode(e);
         }
     }
 
@@ -84,7 +84,7 @@ public class SetupMoneyboxActivity extends SetupGeneralActivity {
             try {
                 showImageLoadingProgress();
                 InputStream is = getContentResolver().openInputStream(_uri);
-                application().saveImage(is, new ApplicationSupport.ValueObserver<String>() {
+                application().saveImage(is, new SmookerApplication.Observer<String>() {
                             @Override
                             public void onSuccess(String imageId) {
                                 loadImage(imageId, new Closure<String, Void>() {
@@ -97,10 +97,11 @@ public class SetupMoneyboxActivity extends SetupGeneralActivity {
                             }
 
                             @Override
-                            public void onFail(int errorCode) {
+                            public boolean onFail() {
                                 hideImageLoadingProgress();
                                 Toast.makeText(application(),
                                         "Error during loading image. Please try again", Toast.LENGTH_LONG).show();
+                                return true;
                             }
                         });
             } catch (FileNotFoundException e) {
@@ -132,7 +133,7 @@ public class SetupMoneyboxActivity extends SetupGeneralActivity {
             return;
         }
         application().loadToBitmap(imageId, view(R.id.moneybox_image).getHeight(),
-                view(R.id.moneybox_image).getWidth(), new ApplicationSupport.ValueObserver<Pair<String, Bitmap>>() {
+                view(R.id.moneybox_image).getWidth(), new SmookerApplication.Observer<Pair<String, Bitmap>>() {
                     @Override
                     public void onSuccess(Pair<String, Bitmap> value) {
                         hideImageLoadingProgress();
@@ -142,10 +143,11 @@ public class SetupMoneyboxActivity extends SetupGeneralActivity {
                     }
 
                     @Override
-                    public void onFail(int errorCode) {
+                    public boolean onFail() {
                         hideImageLoadingProgress();
                         Toast.makeText(application(),
                                 "Error during loading image. Please try again", Toast.LENGTH_LONG).show();
+                        return true;
                     }
                 });
     }

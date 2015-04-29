@@ -179,7 +179,7 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             exitBtnAC.show();
-                            application().getSmokeQuitDetailsForDate(date, new ApplicationSupport.ValueObserver<PrepareSmokeQuitDateDetails.DateDetails>() {
+                            application().getSmokeQuitDetailsForDate(date, new SmookerApplication.Observer<PrepareSmokeQuitDateDetails.DateDetails>() {
                                         @Override
                                         public void onSuccess(PrepareSmokeQuitDateDetails.DateDetails details) {
                                             //set result
@@ -201,11 +201,6 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
                                             view_text(R.id.date_limit_value_text).setText("" + details.getLimit() + " " + getString(R.string.times));
                                             view_text(R.id.date_smoke_count_value_text).setText("" + details.getSmokeCounts() + " " + getString(R.string.times));
                                             contentContainerAC.show();
-                                        }
-
-                                        @Override
-                                        public void onFail(int errorCode) {
-                                            forceCloseWithErrorCode(404);
                                         }
                                     });
                         }

@@ -8,11 +8,9 @@ import android.graphics.Bitmap;
 import android.util.Pair;
 
 import org.monroe.team.android.box.BitmapUtils;
-import org.monroe.team.android.box.actor.ActorAction;
 import org.monroe.team.android.box.app.ApplicationSupport;
 import org.monroe.team.android.box.data.DataManger;
 import org.monroe.team.android.box.data.DataProvider;
-import org.monroe.team.android.box.event.Event;
 import org.monroe.team.android.box.services.SettingManager;
 import org.monroe.team.android.box.utils.AndroidLogImplementation;
 import org.monroe.team.android.box.utils.FileUtils;
@@ -24,7 +22,6 @@ import org.monroe.team.smooker.app.android.controller.SmokeQuitCalendarDisplayMa
 import org.monroe.team.smooker.app.android.controller.SmokeScheduleController;
 import org.monroe.team.smooker.app.actors.ActorSystemAlarm;
 import org.monroe.team.smooker.app.common.SmookerModel;
-import org.monroe.team.smooker.app.common.constant.Events;
 import org.monroe.team.smooker.app.common.constant.Settings;
 import org.monroe.team.smooker.app.common.constant.SmokeCancelReason;
 import org.monroe.team.smooker.app.common.quitsmoke.QuitSmokeDifficultLevel;
@@ -51,11 +48,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.Callable;
 
 public class SmookerApplication extends ApplicationSupport<SmookerModel> {
@@ -166,7 +160,7 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
 
             @Override
             public void onFails(Throwable e) {
-                debug_exception(e);
+                handleException(e, null);
             }
         });
     }
@@ -185,7 +179,7 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
 
             @Override
             public void onFails(Throwable e) {
-                debug_exception(e);
+                handleException(e, null);
             }
         });
     }
@@ -272,7 +266,7 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
 
             @Override
             public void onFails(Throwable e) {
-                debug_exception(e);
+                handleException(e, null);
             }
         });
     }
@@ -307,7 +301,7 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
         });
     }
 
-    public void getSmokeQuitDetailsForDate(Date date, final ValueObserver<PrepareSmokeQuitDateDetails.DateDetails> observer){
+    public void getSmokeQuitDetailsForDate(Date date, final Observer<PrepareSmokeQuitDateDetails.DateDetails> observer){
         model().execute(PrepareSmokeQuitDateDetails.class,date,new Model.BackgroundResultCallback<PrepareSmokeQuitDateDetails.DateDetails>() {
             @Override
             public void onResult(PrepareSmokeQuitDateDetails.DateDetails response) {
@@ -316,13 +310,19 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
 
             @Override
             public void onFails(Throwable e) {
-                debug_exception(e);
-                observer.onFail(0);
+                handleException(e, observer);
             }
         });
     }
 
-    public void saveImage(final InputStream fromIs, final ValueObserver<String> observer) {
+    private void handleException(Throwable e, Observer<?> observer) {
+        if (observer != null && observer.onFail()){
+            return;
+        }
+        processException(e);
+    }
+
+    public void saveImage(final InputStream fromIs, final Observer<String> observer) {
         model().usingService(BackgroundTaskManager.class).execute(new Callable<String>() {
             @Override
             public String call() throws Exception {
@@ -383,15 +383,14 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
                 model().ui(new Runnable() {
                     @Override
                     public void run() {
-                        debug_exception(e);
-                        observer.onFail(0);
+                        handleException(e, observer);
                     }
                 });
             }
         });
     }
 
-    public void removeData(boolean todayOnly, final ValueObserver<Void> observer) {
+    public void removeData(boolean todayOnly, final Observer<Void> observer) {
         fetchValue(RemoveData.class, todayOnly, new NoOpValueAdapter<Void>(), new ValueObserver<Void>() {
             @Override
             public void onSuccess(Void value) {
@@ -410,17 +409,27 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
             }
 
             @Override
-            public void onFail(int errorCode) {
-                observer.onFail(errorCode);
+            public void onFail(Throwable error) {
+                handleException(error, observer);
             }
         });
     }
 
-    public void getLastLoggedAction(ValueObserver<ActionDetails> valueObserver) {
-        fetchValue(GetLastAction.class, null, new NoOpValueAdapter<ActionDetails>(), valueObserver);
+    public void getLastLoggedAction(final Observer<ActionDetails> valueObserver) {
+        fetchValue(GetLastAction.class, null, new NoOpValueAdapter<ActionDetails>(), new ValueObserver<ActionDetails>() {
+            @Override
+            public void onSuccess(ActionDetails value) {
+                valueObserver.onSuccess(value);
+            }
+
+            @Override
+            public void onFail(Throwable exception) {
+                handleException(exception,valueObserver);
+            }
+        });
     }
 
-    public void removeLoggedAction(ActionDetails action, final ValueObserver<Void> observer) {
+    public void removeLoggedAction(ActionDetails action, final Observer<Void> observer) {
         fetchValue(CancelLastLoggedAction.class, action, new NoOpValueAdapter<Void>(), new ValueObserver<Void>() {
             @Override
             public void onSuccess(Void value) {
@@ -436,13 +445,13 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
             }
 
             @Override
-            public void onFail(int errorCode) {
-                observer.onFail(errorCode);
+            public void onFail(Throwable error) {
+                handleException(error, observer);
             }
         });
     }
 
-    public void loadToBitmap(final String imageId, final int reqHeight, final int reqWidth, final ValueObserver<Pair<String, Bitmap>> observer) {
+    public void loadToBitmap(final String imageId, final int reqHeight, final int reqWidth, final Observer<Pair<String, Bitmap>> observer) {
         model().usingService(BackgroundTaskManager.class).execute(new Callable<Bitmap>() {
             @Override
             public Bitmap call() throws Exception {
@@ -470,12 +479,15 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
                 model().ui(new Runnable() {
                     @Override
                     public void run() {
-                        debug_exception(e);
-                        observer.onFail(0);
+                        handleException(e, observer);
                     }
                 });
             }
         });
     }
 
+    public static abstract class Observer<ValueType>{
+        public abstract void onSuccess(ValueType value);
+        public boolean onFail() {return false;}
+    }
 }

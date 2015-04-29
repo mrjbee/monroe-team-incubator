@@ -168,7 +168,7 @@ public class TilesFragment extends FrontPageFragment {
 
             @Override
             public void onError(Data.FetchError fetchError) {
-                activity().forceCloseWithErrorCode(20);
+                activity().forceCloseWithErrorCode(new Data.FetchException(fetchError));
             }
         });
     }
@@ -183,7 +183,7 @@ public class TilesFragment extends FrontPageFragment {
 
             @Override
             public void onError(DataProvider.FetchError fetchError) {
-                activity().forceCloseWithErrorCode(3);
+                activity().forceCloseWithErrorCode(new Data.FetchException(fetchError));
             }
         });
     }
@@ -891,7 +891,7 @@ public class TilesFragment extends FrontPageFragment {
 
                 @Override
                 public void onError(DataProvider.FetchError fetchError) {
-                    activity().forceCloseWithErrorCode(201);
+                    activity().forceCloseWithErrorCode(new Data.FetchException(fetchError));
                 }
             });
         }
@@ -906,7 +906,7 @@ public class TilesFragment extends FrontPageFragment {
 
                     @Override
                     public void onError(DataProvider.FetchError fetchError) {
-                        activity().forceCloseWithErrorCode(203);
+                        activity().forceCloseWithErrorCode(new Data.FetchException(fetchError));
                     }
                 });
             }
@@ -1050,7 +1050,7 @@ public class TilesFragment extends FrontPageFragment {
 
                 @Override
                 public void onError(Exception e) {
-                    activity().forceCloseWithErrorCode(401);
+                    activity().forceCloseWithErrorCode(e);
                 }
             });
         }
@@ -1098,7 +1098,7 @@ public class TilesFragment extends FrontPageFragment {
 
                 @Override
                 public void onError(DataProvider.FetchError fetchError) {
-                    activity().forceCloseWithErrorCode(401);
+                    activity().forceCloseWithErrorCode(new Data.FetchException(fetchError));
                 }
             });
         }
@@ -1285,7 +1285,7 @@ public class TilesFragment extends FrontPageFragment {
 
                 @Override
                 public void onError(DataProvider.FetchError fetchError) {
-                    activity().forceCloseWithErrorCode(31);
+                    activity().forceCloseWithErrorCode(new Data.FetchException(fetchError));
                 }
             });
         }
@@ -1300,17 +1300,13 @@ public class TilesFragment extends FrontPageFragment {
                 },100);
                 return;
             }
-            application().loadToBitmap(imageId, imageView.getWidth(), imageView.getHeight(),new ApplicationSupport.ValueObserver<Pair<String, Bitmap>>() {
+            application().loadToBitmap(imageId, imageView.getWidth(), imageView.getHeight(),new SmookerApplication.Observer<Pair<String, Bitmap>>() {
                 @Override
                 public void onSuccess(Pair<String, Bitmap> value) {
                     MoneyBoxTile.this.imageId = value.first;
                     imageView.setImageBitmap(value.second);
                 }
 
-                @Override
-                public void onFail(int errorCode) {
-                    activity().forceCloseWithErrorCode(44);
-                }
             });
         }
 
@@ -1341,7 +1337,7 @@ public class TilesFragment extends FrontPageFragment {
 
                 @Override
                 public void onError(DataProvider.FetchError fetchError) {
-                    activity().forceCloseWithErrorCode(30);
+                    activity().forceCloseWithErrorCode(new Data.FetchException(fetchError));
                 }
             });
         }
