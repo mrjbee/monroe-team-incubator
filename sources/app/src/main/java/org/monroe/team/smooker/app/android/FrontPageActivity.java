@@ -2,6 +2,7 @@ package org.monroe.team.smooker.app.android;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.WindowManager;
 
 import org.monroe.team.android.box.app.ActivitySupport;
@@ -54,6 +55,17 @@ public class FrontPageActivity extends ActivitySupport<SmookerApplication> {
         if (!getMainFragment().onBackPressed()){
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keycode, KeyEvent e) {
+        switch(keycode) {
+            case KeyEvent.KEYCODE_MENU:
+                getMainFragment().onMenuPressed();
+                return true;
+        }
+
+        return super.onKeyDown(keycode, e);
     }
 
     public boolean isFragmentActive(Class<? extends FrontPageFragment> fragmentClass) {

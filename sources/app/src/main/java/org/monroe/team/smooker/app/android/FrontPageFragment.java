@@ -79,10 +79,14 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
             view(R.id.start_setting_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(application(), PreferencesActivity.class));
+                    openSettings();
                 }
             });
         }
+    }
+
+    private void openSettings() {
+        startActivity(new Intent(application(), PreferencesActivity.class));
     }
 
     private AppearanceControllerBuilder.TypeBuilder<Float> leftToRight() {
@@ -307,4 +311,7 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
         return false;
     }
 
+    public void onMenuPressed() {
+        openSettings();
+    }
 }

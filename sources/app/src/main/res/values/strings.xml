@@ -15,7 +15,7 @@
     <string name="welcome_page_content">Hello, Smoker! Thank you for choosing Smooker as your personal daily assistance during quitting smoking. Hope that assistance will help you to quit smoking completely. Please continue by hitting next button. Good luck!</string>
     <string name="general_page_title">General</string>
     <string name="general_page_about">Please specify your general settings. In future you might be referred to this page again if assistance will require more settings </string>
-    <string name="general_page_one_smoke_cost">Specify cost per one smoke (one cigarette, pipe and etc)</string>
+    <string name="general_page_one_smoke_cost">Specify cost per one smoke. For example one cigarette cost or tabaco in one pipe and etc</string>
     <string name="general_page_smoke_cost_not_set">Please specify smoke break cost</string>
     <string name="quit_page_title">Quit Smoking</string>
     <string name="quit_page_about">Please choose quit smoking program and desire smokes per day which fits to you. You would be able to change program any time from option menu</string>

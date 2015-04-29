@@ -26,14 +26,13 @@
 
                 <TextView
                     android:layout_columnSpan="2"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="15dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Smoke Break Settings"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/text_size_normal"
-                    android:textColor="@color/background.main"
                     android:layout_marginRight="10dp"
+                    style="@style/Text.Setup.Section.Caption"
                     />
 
 
@@ -42,9 +41,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/quit_page_per_day_title"
-                    android:textSize="@dimen/text_size_normal"
-                    android:textColor="@color/font.dark.lighter"
                     android:layout_marginRight="10dp"
+                    android:layout_gravity="bottom"
+                    style="@style/Text.Setup.Section"
                     />
 
                 <EditText
@@ -53,18 +52,17 @@
                     android:inputType="number"
                     android:ems="10"
                     android:id="@+id/moneybox_start_smoke_edit"
-                    android:textColor="@color/font.dark.lighter"
+                    style="@style/Text.Setup.Section"
                     />
 
                 <TextView
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     android:layout_columnSpan="2"
                     android:id="@+id/gs_price_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/general_page_one_smoke_cost"
-                    android:textSize="@dimen/text_size_normal"
-                    android:textColor="@color/font.dark.lighter"
+                    android:text="Smoke break cost"
+                    style="@style/Text.Setup.Section"
                     />
 
                 <EditText
@@ -75,7 +73,7 @@
                     android:id="@+id/moneybox_price_edit"
                     android:layout_gravity="center"
                     android:gravity="bottom"
-                    android:textColor="@color/font.dark.lighter"
+                    style="@style/Text.Setup.Section"
                     />
 
                 <Spinner
@@ -86,6 +84,14 @@
                     android:id="@+id/moneybox_cur_spinner"
                     />
 
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_columnSpan="2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/general_page_one_smoke_cost"
+                    style="@style/Text.Setup.Section.Description"
+                    />
             </GridLayout>
 
 
@@ -96,7 +102,8 @@
             android:background="@android:color/darker_gray"
             android:layout_below="@+id/qs_end_text"
             android:layout_centerHorizontal="true"
-            android:layout_margin="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
             />
 
             <LinearLayout
@@ -106,14 +113,13 @@
 
                 <TextView
                     android:layout_columnSpan="2"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="What to Buy"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/text_size_normal"
-                    android:textColor="@color/background.main"
                     android:layout_marginRight="10dp"
+                    style="@style/Text.Setup.Section.Caption"
                     />
 
                 <TextView
@@ -122,8 +128,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Choose something to save money on it"
-                    android:textSize="@dimen/text_size_normal"
-                    android:textColor="@color/font.dark.lighter"
+                    style="@style/Text.Setup.Section"
                     />
 
                 <RelativeLayout
@@ -137,8 +142,7 @@
                         android:layout_height="40dp"
                         android:inputType="numberDecimal"
                         android:ems="10"
-                        android:textColor="@color/font.dark.lighter"
-                        android:textSize="@dimen/text_size_normal"
+                        style="@style/Text.Setup.Section"
                         android:hint="Price"
                         />
 
@@ -151,8 +155,7 @@
                         android:lines="1"
                         android:maxLines="1"
                         android:singleLine="true"
-                        android:textColor="@color/font.dark.lighter"
-                        android:textSize="@dimen/text_size_normal"
+                        style="@style/Text.Setup.Section"
                         android:hint="Title"
                         />
                     <RelativeLayout
@@ -185,9 +188,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="40dp"
                                 android:text="Select Image"
-                                android:textColor="@color/font.link"
-                                android:textSize="@dimen/text_size_normal_small"
-                                android:background="@android:color/transparent"/>
+                                style="@style/Button.Setup"
+                                />
                         </LinearLayout>
                     </RelativeLayout>
                 </RelativeLayout>
@@ -210,10 +212,8 @@
             android:orientation="horizontal"
             android:layout_height="1px"
             android:background="@android:color/darker_gray"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
             />
 
         <LinearLayout
@@ -223,13 +223,12 @@
 
             <TextView
                 android:layout_columnSpan="2"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Warning"
-                android:textStyle="bold"
-                android:textSize="@dimen/text_size_normal"
-                android:textColor="@color/background.main"
+                style="@style/Text.Setup.Section.Caption"
                 android:layout_marginRight="10dp"
                 />
 
@@ -238,22 +237,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Clear current progress ..."
-                android:textColor="@color/font.link"
-                android:textSize="@dimen/text_size_normal_small"
-                android:background="@android:color/transparent"/>
+                style="@style/Button.Setup"
+                />
 
             <Button
                 android:id="@+id/moneybox_disable_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Disable moneybox ..."
-                android:textColor="@color/font.link"
-                android:textSize="@dimen/text_size_normal_small"
-                android:background="@android:color/transparent"/>
+                style="@style/Button.Setup"
+                />
 
         </LinearLayout>
-
-
         </LinearLayout>
 
 

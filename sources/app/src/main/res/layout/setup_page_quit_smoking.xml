@@ -23,9 +23,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"
-                android:textColor="@color/font.dark.lighter"
                 android:text="@string/quit_page_per_day_title"
-                android:textSize="@dimen/text_size_normal"
+                style="@style/Text.Setup.Section"
                 />
 
             <EditText
@@ -35,7 +34,7 @@
                 android:ems="10"
                 android:id="@+id/qs_start_edit"
                 android:layout_alignBottom="@+id/qs_start_text"
-                android:textColor="@color/font.dark.lighter"
+                style="@style/Text.Setup.Section"
                 android:layout_alignParentRight="true"/>
 
 
@@ -45,9 +44,8 @@
                 android:text="@string/quit_page_desire_smokes_title"
                 android:layout_marginLeft="10dip"
                 android:id="@+id/qs_end_text"
-                android:textSize="@dimen/text_size_normal"
-                android:textColor="@color/font.dark.lighter"
                 android:layout_alignBottom="@+id/qs_end_edit"
+                style="@style/Text.Setup.Section"
                 />
 
             <EditText
@@ -58,7 +56,7 @@
                 android:id="@+id/qs_end_edit"
                 android:text="0"
                 android:layout_alignParentRight="true"
-                android:textColor="@color/font.dark.lighter"
+                style="@style/Text.Setup.Section"
                 android:layout_below="@+id/qs_start_edit"
                 />
 
@@ -76,14 +74,15 @@
             </LinearLayout>
 
             <TextView
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/quite_smoke_program_title"
                 android:layout_marginLeft="10dip"
                 android:id="@+id/qs_level_label"
-                android:textSize="@dimen/text_size_normal"
-                android:textColor="@color/font.dark.lighter"
                 android:layout_below="@+id/qs_separator_layout"
+                style="@style/Text.Setup.Section.Caption"
                 />
 
 
@@ -105,8 +104,7 @@
                 android:layout_marginLeft="20dip"
                 android:layout_marginRight="10dip"
                 android:id="@+id/qs_level_label_description"
-                android:textSize="@dimen/text_size_normal_small"
-                android:textColor="@color/font.dark.lighter"
+                style="@style/Text.Setup.Section.Description"
                 android:layout_below="@+id/qs_level_seekBar"
                 />
 

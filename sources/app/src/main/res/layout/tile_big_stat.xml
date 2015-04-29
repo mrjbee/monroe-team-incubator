@@ -10,8 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/days_10_smokes"
-        android:textSize="@dimen/text_size_normal_smalles"
-        android:textColor="@color/font.dark.lighter"
+        style="@style/Text.Tile.Big.Caption"
         android:id="@+id/stat_chart_caption"
         />
 

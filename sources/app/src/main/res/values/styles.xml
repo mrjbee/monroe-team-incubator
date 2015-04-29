@@ -28,6 +28,14 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <style name="Text.Tile.Big.Caption" parent="AppTheme">
+        <item name="android:textColor">#ff6b6b6b</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-light</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+
     <style name="Text.Setup.Caption" parent="Text.Setup.Sub.Caption">
         <item name="android:textColor">#ff2a2a2a</item>
         <item name="android:textSize">22sp</item>
