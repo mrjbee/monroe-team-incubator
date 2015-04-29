@@ -3,6 +3,7 @@ package org.monroe.team.smooker.app.uc;
 import org.monroe.team.android.box.db.TransactionUserCase;
 import org.monroe.team.corebox.services.ServiceRegistry;
 import org.monroe.team.smooker.app.db.Dao;
+import org.monroe.team.smooker.app.uc.common.FetchFailedException;
 
 public class AddSmoke extends TransactionUserCase<Void, Void, Dao> {
 
@@ -13,7 +14,7 @@ public class AddSmoke extends TransactionUserCase<Void, Void, Dao> {
     @Override
     protected Void transactionalExecute(Void request, Dao dao) {
         boolean added = -1 != dao.addSmoke();
-        if (added) throw new IllegalArgumentException("Add smoke failed");
+        if (!added) throw new IllegalArgumentException("Add smoke failed");
         return null;
     }
 }

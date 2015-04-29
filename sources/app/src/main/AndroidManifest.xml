@@ -52,9 +52,9 @@
     <application
         android:name=".android.SmookerApplication"
         android:allowBackup="true"
-        android:largeHeap="true"
         android:icon="@drawable/smooker_logo"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".android.FrontPageActivity"
@@ -136,14 +136,21 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Transperent.NoAnimation" >
         </activity>
-
         <activity
             android:name=".android.PreferencesActivity"
-            android:launchMode="singleInstance"
             android:label="Preferences"
+            android:launchMode="singleInstance"
             android:theme="@style/AppTheme" >
         </activity>
-
+        <activity
+            android:theme="@style/AppTheme.Transperent.NoAnimation"
+            android:name=".android.BugSubmitActivity"
+            android:screenOrientation="portrait"
+            android:noHistory="true"
+            android:autoRemoveFromRecents="true"
+            android:launchMode="singleInstance"
+            android:label="@string/title_activity_bug_submit" >
+        </activity>
     </application>
 
 </manifest>

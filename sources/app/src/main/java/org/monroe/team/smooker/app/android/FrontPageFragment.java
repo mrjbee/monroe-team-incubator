@@ -129,6 +129,7 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
         application().data_smokeDetails().fetch(requestUpdate, new DataProvider.FetchObserver<PrepareTodaySmokeDetails.TodaySmokeDetails>() {
             @Override
             public void onFetch(PrepareTodaySmokeDetails.TodaySmokeDetails smokeStatistic) {
+                if (activity() == null)return;
                 updateSmokeStatistic(animate, smokeStatistic);
             }
 
@@ -140,7 +141,7 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
     }
 
     private void updateSmokeStatistic(boolean animate, PrepareTodaySmokeDetails.TodaySmokeDetails smokeStatistic) {
-        Pair<String,String> statisticStrings = toSimpleString(getActivity(), smokeStatistic);
+        Pair<String,String> statisticStrings = toSimpleString(activity(), smokeStatistic);
 
         String newDescriptionText = statisticStrings.second;
         final String newCountText = statisticStrings.first;
@@ -207,6 +208,7 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
      }
 
     public static Pair<String,String> toSimpleString(Context context, PrepareTodaySmokeDetails.TodaySmokeDetails smokeStatistic) {
+       if (context == null)throw new NullPointerException("Context couldn`t be null");
        final String newCountText = Integer.toString(smokeStatistic.specialCount);
        String newDescriptionText = "";
 

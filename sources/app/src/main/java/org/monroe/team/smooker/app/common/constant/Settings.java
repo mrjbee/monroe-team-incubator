@@ -30,6 +30,7 @@ public interface Settings {
     SettingManager.Flag ENABLED_ASSISTANCE_NOTIFICATION = new SettingManager.Flag("ASSISTANCE_NOTIFICATION",true);
     SettingManager.Flag FIRST_TIME_ENTER_APP = new SettingManager.Flag("FIRST_TIME_ENTER_APP", true);
     SettingManager.Flag IS_SMOKE_QUIT_ACTIVE = new SettingManager.Flag("IS_SMOKE_QUIT_ACTIVE", false);
+    SettingManager.Flag ENABLED_BUG_SUBMISSION = new SettingManager.Flag("ENABLED_BUG_SUBMISSION",true);
 
     Closure<Integer,Currency> CONVERT_CURRENCY = new Closure<Integer, Currency>() {
         @Override

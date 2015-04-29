@@ -48,6 +48,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.Callable;
@@ -61,6 +63,8 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
     static {
         L.setup(new AndroidLogImplementation());
     }
+
+    private Throwable exception;
 
     @Override
     public void onCreate() {
@@ -484,6 +488,20 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
                 });
             }
         });
+    }
+
+    @Override
+    public void processException(Throwable e) {
+        if (getSetting(Settings.ENABLED_BUG_SUBMISSION)) {
+            exception = e;
+            startActivity(new Intent(getApplicationContext(), BugSubmitActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        } else {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Throwable getAwaitingError() {
+        return exception;
     }
 
     public static abstract class Observer<ValueType>{

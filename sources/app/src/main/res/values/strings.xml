@@ -131,5 +131,6 @@
     <string name="warning_disable_quit_program">You are going to disable your quit program. All your results will be removed. Are you sure want to continue?</string>
     <string name="smoke_breaks_on_this_date">Smoke breaks on this day</string>
     <string name="title_activity_next_smoke_timer">Next Smoke Timer</string>
+    <string name="title_activity_bug_submit">Smooker Bug</string>
 
 </resources>
