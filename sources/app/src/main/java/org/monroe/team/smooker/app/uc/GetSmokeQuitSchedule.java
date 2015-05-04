@@ -73,7 +73,8 @@ public class GetSmokeQuitSchedule extends UserCaseSupport<Void, GetSmokeQuitSche
                 if (!probeDate.after(itQuitScheduleDate.date)){
                     //mean same date
                     return new QuitScheduleDate(probeDate,
-                            true, itQuitScheduleDate.successful,
+                            itQuitScheduleDate.isNewLimitDate,
+                            itQuitScheduleDate.successful,
                             itQuitScheduleDate.limit);
                 }
             }
