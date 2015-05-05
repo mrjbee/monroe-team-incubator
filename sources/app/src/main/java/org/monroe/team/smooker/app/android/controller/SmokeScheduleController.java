@@ -94,13 +94,13 @@ private final SmookerApplication application;
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         builder.setAutoCancel(true)
-                .setContentTitle(getString(R.string.quit_smoke_assistance_title))
-                .setContentText(getString(R.string.time_to_smoke))
+                .setContentTitle(getString(R.string.notification_timer_caption))
+                .setContentText(getString(R.string.notification_timer_text))
                 .setSmallIcon(R.drawable.notif_quit_assistance)
                 .setContentIntent(smokeBreakActivity)
-                .addAction(0, getString(R.string.skip_this_time), skipSmoke)
-                .addAction(0, getString(R.string.later_this_time), laterSmoke)
-                .addAction(0, getString(R.string.add_one_smoke), addSmoke);
+                .addAction(0, getString(R.string.notification_timer_skip), skipSmoke)
+                .addAction(0, getString(R.string.notification_timer_pospone), laterSmoke)
+                .addAction(0, getString(R.string.notification_timer_smoke), addSmoke);
 
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         builder.setSound(alarmSound);

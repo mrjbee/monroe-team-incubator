@@ -10,7 +10,7 @@
         android:layout_marginBottom="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/saving_on"
+        android:text="@string/tile.moneybox.caption"
         style="@style/Text.Tile.Big.Caption"
         android:id="@+id/moneybox_caption_text"
         />
@@ -37,7 +37,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Title"
+                    android:text="Example"
                     android:textStyle="bold"
                     android:textSize="@dimen/text_size_caption_small"
                     android:textColor="@color/font.dark.light"
@@ -47,7 +47,7 @@
                     android:layout_below="@+id/money_title_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Description"
+                    android:text="Example"
                     android:textSize="@dimen/text_size_normal_small"
                     android:textColor="@color/font.dark.light"
                     android:id="@+id/money_description_text"/>
@@ -57,7 +57,7 @@
                     android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0 $"
+                    android:text="Example $"
                     android:textStyle="bold"
                     android:textSize="@dimen/text_size_caption_big"
                     android:textColor="@color/font.dark.light"

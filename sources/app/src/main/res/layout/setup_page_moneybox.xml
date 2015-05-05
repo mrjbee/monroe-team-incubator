@@ -27,10 +27,10 @@
                 <TextView
                     android:layout_columnSpan="2"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Smoke Break Settings"
+                    android:text="@string/moneybox.smokebreak.caption"
                     android:layout_marginRight="10dp"
                     style="@style/Text.Setup.Section.Caption"
                     />
@@ -40,7 +40,7 @@
                     android:id="@+id/qs_start_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/quit_page_per_day_title"
+                    android:text="@string/moneybox.smokebreak.per.day"
                     android:layout_marginRight="10dp"
                     android:layout_gravity="bottom"
                     style="@style/Text.Setup.Section"
@@ -61,7 +61,7 @@
                     android:id="@+id/gs_price_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Smoke break cost"
+                    android:text="@string/moneybox.smoke.price"
                     style="@style/Text.Setup.Section"
                     />
 
@@ -89,7 +89,7 @@
                     android:layout_columnSpan="2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/general_page_one_smoke_cost"
+                    android:text="@string/moneybox.smokebreak.price.about"
                     style="@style/Text.Setup.Section.Description"
                     />
             </GridLayout>
@@ -114,21 +114,20 @@
                 <TextView
                     android:layout_columnSpan="2"
                     android:layout_marginTop="15dp"
-                    android:layout_marginBottom="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="What to Buy"
+                    android:text="@string/moneybox.target.caption"
                     android:layout_marginRight="10dp"
                     style="@style/Text.Setup.Section.Caption"
                     />
 
                 <TextView
-                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_columnSpan="2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Choose something to save money on it"
-                    style="@style/Text.Setup.Section"
+                    android:text="@string/moneybox.tile.description"
+                    style="@style/Text.Setup.Section.Description"
                     />
 
                 <RelativeLayout
@@ -143,7 +142,7 @@
                         android:inputType="numberDecimal"
                         android:ems="10"
                         style="@style/Text.Setup.Section"
-                        android:hint="Price"
+                        android:hint="@string/moneybox.target.price"
                         />
 
 
@@ -156,7 +155,7 @@
                         android:maxLines="1"
                         android:singleLine="true"
                         style="@style/Text.Setup.Section"
-                        android:hint="Title"
+                        android:hint="@string/moneybox.target.title"
                         />
                     <RelativeLayout
                         android:layout_centerVertical="true"
@@ -187,7 +186,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_width="wrap_content"
                                 android:layout_height="40dp"
-                                android:text="Select Image"
+                                android:text="@string/moneybox.target.select.image"
                                 style="@style/Button.Setup"
                                 />
                         </LinearLayout>
@@ -204,7 +203,7 @@
                     android:singleLine="true"
                     android:textColor="@color/font.dark.lighter"
                     android:textSize="@dimen/text_size_normal"
-                    android:hint="Short Description"
+                    android:hint="@string/moneybox.target.description"
                     />
             </LinearLayout>
         <LinearLayout
@@ -227,7 +226,7 @@
                 android:layout_marginBottom="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Warning"
+                android:text="@string/moneybox.manage.caption"
                 style="@style/Text.Setup.Section.Caption"
                 android:layout_marginRight="10dp"
                 />
@@ -235,16 +234,14 @@
             <Button
                 android:id="@+id/moneybox_clear_btn"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Clear current progress ..."
+                android:text="@string/moneybox.clear.progress"
                 style="@style/Button.Setup"
                 />
 
             <Button
                 android:id="@+id/moneybox_disable_btn"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Disable moneybox ..."
+                android:text="@string/moneybox.manage.disable"
                 style="@style/Button.Setup"
                 />
 

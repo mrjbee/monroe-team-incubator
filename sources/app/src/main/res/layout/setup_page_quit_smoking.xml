@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"
-                android:text="@string/quit_page_per_day_title"
+                android:text="@string/quit.smoke.per.day"
                 style="@style/Text.Setup.Section"
                 />
 
@@ -41,7 +41,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/quit_page_desire_smokes_title"
+                android:text="@string/quit.desire.smoke.per.day"
                 android:layout_marginLeft="10dip"
                 android:id="@+id/qs_end_text"
                 android:layout_alignBottom="@+id/qs_end_edit"
@@ -78,7 +78,7 @@
                 android:layout_marginBottom="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/quite_smoke_program_title"
+                android:text="@string/quit.program.caption"
                 android:layout_marginLeft="10dip"
                 android:id="@+id/qs_level_label"
                 android:layout_below="@+id/qs_separator_layout"
@@ -99,7 +99,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Here going to be description of level...."
+                android:text="Example"
                 android:layout_marginTop="10dip"
                 android:layout_marginLeft="20dip"
                 android:layout_marginRight="10dip"

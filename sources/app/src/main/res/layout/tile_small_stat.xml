@@ -44,7 +44,7 @@
         android:layout_gravity="center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/total_smokes"
+        android:text="@string/tile.stat.total.smokes"
         style="@style/Text.Tile.Small"
         android:id="@+id/stat_total_smokes"/>
 
@@ -53,7 +53,7 @@
         android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0 smokes"
+        android:text="0"
         style="@style/Text.Tile.Small.Value"
         android:id="@+id/stat_total_smokes_value" />
 
@@ -63,7 +63,7 @@
         android:layout_gravity="center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/today_per_average_smokes"
+        android:text="@string/tile.stat.average"
         style="@style/Text.Tile.Small"
         android:id="@+id/stat_average_text"/>
 
@@ -72,7 +72,7 @@
         android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0 smokes"
+        android:text="0"
         style="@style/Text.Tile.Small.Value"
         android:id="@+id/stat_average_text_value" />
     </GridLayout>

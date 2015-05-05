@@ -9,7 +9,7 @@
         android:id="@+id/panel_caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Description"
+        android:text="Example"
         android:textSize="@dimen/text_size_normal"
         android:textColor="@color/font.dark.lighter"/>
 
@@ -19,7 +19,7 @@
         android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Text"
+        android:text="Example"
         android:textSize="@dimen/text_size_normal_smalles"
         android:textColor="@color/font.dark.light"/>
 
@@ -28,7 +28,7 @@
         android:layout_below="@+id/panel_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Action"
+        android:text="Example"
         android:lines="1"
         android:textSize="@dimen/text_size_normal_smalles"
         android:textColor="@color/font.link"/>

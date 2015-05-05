@@ -9,7 +9,7 @@
         android:layout_marginTop="6dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/days_10_smokes"
+        android:text="@string/tile.stat.caption"
         style="@style/Text.Tile.Big.Caption"
         android:id="@+id/stat_chart_caption"
         />

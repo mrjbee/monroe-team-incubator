@@ -25,7 +25,7 @@
             android:textSize="@dimen/text_size_normal_smalles"
             android:textColor="@color/font.dark.light"
             android:id="@+id/item_text"
-            android:text="Hello"/>
+            android:text="Example"/>
 
     </LinearLayout>
 

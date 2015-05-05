@@ -15,7 +15,7 @@
             android:id="@+id/date_caption_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1 Apr 2015"
+            android:text="Example"
             android:textStyle="bold"
             android:textSize="@dimen/text_size_normal"
             android:textColor="@color/font.white"
@@ -26,7 +26,7 @@
             android:id="@+id/date_description_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tuesday"
+            android:text="Example"
             android:textStyle="bold"
             android:layout_marginLeft="21dp"
             android:textSize="@dimen/text_size_caption"
@@ -69,9 +69,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:text="@string/limit_is_exceeded"
+                android:text="@string/date.details.smokes.exceeded"
                 android:textSize="@dimen/text_size_normal"
-                android:textColor="@color/font.dark.light"
+                android:textColor="@color/font.dark.lighter"
                 />
 
             <TextView
@@ -80,8 +80,9 @@
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/smoke_breaks_on_this_date"
+                android:text="@string/date.details.day.smokes"
                 android:textSize="@dimen/text_size_normal"
+                android:fontFamily="sans-serif-light"
                 android:textColor="@color/font.dark.light"
                 />
 
@@ -90,7 +91,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10 times"
+                android:text="example"
                 android:textSize="@dimen/text_size_normal"
                 android:textColor="@color/font.dark.lighter"
                 />
@@ -101,8 +102,9 @@
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/smoke_limit"
+                android:text="@string/date.details.day.smoke.limit"
                 android:textSize="@dimen/text_size_normal"
+                android:fontFamily="sans-serif-light"
                 android:textColor="@color/font.dark.light"
                 />
 
@@ -111,7 +113,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10 times"
+                android:text="example"
                 android:textSize="@dimen/text_size_normal"
                 android:textColor="@color/font.dark.lighter"
                 />

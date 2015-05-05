@@ -25,7 +25,7 @@
                 android:id="@+id/setup_caption_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name"
+                android:text="@string/application.name"
                 style="@style/Text.Setup.Sub.Caption"
             />
 
@@ -33,7 +33,7 @@
                 android:id="@+id/setup_description_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Options"
+                android:text="@string/options.caption"
                 style="@style/Text.Setup.Caption"
                 android:layout_alignLeft="@+id/setup_caption_text"
                 android:layout_below="@+id/setup_caption_text" />
@@ -84,7 +84,7 @@
                     android:layout_marginBottom="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/menu_notifications"
+                    android:text="@string/options.notification.settings"
                     style="@style/Text.Setup.Section.Caption"
                     />
 
@@ -93,7 +93,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     style="@style/Text.Setup.Section"
-                    android:text="@string/ui_page_sticky_notif_title"
+                    android:text="@string/options.sticky.notification"
                     />
 
                 <TextView
@@ -101,7 +101,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/Text.Setup.Section.Description"
-                    android:text="@string/ui_page_sticky_notif_about"
+                    android:text="@string/options.sticky.notification.about"
                     />
 
                 <Switch
@@ -110,7 +110,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     style="@style/Text.Setup.Section"
-                    android:text="@string/ui_page_assistance_notif_title"
+                    android:text="@string/options.smoke.timer.notifications"
                     />
 
                 <LinearLayout
@@ -128,14 +128,14 @@
                     android:layout_marginBottom="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/menu_last_smoke"
+                    android:text="@string/options.manage.data"
                     style="@style/Text.Setup.Section.Caption"
                     />
 
                 <Button
                     android:id="@+id/remove_last_action"
                     android:layout_width="wrap_content"
-                    android:text="Remove last smoke action ..."
+                    android:text="@string/options.remove.last.action"
                     style="@style/Button.Setup"
                     />
 
@@ -144,21 +144,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/Text.Setup.Section.Description"
-                    android:text="Allows to remove last added, skipped or postponed smoke break"
+                    android:text="@string/options.remove.last.action.about"
                     />
 
                 <Button
                     android:layout_marginTop="15dp"
                     android:id="@+id/remove_today_data"
                     android:layout_width="wrap_content"
-                    android:text="Remove today data ..."
+                    android:text="@string/options.remove.today.data"
                     style="@style/Button.Setup"
                     />
 
                 <Button
                     android:id="@+id/remove_all_data"
                     android:layout_width="wrap_content"
-                    android:text="Remove all collected data ..."
+                    android:text="@string/options.remove.all.data"
                     style="@style/Button.Setup"
                     />
 
@@ -176,7 +176,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Application Details"
+                    android:text="@string/options.application.details"
                     style="@style/Text.Setup.Section.Caption"
                     />
 
@@ -185,27 +185,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/Text.Setup.Section.Description"
-                    android:text="@string/app_version"
+                    android:text="@string/application.version"
                     />
 
                 <Button
                     android:id="@+id/rate_link"
                     android:layout_width="wrap_content"
-                    android:text="Rate application ..."
+                    android:text="@string/options.rate.application"
                     style="@style/Button.Setup"
                     />
 
                 <Button
                     android:id="@+id/mail_link"
                     android:layout_width="wrap_content"
-                    android:text="Ask or Suggest ..."
+                    android:text="@string/options.mail.support"
                     style="@style/Button.Setup"
                     />
 
                 <Button
                     android:id="@+id/community_link"
                     android:layout_width="wrap_content"
-                    android:text="Community..."
+                    android:text="@string/options.goto.community"
                     style="@style/Button.Setup"
                     />
 
@@ -214,7 +214,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/Text.Setup.Section"
-                    android:text="Third-party libraries"
+                    android:text="@string/options.trd.party.libs"
                     />
 
                 <TextView
@@ -222,7 +222,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/Text.Setup.Section.Description"
-                    android:text="Stack Blur Algorithm by Mario Klingemann 'mario@quasimondo.com'"
+                    android:text="@string/options.stack.blur"
                     />
 
             </LinearLayout>

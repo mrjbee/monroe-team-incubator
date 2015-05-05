@@ -845,7 +845,7 @@ public class TilesFragment extends FrontPageFragment {
 
         @Override
         public String caption() {
-            return getString(R.string.statistics);
+            return getString(R.string.tile_stat_name);
         }
 
         @Override
@@ -880,11 +880,11 @@ public class TilesFragment extends FrontPageFragment {
             application().data_smokeDetails().fetch(true, new DataProvider.FetchObserver<PrepareTodaySmokeDetails.TodaySmokeDetails>() {
                 @Override
                 public void onFetch(PrepareTodaySmokeDetails.TodaySmokeDetails todaySmokeDetails) {
-                     totalValueText.setText(""+todaySmokeDetails.total+" "+getString(R.string.smokes));
+                     totalValueText.setText(""+todaySmokeDetails.total+" "+getString(R.string.general_smokes));
                      if (todaySmokeDetails.avarage != -1){
-                         averageValueText.setText(""+todaySmokeDetails.avarage+" "+getString(R.string.smokes));
+                         averageValueText.setText(""+todaySmokeDetails.avarage+" "+getString(R.string.general_smokes));
                      } else {
-                         averageValueText.setText(getString(R.string.not_enough_data));
+                         averageValueText.setText(R.string.general_no_data);
                      }
                     todaySmokeCountText.setText("" + todaySmokeDetails.todaySmokes, true);
                 }
@@ -937,7 +937,7 @@ public class TilesFragment extends FrontPageFragment {
 
         @Override
         public String caption() {
-            return getString(R.string.quit_page_title);
+            return getString(R.string.tile_quit_name);
         }
 
         @Override
@@ -1012,9 +1012,9 @@ public class TilesFragment extends FrontPageFragment {
             shadow_bottom.setVisibility(View.INVISIBLE);
             PanelUI.initLightPanel(
                     dataContent.getChildAt(1),
-                    getString(R.string.no_quit_program),
-                    getString(R.string.quit_program_choose_prompt),
-                    getString(R.string.quit_program_prompt_action), new View.OnClickListener(){
+                    getString(R.string.tile_quit_disabled_caption),
+                    getString(R.string.tile_quit_disabled_description),
+                    getString(R.string.tile_quit_disabled_activate), new View.OnClickListener(){
                         @Override
                         public void onClick(View v) {
                            performTileSetup();
@@ -1083,13 +1083,13 @@ public class TilesFragment extends FrontPageFragment {
                 @Override
                 public void onFetch(PrepareSmokeQuitDetails.Details details) {
                     if (details.todayLimit != -1) {
-                        endDateText.setText(details.dayLeftCount+" "+getString(R.string.days));
-                        endCountText.setText("" + details.todayLimit + " " + getString(R.string.smokes));
+                        endDateText.setText(details.dayLeftCount+" "+getString(R.string.general_days));
+                        endCountText.setText("" + details.todayLimit + " " + getString(R.string.general_smokes));
                         progressText.setText("" + details.progress + "%");
 
                     } else {
-                        endDateText.setText(getString(R.string.disabled));
-                        endCountText.setText(getString(R.string.disabled));
+                        endDateText.setText(getString(R.string.general_disabled));
+                        endCountText.setText(getString(R.string.general_disabled));
                         progressText.setText("0%");
                     }
                     progressView.setAngle(360f * ((float) details.progress / 100f));
@@ -1227,7 +1227,7 @@ public class TilesFragment extends FrontPageFragment {
 
         @Override
         public String caption() {
-            return getString(R.string.moneybox);
+            return getString(R.string.tile_moneybox_name);
         }
 
         @Override
@@ -1292,6 +1292,8 @@ public class TilesFragment extends FrontPageFragment {
 
         private void fetchImage(final String imageId) {
             if (imageView.getHeight() == 0){
+                //required to properly display image
+                if (activity() == null) return;
                 activity().runLastOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -1315,7 +1317,7 @@ public class TilesFragment extends FrontPageFragment {
                 @Override
                 public void onFetch(PrepareMoneyBoxProgress.MoneyBoxProgress moneyBoxProgress) {
                     if (moneyBoxProgress.isDisabled()){
-                        savedMoneyView.setText(R.string.disabled);
+                        savedMoneyView.setText(R.string.general_disabled);
                         progressValueView.setText("0%");
                         progressView.setProgress(0f);
                         if (contentPanel != null){
@@ -1365,9 +1367,9 @@ public class TilesFragment extends FrontPageFragment {
             imageView = (ImageView) bigContentView.findViewById(R.id.money_image);
             PanelUI.initLightPanel(
                     getSuggestSetupPanel(),
-                    "Save your money on something",
-                    "Choose your currency, price and start saving",
-                    "Setup", new View.OnClickListener(){
+                    getString(R.string.tile_moneybox_disabled_caption),
+                    getString(R.string.tile_moneybox_disabled_description),
+                    getString(R.string.tile_moneybox_disabled_activate), new View.OnClickListener(){
                         @Override
                         public void onClick(View v) {
                             performTileSetup();

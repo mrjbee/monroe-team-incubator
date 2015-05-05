@@ -214,14 +214,14 @@ public abstract class FrontPageFragment extends FragmentSupport<SmookerApplicati
 
         switch (smokeStatistic.type){
             case NO_LIMIT:
-                newDescriptionText = context.getString(R.string.today_smokes);
+                newDescriptionText = context.getString(R.string.dashboard_today_smokes);
                 break;
             case NO_LEFT:
             case BEFORE_LIMIT:
-                newDescriptionText = context.getString(R.string.left_for_today);
+                newDescriptionText = context.getString(R.string.dashboard_left_today_smokes);
                 break;
             case AFTER_LIMIT:
-                newDescriptionText = context.getString(R.string.over_limit);
+                newDescriptionText = context.getString(R.string.dashboard_over_today_smokes);
                 break;
             default:
                 throw new UnsupportedOperationException();

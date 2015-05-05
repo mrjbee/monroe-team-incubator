@@ -24,6 +24,7 @@ import java.util.List;
 
 public class DayTrackChartView extends View {
 
+    private String string_limit = "Limit";
     Paint axisPaint;
     Paint axisLabelPaint;
     Paint transparentPaint;
@@ -78,10 +79,7 @@ public class DayTrackChartView extends View {
 
     private void initialize(Context context) {
 
-        verticalAxisName = context.getResources().getString(R.string.smokes);
-        horizontalAxisName = context.getResources().getString(R.string.chart_time_axis);
-
-
+        string_limit = context.getString(R.string.general_limit)+" ";
         backgroundStripeHeight = dimen(R.integer.chart_stripe_background_height_float);
         stripeHeight = dimen(R.integer.chart_stripe_height_float);
         axisCaptionTextSize = dimen(R.integer.chart_axis_text_size_float);
@@ -316,7 +314,7 @@ public class DayTrackChartView extends View {
         float limitYPosition = getHeight()-horizontalAxisPadding-itemHeight* limit;
 
         Rect textBounds = new Rect();
-        String limitAsText = "Limit "+Integer.toString(limit);
+        String limitAsText = string_limit +Integer.toString(limit);
         limitLabelPaint.getTextBounds(limitAsText, 0, limitAsText.length(), textBounds);
         canvas.drawLine(
                 verticalAxisPadding + verticalAxisTextBounds.height(),

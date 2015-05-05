@@ -43,7 +43,7 @@ public class SetupMoneyboxActivity extends SetupGeneralActivity {
 
     @Override
     protected int caption_string()  {
-        return R.string.moneybox;
+        return R.string.tile_moneybox_name;
     }
 
     @Override

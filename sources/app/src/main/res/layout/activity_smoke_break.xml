@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/Text.Choice.Header.Sub.Caption"
-            android:text="@string/time_to_smoke"/>
+            android:text="@string/smoke.break.sub.caption"/>
 
         <TextView
             android:layout_marginLeft="30dp"
@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/Text.Choice.Header.Caption"
-            android:text="@string/are_you_want_to_smoke"/>
+            android:text="@string/smoke.break.caption"/>
 
     </RelativeLayout>
 
@@ -84,7 +84,7 @@
                android:id="@+id/sb_option_skip_title"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="@string/skip_long"
+               android:text="@string/smoke.break.skip.smoke"
                style="@style/Text.Choice.Caption"
                />
 
@@ -95,7 +95,7 @@
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                style="@style/Text.Choice.Description"
-               android:text="@string/skip_description"
+               android:text="@string/smoke.break.skip.about"
                />
        </RelativeLayout>
 
@@ -119,7 +119,7 @@
                android:id="@+id/sb_option_postpone_title"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="@string/postpone_long"
+               android:text="@string/smoke.break.pospone"
                style="@style/Text.Choice.Caption"
                />
            <TextView
@@ -129,7 +129,7 @@
                style="@style/Text.Choice.Description"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="@string/postpone_description"
+               android:text="@string/smoke.break.postponed.about"
                />
        </RelativeLayout>
 
@@ -153,7 +153,7 @@
                android:id="@+id/sb_option_smoke_title"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="@string/smoke_long"
+               android:text="@string/smoke.break.smoke.option"
                style="@style/Text.Choice.Caption"
                />
            <TextView
@@ -163,7 +163,7 @@
                style="@style/Text.Choice.Description"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="@string/smoke_description"
+               android:text="@string/smoke.break.smoke.option.about"
                />
        </RelativeLayout>
    </LinearLayout>

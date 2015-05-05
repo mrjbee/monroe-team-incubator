@@ -53,12 +53,12 @@
         android:name=".android.SmookerApplication"
         android:allowBackup="true"
         android:icon="@drawable/smooker_logo"
-        android:label="@string/app_name"
+        android:label="@string/application.name"
         android:largeHeap="true"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".android.FrontPageActivity"
-            android:label="@string/app_name"
+            android:label="@string/application.name"
             android:launchMode="singleInstance" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -68,21 +68,21 @@
         </activity>
         <activity
             android:name=".android.SetupQuitSmokeActivity"
-            android:label="@string/title_activity_setting_quit_smoke"
+            android:label="@string/activity.quit"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Transperent.NoAnimation"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
             android:name=".android.SetupMoneyboxActivity"
-            android:label="@string/title_activity_setting_moneybox"
+            android:label="@string/activity.moneybox"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Transperent.NoAnimation"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
             android:name=".android.SmokeBreakActivity"
-            android:label="@string/title_activity_smoke_break"
+            android:label="@string/activity.smoke.timer"
             android:launchMode="singleInstance" >
         </activity>
 
@@ -132,7 +132,7 @@
 
         <activity
             android:name=".android.DateDetailsActivity"
-            android:label="@string/title_activity_date_details"
+            android:label="@string/activity.quit.date"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Transperent.NoAnimation" >
         </activity>
@@ -149,7 +149,7 @@
             android:noHistory="true"
             android:autoRemoveFromRecents="true"
             android:launchMode="singleInstance"
-            android:label="@string/title_activity_bug_submit" >
+            android:label="@string/activity.ugly.bug" >
         </activity>
     </application>
 

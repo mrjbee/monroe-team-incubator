@@ -25,7 +25,7 @@
             android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/money_saved"
+            android:text="@string/tile.moneybox.saved.money"
             style="@style/Text.Tile.Small"
             android:id="@+id/quit_end_date"/>
 
@@ -34,7 +34,7 @@
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/disabled"
+            android:text="@string/general.disabled"
             style="@style/Text.Tile.Small.Value"
             android:id="@+id/money_saved_value_text"
            />

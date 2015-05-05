@@ -81,7 +81,7 @@ public class StickyNotificationService extends Service {
     }
 
     private String generateNotificationStringFor(Integer smokeCount) {
-        return getString(R.string.pattern_smokes_today_with_value, smokeCount);
+        return getString(R.string.dashboard_today_smokes) +  smokeCount;
     }
 
     private String getNotificationInitialText() {
@@ -118,12 +118,12 @@ public class StickyNotificationService extends Service {
                     .setSmallIcon(R.drawable.notification_cigareta)
                     .setContentIntent(ActorNotification.ADD_SMOKE.createPendingIntent(getApplicationContext()))
                     .setContentTitle(text)
-                    .setContentText(getString(R.string.hit_for_smoke_log))
+                    .setContentText(getString(R.string.notification_sticky_text))
                     .setShowWhen(false)
                     .setWhen(0)
                     .setOngoing(true)
-                    .addAction(0,"Dashboard", ActorNotification.OPEN_DASHBOARD.createPendingIntent(getApplicationContext()))
-                    .addAction(0,"Options", ActorNotification.CLOSE_STICKY_NOTIFICATION.createPendingIntent(getApplicationContext()));
+                    .addAction(0,getString(R.string.notification_sticky_action_dashboard), ActorNotification.OPEN_DASHBOARD.createPendingIntent(getApplicationContext()))
+                    .addAction(0,getString(R.string.notification_sticky_action_option), ActorNotification.CLOSE_STICKY_NOTIFICATION.createPendingIntent(getApplicationContext()));
 
             return builder.build();
         }

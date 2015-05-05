@@ -108,7 +108,7 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
 
     private void applyCaption(Date date) {
         String dateFull = dateFormatFull.format(date);
-        String dayOnly = getString(R.string.today);
+        String dayOnly = getString(R.string.general_today);
         if (!DateUtils.isToday(date)){
           dayOnly = dayOnlyFormat.format(date);
           dayOnly = dayOnly.substring(0,1).toUpperCase()+dayOnly.substring(1,dayOnly.length());
@@ -189,17 +189,17 @@ public class DateDetailsActivity extends ActivitySupport<SmookerApplication> {
                                             view(R.id.date_status_value_text).setVisibility(details.isFuture() || details.isPassed() ? View.GONE : View.VISIBLE);
 
                                             if (details.isLimitChanged()) {
-                                                view_text(R.id.date_limit_text).setText(R.string.new_day_limit);
+                                                view_text(R.id.date_limit_text).setText(R.string.date_details_new_limit);
                                             } else {
-                                                view_text(R.id.date_limit_text).setText(R.string.smoke_limit);
+                                                view_text(R.id.date_limit_text).setText(R.string.date_details_limit);
                                             }
 
                                             if (!details.isPassed()) {
-                                                view_text(R.id.date_status_value_text).setText(R.string.limit_is_exceeded);
+                                                view_text(R.id.date_status_value_text).setText(R.string.date_details_smokes_exceeded);
                                             }
 
-                                            view_text(R.id.date_limit_value_text).setText("" + details.getLimit() + " " + getString(R.string.times));
-                                            view_text(R.id.date_smoke_count_value_text).setText("" + details.getSmokeCounts() + " " + getString(R.string.times));
+                                            view_text(R.id.date_limit_value_text).setText("" + details.getLimit() + " " + getString(R.string.general_times));
+                                            view_text(R.id.date_smoke_count_value_text).setText("" + details.getSmokeCounts() + " " + getString(R.string.general_times));
                                             contentContainerAC.show();
                                         }
                                     });

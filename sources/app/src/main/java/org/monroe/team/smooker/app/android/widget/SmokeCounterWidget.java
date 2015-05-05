@@ -64,14 +64,14 @@ public class SmokeCounterWidget extends AppWidgetProvider {
             int delta = state.getTodaySmokeLimit() - state.getTodaySmokeDates().size();
             if (delta >= 0){
                 countText = ""+delta;
-                descriptionText = context.getString(R.string.left_for_today);
+                descriptionText = "left";
             } else {
                 countText = ""+Math.abs(delta);
-                descriptionText = context.getString(R.string.over_limit);
+                descriptionText = "over";
             }
         } else {
             countText = ""+state.getTodaySmokeDates().size();
-            descriptionText = context.getString(R.string.today_smokes);
+            descriptionText = "today";
         }
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_smoke_counter);

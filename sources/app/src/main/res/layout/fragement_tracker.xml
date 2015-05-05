@@ -35,7 +35,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:gravity="center"
-                android:text="Day Tracker"
+                android:text="@string/day.tracker.caption"
                 android:textStyle="bold"
                 android:textSize="@dimen/text_size_normal"
                 android:textColor="@color/font.dark.light"

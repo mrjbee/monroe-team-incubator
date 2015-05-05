@@ -73,10 +73,6 @@ public class SmokePeriodHistogramView extends View {
 
     private void initialize(Context context) {
 
-        verticalAxisName = context.getResources().getString(R.string.smokes);
-        horizontalAxisName = context.getResources().getString(R.string.chart_day_axis);
-
-
         backgroundStripeHeight = dimen(R.integer.chart_stripe_background_height_float);
         stripeHeight = dimen(R.integer.chart_stripe_height_float);
         axisCaptionTextSize = dimen(R.integer.chart_axis_text_size_float);
@@ -360,8 +356,8 @@ public class SmokePeriodHistogramView extends View {
 
     private String formatDate(Date dateToFormat){
         Date today =  DateUtils.dateOnly(DateUtils.now());
-        if (dateToFormat.compareTo(today) == 0) return getContext().getString(R.string.today);
-        if (dateToFormat.compareTo(DateUtils.mathDays(today,-1)) == 0) return getContext().getString(R.string.yesterday);
+        if (dateToFormat.compareTo(today) == 0) return getContext().getString(R.string.general_today);
+        if (dateToFormat.compareTo(DateUtils.mathDays(today,-1)) == 0) return getContext().getString(R.string.general_yesturday);
         return dateFormater.format(dateToFormat);
     }
 

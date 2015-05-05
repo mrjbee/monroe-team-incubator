@@ -23,7 +23,7 @@ public class SetupQuitSmokeActivity extends SetupGeneralActivity {
 
     @Override
     protected int caption_string()  {
-        return R.string.quit_page_title;
+        return R.string.tile_quit_name;
     }
 
     @Override
@@ -85,13 +85,13 @@ public class SetupQuitSmokeActivity extends SetupGeneralActivity {
 
     private String getProgramDescription(QuitSmokeDifficultLevel difficult) {
         switch (difficult){
-            case DISABLED: return getString(R.string.quit_page_program_description_disabled);
-            case LOWEST: return getString(R.string.quit_page_program_description_lowest);
-            case LOW: return getString(R.string.quit_page_program_description_low);
-            case SMART: return getString(R.string.quit_page_program_description_smart);
-            case SMARTEST: return getString(R.string.quit_page_program_description_smartest);
-            case HARD: return getString(R.string.quit_page_program_description_hard);
-            case HARDEST: return getString(R.string.quit_page_program_description_hardest);
+            case DISABLED: return getString(R.string.quit_program_disable);
+            case LOWEST: return getString(R.string.quit_program_lowest);
+            case LOW: return getString(R.string.quit_program_low);
+            case SMART: return getString(R.string.quit_program_smart);
+            case SMARTEST: return getString(R.string.quit_program_smarter);
+            case HARD: return getString(R.string.quit_program_hard);
+            case HARDEST: return getString(R.string.quit_program_hardest);
         }
         throw new IllegalStateException();
     }
@@ -105,7 +105,7 @@ public class SetupQuitSmokeActivity extends SetupGeneralActivity {
         if (difficult.mayHaveDifferentTargetCount()) {
             String startText = ((TextView) findViewById(R.id.qs_start_edit)).getText().toString();
             if (startText.trim().length() == 0) {
-                Toast.makeText(this, getString(R.string.quit_page_not_set_per_day), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.quit_warn_not_times_per_day), Toast.LENGTH_SHORT).show();
                 return;
             }
             smokePerDay = Integer.parseInt(view(R.id.qs_start_edit,TextView.class).getText().toString());
@@ -116,14 +116,14 @@ public class SetupQuitSmokeActivity extends SetupGeneralActivity {
 
         if (difficult.mayHaveDifferentTargetCount()) {
             if (text.trim().length() == 0) {
-                Toast.makeText(this, getString(R.string.quit_page_not_set_desire_count), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.quit_warn_no_desire_count), Toast.LENGTH_LONG).show();
                 return;
             }
             desireSmokePerDayCount = Integer.parseInt(text);
         }
 
         if (difficult.mayHaveDifferentTargetCount() && desireSmokePerDayCount > smokePerDay){
-            Toast.makeText(this, getString(R.string.quit_page_desire_more_then_per_day), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.quit_warn_desire_more_then_average), Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -135,23 +135,23 @@ public class SetupQuitSmokeActivity extends SetupGeneralActivity {
             finish();
         } else {
 
-            String message = getString(R.string.warning_change_quit_program);
+            String message = getString(R.string.quit_alert_text_program_cahnge);
             if (difficult == QuitSmokeDifficultLevel.DISABLED) {
-                message = getString(R.string.warning_disable_quit_program);
+                message = getString(R.string.quit_alert_text_program_disable);
             } else if(oldDifficult == difficult){
-                message = getString(R.string.warning_restart_quit_program);
+                message = getString(R.string.quit_alert_text_program_restart);
             }
 
             AlertDialog alertDialog = new AlertDialog.Builder(this)
-                    .setTitle(getString(R.string.warning_quit_program_title))
+                    .setTitle(getString(R.string.quit_alert_change_caption))
                     .setMessage(message)
-                    .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    .setPositiveButton(getString(R.string.general_yes), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             doActualUpdate(difficult, finalSmokePerDay, finalDesireSmokePerDayCount);
                             finish();
                         }
-                    }).setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                    }).setNegativeButton(getString(R.string.general_no), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                         }
