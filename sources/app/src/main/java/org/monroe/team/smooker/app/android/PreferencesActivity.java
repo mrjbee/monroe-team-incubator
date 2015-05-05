@@ -11,7 +11,6 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import org.monroe.team.android.box.app.ActivitySupport;
-import org.monroe.team.android.box.app.ApplicationSupport;
 import org.monroe.team.smooker.app.R;
 import org.monroe.team.smooker.app.uc.common.ActionDetails;
 
@@ -46,16 +45,15 @@ public class PreferencesActivity extends ActivitySupport<SmookerApplication>{
             @Override
             public void onClick(View v) {
                 AlertDialog alertDialog = new AlertDialog.Builder(PreferencesActivity.this)
-                        .setTitle("Data Deletion")
-                        .setMessage("You are going to delete today smoke details. All data about added, skipped and postponed smoke breaks will be removed. " +
-                                "Are you sure want to continue?")
-                        .setPositiveButton("Yes, remove today data", new DialogInterface.OnClickListener() {
+                        .setTitle(getString(R.string.options_alert_data_deletion_caption))
+                        .setMessage(getString(R.string.options_alert_data_today_delete_about))
+                        .setPositiveButton(getString(R.string.options_alert_data_today_delete_yes), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 removeTodayData(true);
                             }
 
-                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        }).setNegativeButton(getString(R.string.general_no), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                             }
@@ -67,16 +65,15 @@ public class PreferencesActivity extends ActivitySupport<SmookerApplication>{
             @Override
             public void onClick(View v) {
                 AlertDialog alertDialog = new AlertDialog.Builder(PreferencesActivity.this)
-                        .setTitle("Data Deletion")
-                        .setMessage("You are going to delete all collected data. All data including added, skipped and postponed smoke breaks, your smoke quit progress and moneybox progress will be removed. " +
-                                "Are you sure want to continue?")
-                        .setPositiveButton("Yes, remove all data", new DialogInterface.OnClickListener() {
+                        .setTitle(getString(R.string.options_alert_data_deletion_caption))
+                        .setMessage(getString(R.string.options_alert_data_all_text))
+                        .setPositiveButton(getString(R.string.options_alert_data_all_yes), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 removeTodayData(false);
                             }
 
-                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        }).setNegativeButton(getString(R.string.general_no), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                             }
@@ -93,33 +90,34 @@ public class PreferencesActivity extends ActivitySupport<SmookerApplication>{
                     public void onSuccess(final ActionDetails action) {
                         view(R.id.remove_last_action).setVisibility(View.VISIBLE);
                         if (action == null){
-                            Toast.makeText(application(),"No action was done today! Nothing to delete.",Toast.LENGTH_LONG).show();
+                            Toast.makeText(application(),getString(R.string.options_data_deletion_no_action_toast),Toast.LENGTH_LONG).show();
                         }else{
                             String detailsString = "Unknown";
                             switch (action.type){
                                 case SMOKE_BREAK:
-                                    detailsString = "Smoke Added";
+                                    detailsString = getString(R.string.options_data_deletion_action_smoke_added);
                                     break;
                                 case SMOKE_CANCEL_POSTPONED:
-                                    detailsString = "Smoke Postponed";
+                                    detailsString = getString(R.string.options_data_deletion_action_smoke_posponed);
                                     break;
                                 case SMOKE_CANCEL_SKIP:
-                                    detailsString = "Smoke Skipped";
+                                    detailsString = getString(R.string.options_data_deletion_action_smoke_skipped);
                                     break;
 
                             }
 
                             AlertDialog alertDialog = new AlertDialog.Builder(PreferencesActivity.this)
-                                    .setTitle("Data Deletion")
-                                    .setMessage("You are going to delete last action '"+detailsString+"' which was done " + DateFormat.getDateTimeInstance().format(action.date)+
-                                            " Are you sure want to continue?")
-                                    .setPositiveButton("Yes, remove it", new DialogInterface.OnClickListener() {
+                                    .setTitle(getString(R.string.options_alert_data_deletion_caption))
+                                    .setMessage(getString(R.string.options_alert_data_remove_action_before_text)+" "+detailsString+" "
+                                            +getString(R.string.options_alert_data_remove_action_after_text)+" "+DateFormat.getDateTimeInstance().format(action.date)+" "+
+                                            getString(R.string.options_alert_data_remove_action_last_text))
+                                    .setPositiveButton(getString(R.string.options_alert_data_remove_action_yes), new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             removeAction(action);
                                         }
 
-                                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    }).setNegativeButton(getString(R.string.general_no), new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                         }
@@ -187,7 +185,7 @@ public class PreferencesActivity extends ActivitySupport<SmookerApplication>{
     }
 
     private void successfullyRemovedToast() {
-        Toast.makeText(this, "Data removed successfully!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.options_data_removed_toast), Toast.LENGTH_SHORT).show();
     }
 
 

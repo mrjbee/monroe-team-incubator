@@ -117,5 +117,19 @@
     <string name="dashboard.clock.before.next.min">min before next</string>
     <string name="general.min">min</string>
     <string name="general.hours">hours</string>
+    <string name="options.alert.data.deletion.caption">Data Deletion</string>
+    <string name="options.alert.data.today.delete.about">You are going to delete today smoke details. All data about added, skipped and postponed smoke breaks will be removed. Are you sure want to continue?</string>
+    <string name="options.alert.data.today.delete.yes">Yes, remove today data</string>
+    <string name="options.data.removed.toast">Data removed successfully!</string>
+    <string name="options.alert.data.all.text">You are going to delete all collected data. All data including added, skipped and postponed smoke breaks, your smoke quit progress and moneybox progress will be removed. Are you sure want to continue?</string>
+    <string name="options.alert.data.all.yes">Yes, remove all data</string>
+    <string name="options.data.deletion.no.action.toast">No action was done today! Nothing to delete.</string>
+    <string name="options.data.deletion.action.smoke.added">Smoke Added</string>
+    <string name="options.data.deletion.action.smoke.posponed">Smoke Postponed</string>
+    <string name="options.data.deletion.action.smoke.skipped">Smoke Skipped</string>
+    <string name="options.alert.data.remove.action.yes">Yes, remove it</string>
+    <string name="options.alert.data.remove.action.before.text">You are going to delete action:</string>
+    <string name="options.alert.data.remove.action.after.text">It was done </string>
+    <string name="options.alert.data.remove.action.last.text">Are you sure want to continue?</string>
 
 </resources>

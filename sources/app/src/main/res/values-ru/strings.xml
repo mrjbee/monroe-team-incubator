@@ -108,11 +108,25 @@
     <string name="tile.quit.disabled.caption">Программа Выключена</string>
     <string name="tile.quit.disabled.description">Настройте программу борьбы с курением и начинайте бросать курит сегодня</string>
     <string name="tile.quit.name">Борьба с курением</string>
-    <string name="tile.quit.today.limit">Сегодняшний лимит</string>
+    <string name="tile.quit.today.limit">Лимит сегодня</string>
     <string name="tile.stat.average">Среднее в день</string>
     <string name="tile.stat.caption">Статистика последних 10 дней</string>
     <string name="tile.stat.name">Статистика</string>
     <string name="tile.stat.total.smokes">Всего</string>
     <string name="general.hours">часов</string>
     <string name="general.min">мин</string>
+    <string name="options.alert.data.all.text">Вы собираетесь удалить все данные о перекурах включая пропущеные и отлоеженые. Ваша программа борьбы с курением и копилка будут отключены. Вы действительно хотите продолжить?</string>
+    <string name="options.alert.data.all.yes">Да, удалить все</string>
+    <string name="options.alert.data.deletion.caption">Удаления данных</string>
+    <string name="options.alert.data.remove.action.after.text">Которое было сделано </string>
+    <string name="options.alert.data.remove.action.before.text">Вы собираетесь отменить децствие:</string>
+    <string name="options.alert.data.remove.action.last.text">Вы уверены что хотите продолжить?</string>
+    <string name="options.alert.data.remove.action.yes">Да, удалить</string>
+    <string name="options.alert.data.today.delete.about">Вы собираетесь удалить сегодняшние данные о перекурах включая пропущенные и отложенные. Вы уверены что хотите продолжить?</string>
+    <string name="options.alert.data.today.delete.yes">Да, удалить сегодняшние данные</string>
+    <string name="options.data.deletion.action.smoke.added">Добавление Перекура</string>
+    <string name="options.data.deletion.action.smoke.posponed">Отсрочка Перекура</string>
+    <string name="options.data.deletion.action.smoke.skipped">Пропуск Перекура</string>
+    <string name="options.data.deletion.no.action.toast">Нечего удалять. Сегодня нет действий.</string>
+    <string name="options.data.removed.toast">Даные успешно удалены!</string>
 </resources>
