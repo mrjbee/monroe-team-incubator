@@ -61,7 +61,7 @@ public class SmookerApplication extends ApplicationSupport<SmookerModel> {
     private SmokeScheduleController suggestionsController;
 
     static {
-        L.setup(new AndroidLogImplementation());
+      //  L.setup(new AndroidLogImplementation());
     }
 
     private Throwable exception;
