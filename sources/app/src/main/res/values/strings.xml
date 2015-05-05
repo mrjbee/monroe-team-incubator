@@ -131,5 +131,11 @@
     <string name="options.alert.data.remove.action.before.text">You are going to delete action:</string>
     <string name="options.alert.data.remove.action.after.text">It was done </string>
     <string name="options.alert.data.remove.action.last.text">Are you sure want to continue?</string>
+    <string name="moneybox.alert.disable.caption">Disable Moneybox</string>
+    <string name="moneybox.alert.disable.text">You are going to disable Moneybox. All your progress and saved money information will be erased. Are you sure want to continue?</string>
+    <string name="moneybox.alert.disable.yes">Yes, disable moneybox</string>
+    <string name="moneybox.alert.clear.caption">Clear Moneybox</string>
+    <string name="moneybox.alert.clear.text">You are going to clear. Your current progress and all data about saved money will be lost. Are you sure want to continue?</string>
+    <string name="moneybox.alert.clear.yes">Yes, clear progress</string>
 
 </resources>

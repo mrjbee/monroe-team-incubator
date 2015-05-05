@@ -165,16 +165,16 @@ public class SetupMoneyboxActivity extends SetupGeneralActivity {
             public void onClick(View v) {
                 //show dialog
                 AlertDialog alertDialog = new AlertDialog.Builder(SetupMoneyboxActivity.this)
-                        .setTitle("Disable Moneybox")
-                        .setMessage("You are going to disable Moneybox. All your progress and saved money information will be erased. Are you sure want to continue?")
-                        .setPositiveButton("Yes, disable moneybox", new DialogInterface.OnClickListener() {
+                        .setTitle(getString(R.string.moneybox_alert_disable_caption))
+                        .setMessage(getString(R.string.moneybox_alert_disable_text))
+                        .setPositiveButton(getString(R.string.moneybox_alert_disable_yes), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                              disable();
+                                disable();
                             }
 
 
-                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        }).setNegativeButton(getString(R.string.general_no), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                             }
@@ -187,17 +187,16 @@ public class SetupMoneyboxActivity extends SetupGeneralActivity {
             public void onClick(View v) {
                 //show dialog
                 AlertDialog alertDialog = new AlertDialog.Builder(SetupMoneyboxActivity.this)
-                        .setTitle("Clear Moneybox")
-                        .setMessage("You are going to clear you current progress and all data about saved money." +
-                                "Are you sure want to continue?")
-                        .setPositiveButton("Yes, clear progress", new DialogInterface.OnClickListener() {
+                        .setTitle(getString(R.string.moneybox_alert_clear_caption))
+                        .setMessage(getString(R.string.moneybox_alert_clear_text))
+                        .setPositiveButton(getString(R.string.moneybox_alert_clear_yes), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 clearProgress();
                             }
 
 
-                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        }).setNegativeButton(getString(R.string.general_no), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                             }

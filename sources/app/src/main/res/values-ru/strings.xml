@@ -129,4 +129,10 @@
     <string name="options.data.deletion.action.smoke.skipped">Пропуск Перекура</string>
     <string name="options.data.deletion.no.action.toast">Нечего удалять. Сегодня нет действий.</string>
     <string name="options.data.removed.toast">Даные успешно удалены!</string>
+    <string name="moneybox.alert.clear.caption">Очистить копилку</string>
+    <string name="moneybox.alert.clear.text">Вы собираетесь очистить копилку. Ваш текуший прогресс и сведения о сэкономленных деньгах будут утерянны. Вы действительно хотите продолжить?</string>
+    <string name="moneybox.alert.clear.yes">Да, очистить копилку</string>
+    <string name="moneybox.alert.disable.caption">Выключить копилку</string>
+    <string name="moneybox.alert.disable.text">Вы собираетесь выключить копилку. Все данные о сэкономленных деньгах будут утеряны. Вы действительно хотите продолжить?</string>
+    <string name="moneybox.alert.disable.yes">Да, выключить копилку</string>
 </resources>
