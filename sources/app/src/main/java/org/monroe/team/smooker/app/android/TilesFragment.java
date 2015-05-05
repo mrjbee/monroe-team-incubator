@@ -198,10 +198,10 @@ public class TilesFragment extends FrontPageFragment {
         if (msPast<0){
             msPast = 0;
         }
-        String sinceDescription = "min";
+        String sinceDescription = getString(R.string.general_min);
         long sinceValue = DateUtils.asMinutes(msPast);
         if (sinceValue > 600 ){
-            sinceDescription = "hours";
+            sinceDescription = getString(R.string.general_hours);
             sinceValue = DateUtils.asHours(msPast);
         }
 

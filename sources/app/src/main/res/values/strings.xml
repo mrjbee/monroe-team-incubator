@@ -28,7 +28,7 @@
     <string name="options.mail.support">Ask or Suggest</string>
     <string name="options.goto.community">Community</string>
     <string name="options.trd.party.libs">Third-party libraries</string>
-    <string name="options.stack.blur">Stack Blur Algorithm by Mario Klingemann \'mario@quasimondo.com\'</string>
+    <string name="options.stack.blur" translatable="false">Stack Blur Algorithm by Mario Klingemann \'mario@quasimondo.com\'</string>
     <string name="setup.settings">Settings</string>
     <string name="setup.apply.changes">Apply Changes</string>
     <string name="smoke.break.sub.caption">Smoke Break Timer</string>
@@ -115,5 +115,7 @@
     <string name="notification_sticky_action_option">Options</string>
     <string name="notification_sticky_text">Touch for +1 smoke</string>
     <string name="dashboard.clock.before.next.min">min before next</string>
+    <string name="general.min">min</string>
+    <string name="general.hours">hours</string>
 
 </resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="moneybox.smokebreak.price.about">Please specify how much money your spend for one smoke break. It could be one cigarette price or price of tabaco for one pipe smoke</string>
+    <string name="activity.moneybox">Налаштування Скарбнички</string>
+    <string name="activity.quit">Боротьба з курінням</string>
+    <string name="activity.quit.date">Деталі Дня</string>
+</resources>
