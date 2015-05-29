@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.monroe.team.smooker.app.android.BugSubmitActivity">
+    tools:context="org.monroe.team.smooker.promo.android.BugSubmitActivity">
 
     <LinearLayout
         android:id="@+id/background_shadow"

@@ -39,7 +39,7 @@
             android:id="@+id/money_saved_value_text"
            />
 
-           <org.monroe.team.smooker.app.android.view.HorizontalProgressView
+           <org.monroe.team.smooker.promo.android.view.HorizontalProgressView
                android:layout_width="100dp"
                android:layout_height="20dp"
                android:id="@+id/money_progress"

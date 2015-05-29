@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="application.name" translatable="false">Smooker</string>
+    <string name="application.name" translatable="false">Smooker Free</string>
     <string name="application.version">App Version 2.0</string>
     <string name="dashboard.today.smokes">Smokes today</string>
     <string name="dashboard.left.today.smokes">Smokes left</string>

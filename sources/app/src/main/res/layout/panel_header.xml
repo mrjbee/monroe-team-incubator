@@ -17,7 +17,7 @@
         android:layout_alignParentEnd="true" />
 
 
-    <org.monroe.team.smooker.app.android.view.LeftToRightTextView
+    <org.monroe.team.smooker.promo.android.view.LeftToRightTextView
         android:layout_centerVertical="true"
         android:layout_marginLeft="15dp"
         android:id="@+id/today_value_description_text"

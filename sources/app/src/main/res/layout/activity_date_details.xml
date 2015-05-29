@@ -1,10 +1,10 @@
-<org.monroe.team.smooker.app.android.view.CircleAppearanceRelativeLayout
+<org.monroe.team.smooker.promo.android.view.CircleAppearanceRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/date_root"
-    tools:context="org.monroe.team.smooker.app.android.DateDetailsActivity">
+    tools:context="org.monroe.team.smooker.promo.android.DateDetailsActivity">
 
     <RelativeLayout
         android:id="@+id/date_header"
@@ -122,4 +122,4 @@
         </LinearLayout>
     </RelativeLayout>
     
-</org.monroe.team.smooker.app.android.view.CircleAppearanceRelativeLayout>
+</org.monroe.team.smooker.promo.android.view.CircleAppearanceRelativeLayout>

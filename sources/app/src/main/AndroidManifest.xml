@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.monroe.team.smooker.app" >
+    package="org.monroe.team.smooker.promo" >
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -50,14 +50,14 @@
     </compatible-screens>
 
     <application
-        android:name=".android.SmookerApplication"
+        android:name="org.monroe.team.smooker.promo.android.SmookerApplication"
         android:allowBackup="true"
         android:icon="@drawable/smooker_logo"
         android:label="@string/application.name"
         android:largeHeap="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".android.FrontPageActivity"
+            android:name="org.monroe.team.smooker.promo.android.FrontPageActivity"
             android:label="@string/application.name"
             android:launchMode="singleInstance" >
             <intent-filter>
@@ -67,33 +67,33 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".android.SetupQuitSmokeActivity"
+            android:name="org.monroe.team.smooker.promo.android.SetupQuitSmokeActivity"
             android:label="@string/activity.quit"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Transperent.NoAnimation"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name=".android.SetupMoneyboxActivity"
+            android:name="org.monroe.team.smooker.promo.android.SetupMoneyboxActivity"
             android:label="@string/activity.moneybox"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Transperent.NoAnimation"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
-            android:name=".android.SmokeBreakActivity"
+            android:name="org.monroe.team.smooker.promo.android.SmokeBreakActivity"
             android:label="@string/activity.smoke.timer"
             android:launchMode="singleInstance" >
         </activity>
 
         <service
-            android:name=".android.service.StickyNotificationService"
+            android:name="org.monroe.team.smooker.promo.android.service.StickyNotificationService"
             android:enabled="true"
             android:exported="false" >
         </service>
 
         <receiver
-            android:name=".actors.ActorDevice"
+            android:name="org.monroe.team.smooker.promo.actors.ActorDevice"
             android:enabled="true"
             android:exported="false" >
             <intent-filter>
@@ -101,7 +101,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".actors.ActorSystemAlarm"
+            android:name="org.monroe.team.smooker.promo.actors.ActorSystemAlarm"
             android:enabled="true"
             android:exported="true" >
         </receiver>
@@ -125,26 +125,26 @@
         </receiver>
         -->
         <receiver
-            android:name=".actors.ActorNotification"
+            android:name="org.monroe.team.smooker.promo.actors.ActorNotification"
             android:enabled="true"
             android:exported="true" >
         </receiver>
 
         <activity
-            android:name=".android.DateDetailsActivity"
+            android:name="org.monroe.team.smooker.promo.android.DateDetailsActivity"
             android:label="@string/activity.quit.date"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Transperent.NoAnimation" >
         </activity>
         <activity
-            android:name=".android.PreferencesActivity"
+            android:name="org.monroe.team.smooker.promo.android.PreferencesActivity"
             android:label="Preferences"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme" >
         </activity>
         <activity
             android:theme="@style/AppTheme.Transperent.NoAnimation"
-            android:name=".android.BugSubmitActivity"
+            android:name="org.monroe.team.smooker.promo.android.BugSubmitActivity"
             android:screenOrientation="portrait"
             android:noHistory="true"
             android:autoRemoveFromRecents="true"

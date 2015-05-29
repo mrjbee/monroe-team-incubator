@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:background="@color/background.main.light"
     android:id="@+id/star_root"
-    tools:context="org.monroe.team.smooker.app.StartActivity">
-    <org.monroe.team.smooker.app.android.view.RelativeLayoutExt
+    tools:context="org.monroe.team.smooker.promo.StartActivity">
+    <org.monroe.team.smooker.promo.android.view.RelativeLayoutExt
         android:id="@+id/start_bottom_layer"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -38,7 +38,7 @@
                     android:layout_height="fill_parent"
                     android:src="@drawable/clock_background"
                     android:visibility="visible"/>
-                <org.monroe.team.smooker.app.android.view.RoundSegmentImageView
+                <org.monroe.team.smooker.promo.android.view.RoundSegmentImageView
                     android:id="@+id/start_clock_value_panel"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
@@ -57,7 +57,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <org.monroe.team.smooker.app.android.view.TextViewExt
+                        <org.monroe.team.smooker.promo.android.view.TextViewExt
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=""
@@ -100,7 +100,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <org.monroe.team.smooker.app.android.view.TextViewExt
+                        <org.monroe.team.smooker.promo.android.view.TextViewExt
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0"
@@ -186,7 +186,7 @@
           </RelativeLayout>
 
         </LinearLayout>
-    </org.monroe.team.smooker.app.android.view.RelativeLayoutExt>
+    </org.monroe.team.smooker.promo.android.view.RelativeLayoutExt>
 
     <LinearLayout
         android:id="@+id/start_tile_layer_panel"

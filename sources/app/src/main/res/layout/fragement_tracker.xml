@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background.main.light"
-    tools:context="org.monroe.team.smooker.app.StartActivity">
+    tools:context="org.monroe.team.smooker.promo.StartActivity">
     <LinearLayout
         android:orientation="vertical"
         android:id="@+id/start_bottom_layer"
@@ -45,7 +45,7 @@
                 />
 
 
-            <org.monroe.team.smooker.app.android.view.DayTrackChartView
+            <org.monroe.team.smooker.promo.android.view.DayTrackChartView
                 android:id="@+id/tracker_day_chart_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

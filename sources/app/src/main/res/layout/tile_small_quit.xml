@@ -17,14 +17,14 @@
             android:layout_height="fill_parent"
             android:src="@drawable/quit_progress_background"
             android:layout_centerInParent="true"/>
-        <org.monroe.team.smooker.app.android.view.RoundSegmentImageView
+        <org.monroe.team.smooker.promo.android.view.RoundSegmentImageView
             android:id="@+id/quit_progress_round_image"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:src="@drawable/quit_progress_value"
             android:layout_centerInParent="true"/>
 
-        <org.monroe.team.smooker.app.android.view.TextViewExt
+        <org.monroe.team.smooker.promo.android.view.TextViewExt
             android:id="@+id/quit_progress_value"
             android:layout_gravity="center"
             android:layout_width="wrap_content"

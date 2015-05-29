@@ -23,7 +23,7 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
-            <org.monroe.team.smooker.app.android.view.BlurImageView
+            <org.monroe.team.smooker.promo.android.view.BlurImageView
                 android:id="@+id/money_image"
                 android:scaleType="centerCrop"
                 android:layout_width="fill_parent"
