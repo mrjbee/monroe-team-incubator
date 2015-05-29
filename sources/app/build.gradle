@@ -8,8 +8,8 @@ android {
 	applicationId "org.monroe.team.smooker.app"
         minSdkVersion 14
         targetSdkVersion 18
-        versionCode 5
-        versionName "1.5"
+        versionCode 6
+        versionName "2.0"
     }
 
     signingConfigs {
