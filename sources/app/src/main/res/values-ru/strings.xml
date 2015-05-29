@@ -135,4 +135,10 @@
     <string name="moneybox.alert.disable.caption">Выключить копилку</string>
     <string name="moneybox.alert.disable.text">Вы собираетесь выключить копилку. Все данные о сэкономленных деньгах будут утеряны. Вы действительно хотите продолжить?</string>
     <string name="moneybox.alert.disable.yes">Да, выключить копилку</string>
+    <string name="promo_caption">Детали Акции</string>
+    <string name="promo_continue">Продолжить</string>
+    <string name="promo_day_left">осталось</string>
+    <string name="promo_description">Вы используете бесплатную версию Smooker. Все функции доступны, но использование ограничено до одной недели.</string>
+    <string name="promo_exit">Закрыть</string>
+    <string name="promo_paid">Полная Версия</string>
 </resources>

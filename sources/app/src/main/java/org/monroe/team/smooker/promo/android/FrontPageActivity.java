@@ -7,9 +7,12 @@ import android.view.WindowManager;
 
 import org.monroe.team.android.box.app.ActivitySupport;
 import org.monroe.team.smooker.promo.R;
+import org.monroe.team.smooker.promo.android.view.PromotionDetailsViewPresenter;
 
 
 public class FrontPageActivity extends ActivitySupport<SmookerApplication> {
+
+    private PromotionDetailsViewPresenter promoPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +40,23 @@ public class FrontPageActivity extends ActivitySupport<SmookerApplication> {
                 .replace(R.id.fp_fragment_panel, mainFragment, "main_fragment")
             .commit();
         }
+        promoPresenter = new PromotionDetailsViewPresenter(view(R.id.panel_promo), this);
+        promoPresenter.restoreState(savedInstanceState);
     }
 
     @Override
     protected void onActivitySize(int width, int height) {
         super.onActivitySize(width, height);
         getMainFragment().onScreenSizeCalculated(width, height);
+        promoPresenter.showPromo();
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        promoPresenter.saveState(outState);
+    }
+
 
     private FrontPageFragment getMainFragment() {
         return (FrontPageFragment) getFragmentManager().findFragmentByTag("main_fragment");

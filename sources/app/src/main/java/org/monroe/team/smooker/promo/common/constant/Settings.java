@@ -32,6 +32,9 @@ public interface Settings {
     SettingManager.Flag IS_SMOKE_QUIT_ACTIVE = new SettingManager.Flag("IS_SMOKE_QUIT_ACTIVE", false);
     SettingManager.Flag ENABLED_BUG_SUBMISSION = new SettingManager.Flag("ENABLED_BUG_SUBMISSION",true);
 
+    SettingManager.SettingItem<Long> DATE_PROMO_START = new SettingManager.SettingItem<Long>("PROMO_START",Long.class, null);
+    SettingManager.SettingItem<Long> DATE_LAST_PROMO_SHOWN = new SettingManager.SettingItem<Long>("PROMO_LAST_SHOWN",Long.class, null);
+
     Closure<Integer,Currency> CONVERT_CURRENCY = new Closure<Integer, Currency>() {
         @Override
         public Currency execute(Integer arg) {

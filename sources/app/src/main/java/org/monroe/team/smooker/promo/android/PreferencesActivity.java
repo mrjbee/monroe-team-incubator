@@ -143,7 +143,7 @@ public class PreferencesActivity extends ActivitySupport<SmookerApplication>{
         view(R.id.rate_link).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = "https://play.google.com/store/apps/details?id=org.monroe.team.smooker.app";
+                String url = "https://play.google.com/store/apps/details?id=org.monroe.team.smooker.promo";
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);
